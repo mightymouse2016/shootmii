@@ -1,0 +1,35 @@
+#include "../ShootMii.h"
+
+namespace shootmii {
+
+  ScorePanel::ScorePanel(App* _app, Player* _player1, Player* _player2) :
+    app(_app),
+    player1(_player1),
+    player2(_player2),
+    tex_score_panel(GRRLIB_LoadTexture(score_panel)) {
+  }
+
+  ScorePanel::~ScorePanel() {
+    free(tex_score_panel.data);
+  }
+  
+  void ScorePanel::draw() const {
+    drawBackGround();
+  }
+
+  void ScorePanel::drawBackGround() const {
+    GRRLIB_DrawImg(0, SCREEN_HEIGHT-SCORE_PANEL_HEIGHT, tex_score_panel, 0, 1, 1, WHITE );
+  }
+
+  void ScorePanel::drawScore() const {
+    // TODO
+  }
+
+  void ScorePanel::drawPlayer1() const {
+    // TODO
+  }
+
+  void ScorePanel::drawPlayer2() const {
+    // TODO
+  }
+}
