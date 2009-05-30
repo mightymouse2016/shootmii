@@ -23,7 +23,9 @@ namespace shootmii {
   void App::dealEvent() {
     WPAD_ScanPads();
     u32 pad1Down = WPAD_ButtonsDown(WPAD_CHAN_0);
+    u32 pad1Held = WPAD_ButtonsHeld(WPAD_CHAN_0);
     u32 pad2Down = WPAD_ButtonsDown(WPAD_CHAN_1);
+    u32 pad2Held = WPAD_ButtonsHeld(WPAD_CHAN_1);
 
     // Gestion du mode DEBUG
     if (pad1Down & WPAD_BUTTON_MINUS) {
@@ -46,7 +48,7 @@ namespace shootmii {
         if (pad1Down & WPAD_BUTTON_HOME) {
           screen = TITLE_SCREEN;
         } else {
-          gameScreen->dealEvent(pad1Down, pad2Down);
+          gameScreen->dealEvent(pad1Held, pad2Held);
         }
         break;
     }

@@ -10,8 +10,7 @@ namespace shootmii{
   class ScorePanel{
     private:
       App* app;
-      Player* player1;
-      Player* player2;
+      Manager* manager;
       GRRLIB_texImg tex_score_panel;
       GRRLIB_texImg tex_font_score;
       GRRLIB_texImg tex_font;
@@ -22,7 +21,7 @@ namespace shootmii{
       GRRLIB_texImg tex_jauge_bonus;
       
     public:
-      ScorePanel(App* _app, Player* _player1, Player* _player2);
+      ScorePanel(App*, Manager*);
       virtual ~ScorePanel();
       void draw() const;
       void drawBackGround() const;
