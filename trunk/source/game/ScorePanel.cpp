@@ -2,10 +2,9 @@
 
 namespace shootmii {
 
-  ScorePanel::ScorePanel(App* _app, Player* _player1, Player* _player2) :
+  ScorePanel::ScorePanel(App* _app, Manager* _manager) :
     app(_app),
-    player1(_player1),
-    player2(_player2),
+    manager(_manager),
     tex_score_panel(GRRLIB_LoadTexture(score_panel)) {
   }
 

@@ -9,6 +9,7 @@ namespace shootmii {
   class TitleScreen;
   class GameScreen;
   class ScorePanel;
+  class Manager;
   class Player;
   class Cell;
   class TerrainCell;
@@ -28,6 +29,7 @@ namespace shootmii {
 #include <string.h>
 #include <vector>
 #include <time.h>
+#include <math.h>
 // Images
 #include "gfx/console.h"
 #include "gfx/score_panel.h"
@@ -49,9 +51,8 @@ namespace shootmii {
 #include "terrain/Terrain.h"
 // Game
 #include "game/Cannon.h"
-#include "game/Wheels.h"
-#include "game/Tank.h"
 #include "game/Player.h"
+#include "game/Manager.h"
 #include "game/ScorePanel.h"
 // Screens
 #include "screens/Screen.h"
