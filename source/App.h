@@ -10,6 +10,12 @@ namespace shootmii {
     GAME_SCREEN
   };
   
+  enum EventType {
+    DOWN,
+    UP,
+    HELD
+  };
+  
   class App {
     public:
       App();

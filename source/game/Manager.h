@@ -14,6 +14,8 @@ namespace shootmii {
       Player* player1;
       Player* player2;
       Terrain* terrain;
+      list<Ammo*>* ammosToMove;
+      list<Ammo*>* ammosToDestroy;
     public:
       Manager(string nick_p1 = "Player 1", string nick_p2 = "Player 2");
       ~Manager();
@@ -27,7 +29,9 @@ namespace shootmii {
       void moveRight(Player*);
       void draw();
       void show();
-      void dealEvent(const u32, const u32);
+      void dealEvent(const u32*, const u32*);
+      void addAmmoToMove(Ammo*);
+      void addAmmoToDestroy(Ammo*);
   };
 
 }

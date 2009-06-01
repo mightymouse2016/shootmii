@@ -3,15 +3,31 @@
 namespace shootmii {
 
   Manager::Manager(string nick_p1, string nick_p2) :
-    player1(new Player(nick_p1,0,ROTATION_RANGE,INIT_ANGLE,ROTATION_STEP)),
+        player1(new Player(nick_p1,0,ROTATION_RANGE,INIT_ANGLE,ROTATION_STEP)),
         player2(new Player(nick_p2,ANGLE_OFFSET,ROTATION_RANGE,INIT_ANGLE+ANGLE_OFFSET,ROTATION_STEP)),
-        terrain(new Terrain(CELL_SIZE,N_ROWS,N_COLS)) {
+        terrain(new Terrain(CELL_SIZE,N_ROWS,N_COLS)),ammosToMove(new list<Ammo*>),ammosToDestroy(new list<Ammo*>) {
   }
 
   Manager::~Manager() {
     delete player1;
     delete player2;
     delete terrain;
+
+    list<Ammo*>::iterator it;
+
+    // Destroy Ammos that are still in the air
+    for (it = ammosToMove->begin(); it != ammosToMove->end(); it++)
+      delete (*it);
+    //while (ammosToMove->begin() != ammosToMove->end())
+    //  ammosToMove->pop_back();
+    delete ammosToMove;
+    
+    // Destroy Ammos that are still self-destroying
+    for (it = ammosToDestroy->begin(); it != ammosToDestroy->end(); it++)
+      delete (*it);
+    //while (ammosToDestroy->begin() != ammosToDestroy->end())
+    //  ammosToDestroy->pop_back();
+    delete ammosToDestroy;
   }
 
   Player* Manager::getPlayer1() {
@@ -53,6 +69,46 @@ namespace shootmii {
     terrain->draw();
     player1->draw();
     player2->draw();
+
+    int screenX;
+    int screenY;
+    list<Ammo*>* newAmmosToMove = new list<Ammo*>;
+    list<Ammo*>::iterator it;
+    
+    for (it = ammosToMove->begin(); it != ammosToMove->end(); it++) {
+      screenX = (*(*it)->getCalcX())((*it)->getT());
+      screenY = (*(*it)->getCalcY())((*it)->getT());
+
+      // Si la munition sors de l'ecran sur X
+      // Suppression des éléments en dehors du terrain
+      if (screenX > SCREEN_WIDTH || screenX < 0) {
+        delete *it;
+      }
+      // Si la munition est au dessus : on continue le calcul mais on ne dessine rien : ca sert a rien
+      else if(screenY < 0) {
+        (*it)->incT();
+        newAmmosToMove->push_back(*it);
+      }
+      // Si la munition est sur l'ecran
+      else if (terrain->contains(screenX,screenY)) {
+        // Gestion des collisions avec le terrain
+        if(terrain->getCellType(int(screenY)/CELL_SIZE, int(screenX)/CELL_SIZE) != SKY) {
+          addAmmoToDestroy(*it);
+        }
+        // TODO : Gestion des collisions avec les autres missiles
+        
+        // TODO : Gestion des collisions avec les players
+        
+        // Sinon la munition se deplace
+        else {
+          (*it)->draw();
+          (*it)->incT();
+          newAmmosToMove->push_back(*it);
+        }
+      }
+    }
+    delete ammosToMove;
+    ammosToMove = newAmmosToMove;
   }
 
   void Manager::show() {
@@ -61,7 +117,8 @@ namespace shootmii {
     initPlayerPosition(player2, N_COLS-PLAYER_OFFSET);
   }
 
-  void Manager::dealEvent(const u32 pad1Held, const u32 pad2Held) {
+  void Manager::dealEvent(const u32* player1Events, const u32* player2Events) {
+    const u32 pad1Held = player1Events[HELD];
     if (pad1Held & WPAD_BUTTON_LEFT)
       moveLeft(player1);
     if (pad1Held & WPAD_BUTTON_RIGHT)
@@ -71,6 +128,14 @@ namespace shootmii {
     if (pad1Held & WPAD_BUTTON_DOWN)
       player1->getCannon()->rotateRight();
 
+    const u32 pad1Down = player1Events[DOWN];
+    if (pad1Down & WPAD_BUTTON_A) {
+      player1->getCannon()->shoot(this);
+      WPAD_Rumble(WPAD_CHAN_0, 1);
+      WPAD_Rumble(WPAD_CHAN_0, 0);
+    }
+
+    const u32 pad2Held = player2Events[HELD];
     if (pad2Held & WPAD_BUTTON_LEFT)
       moveLeft(player2);
     if (pad2Held & WPAD_BUTTON_RIGHT)
@@ -79,6 +144,22 @@ namespace shootmii {
       player2->getCannon()->rotateRight();
     if (pad2Held & WPAD_BUTTON_DOWN)
       player2->getCannon()->rotateLeft();
+
+    const u32 pad2Down = player2Events[DOWN];
+    if (pad2Down & WPAD_BUTTON_A) {
+      player2->getCannon()->shoot(this);
+      WPAD_Rumble(WPAD_CHAN_1, 1);
+      WPAD_Rumble(WPAD_CHAN_1, 0);
+    }
+
+  }
+
+  void Manager::addAmmoToMove(Ammo* ammo) {
+    ammosToMove->push_back(ammo);
+  }
+
+  void Manager::addAmmoToDestroy(Ammo* ammo) {
+    ammosToDestroy->push_back(ammo);
   }
 
 }
