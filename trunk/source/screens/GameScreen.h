@@ -15,7 +15,7 @@ namespace shootmii {
       virtual ~GameScreen();
       void draw();
       void show();
-      void dealEvent(const u32, const u32);
+      void dealEvent(const u32*, const u32*);
     };
 }
 

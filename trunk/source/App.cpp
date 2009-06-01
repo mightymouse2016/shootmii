@@ -23,32 +23,36 @@ namespace shootmii {
   void App::dealEvent() {
     WPAD_ScanPads();
     u32 pad1Down = WPAD_ButtonsDown(WPAD_CHAN_0);
+    u32 pad1Up = WPAD_ButtonsUp(WPAD_CHAN_0);
     u32 pad1Held = WPAD_ButtonsHeld(WPAD_CHAN_0);
     u32 pad2Down = WPAD_ButtonsDown(WPAD_CHAN_1);
+    u32 pad2Up = WPAD_ButtonsUp(WPAD_CHAN_1);
     u32 pad2Held = WPAD_ButtonsHeld(WPAD_CHAN_1);
-
+    u32 player1Events[3] = {pad1Down, pad1Up, pad1Held};
+    u32 player2Events[3] = {pad2Down, pad2Up, pad2Held};
+    
     // Gestion du mode DEBUG
-    if (pad1Down & WPAD_BUTTON_MINUS) {
+    if (player1Events[DOWN] & WPAD_BUTTON_MINUS) {
       debug = false;
       return;
     }
     
     switch (screen) {
       case TITLE_SCREEN:
-        if (pad1Down & WPAD_BUTTON_HOME) {
+        if ((player1Events[DOWN] | player2Events[DOWN]) & WPAD_BUTTON_HOME) {
           this->running = false;
-        } else if (pad1Down & WPAD_BUTTON_A) {
+        } else if ((player1Events[DOWN] | player2Events[DOWN]) & WPAD_BUTTON_A) {
           screen = GAME_SCREEN;
           gameScreen->show();
         } else {
-          titleScreen->dealEvent(pad1Down, pad2Down);
+          titleScreen->dealEvent(player1Events, player2Events);
         }
         break;
       case GAME_SCREEN:
-        if (pad1Down & WPAD_BUTTON_HOME) {
+        if ((player1Events[DOWN] | player2Events[DOWN]) & WPAD_BUTTON_HOME) {
           screen = TITLE_SCREEN;
         } else {
-          gameScreen->dealEvent(pad1Held, pad2Held);
+          gameScreen->dealEvent(player1Events, player2Events);
         }
         break;
     }

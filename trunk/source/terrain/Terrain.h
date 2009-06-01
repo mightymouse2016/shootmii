@@ -20,6 +20,7 @@ namespace shootmii{
       int getCols() const;
       const vector<vector<TerrainCell> > & getGrille() const;
       CellType getCellType(const int rowIndex, const int colIndex) const;
+      bool contains(float screenX, float screenY) const;
       // Méthodes
       void draw() const;
       void generate();

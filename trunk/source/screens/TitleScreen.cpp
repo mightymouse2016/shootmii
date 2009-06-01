@@ -20,7 +20,7 @@ namespace shootmii {
     }
   }
   
-  void TitleScreen::dealEvent(const u32, const u32){
+  void TitleScreen::dealEvent(const u32*, const u32*){
     
   }
 }

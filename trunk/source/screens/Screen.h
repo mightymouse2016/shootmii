@@ -10,7 +10,7 @@ namespace shootmii {
     public:
       Screen(App*);
       virtual ~Screen();
-      virtual void dealEvent(const u32, const u32)=0;
+      virtual void dealEvent(const u32*, const u32*)=0;
   };
 }
 

@@ -18,6 +18,11 @@ namespace shootmii {
   class Cannon;
   class Tank;
   class MovementHandler;
+  class Ammo;
+  class CannonBall;
+  class Affine;
+  class PolyDeg2;
+  class Function;
 }
 
 // GRRLib
@@ -28,6 +33,7 @@ namespace shootmii {
 #include <string>
 #include <string.h>
 #include <vector>
+#include <list>
 #include <time.h>
 #include <math.h>
 // Images
@@ -50,7 +56,9 @@ namespace shootmii {
 #include "terrain/TerrainCell.h"
 #include "terrain/Terrain.h"
 // Game
+#include "game/Curves.h"
 #include "game/Cannon.h"
+#include "game/Ammo.h"
 #include "game/Player.h"
 #include "game/Manager.h"
 #include "game/ScorePanel.h"

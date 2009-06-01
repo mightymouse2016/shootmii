@@ -8,7 +8,7 @@ namespace shootmii {
     // NOTHING TO BE DONE
   }
  
-  void Screen::dealEvent(const u32, const u32){
+  void Screen::dealEvent(const u32*, const u32*){
     
   }
 }

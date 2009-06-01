@@ -24,8 +24,8 @@ namespace shootmii {
     manager->show();
   }
 
-  void GameScreen::dealEvent(const u32 pad1Held, const u32 pad2Held) {
-    manager->dealEvent(pad1Held, pad2Held);
+  void GameScreen::dealEvent(const u32* player1Events, const u32* player2Events) {
+    manager->dealEvent(player1Events, player2Events);
   }
 
 }
