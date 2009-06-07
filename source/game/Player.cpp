@@ -18,4 +18,12 @@ namespace shootmii {
     cannon->draw(screenX, screenY, CELL_SIZE);
     GRRLIB_Rectangle(screenX, screenY, CELL_SIZE, CELL_SIZE, YELLOW, true);
   }
+  
+  int Player::getLife() const{
+    return life;
+  }
+  
+  int Player::getStrength() const{
+    return strength;
+  }
 }

@@ -2,10 +2,11 @@
 
 namespace shootmii {
 
-  Manager::Manager(string nick_p1, string nick_p2) :
+  Manager::Manager(App* _app, string nick_p1, string nick_p2) :
+        app(_app),
         player1(new Player(nick_p1,0,ROTATION_RANGE,INIT_ANGLE,ROTATION_STEP)),
         player2(new Player(nick_p2,ANGLE_OFFSET,ROTATION_RANGE,INIT_ANGLE+ANGLE_OFFSET,ROTATION_STEP)),
-        terrain(new Terrain(CELL_SIZE,N_ROWS,N_COLS)),ammosToMove(new list<Ammo*>),ammosToDestroy(new list<Ammo*>) {
+        terrain(new Terrain(CELL_SIZE,N_ROWS,N_COLS)), ammosToDraw(new list<Ammo*>) {
   }
 
   Manager::~Manager() {
@@ -13,35 +14,20 @@ namespace shootmii {
     delete player2;
     delete terrain;
 
-    // Destroy Ammos that are still in the air
-    deleteAmmosToMove();
-    delete ammosToMove;
-    
-    // Destroy Ammos that are still self-destroying
-    deleteAmmosToDestroy();
-    delete ammosToDestroy;
+    // Destroy Ammos that are still in the list
+    deleteAmmosToDraw();
+    delete ammosToDraw;
+
   }
 
-  void Manager::addAmmoToMove(Ammo* ammo) {
-    ammosToMove->push_back(ammo);
+  void Manager::addAmmosToDraw(Ammo* ammo) {
+    ammosToDraw->push_back(ammo);
   }
 
-  void Manager::addAmmoToDestroy(Ammo* ammo) {
-    ammosToDestroy->push_back(ammo);
+  void Manager::deleteAmmosToDraw() {
+    ammosToDraw->clear();
   }
-  
-  void Manager::deleteAmmosToMove() {
-    list<Ammo*>::iterator it;
-    for (it = ammosToMove->begin(); it != ammosToMove->end(); it++)
-      delete (*it);
-  }
-  
-  void Manager::deleteAmmosToDestroy() {
-    list<Ammo*>::iterator it;
-    for (it = ammosToDestroy->begin(); it != ammosToDestroy->end(); it++)
-      delete (*it);
-  }
-  
+
   Player* Manager::getPlayer1() {
     return player1;
   }
@@ -77,56 +63,113 @@ namespace shootmii {
         initPlayerPosition(player, player->getColIndex() + 1);
   }
 
+  bool Manager::ammoIsOffScreen(const int screenX) const{
+    return (screenX > SCREEN_WIDTH || screenX < 0);
+  }
+
+  bool Manager::ammoIsTooHigh(const int screenY) const{
+    return (screenY < 0);
+  }
+
+  bool Manager::ammoHitTheGround(const int screenX, const int screenY) const{
+    return (terrain->getCellType(int(screenY)/CELL_SIZE, int(screenX)/CELL_SIZE) != SKY);
+  }
+
+  Ammo* Manager::ammoHitAnotherAmmo(Ammo* ammo) const {
+    list<Ammo*>::iterator it;
+    for (it = ammosToDraw->begin(); it != ammosToDraw->end(); it++) {
+      if (ammo != *it && ammo->cellIntersect(*it)) {
+        return *it;
+      }
+    }
+    return NULL;
+  }
+
+  Player* Manager::ammoHitAPlayer(Ammo* ammo){
+    if (ammo->cellIntersect(player1)) {
+      return player1;
+    }
+    if (ammo->cellIntersect(player2)) {
+      return player2;
+    }
+    return NULL;
+  }
+
   void Manager::draw() {
     terrain->draw();
     player1->draw();
     player2->draw();
 
-    computeAmmosCollisions();    
+    computeAmmosCollisions();
+    drawAmmos();
+  }
+
+  void Manager::drawAmmos() {
+    list<Ammo*>::iterator it;
+    for (it = ammosToDraw->begin(); it != ammosToDraw->end(); it++) {
+      if (!((*it)->isBeingDestroyed())) {
+        (*it)->draw();
+      }
+    }
   }
 
   void Manager::computeAmmosCollisions() {
     int screenX;
-        int screenY;
-        list<Ammo*>* newAmmosToMove = new list<Ammo*>;
-        list<Ammo*>::iterator it;
-        
-        for (it = ammosToMove->begin(); it != ammosToMove->end(); it++) {
-          screenX = (*(*it)->getCalcX())((*it)->getT());
-          screenY = (*(*it)->getCalcY())((*it)->getT());
+    int screenY;
+    list<Ammo*>* newAmmosToDraw = new list<Ammo*>;
+    list<Ammo*>::iterator it;
 
-          // Si la munition sors de l'ecran sur X
-          // Suppression des éléments en dehors du terrain
-          if (screenX > SCREEN_WIDTH || screenX < 0) {
-            delete *it;
+    for (it = ammosToDraw->begin(); it != ammosToDraw->end(); it++) {
+      screenX = (*it)->getScreenX();
+      screenY = (*it)->getScreenY();
+
+      // Si la munition a déjà rencontré d'obstacle
+      if ((*it)->isBeingDestroyed()) {
+        /// TODO
+        delete *it;
+      }
+
+      else {
+        // Si la munition sors de l'ecran sur X, suppression
+        if (ammoIsOffScreen(screenX)) {
+          (*it)->destruction();
+        }
+        // Si la munition est au dessus : on continue le calcul
+        else if (ammoIsTooHigh(screenY)) {
+          newAmmosToDraw->push_back(*it);
+        }
+        // Si la munition est sur l'ecran
+        else if (terrain->contains(screenX, screenY)) {
+          // Gestion des collisions avec le terrain
+          if (ammoHitTheGround(screenX, screenY)) {
+            (*it)->destruction();
           }
-          // Si la munition est au dessus : on continue le calcul mais on ne dessine rien : ca sert a rien
-          else if(screenY < 0) {
-            (*it)->incT();
-            newAmmosToMove->push_back(*it);
+          // Gestion des collisions avec les autres missiles
+          else if (Ammo* inFrontAmmo = ammoHitAnotherAmmo(*it)) {
+            app->getConsole()->addDebug("rencontre explosive!!!");
+            (*it)->destruction();
+            inFrontAmmo->destruction();
           }
-          // Si la munition est sur l'ecran
-          else if (terrain->contains(screenX,screenY)) {
-            // Gestion des collisions avec le terrain
-            if(terrain->getCellType(int(screenY)/CELL_SIZE, int(screenX)/CELL_SIZE) != SKY) {
-              addAmmoToDestroy(*it);
-            }
-            // TODO : Gestion des collisions avec les autres missiles
-            
-            // TODO : Gestion des collisions avec les players
-            
-            // Sinon la munition se deplace
-            else {
-              (*it)->draw();
-              (*it)->incT();
-              newAmmosToMove->push_back(*it);
-            }
+          // TODO : Gestion des collisions avec les players
+          else if (Player* playerHit = ammoHitAPlayer(*it)) {
+            if (playerHit == player1) app->getConsole()->addDebug("joueur 1 touche!!!");
+            else app->getConsole()->addDebug("joueur 2 touche!!!");
+            (*it)->destruction();
+          }
+          // Sinon la munition se deplace
+          else {
+            newAmmosToDraw->push_back(*it);
           }
         }
-        delete ammosToMove;
-        ammosToMove = newAmmosToMove;    
+
+        (*it)->updateXYT();
+
+      }
+    }
+    delete ammosToDraw;
+    ammosToDraw = newAmmosToDraw;
   }
-  
+
   void Manager::show() {
     // On regenere un nouveau terrain
     terrain->generate();
@@ -134,8 +177,7 @@ namespace shootmii {
     initPlayerPosition(player1, PLAYER_OFFSET);
     initPlayerPosition(player2, N_COLS-PLAYER_OFFSET);
     // On supprime les bombes de l'ecran
-    deleteAmmosToMove();
-    deleteAmmosToDestroy();
+    deleteAmmosToDraw();
   }
 
   void Manager::dealEvent(const u32* player1Events, const u32* player2Events) {
