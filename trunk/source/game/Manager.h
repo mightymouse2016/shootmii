@@ -16,6 +16,10 @@ namespace shootmii {
       Terrain* terrain;
       list<Ammo*>* ammosToMove;
       list<Ammo*>* ammosToDestroy;
+      void computeAmmosCollisions();
+      void deleteAmmosToMove();
+      void deleteAmmosToDestroy();
+      
     public:
       Manager(string nick_p1 = "Player 1", string nick_p2 = "Player 2");
       ~Manager();
