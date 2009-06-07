@@ -22,12 +22,33 @@ namespace shootmii {
     return colIndex;
   }
 
-  int Cell::getscreenX() const {
+  int Cell::getScreenX() const {
     return screenX;
   }
 
-  int Cell::getscreenY() const {
+  int Cell::getScreenY() const {
     return screenY;
+  }
+  
+  void Cell::setScreenX(int _screenX){
+    screenX = _screenX;
+  }
+  
+  void Cell::setScreenY(int _screenY){
+    screenY = _screenY;
+  }
+
+  bool Cell::cellIntersect(const Cell* c) const {
+    if (screenX - CELL_SIZE > c->getScreenX()) {
+      return false;
+    } else if (screenX + CELL_SIZE < c->getScreenX()) {
+      return false;
+    } else if (screenY - CELL_SIZE > c->getScreenY()) {
+      return false;
+    } else if (screenY + CELL_SIZE < c->getScreenY()) {
+      return false;
+    }
+    return true;
   }
 
 }
