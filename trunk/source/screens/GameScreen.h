@@ -8,7 +8,7 @@ namespace shootmii {
   class GameScreen : public Screen {
     private:
       Manager* manager;
-      ScorePanel* score_panel;
+      ScoreManager* score_manager;
       GRRLIB_texImg tex_screen;
     public:
       GameScreen(App* _app, string nick_p1 = "Player 1", string nick_p2 = "Player 2");

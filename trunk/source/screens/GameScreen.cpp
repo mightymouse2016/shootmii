@@ -3,7 +3,7 @@
 namespace shootmii {
 
   GameScreen::GameScreen(App* _app, string nick_p1, string nick_p2) :
-    Screen(_app), manager(new Manager(nick_p1,nick_p2)), score_panel(new ScorePanel(_app,manager)), tex_screen(GRRLIB_LoadTexture(game_select_screen))
+    Screen(_app), manager(new Manager(_app, nick_p1,nick_p2)), score_manager(new ScoreManager(_app,manager)), tex_screen(GRRLIB_LoadTexture(game_select_screen))
 
   {
     // NOTHING TO BE DONE
@@ -11,13 +11,13 @@ namespace shootmii {
 
   GameScreen::~GameScreen() {
     free(tex_screen.data);
-    delete score_panel;
+    delete score_manager;
     delete manager;
   }
 
   void GameScreen::draw() {
     manager->draw();
-    score_panel->draw();
+    score_manager->draw();
   }
 
   void GameScreen::show() {
