@@ -21,19 +21,26 @@ namespace shootmii {
       App();
       virtual ~App();
       void run();
+      void draw();
       void dealEvent();
       bool isRunning() const;
       bool isDebug() const;
-      int getNbFrame() const;
+      u8 getFPS() const;
+      u8 getFrameCount() const;
+      void calculateFrameRate();
+      Console* getConsole() const;
       
-    private:  
+    private: 
+      u8 fps;
+      u32 lastTime;
+      u8 frameCount;
       bool debug;
       bool running;
       int nbFrame;
       ScreenType screen;      
-      void countFrame();
       TitleScreen* titleScreen;
       GameScreen* gameScreen;
+      Console* console;
   };
 }
 

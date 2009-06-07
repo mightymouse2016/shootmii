@@ -23,11 +23,13 @@ namespace shootmii {
   class Affine;
   class PolyDeg2;
   class Function;
+  class Console;
 }
 
 // GRRLib
 #include "../../../GRRLib4.0.0/GRRLIB/GRRLIB/GRRLIB.h"
 #include <wiiuse/wpad.h>
+#include <ogc/lwp_watchdog.h>
 // Bibliothèques standard
 #include <stdlib.h>
 #include <string>
@@ -37,7 +39,7 @@ namespace shootmii {
 #include <time.h>
 #include <math.h>
 // Images
-#include "gfx/console.h"
+#include "gfx/font_console.h"
 #include "gfx/score_panel.h"
 #include "gfx/title_screen.h"
 #include "gfx/game_select_screen.h"
@@ -51,6 +53,7 @@ namespace shootmii {
 // Tools
 #include "tools/Colors.h"
 #include "tools/Tools.h"
+#include "tools/Console.h"
 // Terrain
 #include "terrain/Cell.h"
 #include "terrain/TerrainCell.h"
