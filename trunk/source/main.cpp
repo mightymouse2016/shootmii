@@ -9,7 +9,6 @@ int main() {
     App* app = new App();
     
     while(app->isRunning()) {  
-        app->dealEvent();
         app->run();
     }
     

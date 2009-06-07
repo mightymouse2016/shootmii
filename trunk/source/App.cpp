@@ -8,18 +8,27 @@ namespace shootmii {
     debug = false;
     running = true;
     nbFrame = 0;
+    fps = 0;
+    frameCount = 0;
     screen = TITLE_SCREEN;
     titleScreen = new TitleScreen(this);
     gameScreen = new GameScreen(this);
+    console = new Console(this, 225);
   }
 
   App::~App() {
     GRRLIB_Exit();
     delete titleScreen;
     delete gameScreen;
+    delete console;
     exit(0);
   }
 
+  void App::run() {
+    dealEvent();
+    draw();
+  }
+  
   void App::dealEvent() {
     WPAD_ScanPads();
     u32 pad1Down = WPAD_ButtonsDown(WPAD_CHAN_0);
@@ -32,8 +41,9 @@ namespace shootmii {
     u32 player2Events[3] = {pad2Down, pad2Up, pad2Held};
     
     // Gestion du mode DEBUG
-    if (player1Events[DOWN] & WPAD_BUTTON_MINUS) {
-      debug = false;
+    if (player1Events[DOWN] & WPAD_BUTTON_MINUS) {      
+      debug = !debug;
+      console->addDebug("passage en mode debug !!!");
       return;
     }
     
@@ -42,6 +52,7 @@ namespace shootmii {
         if ((player1Events[DOWN] | player2Events[DOWN]) & WPAD_BUTTON_HOME) {
           this->running = false;
         } else if ((player1Events[DOWN] | player2Events[DOWN]) & WPAD_BUTTON_A) {
+          console->addDebug("gameScreen !!!");
           screen = GAME_SCREEN;
           gameScreen->show();
         } else {
@@ -50,6 +61,7 @@ namespace shootmii {
         break;
       case GAME_SCREEN:
         if ((player1Events[DOWN] | player2Events[DOWN]) & WPAD_BUTTON_HOME) {
+          console->addDebug("titleScreen !!!");
           screen = TITLE_SCREEN;
         } else {
           gameScreen->dealEvent(player1Events, player2Events);
@@ -58,8 +70,7 @@ namespace shootmii {
     }
   }
 
-  void App::run() {
-
+  void App::draw() {
     switch (screen) {
       case TITLE_SCREEN: {
         titleScreen->draw();
@@ -72,11 +83,13 @@ namespace shootmii {
       default:
         break;
     }
+    
+    console->draw();
 
     GRRLIB_Render();
-    countFrame();
+    calculateFrameRate();
   }
-
+  
   bool App::isRunning() const {
     return running;
   }
@@ -85,14 +98,28 @@ namespace shootmii {
     return debug;
   }
 
-  void App::countFrame() {
-    nbFrame++;
-    if (nbFrame >= 60) {
-      nbFrame = 0;
-    }
+  Console* App::getConsole() const {
+    return console;
+  }
+  
+  u8 App::getFPS() const {
+    return fps;
+  }
+  
+  u8 App::getFrameCount() const {
+    return frameCount;
+  }
+  
+  void App::calculateFrameRate() {
+      u32 currentTime = ticks_to_millisecs(gettime());
+      
+      frameCount++;
+      
+      if(currentTime - lastTime > 1000) {
+          lastTime = currentTime;
+          fps = frameCount;
+          frameCount = 0;
+      }
   }
 
-  int App::getNbFrame() const {
-    return nbFrame;
-  }
 }
