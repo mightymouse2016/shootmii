@@ -4,31 +4,37 @@
 #include "../ShootMii.h"
 
 namespace shootmii {
-  
+
   const float G(-9.81);
-  
-  class Ammo{
+  const float TIME_STEP(.1);
+
+  class Ammo : public Cell {
     protected:
       Function* calcX;
       Function* calcY;
       float t;
+      bool destroyed;
     public:
-      Ammo(Function*,Function*);
+      Ammo(Function*, Function*);
       virtual ~Ammo();
       void incT();
       void decT();
       virtual void draw() const=0;
       Function* getCalcX();
       Function* getCalcY();
-      float getT() const;
+      void updateXYT();
+      bool isBeingDestroyed() const;
+      void destruction();
   };
-  
-  class CannonBall : public Ammo{
+
+  class CannonBall : public Ammo {
     public:
-      CannonBall(const float _vInitX = DEFAULT_POWER,const float _vInitY = DEFAULT_POWER,const float _xInit = 0,const float _yInit = 0);
+      CannonBall(const float _vInitX = DEFAULT_POWER,
+        const float _vInitY = DEFAULT_POWER, const float _xInit = 0,
+        const float _yInit = 0);
       void draw() const;
   };
-  
+
 }
 
 #endif /*AMMO_H_*/

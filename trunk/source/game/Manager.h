@@ -11,17 +11,21 @@ namespace shootmii {
 
   class Manager {
     private:
+      App* app;
       Player* player1;
       Player* player2;
       Terrain* terrain;
-      list<Ammo*>* ammosToMove;
-      list<Ammo*>* ammosToDestroy;
+      list<Ammo*>* ammosToDraw;
       void computeAmmosCollisions();
-      void deleteAmmosToMove();
-      void deleteAmmosToDestroy();
+      void deleteAmmosToDraw();
+      bool ammoIsOffScreen(const int screenX) const;
+      bool ammoIsTooHigh(const int screenY) const;
+      bool ammoHitTheGround(const int screenX, const int screenY) const;
+      Ammo* ammoHitAnotherAmmo(Ammo*) const;
+      Player* ammoHitAPlayer(Ammo*);
       
     public:
-      Manager(string nick_p1 = "Player 1", string nick_p2 = "Player 2");
+      Manager(App*, string nick_p1 = "Player 1", string nick_p2 = "Player 2");
       ~Manager();
       // Accesseurs
       Player* getPlayer1();
@@ -32,10 +36,10 @@ namespace shootmii {
       void moveLeft(Player*);
       void moveRight(Player*);
       void draw();
+      void drawAmmos();
       void show();
       void dealEvent(const u32*, const u32*);
-      void addAmmoToMove(Ammo*);
-      void addAmmoToDestroy(Ammo*);
+      void addAmmosToDraw(Ammo*);
   };
 
 }

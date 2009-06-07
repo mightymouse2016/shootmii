@@ -31,6 +31,8 @@ namespace shootmii {
       // Accesseurs
       Cannon* getCannon();
       void draw() const;
+      int getLife() const;
+      int getStrength() const;
   };
 
 }
