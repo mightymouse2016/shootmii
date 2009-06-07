@@ -15,7 +15,7 @@ namespace shootmii {
     GRRLIB_FillScreen(BLACK);
     GRRLIB_DrawImg(0, 0, tex_title_screen, 0, 1, 1, WHITE);
 
-    if (this->app->getNbFrame() > 30) {
+    if (this->app->getFrameCount() > 25) {
       printRight(440, tex_font, WHITE, 1, "press start");
     }
   }
