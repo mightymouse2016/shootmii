@@ -10,6 +10,8 @@ namespace shootmii {
   static const u8 CONSOLE_X_OFFSET = 15;
   static const u8 CONSOLE_TEXT_X_OFFSET = 25;
   static const u8 CONSOLE_TEXT_Y_OFFSET = 10;
+  static const u8 CONSOLE_FPS_BG_WIDTH = 75;
+  static const u8 CONSOLE_TIME_BG_WIDTH = 150;
   
   class Console {
     public:
@@ -24,6 +26,7 @@ namespace shootmii {
       GRRLIB_texImg console_font;
       vector<string> history;
       void drawFPS();
+      void drawTime();
   };
   
 }

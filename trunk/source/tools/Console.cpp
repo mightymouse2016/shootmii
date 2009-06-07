@@ -26,6 +26,8 @@ namespace shootmii {
       
       drawFPS();
       
+      drawTime();
+      
       // Affichage du BACKGROUND
       GRRLIB_Rectangle(CONSOLE_X_OFFSET, screenY, SCREEN_WIDTH - 2*CONSOLE_X_OFFSET, CONSOLE_HEIGHT, CONSOLE_COLOR, true);
 
@@ -38,9 +40,22 @@ namespace shootmii {
   
   void Console::drawFPS() {
     // Affichage du BACKGROUND
-    GRRLIB_Rectangle(CONSOLE_X_OFFSET, CONSOLE_X_OFFSET, 75, 25, CONSOLE_COLOR, true);
+    GRRLIB_Rectangle(CONSOLE_X_OFFSET, CONSOLE_X_OFFSET, CONSOLE_FPS_BG_WIDTH, 25, CONSOLE_COLOR, true);
 
     // Affichage des FPS
     GRRLIB_Printf(CONSOLE_X_OFFSET + 10, CONSOLE_X_OFFSET + 10, console_font, WHITE, 1, "FPS: %d", app->getFPS());
+  }
+  
+  void Console::drawTime() {
+    u8 seconds = ticks_to_secs(gettime());
+    u8 minutes = seconds/60;
+    u8 hours = minutes/60;
+
+    // Affichage du BACKGROUND
+    GRRLIB_Rectangle(SCREEN_WIDTH - CONSOLE_TIME_BG_WIDTH - CONSOLE_X_OFFSET, CONSOLE_X_OFFSET, CONSOLE_TIME_BG_WIDTH, 25, CONSOLE_COLOR, true);
+
+    // Affichage du temps
+    GRRLIB_Printf(SCREEN_WIDTH - CONSOLE_TIME_BG_WIDTH - CONSOLE_X_OFFSET + 10, CONSOLE_X_OFFSET + 10, console_font, WHITE, 1, "TIME: %d:%d:%d", hours, minutes, seconds);
+    
   }
 }
