@@ -63,15 +63,15 @@ namespace shootmii {
         initPlayerPosition(player, player->getColIndex() + 1);
   }
 
-  bool Manager::ammoIsOffScreen(const int screenX) const{
+  bool Manager::ammoIsOffScreen(const int screenX) const {
     return (screenX > SCREEN_WIDTH || screenX < 0);
   }
 
-  bool Manager::ammoIsTooHigh(const int screenY) const{
+  bool Manager::ammoIsTooHigh(const int screenY) const {
     return (screenY < 0);
   }
 
-  bool Manager::ammoHitTheGround(const int screenX, const int screenY) const{
+  bool Manager::ammoHitTheGround(const int screenX, const int screenY) const {
     return (terrain->getCellType(int(screenY)/CELL_SIZE, int(screenX)/CELL_SIZE) != SKY);
   }
 
@@ -85,7 +85,7 @@ namespace shootmii {
     return NULL;
   }
 
-  Player* Manager::ammoHitAPlayer(Ammo* ammo){
+  Player* Manager::ammoHitAPlayer(Ammo* ammo) {
     if (ammo->cellIntersect(player1)) {
       return player1;
     }
@@ -99,9 +99,11 @@ namespace shootmii {
     terrain->draw();
     player1->draw();
     player2->draw();
-
+    player1->getCannon()->decHeat();
+    player2->getCannon()->decHeat();
     computeAmmosCollisions();
     drawAmmos();
+    computeVictory();
   }
 
   void Manager::drawAmmos() {
@@ -113,6 +115,15 @@ namespace shootmii {
     }
   }
 
+  void Manager::computeVictory() {
+    if(player1->getLife() == 0) {
+      startGame();
+    }
+    else if(player2->getLife() == 0) {
+      startGame();
+    }
+  }
+  
   void Manager::computeAmmosCollisions() {
     int screenX;
     int screenY;
@@ -152,8 +163,12 @@ namespace shootmii {
           }
           // TODO : Gestion des collisions avec les players
           else if (Player* playerHit = ammoHitAPlayer(*it)) {
-            if (playerHit == player1) app->getConsole()->addDebug("joueur 1 touche!!!");
-            else app->getConsole()->addDebug("joueur 2 touche!!!");
+            if (playerHit == player1) {
+              player1->looseLife(25);
+            }
+            else {
+              player2->looseLife(25);
+            }
             (*it)->destruction();
           }
           // Sinon la munition se deplace
@@ -171,15 +186,27 @@ namespace shootmii {
   }
 
   void Manager::show() {
+    player1->init();
+    player2->init();
+    startGame();
+  }
+  
+  void Manager::startGame() {
     // On regenere un nouveau terrain
     terrain->generate();
     // On replace les joueurs 
-    initPlayerPosition(player1, PLAYER_OFFSET);
-    initPlayerPosition(player2, N_COLS-PLAYER_OFFSET);
+    initPlayers();
     // On supprime les bombes de l'ecran
     deleteAmmosToDraw();
   }
 
+  void Manager::initPlayers() {
+    initPlayerPosition(player1, PLAYER_OFFSET);
+    initPlayerPosition(player2, N_COLS-PLAYER_OFFSET);
+    player1->initGame();
+    player2->initGame();
+  }
+  
   void Manager::dealEvent(const u32* player1Events, const u32* player2Events) {
     const u32 pad1Held = player1Events[HELD];
     if (pad1Held & WPAD_BUTTON_LEFT)
