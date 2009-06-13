@@ -7,6 +7,7 @@ namespace shootmii {
     WPAD_Init();
     debug = false;
     running = true;
+    lastTime = 0;
     nbFrame = 0;
     fps = 0;
     frameCount = 0;
