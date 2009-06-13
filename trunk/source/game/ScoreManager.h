@@ -17,8 +17,8 @@ namespace shootmii {
       GRRLIB_texImg tex_jauge_life;
       GRRLIB_texImg tex_jauge_strength;
       GRRLIB_texImg tex_jauge_heat;
-      GRRLIB_texImg tex_jauge_fury;
-      GRRLIB_texImg tex_jauge_bonus;
+      GRRLIB_texImg tex_jauge_fury; // TODO
+      GRRLIB_texImg tex_jauge_bonus; // TODO
 
     public:
       ScoreManager(App*, Manager*);

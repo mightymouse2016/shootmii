@@ -14,25 +14,29 @@ namespace shootmii {
   class Player : public Cell {
     private:
       std::string nickName;
-      int life; // 0 -> 100
-      int strength; // 0 -> 100
-      int heat; // 0 -> 100
+      u8 life; // 0 -> 100
       bool fury;
       Bonus bonus;
       Cannon* cannon;
+      u8 nbGamesWon;
+      
     public:
       Player(const string & _nickName = "Player",
         const float _angleOffSet = ANGLE_OFFSET,
         const float _angleRange = ROTATION_RANGE,
         const float _angle = INIT_ANGLE,
-        const float _rotationStep = ROTATION_STEP, const int _life = 100,
-        const int _strength = 0, const int _heat = 0, const int _fury = false,
+        const float _rotationStep = ROTATION_STEP, 
+        const u8 _life = 100,
+        const bool _fury = false,
         Bonus _bonus = NORMAL);
       // Accesseurs
       Cannon* getCannon();
+      Cannon* getCannon() const;
+      void init();
+      void initGame();
       void draw() const;
-      int getLife() const;
-      int getStrength() const;
+      u8 getLife() const;
+      void looseLife(u8 lifeAmount);
   };
 
 }

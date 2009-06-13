@@ -17,6 +17,7 @@ namespace shootmii {
       Terrain* terrain;
       list<Ammo*>* ammosToDraw;
       void computeAmmosCollisions();
+      void computeVictory();
       void deleteAmmosToDraw();
       bool ammoIsOffScreen(const int screenX) const;
       bool ammoIsTooHigh(const int screenY) const;
@@ -33,11 +34,13 @@ namespace shootmii {
       // Autres méthodes
       Player* opponent(Player*);
       void initPlayerPosition(Player* player, int offSet = 0) const;
+      void initPlayers();
       void moveLeft(Player*);
       void moveRight(Player*);
       void draw();
       void drawAmmos();
       void show();
+      void startGame();
       void dealEvent(const u32*, const u32*);
       void addAmmosToDraw(Ammo*);
   };
