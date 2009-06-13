@@ -43,7 +43,9 @@ namespace shootmii {
 #include "gfx/score_panel.h"
 #include "gfx/title_screen.h"
 #include "gfx/game_select_screen.h"
-#include "gfx/power_jauge.h"
+#include "gfx/heat_jauge.h"
+#include "gfx/life_jauge.h"
+#include "gfx/strength_jauge.h"
 // Fontes
 #include "gfx/font1.h"
 #include "gfx/font2.h"
