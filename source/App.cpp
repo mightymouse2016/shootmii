@@ -78,6 +78,7 @@ namespace shootmii {
         break;
       }
       case GAME_SCREEN: {
+        gameScreen->compute();
         gameScreen->draw();
         break;
       }
