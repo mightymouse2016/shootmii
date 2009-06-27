@@ -13,7 +13,9 @@ namespace shootmii {
   class Player;
   class Cell;
   class TerrainCell;
+  class Cloud;
   class Terrain;
+  class World;
   class Wheels;
   class Cannon;
   class Tank;
@@ -39,20 +41,23 @@ namespace shootmii {
 #include <time.h>
 #include <math.h>
 // Images
-#include "gfx/font_console.h"
 #include "gfx/score_panel.h"
 #include "gfx/title_screen.h"
 #include "gfx/game_select_screen.h"
 #include "gfx/heat_jauge.h"
 #include "gfx/life_jauge.h"
 #include "gfx/strength_jauge.h"
+#include "gfx/background_cloud.h"
+#include "gfx/foreground_cloud.h"
 // Fontes
 #include "gfx/font1.h"
 #include "gfx/font2.h"
 #include "gfx/font3.h"
 #include "gfx/font4.h"
+#include "gfx/font_console.h"
 #include "gfx/font_fun.h"
 #include "gfx/font_military.h"
+#include "gfx/font_score.h"
 // Tools
 #include "tools/Colors.h"
 #include "tools/Tools.h"
@@ -60,7 +65,9 @@ namespace shootmii {
 // Terrain
 #include "terrain/Cell.h"
 #include "terrain/TerrainCell.h"
+#include "terrain/Cloud.h"
 #include "terrain/Terrain.h"
+#include "terrain/World.h"
 // Game
 #include "game/Curves.h"
 #include "game/Cannon.h"

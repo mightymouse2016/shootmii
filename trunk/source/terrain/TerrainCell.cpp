@@ -18,7 +18,7 @@ namespace shootmii {
   void TerrainCell::draw() const {
     switch (type) {
       case SKY:
-        GRRLIB_Rectangle(screenX, screenY, CELL_SIZE, CELL_SIZE, BLUE_SKY, true);
+        //GRRLIB_Rectangle(screenX, screenY, CELL_SIZE, CELL_SIZE, BLUE_SKY, true);
         break;
       case GROUND:
         GRRLIB_Rectangle(screenX, screenY, CELL_SIZE, CELL_SIZE, BROWN, true);
