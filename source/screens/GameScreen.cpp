@@ -15,6 +15,10 @@ namespace shootmii {
     delete manager;
   }
 
+  void GameScreen::compute(){
+    manager->compute();
+  }
+  
   void GameScreen::draw() {
     manager->draw();
     score_manager->draw();

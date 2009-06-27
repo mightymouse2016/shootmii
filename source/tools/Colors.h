@@ -12,7 +12,8 @@ static const u32 BLUE = 0x0000FFFF;
 static const u32 YELLOW = 0xFFFF00FF;
 static const u32 BROWN = 0x754716FF;
 static const u32 GREEN_GRASS = 0x1D9517FF;
-static const u32 BLUE_SKY = 0x8BBDE1FF;
 static const u32 CONSOLE_COLOR = 0xFF000099;
+static const u32 BLUE_SKY_1 = 0x4062EAFF;
+static const u32 BLUE_SKY_2 = 0xA9A9F1FF;
 
 #endif /*COLORS_H_*/
