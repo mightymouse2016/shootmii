@@ -14,14 +14,17 @@ namespace shootmii {
   class Player : public Cell {
     private:
       std::string nickName;
+      int score;
       u8 life; // 0 -> 100
       bool fury;
       Bonus bonus;
       Cannon* cannon;
       u8 nbGamesWon;
+      u32 color;
       
     public:
       Player(const string & _nickName = "Player",
+        const u32 _color = RED,
         const float _angleOffSet = ANGLE_OFFSET,
         const float _angleRange = ROTATION_RANGE,
         const float _angle = INIT_ANGLE,
@@ -36,6 +39,9 @@ namespace shootmii {
       void initGame();
       void draw() const;
       u8 getLife() const;
+      int getScore() const;
+      void setScore(const int _score);
+      void incScore();
       void looseLife(u8 lifeAmount);
   };
 

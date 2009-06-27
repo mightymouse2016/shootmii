@@ -9,6 +9,7 @@ namespace shootmii {
     tex_jauge_strength(GRRLIB_LoadTexture(strength_jauge)),
     tex_jauge_heat(GRRLIB_LoadTexture(heat_jauge))    
     {
+    tex_font = loadFont(font_score, 48, 48);// 48 c pas la height, c l'indice dans la table ascii
   }
 
   ScoreManager::~ScoreManager() {
@@ -47,7 +48,13 @@ namespace shootmii {
   }
 
   void ScoreManager::drawScore() const {
-    // TODO
+    // Player 1
+    char score[1];
+    sprintf(score,"%d",manager->getPlayer1()->getScore());
+    GRRLIB_Printf(SCREEN_WIDTH/2 - 70, SCREEN_HEIGHT - 55, tex_font, WHITE, 1, score);
+    // Player 2
+    sprintf(score,"%d",manager->getPlayer2()->getScore());
+    GRRLIB_Printf(SCREEN_WIDTH/2 + 18, SCREEN_HEIGHT - 55, tex_font, WHITE, 1, score);
   }
 
   void ScoreManager::drawPlayer(const Player* player) const {

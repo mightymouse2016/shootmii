@@ -2,11 +2,15 @@
 
 namespace shootmii {
 
-  Player::Player(const string & _nickName, const float _angleOffSet,
+  Player::Player(const string & _nickName, 
+    const u32 _color,
+    const float _angleOffSet,
     const float _angleRange, const float _angle, const float _rotationStep,
     const u8 _life, const bool _fury, Bonus _bonus) :
-    nickName(_nickName), life(_life), fury(_fury), bonus(_bonus),
-        cannon(new Cannon(_angleOffSet,_angleRange,_angle,_rotationStep)), nbGamesWon(0) {
+        nickName(_nickName), score(0), life(_life), fury(_fury), bonus(_bonus),
+        cannon(new Cannon(_angleOffSet,_angleRange,_angle,_rotationStep)),
+        nbGamesWon(0),
+        color(_color){
   }
 
   void Player::init() {
@@ -31,13 +35,25 @@ namespace shootmii {
 
   void Player::draw() const {
     cannon->draw(screenX, screenY, CELL_SIZE);
-    GRRLIB_Rectangle(screenX, screenY, CELL_SIZE, CELL_SIZE, YELLOW, true);
+    GRRLIB_Rectangle(screenX, screenY, CELL_SIZE, CELL_SIZE, color, true);
   }
 
   u8 Player::getLife() const {
     return life;
   }
 
+  int Player::getScore() const{
+    return score;
+  }
+  
+  void Player::setScore(const int _score){
+    score = _score;
+  }
+  
+  void Player::incScore(){
+    score++;
+  }
+  
   void Player::looseLife(u8 lifeAmount) {
     // Il est deja mort
     if(life == 0) return;

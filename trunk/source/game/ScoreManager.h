@@ -6,6 +6,8 @@
 namespace shootmii {
 
   const int SCORE_PANEL_HEIGHT(64);
+  
+  const int MANCHE(3);
 
   class ScoreManager {
     private:
