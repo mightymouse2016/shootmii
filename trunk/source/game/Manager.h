@@ -23,7 +23,7 @@ namespace shootmii {
       bool ammoHitTheGround(const int screenX, const int screenY) const;
       Ammo* ammoHitAnotherAmmo(const Ammo*) const;
       Player* ammoHitAPlayer(const Ammo*) const;
-      
+
     public:
       Manager(App*, string nick_p1 = "Player 1", string nick_p2 = "Player 2");
       ~Manager();
@@ -39,8 +39,7 @@ namespace shootmii {
       void moveRight(Player*) const;
       void draw() const;
       void drawAmmos() const;
-      void show() const;
-      void startGame() const;
+      void init() const;
       void dealEvent(const u32*, const u32*);
       void addAmmosToDraw(Ammo*) const;
   };

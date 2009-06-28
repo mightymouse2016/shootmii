@@ -12,6 +12,7 @@ namespace shootmii {
     private:
       Terrain* terrain;
       int windSpeed;
+      bool windDirection; // 0 : <-, 1 : ->
       GRRLIB_texImg backgroundCloud;
       GRRLIB_texImg foregroundCloud;
       list<Cloud*>* cloudsBackToDraw;
@@ -20,6 +21,7 @@ namespace shootmii {
       World();
       virtual ~World();
       Terrain* getTerrain();
+      void init();
       void compute();
       void computeClouds();
       void drawBackground() const;

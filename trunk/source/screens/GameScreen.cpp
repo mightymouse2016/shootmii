@@ -18,14 +18,14 @@ namespace shootmii {
   void GameScreen::compute(){
     manager->compute();
   }
-  
+
   void GameScreen::draw() {
     manager->draw();
     score_manager->draw();
   }
 
   void GameScreen::show() {
-    manager->show();
+    manager->init();
   }
 
   void GameScreen::dealEvent(const u32* player1Events, const u32* player2Events) {
