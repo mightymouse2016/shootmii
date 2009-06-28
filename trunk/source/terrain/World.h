@@ -3,30 +3,32 @@
 
 #include "../ShootMii.h"
 
+const int MAX_WIND_SPEED(100);
+
 const int N_BACKGROUND_CLOUDS(6);
 const int N_FOREGROUND_CLOUDS(10);
 
 namespace shootmii {
 
-  class World {
-    private:
-      Terrain* terrain;
-      int windSpeed;
-      bool windDirection; // 0 : <-, 1 : ->
-      GRRLIB_texImg backgroundCloud;
-      GRRLIB_texImg foregroundCloud;
-      list<Cloud*>* cloudsBackToDraw;
-      list<Cloud*>* cloudsFrontToDraw;
-    public:
-      World();
-      virtual ~World();
-      Terrain* getTerrain();
-      void init();
-      void compute();
-      void computeClouds();
-      void drawBackground() const;
-      void drawForeground() const;
-  };
+class World {
+private:
+	Wind* wind;
+	Terrain* terrain;
+	GRRLIB_texImg backgroundCloud;
+	GRRLIB_texImg foregroundCloud;
+	list<Cloud*>* cloudsBackToDraw;
+	list<Cloud*>* cloudsFrontToDraw;
+public:
+	World();
+	virtual ~World();
+	Terrain* getTerrain();
+	Wind* getWind();
+	void init();
+	void compute();
+	void computeClouds();
+	void drawBackground() const;
+	void drawForeground() const;
+};
 
 }
 

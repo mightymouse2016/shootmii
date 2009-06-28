@@ -12,9 +12,9 @@ namespace shootmii {
   class Manager {
     private:
       App* app;
+      World* world;
       Player* player1;
       Player* player2;
-      World* world;
       list<Ammo*>* ammosToDraw;
       void computeAmmosCollisions();
       void computeVictory();
