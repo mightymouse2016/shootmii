@@ -17,9 +17,10 @@ namespace shootmii {
     t -= TIME_STEP;
   }
 
-  CannonBall::CannonBall(const float _vInitX, const float _vInitY,
+  CannonBall::CannonBall(Wind* wind, const float _vInitX, const float _vInitY,
     const float _xInit, const float _yInit) :
-    Ammo(new Affine(_vInitX,_xInit), new PolyDeg2(-G/2,-_vInitY,_yInit)) {
+    Ammo(new PolyDeg2(wind->getWindSpeed()*(wind->getWindDirection()*2 - 1)*WIND_INFLUENCE_ON_AMMO/(2*100*AMMO_WEIGHT),_vInitX,_xInit),
+    		new PolyDeg2(-G/(2*AMMO_WEIGHT),-_vInitY,_yInit)) {
   }
 
   void CannonBall::draw() const {
@@ -42,7 +43,7 @@ namespace shootmii {
   bool Ammo::isBeingDestroyed() const{
     return destroyed;
   }
-  
+
   void Ammo::destruction(){
     destroyed = true;
   }

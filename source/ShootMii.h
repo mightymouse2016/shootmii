@@ -13,6 +13,7 @@ namespace shootmii {
   class Player;
   class Cell;
   class TerrainCell;
+  class Wind;
   class Cloud;
   class Terrain;
   class World;
@@ -65,6 +66,7 @@ namespace shootmii {
 // Terrain
 #include "terrain/Cell.h"
 #include "terrain/TerrainCell.h"
+#include "terrain/Wind.h"
 #include "terrain/Cloud.h"
 #include "terrain/Terrain.h"
 #include "terrain/World.h"

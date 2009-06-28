@@ -4,9 +4,9 @@ namespace shootmii {
 
   Manager::Manager(App* _app, string nick_p1, string nick_p2) :
         app(_app),
-        player1(new Player(nick_p1,BLUE,0,ROTATION_RANGE,INIT_ANGLE,ROTATION_STEP)),
-        player2(new Player(nick_p2,RED,ANGLE_OFFSET,ROTATION_RANGE,INIT_ANGLE+ANGLE_OFFSET,ROTATION_STEP)),
         world(new World),
+        player1(new Player(nick_p1,BLUE,world->getWind(),0,ROTATION_RANGE,INIT_ANGLE,ROTATION_STEP)),
+        player2(new Player(nick_p2,RED,world->getWind(),ANGLE_OFFSET,ROTATION_RANGE,INIT_ANGLE+ANGLE_OFFSET,ROTATION_STEP)),
         ammosToDraw(new list<Ammo*>){
   }
 
