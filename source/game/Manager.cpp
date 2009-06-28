@@ -88,7 +88,7 @@ namespace shootmii {
     computeAmmosCollisions();
     computeVictory();
   }
-  
+
   void Manager::draw() const{
     world->drawBackground();
     drawAmmos();
@@ -96,7 +96,7 @@ namespace shootmii {
     player2->draw();
     world->drawForeground();
   }
-  
+
   void Manager::drawAmmos() const{
     for (list<Ammo*>::iterator i=ammosToDraw->begin();i!=ammosToDraw->end();i++)
       if (!((*i)->isBeingDestroyed())) (*i)->draw();
@@ -104,17 +104,18 @@ namespace shootmii {
 
   void Manager::computeVictory() {
     Player* winner = NULL;
-    
+
     if (player1->getLife() == 0) winner = player2;
     else if (player2->getLife() == 0) winner = player1;
-    
+
     if (winner) {
       winner->incScore();
       if (winner->getScore() >= MANCHE) {
         player1->setScore(0);
         player2->setScore(0);
       }
-      startGame();
+      world->init();
+      initPlayers();
     }
   }
 
@@ -162,14 +163,10 @@ namespace shootmii {
 
 
 
-  void Manager::show() const{
+  void Manager::init() const{
     player1->init();
     player2->init();
-    startGame();
-  }
-
-  void Manager::startGame() const{
-    world->getTerrain()->generate();
+    world->init();
     initPlayers();
   }
 
@@ -183,7 +180,7 @@ namespace shootmii {
   void Manager::dealEvent(const u32* player1Events, const u32* player2Events){
     const u32 pad1Held = player1Events[HELD], pad2Held = player2Events[HELD];
     const u32 pad1Down = player1Events[DOWN], pad2Down = player2Events[DOWN];
-    
+
     if (pad1Held & WPAD_BUTTON_LEFT) moveLeft(player1);
     if (pad1Held & WPAD_BUTTON_RIGHT) moveRight(player1);
     if (pad1Held & WPAD_BUTTON_UP) player1->getCannon()->rotateLeft();
@@ -199,7 +196,7 @@ namespace shootmii {
       WPAD_Rumble(WPAD_CHAN_0, 1);
       WPAD_Rumble(WPAD_CHAN_0, 0);
     }
-  
+
     if (pad2Down & WPAD_BUTTON_A) {
       player2->getCannon()->shoot(this);
       WPAD_Rumble(WPAD_CHAN_1, 1);
