@@ -60,6 +60,7 @@ namespace shootmii {
 #include "gfx/font_military.h"
 #include "gfx/font_score.h"
 // Tools
+#include "tools/Curves.h"
 #include "tools/Colors.h"
 #include "tools/Tools.h"
 #include "tools/Console.h"
@@ -71,7 +72,6 @@ namespace shootmii {
 #include "terrain/Terrain.h"
 #include "terrain/World.h"
 // Game
-#include "game/Curves.h"
 #include "game/Cannon.h"
 #include "game/Ammo.h"
 #include "game/Player.h"
