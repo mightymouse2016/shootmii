@@ -25,15 +25,14 @@ CannonBall::CannonBall(const float _angle, Wind* wind, GRRLIB_texImg* _ammoLook,
 	}
 
 	void CannonBall::draw() const {
-		GRRLIB_Rectangle(screenX, screenY, CELL_SIZE, CELL_SIZE, BLACK, true);
+		//GRRLIB_Rectangle(screenX, screenY, CELL_SIZE, CELL_SIZE, BLACK, true);
 		// 4eme arg : degrees
-		//GRRLIB_DrawImg(screenX, screenY, *ammoLook, 0, 1, 1, WHITE);
-		GRRLIB_Line(screenX+CELL_SIZE/2,
+		GRRLIB_DrawImg(screenX, screenY, *ammoLook, angle*180/PI+90, 1, 1, WHITE);
+		/* GRRLIB_Line(screenX+CELL_SIZE/2,
 				screenY+CELL_SIZE/2,
 				screenX+CELL_SIZE/2+16*cos(angle),
 				screenY+CELL_SIZE/2+16*sin(angle),
-				WHITE);
-
+				WHITE); */
 	}
 
 	Function* Ammo::getCalcX() {
