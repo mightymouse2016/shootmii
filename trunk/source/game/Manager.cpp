@@ -64,6 +64,7 @@ namespace shootmii {
     return (screenY < 0);
   }
 
+
   bool Manager::ammoHitTheGround(const int screenX, const int screenY) const{
 	int rowIndex, colIndex;
 	if (screenY%CELL_SIZE < CELL_SIZE<2) rowIndex = int(screenY)/CELL_SIZE;
@@ -122,6 +123,7 @@ namespace shootmii {
         player1->setScore(0);
         player2->setScore(0);
       }
+      ammosToDraw->clear();
       world->init();
       initPlayers();
     }
@@ -162,7 +164,7 @@ namespace shootmii {
           // Sinon la munition se deplace
           else newAmmosToDraw->push_back(*i);
         }
-        (*i)->updateXYT();
+        (*i)->updateXYTAngle();
       }
     }
     delete ammosToDraw;
@@ -172,11 +174,12 @@ namespace shootmii {
 
 
   void Manager::init() const{
+	ammosToDraw->clear();
+	world->init();
     player1->init();
     player2->init();
-    world->init();
     initPlayers();
-    ammosToDraw->clear();
+
   }
 
   void Manager::initPlayers() const{
