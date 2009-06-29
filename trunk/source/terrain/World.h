@@ -3,15 +3,19 @@
 
 #include "../ShootMii.h"
 
+namespace shootmii {
+
 const int MAX_WIND_SPEED(100);
 
-const int N_ROWS(52);
-const int N_COLS(80);
+const int SCORE_PANEL_HEIGHT(64);
+
+const int CELL_SIZE(8);
+
+const int N_ROWS((SCREEN_HEIGHT-SCORE_PANEL_HEIGHT)/CELL_SIZE);
+const int N_COLS(SCREEN_WIDTH/CELL_SIZE);
 
 const int N_BACKGROUND_CLOUDS(6);
 const int N_FOREGROUND_CLOUDS(10);
-
-namespace shootmii {
 
 class World {
 private:
