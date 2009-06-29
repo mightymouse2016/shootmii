@@ -78,11 +78,13 @@ void Cannon::draw(const int screenX, const int screenY, const int cellSize) cons
 }
 
 void Cannon::rotateLeft() {
-	if (angle + rotationStep < angleOffSet + angleRange) angle += rotationStep;
+	if (angle + rotationStep <= angleOffSet + angleRange) angle += rotationStep;
+	else angle = angleOffSet + angleRange;
 }
 
 void Cannon::rotateRight() {
-	if (angle - rotationStep > angleOffSet) angle -= rotationStep;
+	if (angle - rotationStep >= angleOffSet) angle -= rotationStep;
+	else angle = angleOffSet;
 }
 
 void Cannon::shoot(Manager* manager) {

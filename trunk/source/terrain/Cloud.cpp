@@ -35,7 +35,7 @@ void Cloud::randomY() {
 }
 
 void Cloud::init() {
-	slow = (MAX_WIND_SPEED-wind->getWindSpeed())*(WIND_INFLUENCE_ON_CLOUDS/100);
+	slow = (MAX_WIND_SPEED-wind->getWindSpeed())*WIND_INFLUENCE_ON_CLOUDS/100;
 	//app->getConsole()->addDebug(string("essai"));
 	randomX();
 	randomY();
