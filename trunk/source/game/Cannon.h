@@ -10,7 +10,7 @@ namespace shootmii {
   const float DEFAULT_POWER(75);
   const float CANNON_LENGTH(20.);
   const float INIT_ANGLE(45.);
-  const float ROTATION_STEP(5.);
+  const float ROTATION_STEP(2.);
   const float ROTATION_RANGE(90.);
   const float ANGLE_OFFSET(90.);
 
