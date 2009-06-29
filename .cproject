@@ -34,6 +34,9 @@
 <listOptionValue builtIn="false" value="&quot;D:\devkitPro\GRRLib4.0.0\GRRLIB\GRRLIB&quot;"/>
 <listOptionValue builtIn="false" value="&quot;D:\devkitPro\libogc\include&quot;"/>
 </option>
+<option id="org.eclipse.cdt.build.core.settings.holder.undef.incpaths.572946128" superClass="org.eclipse.cdt.build.core.settings.holder.undef.incpaths" valueType="undefIncludePath">
+<listOptionValue builtIn="false" value="D:\devkitPro\GRRLib4.0.0\GRRLIB\GRRLIB"/>
+</option>
 <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1009154873" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 </tool>
 </toolChain>
