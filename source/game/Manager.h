@@ -5,8 +5,6 @@
 
 namespace shootmii {
 
-  const int N_ROWS(52);
-  const int N_COLS(80);
   const int PLAYER_OFFSET(5);
 
   class Manager {

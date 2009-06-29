@@ -5,6 +5,9 @@
 
 const int MAX_WIND_SPEED(100);
 
+const int N_ROWS(26);
+const int N_COLS(40);
+
 const int N_BACKGROUND_CLOUDS(6);
 const int N_FOREGROUND_CLOUDS(10);
 

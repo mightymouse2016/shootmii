@@ -65,9 +65,7 @@ namespace shootmii {
   }
 
   bool Terrain::contains(float screenX, float screenY) const {
-    int colIndex = int(screenX)/CELL_SIZE;
-    int rowIndex = int(screenY)/CELL_SIZE;
-    if (colIndex < 0 || colIndex > cols || rowIndex < 0 || rowIndex > rows) return false;
+    if (screenX < -CELL_SIZE || screenX > CELL_SIZE*cols || screenY < -CELL_SIZE || screenY > CELL_SIZE*rows) return false;
     return true;
   }
 }

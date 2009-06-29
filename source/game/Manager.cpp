@@ -57,7 +57,7 @@ namespace shootmii {
   }
 
   bool Manager::ammoIsOffScreen(const int screenX) const{
-    return (screenX> SCREEN_WIDTH || screenX < 0);
+    return (screenX> SCREEN_WIDTH || screenX < -CELL_SIZE);
   }
 
   bool Manager::ammoIsTooHigh(const int screenY) const{
@@ -65,7 +65,15 @@ namespace shootmii {
   }
 
   bool Manager::ammoHitTheGround(const int screenX, const int screenY) const{
-    return (world->getTerrain()->getCellType(int(screenY)/CELL_SIZE, int(screenX)/CELL_SIZE) != SKY);
+	int rowIndex, colIndex;
+	if (screenY%CELL_SIZE < CELL_SIZE<2) rowIndex = int(screenY)/CELL_SIZE;
+	else rowIndex = int(screenY)/CELL_SIZE + 1;
+	if (screenX%CELL_SIZE < CELL_SIZE<2) colIndex = int(screenX)/CELL_SIZE;
+	else colIndex = int(screenX)/CELL_SIZE + 1;
+	if (world->getTerrain()->getCellType(rowIndex+1, int(screenX)/CELL_SIZE) != SKY) return true;
+	if (world->getTerrain()->getCellType(rowIndex, int(screenX)/CELL_SIZE-1) != SKY) return true;
+	if (world->getTerrain()->getCellType(rowIndex, int(screenX)/CELL_SIZE+1) != SKY) return true;
+	return false;
   }
 
   Ammo* Manager::ammoHitAnotherAmmo(const Ammo* ammo) const{
