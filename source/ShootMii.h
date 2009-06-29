@@ -42,6 +42,7 @@ namespace shootmii {
 #include <time.h>
 #include <math.h>
 // Images
+#include "gfx/ammo_1.h"
 #include "gfx/score_panel.h"
 #include "gfx/title_screen.h"
 #include "gfx/game_select_screen.h"

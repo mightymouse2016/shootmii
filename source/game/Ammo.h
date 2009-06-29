@@ -16,8 +16,9 @@ namespace shootmii {
       float t;
       float angle;
       bool destroyed;
+      GRRLIB_texImg* ammoLook;
     public:
-      Ammo(const float _angle, Function*, Function*);
+      Ammo(const float _angle, GRRLIB_texImg* _ammoLook, Function*, Function*);
       virtual ~Ammo();
       void incT();
       void decT();
@@ -32,7 +33,7 @@ namespace shootmii {
 
   class CannonBall : public Ammo {
     public:
-      CannonBall(const float _angle, Wind* wind = NULL, const float _vInitX = DEFAULT_POWER,
+      CannonBall(const float _angle, Wind* wind = NULL, GRRLIB_texImg* _ammoLook = NULL, const float _vInitX = DEFAULT_POWER,
         const float _vInitY = DEFAULT_POWER, const float _xInit = 0,
         const float _yInit = 0);
       void draw() const;
