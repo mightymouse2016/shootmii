@@ -168,6 +168,7 @@ namespace shootmii {
     player2->init();
     world->init();
     initPlayers();
+    ammosToDraw->clear();
   }
 
   void Manager::initPlayers() const{
