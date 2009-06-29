@@ -21,7 +21,6 @@ namespace shootmii {
       Cannon* cannon;
       u8 nbGamesWon;
       u32 color;
-
     public:
       Player(const string & _nickName,
         const u32 _color,

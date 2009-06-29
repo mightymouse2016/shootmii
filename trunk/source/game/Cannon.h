@@ -10,7 +10,7 @@ const float PI(3.14159265);
 const float DEFAULT_POWER(75);
 const float CANNON_LENGTH(20.);
 const float INIT_ANGLE(45.);
-const float ROTATION_STEP(2.);
+const float ROTATION_STEP(1.);
 const float ROTATION_RANGE(90.);
 const float ANGLE_OFFSET(90.);
 
@@ -29,13 +29,13 @@ private:
 	float angle;
 	float rotationStep;
 	Wind* wind;
-	Ammo* loadedAmmo;
 	int strength; // 0 -> 100
 	int heat; // 0 -> 100
 	u32 blockedTime;
 	u8 heatCool;
 	u8 reloadTime;
-
+	GRRLIB_texImg ammoLook;
+	Ammo* loadedAmmo;
 public:
 	Cannon(const float _angleOffSet, const float _angleRange, const float _angle, const float _rotationStep, Wind* _wind);
 	~Cannon();

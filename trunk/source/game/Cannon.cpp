@@ -4,10 +4,18 @@ namespace shootmii {
 
 Cannon::Cannon(const float _angleOffSet, const float _angleRange,
 		const float _angle, const float _rotationStep, Wind* _wind) :
-	angleOffSet(_angleOffSet), angleRange(_angleRange), angle(_angle),
-			rotationStep(_rotationStep), wind(_wind), loadedAmmo(
-					new CannonBall(angle * PI / 180, wind)), strength(0), heat(
-					0), blockedTime(0), heatCool(0), reloadTime(0) {
+	angleOffSet(_angleOffSet),
+	angleRange(_angleRange),
+	angle(_angle),
+			rotationStep(_rotationStep),
+			wind(_wind),
+			strength(0),
+			heat(0),
+			blockedTime(0),
+			heatCool(0),
+			reloadTime(0),
+			ammoLook(GRRLIB_LoadTexture(ammo_1)),
+			loadedAmmo(new CannonBall(angle * PI / 180, wind,&ammoLook)){
 }
 
 Cannon::~Cannon() {
@@ -21,8 +29,7 @@ void Cannon::init() {
 	blockedTime = 0;
 	heatCool = 0;
 	reloadTime = 0;
-	if (loadedAmmo)
-		delete loadedAmmo;
+	if (loadedAmmo) delete loadedAmmo;
 	loadedAmmo = new CannonBall(-angle*PI/180, wind);
 }
 
@@ -44,13 +51,19 @@ void Cannon::decHeat() {
 	u32 currentTime = ticks_to_millisecs(gettime());
 
 	// Mode bloqué quand on a harcelé le canon
-	if (heat == 100) if (currentTime - blockedTime > BLOCKING_TIME) heat -= 1;
+	if (heat == 100) {
+		if (currentTime - blockedTime > BLOCKING_TIME) heat -= 1;
+	}
 
 	// Mode lent quand le canon est chaud
-	else if (heat > 50) if (!(heatCool % HEAT_COOL_SLOW)) heat -= 1;
+	else if (heat > 50) {
+		if (!(heatCool % HEAT_COOL_SLOW)) heat -= 1;
+	}
 
 	// Mode normal 50 premiers % de la jauge
-	else if (heat > 0) if (!(heatCool % HEAT_COOL_FAST)) heat -= 1;
+	else if (heat > 0) {
+		if (!(heatCool % HEAT_COOL_FAST)) heat -= 1;
+	}
 
 	reload();
 }
