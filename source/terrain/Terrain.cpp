@@ -2,70 +2,73 @@
 
 namespace shootmii {
 
-  Terrain::Terrain(const int _size, const int _rows, const int _cols) :
-    size(_size), rows(_rows), cols(_cols), grille(vector<vector<TerrainCell> >(
-        _rows, vector<TerrainCell>(_cols, TerrainCell((CellType)0, 0, 0)))) {
-    // Initialisation des coordonnées contenues dans les Cell
-    for (int i=0; i<rows; i++)
-      for (int j=0; j<cols; j++)
-        grille[i][j].setCoords(i, j);
-  }
+Terrain::Terrain(const int _size, const int _rows, const int _cols) :
+	size(_size), rows(_rows), cols(_cols), grille(
+			vector<vector<TerrainCell> > (_rows, vector<TerrainCell> (_cols,
+					TerrainCell((CellType) 0, 0, 0)))) {
+	// Initialisation des coordonnées contenues dans les Cell
+	for (int i = 0; i < rows; i++)
+		for (int j = 0; j < cols; j++)
+			grille[i][j].setCoords(i, j);
+}
 
-  int Terrain::getSize() const {
-    return size;
-  }
-  int Terrain::getRows() const {
-    return rows;
-  }
-  int Terrain::getCols() const {
-    return cols;
-  }
-  CellType Terrain::getCellType(const int rowIndex, const int colIndex) const {
-    return getGrille()[rowIndex][colIndex].getType();
-  }
-  const vector<vector<TerrainCell> > & Terrain::getGrille() const {
-    return grille;
-  }
+int Terrain::getSize() const {
+	return size;
+}
 
-  void Terrain::draw() const {
-    for (int i=0; i<rows; i++)
-      for (int j=0; j<cols; j++)
-        grille[i][j].draw();
-  }
+int Terrain::getRows() const {
+	return rows;
+}
 
-  void Terrain::generate() {
-    srand(time(NULL)); // Pour ne pas avoir toujours la même génération
+int Terrain::getCols() const {
+	return cols;
+}
 
-    int highLimit = (rows-1)/2 + (rows-1)/AMPLITUDE_DEPART;
-    int lowLimit = (rows-1)/2 - (rows-1)/AMPLITUDE_DEPART;
+CellType Terrain::getCellType(const int rowIndex, const int colIndex) const {
+	return getGrille()[rowIndex][colIndex].getType();
+}
 
-    // Calcul de la hauteur initiale (à la colonne -1)
-    int height = rand()*(rows-1)*2/(AMPLITUDE_DEPART*RAND_MAX)+(rows-1)/2; // Entre 1/4rows et 3/4rows
+const vector<vector<TerrainCell> > & Terrain::getGrille() const {
+	return grille;
+}
 
-    // Pour chaque colonne ...
-    for (int i=0; i<cols; i++) {
+void Terrain::draw() const {
+	for (int i = 0; i < rows; i++)
+		for (int j = 0; j < cols; j++)
+			grille[i][j].draw();
+}
 
-      // Déplacement compris entre -AMPLITUDE et +AMPLITUDE par rapport a la colonne précédente
-      height += rand()%(2*AMPLITUDE+1) - AMPLITUDE;
+void Terrain::generate() {
+	srand(time(NULL)); // Pour ne pas avoir toujours la même génération
 
-      if (height > highLimit)
-        height = highLimit; // Si on dépasse en haut
-      if (height < lowLimit)
-        height = lowLimit; // Si on dépasse en bas
+	int highLimit = rows*(CENTER_TERRAIN-AMPLITUDE_TERRAIN/2)/100;
+	int lowLimit = rows*(CENTER_TERRAIN+AMPLITUDE_TERRAIN/2)/100;
 
-      // On met de la terre
+	// Calcul de la hauteur initiale (à la colonne -1)
+	int height = rand()%(lowLimit-highLimit)+(lowLimit+highLimit)/2;
 
-      for (int j=0; j<height; j++)
-        grille[j][i].setType(SKY);
-      grille[height][i].setType(GRASS);
-      for (int j=height+1; j<rows; j++)
-        grille[j][i].setType(GROUND);
+	// Pour chaque colonne ...
+	for (int i=0;i<cols;i++){
 
-    }
-  }
+		// Déplacement compris entre -AMPLITUDE et +AMPLITUDE par rapport a la colonne précédente
+		height += rand() % (2* VARIATION_TERRAIN + 1) - VARIATION_TERRAIN;
 
-  bool Terrain::contains(float screenX, float screenY) const {
-    if (screenX < -CELL_SIZE || screenX > CELL_SIZE*cols || screenY < -CELL_SIZE || screenY > CELL_SIZE*rows) return false;
-    return true;
-  }
+		if (height < highLimit) height = highLimit; // Si on dépasse en haut
+		if (height > lowLimit) height = lowLimit; // Si on dépasse en bas
+
+		// On met de la terre
+
+		for (int j = 0; j < height; j++) grille[j][i].setType(SKY);
+		grille[height][i].setType(GRASS);
+		for (int j = height + 1; j < rows; j++) grille[j][i].setType(GROUND);
+
+	}
+}
+
+bool Terrain::contains(float screenX, float screenY) const {
+	if (screenX < -CELL_SIZE || screenX > CELL_SIZE * cols || screenY
+			< -CELL_SIZE || screenY > CELL_SIZE * rows)
+		return false;
+	return true;
+}
 }

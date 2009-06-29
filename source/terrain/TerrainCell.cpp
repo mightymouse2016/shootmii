@@ -21,12 +21,9 @@ namespace shootmii {
         //GRRLIB_Rectangle(screenX, screenY, CELL_SIZE, CELL_SIZE, BLUE_SKY, true);
         break;
       case GROUND:
-        GRRLIB_Rectangle(screenX, screenY, CELL_SIZE, CELL_SIZE, BROWN, true);
-        break;
+        GRRLIB_Rectangle(screenX, screenY, CELL_SIZE, CELL_SIZE, BROWN, true);break;
       case GRASS:
-        GRRLIB_Rectangle(screenX, screenY, CELL_SIZE, CELL_SIZE, GREEN_GRASS,
-            true);
-        break;
+        GRRLIB_Rectangle(screenX, screenY, CELL_SIZE, CELL_SIZE, GREEN_GRASS,true);break;
       default:
         GRRLIB_Rectangle(screenX, screenY, CELL_SIZE, CELL_SIZE, GREEN, true);
     }

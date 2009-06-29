@@ -3,9 +3,7 @@
 
 #include "../ShootMii.h"
 
-#define N_CELLTYPE 2 // Nombre de type de cellules, pour l'instant terre ou ciel
-#define AMPLITUDE_DEPART 4 // case initiale entre 1/2-1/4 et 1/2+1/4
-#define AMPLITUDE 2 // une pente entre -AMPLITUDE et +AMPLITUDE
+const int N_CELLTYPE(2); // Nombre de type de cellules, pour l'instant terre ou ciel
 
 namespace shootmii{
 

@@ -5,8 +5,6 @@
 
 namespace shootmii {
 
-  const int CELL_SIZE(8);
-
   class Cell {
     protected:
       int rowIndex;
