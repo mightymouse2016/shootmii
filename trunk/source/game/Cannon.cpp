@@ -30,7 +30,7 @@ void Cannon::init() {
 	heatCool = 0;
 	reloadTime = 0;
 	if (loadedAmmo) delete loadedAmmo;
-	loadedAmmo = new CannonBall(-angle*PI/180, wind);
+	loadedAmmo = new CannonBall(-angle*PI/180, wind, &ammoLook);
 }
 
 int Cannon::getStrength() const {
@@ -129,7 +129,7 @@ void Cannon::shoot(Manager* manager) {
 void Cannon::reload() {
 	if (!loadedAmmo) {
 		if (reloadTime > RELOAD_TIME) {
-			loadedAmmo = new CannonBall(-angle * PI / 180 , wind);
+			loadedAmmo = new CannonBall(-angle * PI / 180 , wind, &ammoLook);
 			reloadTime = 0;
 		} else
 			reloadTime++;
