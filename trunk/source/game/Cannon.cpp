@@ -4,23 +4,16 @@ namespace shootmii {
 
 Cannon::Cannon(const float _angleOffSet, const float _angleRange,
 		const float _angle, const float _rotationStep, Wind* _wind) :
-	angleOffSet(_angleOffSet),
-	angleRange(_angleRange),
-	angle(_angle),
-			rotationStep(_rotationStep),
-			wind(_wind),
-			strength(0),
-			heat(0),
-			blockedTime(0),
-			heatCool(0),
-			reloadTime(0),
-			ammoLook(GRRLIB_LoadTexture(ammo_1)),
-			loadedAmmo(new CannonBall(angle * PI / 180, wind,&ammoLook)){
+	angleOffSet(_angleOffSet), angleRange(_angleRange), angle(_angle),
+			rotationStep(_rotationStep), wind(_wind), strength(0), heat(0),
+			blockedTime(0), heatCool(0), reloadTime(0), ammoLook(
+					GRRLIB_LoadTexture(ammo_2)), cannonLook(GRRLIB_LoadTexture(
+					cannon)), loadedAmmo(new CannonBall(angle * PI / 180, wind,
+					&ammoLook)) {
 }
 
 Cannon::~Cannon() {
-	if (loadedAmmo)
-		delete loadedAmmo;
+	if (loadedAmmo) delete loadedAmmo;
 }
 
 void Cannon::init() {
@@ -30,7 +23,7 @@ void Cannon::init() {
 	heatCool = 0;
 	reloadTime = 0;
 	if (loadedAmmo) delete loadedAmmo;
-	loadedAmmo = new CannonBall(-angle*PI/180, wind, &ammoLook);
+	loadedAmmo = new CannonBall(-angle * PI / 180, wind, &ammoLook);
 }
 
 int Cannon::getStrength() const {
@@ -47,22 +40,26 @@ int Cannon::getBlockedTime() const {
 
 void Cannon::decHeat() {
 	heatCool++;
-	if (heatCool > 10) heatCool = 0;
+	if (heatCool > 10)
+		heatCool = 0;
 	u32 currentTime = ticks_to_millisecs(gettime());
 
 	// Mode bloqué quand on a harcelé le canon
 	if (heat == 100) {
-		if (currentTime - blockedTime > BLOCKING_TIME) heat -= 1;
+		if (currentTime - blockedTime > BLOCKING_TIME)
+			heat -= 1;
 	}
 
 	// Mode lent quand le canon est chaud
 	else if (heat > 50) {
-		if (!(heatCool % HEAT_COOL_SLOW)) heat -= 1;
+		if (!(heatCool % HEAT_COOL_SLOW))
+			heat -= 1;
 	}
 
 	// Mode normal 50 premiers % de la jauge
 	else if (heat > 0) {
-		if (!(heatCool % HEAT_COOL_FAST)) heat -= 1;
+		if (!(heatCool % HEAT_COOL_FAST))
+			heat -= 1;
 	}
 
 	reload();
@@ -73,27 +70,37 @@ void Cannon::draw(const int screenX, const int screenY, const int cellSize) cons
 	float topSin = sin(angle * PI / 180);
 	float topX = CANNON_LENGTH * topCos;
 	float topY = CANNON_LENGTH * topSin;
-	// On dessine la ligne
-	GRRLIB_Line(screenX + cellSize / 2, screenY + cellSize / 2, screenX
-			+ cellSize / 2 + topX, screenY + cellSize / 2 - topY, BLACK);
+
 	// On dessine la munition
 	if (loadedAmmo) {
-		loadedAmmo->setScreenX(screenX + topX);
-		loadedAmmo->setScreenY(screenY - topY);
+		loadedAmmo->setScreenX(screenX + CELL_SIZE / 2 - TANK_WIDTH / 2);
+		loadedAmmo->setScreenY(screenY + CELL_SIZE - TANK_HEIGHT);
 		loadedAmmo->draw();
 	}
+
+	// On dessine la ligne
+	//GRRLIB_Line(screenX + cellSize / 2, screenY + cellSize / 2, screenX + cellSize / 2 + topX, screenY + cellSize / 2 - topY, BLACK);
+	GRRLIB_DrawImg(screenX + CELL_SIZE / 2 - TANK_WIDTH / 2, screenY
+			+ CELL_SIZE - TANK_HEIGHT, cannonLook, -angle, 1, 1, WHITE);
+
 }
 
 void Cannon::rotateLeft() {
-	if (angle + rotationStep <= angleOffSet + angleRange)angle += rotationStep;
-	else angle = angleOffSet + angleRange;
-	if (loadedAmmo) loadedAmmo->setAngle(-angle*PI/180);
+	if (angle + rotationStep <= angleOffSet + angleRange)
+		angle += rotationStep;
+	else
+		angle = angleOffSet + angleRange;
+	if (loadedAmmo)
+		loadedAmmo->setAngle(-angle * PI / 180);
 }
 
 void Cannon::rotateRight() {
-	if (angle - rotationStep >= angleOffSet) angle -= rotationStep;
-	else angle = angleOffSet;
-	if (loadedAmmo) loadedAmmo->setAngle(-angle*PI/180);
+	if (angle - rotationStep >= angleOffSet)
+		angle -= rotationStep;
+	else
+		angle = angleOffSet;
+	if (loadedAmmo)
+		loadedAmmo->setAngle(-angle * PI / 180);
 }
 
 void Cannon::shoot(Manager* manager) {
@@ -129,7 +136,7 @@ void Cannon::shoot(Manager* manager) {
 void Cannon::reload() {
 	if (!loadedAmmo) {
 		if (reloadTime > RELOAD_TIME) {
-			loadedAmmo = new CannonBall(-angle * PI / 180 , wind, &ammoLook);
+			loadedAmmo = new CannonBall(-angle * PI / 180, wind, &ammoLook);
 			reloadTime = 0;
 		} else
 			reloadTime++;
