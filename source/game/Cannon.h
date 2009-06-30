@@ -7,6 +7,9 @@ namespace shootmii {
 
 const float PI(3.14159265);
 
+const int CANNON_WIDTH(16);
+const int CANNON_HEIGHT(16);
+
 const float DEFAULT_POWER(75);
 const float CANNON_LENGTH(20.);
 const float INIT_ANGLE(45.);
@@ -35,6 +38,7 @@ private:
 	u8 heatCool;
 	u8 reloadTime;
 	GRRLIB_texImg ammoLook;
+	GRRLIB_texImg cannonLook;
 	Ammo* loadedAmmo;
 public:
 	Cannon(const float _angleOffSet, const float _angleRange, const float _angle, const float _rotationStep, Wind* _wind);
