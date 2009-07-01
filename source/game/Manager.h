@@ -18,7 +18,8 @@ namespace shootmii {
       void computeVictory();
       bool ammoIsOffScreen(const int screenX) const;
       bool ammoIsTooHigh(const int screenY) const;
-      bool ammoHitTheGround(const int screenX, const int screenY) const;
+      bool ammoIsTooLow(const int screenY) const;
+      bool ammoHitTheGround(const int colIndex, const int rowIndex) const;
       Ammo* ammoHitAnotherAmmo(const Ammo*) const;
       Player* ammoHitAPlayer(const Ammo*) const;
 

@@ -4,7 +4,7 @@ namespace shootmii {
 
   World::World() :
 	wind(new Wind),
-    terrain(new Terrain(CELL_SIZE,N_ROWS,N_COLS)),
+    terrain(new Terrain(N_ROWS,N_COLS)),
     backgroundCloud(GRRLIB_LoadTexture(background_cloud)),
     foregroundCloud(GRRLIB_LoadTexture(foreground_cloud)),
     cloudsBackToDraw(new list<Cloud*>),
