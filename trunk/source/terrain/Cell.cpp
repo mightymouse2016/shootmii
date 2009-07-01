@@ -3,7 +3,12 @@
 namespace shootmii {
 
 Cell::Cell(const int _width, const int _height, const int _screenX, const int _screenY) :
-	width(_width), height(_height), screenX(_screenX), screenY(_screenY) {
+	width(_width),
+	height(_height),
+	screenX(_screenX),
+	screenY(_screenY)
+{
+
 }
 
 int Cell::getWidth() const {

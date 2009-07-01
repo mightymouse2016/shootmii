@@ -5,13 +5,10 @@ using namespace shootmii;
 Mtx GXmodelView2D;
 
 int main() {
-    
     App* app = new App();
-    
-    while(app->isRunning()) {  
-        app->run();
-    }
-    
+
+    while(app->isRunning()) app->run();
+
     delete app;
     return 0;
 }

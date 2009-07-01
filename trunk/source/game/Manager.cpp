@@ -8,6 +8,7 @@ Manager::Manager(App* _app, string nick_p1, string nick_p2) :
 			player2(new Player(nick_p2, RED, world->getWind(), ANGLE_OFFSET,
 					ROTATION_RANGE, INIT_ANGLE + ANGLE_OFFSET, ROTATION_STEP)),
 			ammosToDraw(new list<Ammo*> ) {
+
 }
 
 Manager::~Manager() {
@@ -79,7 +80,8 @@ bool Manager::ammoIsTooLow(const int screenY) const {
 }
 
 bool Manager::ammoHitTheGround(const int colIndex, const int rowIndex) const {
-	if (world->getTerrain()->getCellType(rowIndex, colIndex) == SKY) return false;
+	if (world->getTerrain()->getCellType(rowIndex, colIndex) == SKY)
+		return false;
 	return true;
 }
 
@@ -146,23 +148,25 @@ void Manager::computeVictory() {
 
 void Manager::computeAmmosCollisions() {
 	list<Ammo*>* newAmmosToDraw = new list<Ammo*> ;
-	for (list<Ammo*>::iterator i=ammosToDraw->begin();i!=ammosToDraw->end();i++){
-		if ((*i)->isBeingDestroyed()) delete *i;
-		else if (ammoIsTooLow((*i)->getScreenY())) delete *i;
-		else if (!world->getTerrain()->contains((*i)->getScreenX(), (*i)->getScreenY())) {
+	for (list<Ammo*>::iterator i = ammosToDraw->begin(); i
+			!= ammosToDraw->end(); i++) {
+		if ((*i)->isBeingDestroyed())
+			delete *i;
+		else if (ammoIsTooLow((*i)->getScreenY()))
+			delete *i;
+		else if (!world->getTerrain()->contains((*i)->getScreenX(),
+				(*i)->getScreenY())) {
 			newAmmosToDraw->push_back(*i);
 			(*i)->compute();
-		}
-		else if (ammoHitTheGround((*i)->getCol(), (*i)->getRow())) (*i)->destruction();
-		else if (Ammo * inFrontAmmo = ammoHitAnotherAmmo(*i)){
+		} else if (ammoHitTheGround((*i)->getCol(), (*i)->getRow()))
+			(*i)->destruction();
+		else if (Ammo * inFrontAmmo = ammoHitAnotherAmmo(*i)) {
 			(*i)->destruction();
 			inFrontAmmo->destruction();
-		}
-		else if (Player * playerHit = ammoHitAPlayer(*i)) {
-			playerHit->looseLife(25);
+		} else if (Player * playerHit = ammoHitAPlayer(*i)) {
 			(*i)->destruction();
-		}
-		else {
+			playerHit->looseLife(25);
+		} else {
 			newAmmosToDraw->push_back(*i);
 			(*i)->compute();
 		}
@@ -191,23 +195,15 @@ void Manager::dealEvent(const u32* player1Events, const u32* player2Events) {
 	const u32 pad1Held = player1Events[HELD], pad2Held = player2Events[HELD];
 	const u32 pad1Down = player1Events[DOWN], pad2Down = player2Events[DOWN];
 
-	if (pad1Held & WPAD_BUTTON_LEFT)
-		moveLeft(player1);
-	if (pad1Held & WPAD_BUTTON_RIGHT)
-		moveRight(player1);
-	if (pad1Held & WPAD_BUTTON_UP)
-		player1->getCannon()->rotateLeft();
-	if (pad1Held & WPAD_BUTTON_DOWN)
-		player1->getCannon()->rotateRight();
+	if (pad1Held & WPAD_BUTTON_LEFT) moveLeft(player1);
+	if (pad1Held & WPAD_BUTTON_RIGHT) moveRight(player1);
+	if (pad1Held & WPAD_BUTTON_UP) player1->getCannon()->rotateLeft();
+	if (pad1Held & WPAD_BUTTON_DOWN) player1->getCannon()->rotateRight();
 
-	if (pad2Held & WPAD_BUTTON_LEFT)
-		moveLeft(player2);
-	if (pad2Held & WPAD_BUTTON_RIGHT)
-		moveRight(player2);
-	if (pad2Held & WPAD_BUTTON_UP)
-		player2->getCannon()->rotateRight();
-	if (pad2Held & WPAD_BUTTON_DOWN)
-		player2->getCannon()->rotateLeft();
+	if (pad2Held & WPAD_BUTTON_LEFT) moveLeft(player2);
+	if (pad2Held & WPAD_BUTTON_RIGHT) moveRight(player2);
+	if (pad2Held & WPAD_BUTTON_UP) player2->getCannon()->rotateRight();
+	if (pad2Held & WPAD_BUTTON_DOWN) player2->getCannon()->rotateLeft();
 
 	if (pad1Down & WPAD_BUTTON_A) {
 		player1->getCannon()->shoot(this);

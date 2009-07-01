@@ -3,7 +3,12 @@
 namespace shootmii {
 
 Cloud::Cloud(Wind* _wind, GRRLIB_texImg* _cloudImg, const int _cloudWidth, const int _cloudHeight) :
-	wind(_wind), cloudImg(_cloudImg), cloudWidth(_cloudWidth), cloudHeight(_cloudHeight), t(0){
+	wind(_wind),
+	cloudImg(_cloudImg),
+	cloudWidth(_cloudWidth),
+	cloudHeight(_cloudHeight),
+	t(0)
+{
 	randomX();
 	randomY();
 }
@@ -36,7 +41,6 @@ void Cloud::randomY() {
 
 void Cloud::init() {
 	slow = (MAX_WIND_SPEED-wind->getWindSpeed())*WIND_INFLUENCE_ON_CLOUDS/100;
-	//app->getConsole()->addDebug(string("essai"));
 	randomX();
 	randomY();
 }

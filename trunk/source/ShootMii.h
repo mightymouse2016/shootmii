@@ -78,6 +78,7 @@ namespace shootmii {
 // Game
 #include "game/Cannon.h"
 #include "game/Ammo.h"
+#include "game/CannonBall.h"
 #include "game/Player.h"
 #include "game/Manager.h"
 #include "game/ScoreManager.h"

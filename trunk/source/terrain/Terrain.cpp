@@ -34,7 +34,6 @@ void Terrain::draw() const {
 }
 
 void Terrain::generate() {
-	srand(time(NULL));
 	int highLimit = rows*(CENTER_TERRAIN-AMPLITUDE_TERRAIN/2)/100;
 	int lowLimit = rows*(CENTER_TERRAIN+AMPLITUDE_TERRAIN/2)/100;
 

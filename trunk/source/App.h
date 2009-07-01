@@ -38,6 +38,7 @@ public:
 	void calculateFrameRate();
 	Console* getConsole() const;
 };
+
 }
 
 #endif // __APP_H__
