@@ -2,9 +2,17 @@
 
 namespace shootmii {
 
-Player::Player(const string & _nickName, const u32 _color, Wind* _wind,
-		const float _angleOffSet, const float _angleRange, const float _angle,
-		const float _rotationStep, const u8 _life, const bool _fury,
+Player::Player(
+		const string & _nickName,
+		const u32 _color,
+		Wind* _wind,
+		Player* _opponent,
+		const float _angleOffSet,
+		const float _angleRange,
+		const float _angle,
+		const float _rotationStep,
+		const u8 _life,
+		const bool _fury,
 		Bonus _bonus) :
 	Cell(TANK_WIDTH,TANK_HEIGHT),
 	nickName(_nickName),
@@ -15,7 +23,8 @@ Player::Player(const string & _nickName, const u32 _color, Wind* _wind,
 	cannon(new Cannon(_angleOffSet, _angleRange, _angle, _rotationStep,_wind, this)),
 	nbGamesWon(0),
 	color(_color),
-	tankLook(GRRLIB_LoadTexture(tank))
+	tankLook(GRRLIB_LoadTexture(tank)),
+	opponent(_opponent)
 {
 
 }
@@ -33,6 +42,22 @@ void Player::setIndexCoords(const int _colIndex, const int _rowIndex){
 	screenY = _rowIndex*TERRAIN_CELL_HEIGHT-height;
 }
 
+void Player::setOpponent(Player* _opponent){
+	opponent = _opponent;
+}
+
+void Player::moveLeft(Terrain* terrain){
+	if (getCol()-1 == 0) return;
+	if (screenX - width == opponent->getScreenX()) return;
+	initPosition(terrain, getCol()-1);
+}
+
+void Player::moveRight(Terrain* terrain){
+	if (getCol()+width/terrain->getGrille()[0][0].getWidth() == terrain->getCols()) return;
+	if (screenX + width == opponent->getScreenX()) return;
+	initPosition(terrain, getCol()+1);
+}
+
 Cannon* Player::getCannon() {
 	return cannon;
 }
@@ -44,6 +69,14 @@ Cannon* Player::getCannon() const {
 void Player::init() {
 	nbGamesWon = 0;
 	initGame();
+}
+
+void Player::initPosition(Terrain* terrain, int offSet){
+	for (int rowIndex=0;rowIndex<terrain->getRows();rowIndex++)
+		if (terrain->getType(offSet, rowIndex) == GRASS) {
+			setIndexCoords(offSet, rowIndex);
+			break;
+		}
 }
 
 void Player::initGame() {
@@ -75,11 +108,8 @@ void Player::incScore() {
 }
 
 void Player::looseLife(u8 lifeAmount) {
-	// Il est deja mort
 	if (life == 0) return;
-	// Il meurt
 	if (lifeAmount >= life) life = 0;
-	// Il est toujours vivant
 	else life -= lifeAmount;
 }
 

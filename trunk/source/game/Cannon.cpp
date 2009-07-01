@@ -2,14 +2,29 @@
 
 namespace shootmii {
 
-Cannon::Cannon(const float _angleOffSet, const float _angleRange,
-		const float _angle, const float _rotationStep, Wind* _wind,
+Cannon::Cannon(
+		const float _angleOffSet,
+		const float _angleRange,
+		const float _angle,
+		const float _rotationStep,
+		Wind* _wind,
 		Player* _owner) :
-	angleOffSet(_angleOffSet), angleRange(_angleRange), angle(_angle),
-	rotationStep(_rotationStep), wind(_wind), strength(0), heat(0), blockedTime(0),
-	heatCool(0), reloadTime(0), ammoLook(GRRLIB_LoadTexture(ammo_2)),
+	angleOffSet(_angleOffSet),
+	angleRange(_angleRange),
+	angle(_angle),
+	rotationStep(_rotationStep),
+	wind(_wind),
+	strength(0),
+	heat(0),
+	blockedTime(0),
+	heatCool(0),
+	reloadTime(0),
+	ammoLook(GRRLIB_LoadTexture(ammo_2)),
 	cannonLook(GRRLIB_LoadTexture(cannon)),
-	loadedAmmo(new CannonBall(angle * PI / 180, wind, &ammoLook, _owner)), owner(_owner) {
+	loadedAmmo(new CannonBall(angle * PI / 180,wind,&ammoLook,_owner)),
+	owner(_owner)
+{
+
 }
 
 Cannon::~Cannon() {
