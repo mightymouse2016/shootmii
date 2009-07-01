@@ -2,9 +2,8 @@
 
 namespace shootmii {
 
-  TerrainCell::TerrainCell(const CellType _type, const int _rowIndex,
-    const int _colIndex) :
-    Cell(_rowIndex, _colIndex), type(_type) {
+  TerrainCell::TerrainCell(const CellType _type, const int _colIndex, const int _rowIndex) :
+    Cell(TERRAIN_CELL_WIDTH,TERRAIN_CELL_HEIGHT,_colIndex*TERRAIN_CELL_WIDTH,_rowIndex*TERRAIN_CELL_HEIGHT), type(_type) {
   }
 
   CellType TerrainCell::getType() const {
@@ -17,15 +16,10 @@ namespace shootmii {
 
   void TerrainCell::draw() const {
     switch (type) {
-      case SKY:
-        //GRRLIB_Rectangle(screenX, screenY, CELL_SIZE, CELL_SIZE, BLUE_SKY, true);
-        break;
-      case GROUND:
-        GRRLIB_Rectangle(screenX, screenY, CELL_SIZE, CELL_SIZE, BROWN, true);break;
-      case GRASS:
-        GRRLIB_Rectangle(screenX, screenY, CELL_SIZE, CELL_SIZE, GREEN_GRASS,true);break;
-      default:
-        GRRLIB_Rectangle(screenX, screenY, CELL_SIZE, CELL_SIZE, GREEN, true);
+      case SKY: break;
+      case GROUND: GRRLIB_Rectangle(screenX, screenY, width, height, BROWN, true);break;
+      case GRASS: GRRLIB_Rectangle(screenX, screenY, width, height, GREEN_GRASS,true);break;
+      default: GRRLIB_Rectangle(screenX, screenY, width, height, GREEN, true);
     }
   }
 }

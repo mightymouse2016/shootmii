@@ -40,15 +40,16 @@ private:
 	GRRLIB_texImg ammoLook;
 	GRRLIB_texImg cannonLook;
 	Ammo* loadedAmmo;
+	Player* owner;
 public:
-	Cannon(const float _angleOffSet, const float _angleRange, const float _angle, const float _rotationStep, Wind* _wind);
+	Cannon(const float _angleOffSet, const float _angleRange, const float _angle, const float _rotationStep, Wind* _wind, Player* _owner);
 	~Cannon();
 	void init();
 	int getStrength() const;
 	int getHeat() const;
 	int getBlockedTime() const;
 	void decHeat();
-	void draw(const int screenX, const int screenY, const int cellSize) const;
+	void draw(const int screenX, const int screenY) const;
 	void rotateLeft();
 	void rotateRight();
 	void shoot(Manager*);

@@ -13,12 +13,9 @@ namespace shootmii{
         private:
           CellType type;
         public:
-            //Constructeur
-          TerrainCell(const CellType, const int, const int);
-          // Accesseurs
+          TerrainCell(const CellType _type, const int _colIndex, const int _rowIndex);
           CellType getType() const;
           void setType(const CellType);
-          // Méthodes
           void draw() const;
     };
 

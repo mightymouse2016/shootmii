@@ -11,23 +11,18 @@ const int VARIATION_TERRAIN(2); // une pente entre -VARIATION_TERRAIN et +VARIAT
 
 class Terrain {
 private:
-	int size;
 	int rows;
 	int cols;
 	vector<vector<TerrainCell> > grille; // Vecteur de lignes
 public:
-	// Constructeur
-	Terrain(const int _size = 10, const int _rows = 10, const int _cols = 10);
-	// Accesseurs
-	int getSize() const;
+	Terrain(const int _rows, const int _cols);
 	int getRows() const;
 	int getCols() const;
 	const vector<vector<TerrainCell> > & getGrille() const;
 	CellType getCellType(const int rowIndex, const int colIndex) const;
-	bool contains(float screenX, float screenY) const;
-	// Méthodes
 	void draw() const;
 	void generate();
+	bool contains(float screenX, float screenY) const;
 };
 
 }

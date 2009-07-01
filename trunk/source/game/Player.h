@@ -26,12 +26,12 @@ private:
 	u32 color;
 	GRRLIB_texImg tankLook;
 public:
-	Player(const string & _nickName, const u32 _color, Wind* _wind,
-			const float _angleOffSet = ANGLE_OFFSET, const float _angleRange =
-					ROTATION_RANGE, const float _angle = INIT_ANGLE,
-			const float _rotationStep = ROTATION_STEP, const u8 _life = 100,
-			const bool _fury = false, Bonus _bonus = NORMAL);
-	// Accesseurs
+	Player(const string & _nickName, const u32 _color, Wind* _wind, const float _angleOffSet = ANGLE_OFFSET,
+			const float _angleRange = ROTATION_RANGE, const float _angle = INIT_ANGLE,
+			const float _rotationStep = ROTATION_STEP, const u8 _life = 100, const bool _fury = false, Bonus _bonus = NORMAL);
+	int getCol() const;
+	int getRow() const;
+	void setIndexCoords(const int _colIndex, const int _rowIndex);
 	Cannon* getCannon();
 	Cannon* getCannon() const;
 	void init();

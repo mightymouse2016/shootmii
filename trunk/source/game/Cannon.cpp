@@ -3,17 +3,18 @@
 namespace shootmii {
 
 Cannon::Cannon(const float _angleOffSet, const float _angleRange,
-		const float _angle, const float _rotationStep, Wind* _wind) :
+		const float _angle, const float _rotationStep, Wind* _wind,
+		Player* _owner) :
 	angleOffSet(_angleOffSet), angleRange(_angleRange), angle(_angle),
-			rotationStep(_rotationStep), wind(_wind), strength(0), heat(0),
-			blockedTime(0), heatCool(0), reloadTime(0), ammoLook(
-					GRRLIB_LoadTexture(ammo_2)), cannonLook(GRRLIB_LoadTexture(
-					cannon)), loadedAmmo(new CannonBall(angle * PI / 180, wind,
-					&ammoLook)) {
+	rotationStep(_rotationStep), wind(_wind), strength(0), heat(0), blockedTime(0),
+	heatCool(0), reloadTime(0), ammoLook(GRRLIB_LoadTexture(ammo_2)),
+	cannonLook(GRRLIB_LoadTexture(cannon)),
+	loadedAmmo(new CannonBall(angle * PI / 180, wind, &ammoLook, _owner)), owner(_owner) {
 }
 
 Cannon::~Cannon() {
-	if (loadedAmmo) delete loadedAmmo;
+	if (loadedAmmo)
+		delete loadedAmmo;
 }
 
 void Cannon::init() {
@@ -22,8 +23,9 @@ void Cannon::init() {
 	blockedTime = 0;
 	heatCool = 0;
 	reloadTime = 0;
-	if (loadedAmmo) delete loadedAmmo;
-	loadedAmmo = new CannonBall(-angle * PI / 180, wind, &ammoLook);
+	if (loadedAmmo)
+		delete loadedAmmo;
+	loadedAmmo = new CannonBall(-angle * PI / 180, wind, &ammoLook, owner);
 }
 
 int Cannon::getStrength() const {
@@ -65,24 +67,15 @@ void Cannon::decHeat() {
 	reload();
 }
 
-void Cannon::draw(const int screenX, const int screenY, const int cellSize) const {
-	float topCos = cos(angle * PI / 180);
-	float topSin = sin(angle * PI / 180);
-	float topX = CANNON_LENGTH * topCos;
-	float topY = CANNON_LENGTH * topSin;
-
+void Cannon::draw(const int screenX, const int screenY) const {
 	// On dessine la munition
 	if (loadedAmmo) {
-		loadedAmmo->setScreenX(screenX + CELL_SIZE / 2 - TANK_WIDTH / 2);
-		loadedAmmo->setScreenY(screenY + CELL_SIZE - TANK_HEIGHT);
+		loadedAmmo->setScreenX(screenX);
+		loadedAmmo->setScreenY(screenY);
 		loadedAmmo->draw();
 	}
-
-	// On dessine la ligne
-	//GRRLIB_Line(screenX + cellSize / 2, screenY + cellSize / 2, screenX + cellSize / 2 + topX, screenY + cellSize / 2 - topY, BLACK);
-	GRRLIB_DrawImg(screenX + CELL_SIZE / 2 - TANK_WIDTH / 2, screenY
-			+ CELL_SIZE - TANK_HEIGHT, cannonLook, -angle, 1, 1, WHITE);
-
+	// On dessine le canon
+	GRRLIB_DrawImg(screenX, screenY, cannonLook, -angle, 1, 1, WHITE);
 }
 
 void Cannon::rotateLeft() {
@@ -136,7 +129,7 @@ void Cannon::shoot(Manager* manager) {
 void Cannon::reload() {
 	if (!loadedAmmo) {
 		if (reloadTime > RELOAD_TIME) {
-			loadedAmmo = new CannonBall(-angle * PI / 180, wind, &ammoLook);
+			loadedAmmo = new CannonBall(-angle * PI / 180, wind, &ammoLook, owner);
 			reloadTime = 0;
 		} else
 			reloadTime++;
