@@ -5,11 +5,18 @@
 namespace shootmii {
 
 Coordinates::Coordinates(const float _x, const float _y) :
-	x(_x), y(_y) {
+	x(_x),
+	y(_y)
+{
+
 }
 
 Function::Function(const float _a, const float _b, const float _c) :
-	a(_a), b(_b), c(_c) {
+	a(_a),
+	b(_b),
+	c(_c)
+{
+
 }
 
 void Function::setA(float _a) {
@@ -25,7 +32,9 @@ void Function::setC(float _c) {
 }
 
 PolyDeg2::PolyDeg2(const float _a, const float _b, const float _c) :
-	Function(_a, _b, _c) {
+	Function(_a, _b, _c)
+{
+
 }
 
 float PolyDeg2::operator()(const float t) const {

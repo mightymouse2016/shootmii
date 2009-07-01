@@ -6,10 +6,18 @@ Player::Player(const string & _nickName, const u32 _color, Wind* _wind,
 		const float _angleOffSet, const float _angleRange, const float _angle,
 		const float _rotationStep, const u8 _life, const bool _fury,
 		Bonus _bonus) :
-			Cell(TANK_WIDTH,TANK_HEIGHT),
-	nickName(_nickName), score(0), life(_life), fury(_fury), bonus(_bonus),
-			cannon(new Cannon(_angleOffSet, _angleRange, _angle, _rotationStep,
-					_wind, this)), nbGamesWon(0), color(_color),tankLook(GRRLIB_LoadTexture(tank)) {
+	Cell(TANK_WIDTH,TANK_HEIGHT),
+	nickName(_nickName),
+	score(0),
+	life(_life),
+	fury(_fury),
+	bonus(_bonus),
+	cannon(new Cannon(_angleOffSet, _angleRange, _angle, _rotationStep,_wind, this)),
+	nbGamesWon(0),
+	color(_color),
+	tankLook(GRRLIB_LoadTexture(tank))
+{
+
 }
 
 int Player::getCol() const{
@@ -48,8 +56,6 @@ void Player::initGame() {
 void Player::draw() const {
 	cannon->draw(screenX, screenY);
 	GRRLIB_DrawImg(screenX,screenY,tankLook, 0, 1, 1, WHITE);
-	//GRRLIB_Rectangle(screenX, screenY, CELL_SIZE, CELL_SIZE, color, true);
-
 }
 
 u8 Player::getLife() const {
