@@ -22,9 +22,14 @@ protected:
 	bool outOfCannon; // pour que le gestionnaire de collision ignore le contact
 	GRRLIB_texImg* ammoLook;
 	Player* owner;
+	Terrain* terrain;
 public:
-	Ammo(const float _angle, GRRLIB_texImg* _ammoLook, Function*, Function*,
-			Player* _owner);
+	Ammo(
+		const float _angle,
+		GRRLIB_texImg* _ammoLook,
+		Function* _calcX,
+		Function* _calcY,
+		Player* _owner);
 	virtual ~Ammo();
 	void incT();
 	void decT();
@@ -35,10 +40,15 @@ public:
 	int getRow() const;
 	void compute();
 	void setAngle(const float _angle);
+	void destruction();
+	void out();
 	bool isBeingDestroyed() const;
 	bool isOutOfCannon() const;
-	void out();
-	void destruction();
+	bool isOffScreen() const;
+	bool isTooLow() const;
+	bool hitTheGround(Terrain* terrain) const;
+	Ammo* hitAnotherAmmo(list<Ammo*>* ammoList) const;
+	Player* hitAPlayer(Player* player1, Player* player2) const;
 };
 
 }

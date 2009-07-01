@@ -19,7 +19,7 @@ public:
 	int getRows() const;
 	int getCols() const;
 	const vector<vector<TerrainCell> > & getGrille() const;
-	CellType getCellType(const int rowIndex, const int colIndex) const;
+	CellType getType(const int colIndex, const int rowIndex) const;
 	void draw() const;
 	void generate();
 	bool contains(float screenX, float screenY) const;

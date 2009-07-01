@@ -19,7 +19,7 @@ int Terrain::getCols() const {
 	return cols;
 }
 
-CellType Terrain::getCellType(const int rowIndex, const int colIndex) const {
+CellType Terrain::getType(const int colIndex, const int rowIndex) const {
 	return grille[rowIndex][colIndex].getType();
 }
 
