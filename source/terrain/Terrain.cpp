@@ -2,10 +2,15 @@
 
 namespace shootmii {
 
-Terrain::Terrain(const int _rows, const int _cols) : rows(_rows), cols(_cols),
-	grille(vector<vector<TerrainCell> > (_rows,
-			vector<TerrainCell> (_cols, TerrainCell((CellType) 0, 0, 0)))) {
+Terrain::Terrain(const int _rows, const int _cols) :
+    rows(_rows),
+    cols(_cols),
+  	grille(vector<vector<TerrainCell> > (
+  	    _rows,
+  			vector<TerrainCell> (_cols, TerrainCell(&tileSet)))),
+  	tileSet(GRRLIB_LoadTexture(tile_set)){
 	// Initialisation des coordonnées contenues dans les Cell
+  GRRLIB_InitTileSet(&tileSet, TERRAIN_CELL_WIDTH, TERRAIN_CELL_HEIGHT, 0);
 	for (int i = 0; i < rows; i++)
 		for (int j = 0; j < cols; j++)
 			grille[i][j].setIndexCoords(j,i);
@@ -17,6 +22,10 @@ int Terrain::getRows() const {
 
 int Terrain::getCols() const {
 	return cols;
+}
+
+int Terrain::getHeight(const int x, const int rowIndex, const int colIndex) const {
+  return grille[rowIndex][colIndex].getHeight(x);
 }
 
 CellType Terrain::getType(const int colIndex, const int rowIndex) const {
@@ -34,20 +43,77 @@ void Terrain::draw() const {
 }
 
 void Terrain::generate() {
-	int highLimit = rows*(CENTER_TERRAIN-AMPLITUDE_TERRAIN/2)/100;
-	int lowLimit = rows*(CENTER_TERRAIN+AMPLITUDE_TERRAIN/2)/100;
-
-	// Calcul de la hauteur initiale (à la colonne -1)
+  
+  // Remise à zero(EMPTY) du terrain
+  for (int i = 0; i < rows; i++)
+      for (int j = 0; j < cols; j++)
+        grille[i][j].setType(EMPTY);
+  
+	// Initialisation
+  int highLimit = rows*(CENTER_TERRAIN-AMPLITUDE_TERRAIN/2)/100;
+  int lowLimit = rows*(CENTER_TERRAIN+AMPLITUDE_TERRAIN/2)/100;
 	int height = rand()%(lowLimit-highLimit)+(lowLimit+highLimit)/2;
-
-	for (int i=0;i<cols;i++){
-		height += rand() % (2* VARIATION_TERRAIN + 1) - VARIATION_TERRAIN;
-		if (height < highLimit) height = highLimit; // Si on dépasse en haut
-		if (height > lowLimit) height = lowLimit; // Si on dépasse en bas
-		for (int j = 0; j < height; j++) grille[j][i].setType(SKY);
-		grille[height][i].setType(GRASS);
-		for (int j = height + 1; j < rows; j++) grille[j][i].setType(GROUND);
+	
+	// Première Colonne
+	grille[height][0].setType(GRASS_LEFT);
+	for(int i=height+1;i<rows-1;i++) grille[i][0].setType(GROUND_LEFT);
+	grille[rows-1][0].setType(GROUND_BOTTOM_LEFT);
+	
+	for (int i=1,variation;i<cols-1;i++){
+	  
+	  if (height == highLimit) variation = -rand()%(VARIATION_TERRAIN + 1);
+	  else if (height == lowLimit) variation = rand()%(VARIATION_TERRAIN + 1);
+	  else variation = rand() % (2* VARIATION_TERRAIN + 1) - VARIATION_TERRAIN;
+  
+    switch (variation) {
+      case 2:
+        height--;
+        grille[height][i].setCell(SLOPE_UP_1, 0, 1);
+        grille[height+1][i].setType(GROUND_SLOPE_UP_1);
+        for (int j=height+2;j<rows-1;j++) grille[j][i].setType(GROUND_MID);
+        break;
+      case 1:
+        height--;
+        grille[height][i].setCell(SLOPE_UP_05_1, 0, 0.5);
+        grille[height+1][i].setType(GROUND_SLOPE_UP_05_1);
+        i++;
+        grille[height][i].setCell(SLOPE_UP_05_2, 0.5, 1);
+        grille[height+1][i].setType(GROUND_SLOPE_UP_05_2);
+        for (int j=height+2;j<rows-1;j++) grille[j][i-1].setType(GROUND_MID);
+        for (int j=height+2;j<rows-1;j++) grille[j][i].setType(GROUND_MID);
+        break;
+      case 0:
+        grille[height][i].setCell(GRASS_MID, 1, 1);
+        for (int j=height+1;j<rows-1;j++) grille[j][i].setType(GROUND_MID);
+        break;
+      case -1:
+        grille[height][i].setCell(SLOPE_DOWN_05_1, 1, 0.5);
+        grille[height+1][i].setType(GROUND_SLOPE_DOWN_05_1);
+        i++;
+        grille[height][i].setCell(SLOPE_DOWN_05_2, 0.5, 0);
+        grille[height+1][i].setType(GROUND_SLOPE_DOWN_05_2);
+        height++;
+        for (int j=height+1;j<rows-1;j++) grille[j][i-1].setType(GROUND_MID);
+        for (int j=height+1;j<rows-1;j++) grille[j][i].setType(GROUND_MID);
+        break;
+      case -2:
+        grille[height][i].setCell(SLOPE_DOWN_1, 1, 0);
+        grille[height+1][i].setType(GROUND_SLOPE_DOWN_1);
+        height++;
+        for (int j=height+1;j<rows-1;j++) grille[j][i].setType(GROUND_MID);
+        break;
+    }
+    
 	}
+	
+	// Tout en bas
+	for (int i=1;i<cols;i++) grille[rows-1][i].setType(GROUND_BOTTOM_MID);
+	
+	// Dernière Colonne
+  grille[height][cols-1].setCell(GRASS_RIGHT, 1, 1);
+  for(int i=height+1;i<rows-1;i++) grille[i][cols-1].setType(GROUND_RIGHT);
+  grille[rows-1][cols-1].setType(GROUND_BOTTOM_RIGHT);
+  
 }
 
 bool Terrain::contains(float screenX, float screenY) const {

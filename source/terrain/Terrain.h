@@ -14,6 +14,7 @@ private:
 	int rows;
 	int cols;
 	vector<vector<TerrainCell> > grille; // Vecteur de lignes
+	GRRLIB_texImg tileSet;
 public:
 	Terrain(const int _rows, const int _cols);
 	int getRows() const;
@@ -23,6 +24,7 @@ public:
 	void draw() const;
 	void generate();
 	bool contains(float screenX, float screenY) const;
+	int getHeight(const int x, const int rowIndex, const int colIndex) const;
 };
 
 }

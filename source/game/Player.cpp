@@ -29,6 +29,10 @@ Player::Player(
 
 }
 
+Player::~Player() {
+  delete cannon;
+}
+		
 int Player::getCol() const{
 	return (screenX+width/2-TERRAIN_CELL_WIDTH/2)/TERRAIN_CELL_WIDTH;
 }
@@ -47,15 +51,15 @@ void Player::setOpponent(Player* _opponent){
 }
 
 void Player::moveLeft(Terrain* terrain){
-	if (getCol()-1 == 0) return;
+	/*if (getCol()-1 == 0) return;
 	if (screenX - width == opponent->getScreenX()) return;
-	initPosition(terrain, getCol()-1);
+	initPosition(terrain, getCol()-1);*/
 }
 
 void Player::moveRight(Terrain* terrain){
-	if (getCol()+width/terrain->getGrille()[0][0].getWidth() == terrain->getCols()) return;
+	/*if (getCol()+width/terrain->getGrille()[0][0].getWidth() == terrain->getCols()) return;
 	if (screenX + width == opponent->getScreenX()) return;
-	initPosition(terrain, getCol()+1);
+	initPosition(terrain, getCol()+1);*/
 }
 
 Cannon* Player::getCannon() {
@@ -71,10 +75,11 @@ void Player::init() {
 	initGame();
 }
 
-void Player::initPosition(Terrain* terrain, int offSet){
+void Player::initPosition(Terrain* terrain, int colOffSet){
 	for (int rowIndex=0;rowIndex<terrain->getRows();rowIndex++)
-		if (terrain->getType(offSet, rowIndex) == GRASS) {
-			setIndexCoords(offSet, rowIndex);
+		if (terrain->getType(colOffSet, rowIndex) != EMPTY) {
+		  setIndexCoords(colOffSet, rowIndex);
+		  screenY = terrain->getHeight(TERRAIN_CELL_WIDTH/2, rowIndex, colOffSet) + rowIndex*TERRAIN_CELL_HEIGHT;
 			break;
 		}
 }

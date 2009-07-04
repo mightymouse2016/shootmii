@@ -86,7 +86,7 @@ bool Ammo::isTooLow() const{
 }
 
 bool Ammo::hitTheGround(Terrain* terrain) const{
-	if (terrain->getType(getCol(), getRow()) == SKY) return false;
+	if (terrain->getType(getCol(), getRow()) == EMPTY) return false;
 		return true;
 }
 

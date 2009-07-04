@@ -39,6 +39,7 @@ public:
 		const u8 _life = 100,
 		const bool _fury = false,
 		Bonus _bonus = NORMAL);
+	~Player();
 	int getCol() const;
 	int getRow() const;
 	u8 getLife() const;
@@ -53,7 +54,7 @@ public:
 	void setScore(const int _score);
 	void incScore();
 	void init();
-	void initPosition(Terrain* terrain, int offSet);
+	void initPosition(Terrain* terrain, int colOffSet);
 	void initGame();
 	void draw() const;
 };
