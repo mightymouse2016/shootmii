@@ -24,7 +24,7 @@ public:
 	void draw() const;
 	void generate();
 	bool contains(float screenX, float screenY) const;
-	int getHeight(const int x, const int rowIndex, const int colIndex) const;
+	int getHeight(const int screenX, const int rowIndex) const;
 };
 
 }

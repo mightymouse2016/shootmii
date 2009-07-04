@@ -24,8 +24,8 @@ int Terrain::getCols() const {
 	return cols;
 }
 
-int Terrain::getHeight(const int x, const int rowIndex, const int colIndex) const {
-  return grille[rowIndex][colIndex].getHeight(x);
+int Terrain::getHeight(const int screenX, const int rowIndex) const {
+  return (rowIndex+1)*TERRAIN_CELL_HEIGHT - grille[rowIndex][screenX/TANK_WIDTH].getHeight(screenX%TERRAIN_CELL_WIDTH);
 }
 
 CellType Terrain::getType(const int colIndex, const int rowIndex) const {
@@ -43,28 +43,28 @@ void Terrain::draw() const {
 }
 
 void Terrain::generate() {
-  
+
   // Remise à zero(EMPTY) du terrain
   for (int i = 0; i < rows; i++)
       for (int j = 0; j < cols; j++)
         grille[i][j].setType(EMPTY);
-  
+
 	// Initialisation
   int highLimit = rows*(CENTER_TERRAIN-AMPLITUDE_TERRAIN/2)/100;
   int lowLimit = rows*(CENTER_TERRAIN+AMPLITUDE_TERRAIN/2)/100;
 	int height = rand()%(lowLimit-highLimit)+(lowLimit+highLimit)/2;
-	
+
 	// Première Colonne
-	grille[height][0].setType(GRASS_LEFT);
+	grille[height][0].setCell(GRASS_LEFT,1,1);
 	for(int i=height+1;i<rows-1;i++) grille[i][0].setType(GROUND_LEFT);
 	grille[rows-1][0].setType(GROUND_BOTTOM_LEFT);
-	
+
 	for (int i=1,variation;i<cols-1;i++){
-	  
+
 	  if (height == highLimit) variation = -rand()%(VARIATION_TERRAIN + 1);
 	  else if (height == lowLimit) variation = rand()%(VARIATION_TERRAIN + 1);
 	  else variation = rand() % (2* VARIATION_TERRAIN + 1) - VARIATION_TERRAIN;
-  
+
     switch (variation) {
       case 2:
         height--;
@@ -103,17 +103,17 @@ void Terrain::generate() {
         for (int j=height+1;j<rows-1;j++) grille[j][i].setType(GROUND_MID);
         break;
     }
-    
+
 	}
-	
+
 	// Tout en bas
 	for (int i=1;i<cols;i++) grille[rows-1][i].setType(GROUND_BOTTOM_MID);
-	
+
 	// Dernière Colonne
   grille[height][cols-1].setCell(GRASS_RIGHT, 1, 1);
   for(int i=height+1;i<rows-1;i++) grille[i][cols-1].setType(GROUND_RIGHT);
   grille[rows-1][cols-1].setType(GROUND_BOTTOM_RIGHT);
-  
+
 }
 
 bool Terrain::contains(float screenX, float screenY) const {
