@@ -54,7 +54,7 @@ public:
 	void setScore(const int _score);
 	void incScore();
 	void init();
-	void initPosition(Terrain* terrain, int colOffSet);
+	void initPosition(Terrain* terrain, int _screenX);
 	void initGame();
 	void draw() const;
 };

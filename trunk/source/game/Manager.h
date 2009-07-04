@@ -5,7 +5,7 @@
 
 namespace shootmii {
 
-const int PLAYER_OFFSET(5);
+const int PLAYER_OFFSET(100);
 
 class Manager {
 private:

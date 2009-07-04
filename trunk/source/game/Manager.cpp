@@ -129,7 +129,7 @@ void Manager::init() const {
 
 void Manager::initPlayers() const {
 	player1->initPosition(world->getTerrain(), PLAYER_OFFSET);
-	player2->initPosition(world->getTerrain(), world->getTerrain()->getCols() - PLAYER_OFFSET);
+	player2->initPosition(world->getTerrain(), world->getTerrain()->getCols()*TERRAIN_CELL_WIDTH - PLAYER_OFFSET);
 	player1->initGame();
 	player2->initGame();
 }
