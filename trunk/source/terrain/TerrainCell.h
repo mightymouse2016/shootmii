@@ -8,16 +8,45 @@ const int N_CELLTYPE(2); // Nombre de type de cellules, pour l'instant terre ou 
 namespace shootmii {
 
 enum CellType {
-	SKY, GROUND, GRASS
+	GRASS_LEFT,
+	GRASS_MID,
+	GRASS_RIGHT,
+	SLOPE_UP_05_1,
+	SLOPE_UP_05_2,
+	SLOPE_UP_1,
+	SLOPE_DOWN_1,
+	SLOPE_DOWN_05_1,
+	SLOPE_DOWN_05_2,
+	
+	GROUND_LEFT,
+	GROUND_MID,
+	GROUND_RIGHT,
+	GROUND_SLOPE_UP_05_1,
+	GROUND_SLOPE_UP_05_2,
+	GROUND_SLOPE_UP_1,
+	GROUND_SLOPE_DOWN_1,
+	GROUND_SLOPE_DOWN_05_1,
+	GROUND_SLOPE_DOWN_05_2,
+	  
+	GROUND_BOTTOM_LEFT,
+	GROUND_BOTTOM_MID,
+	GROUND_BOTTOM_RIGHT,
+  EMPTY
 };
 
 class TerrainCell: public Cell {
 private:
 	CellType type;
+	GRRLIB_texImg* tileSet;
+	float y1;
+	float y2;
+	
 public:
-	TerrainCell(const CellType _type, const int _colIndex, const int _rowIndex);
+	TerrainCell(GRRLIB_texImg* _tileSet);
 	CellType getType() const;
 	void setType(const CellType);
+	void setCell(const CellType, const float, const float);
+	int getHeight(const int x) const;
 	void draw() const;
 };
 

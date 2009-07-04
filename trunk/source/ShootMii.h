@@ -54,6 +54,7 @@ namespace shootmii {
 #include "gfx/strength_jauge.h"
 #include "gfx/background_cloud.h"
 #include "gfx/foreground_cloud.h"
+#include "gfx/tile_set.h"
 // Fontes
 #include "gfx/font1.h"
 #include "gfx/font2.h"

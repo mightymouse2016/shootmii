@@ -11,6 +11,8 @@ protected:
 	int height;
 	int screenX;
 	int screenY;
+	float angle;
+	
 public:
 	Cell(const int _width, const int _height, const int _screenX = 0, const int _screenY = 0);
 	int getWidth() const;
