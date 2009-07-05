@@ -9,23 +9,23 @@ class Cell {
 protected:
 	int width;
 	int height;
-	int screenX;
-	int screenY;
+	float screenX;
+	float screenY;
 	float angle;
 	
 public:
-	Cell(const int _width, const int _height, const int _screenX = 0, const int _screenY = 0);
+	Cell(const int _width, const int _height, const float _screenX = 0, const float _screenY = 0);
 	int getWidth() const;
 	int getHeight() const;
-	int getScreenX() const;
-	int getScreenY() const;
+	float getScreenX() const;
+	float getScreenY() const;
 	virtual int getCol() const;
 	virtual int getRow() const;
-	void setScreenX(const int _screenX);
-	void setScreenY(const int _screenY);
+	void setScreenX(const float _screenX);
+	void setScreenY(const float _screenY);
 	void setCol(const int _col);
 	void setRow(const int _row);
-	void setScreenCoords(const int _screenX, const int _screenY);
+	void setScreenCoords(const float _screenX, const float _screenY);
 	virtual void setIndexCoords(const int _colIndex, const int _rowIndex);
 	bool cellIntersect(const Cell* c) const;
 };
