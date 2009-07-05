@@ -50,16 +50,54 @@ void Player::setOpponent(Player* _opponent){
 	opponent = _opponent;
 }
 
+float Player::getSpeed(const CellType type, const Direction dir) const {
+  switch(type) {
+      case GRASS_LEFT:
+      case GRASS_MID:
+      case GRASS_RIGHT:
+        return SPEED_NORMAL;
+      case SLOPE_UP_05_1:
+      case SLOPE_UP_05_2:
+        if(dir == LEFT)
+          return SPEED_FAST;
+        else
+          return SPEED_SLOW;
+      case SLOPE_DOWN_05_1:
+      case SLOPE_DOWN_05_2:
+        if(dir == LEFT)
+          return SPEED_SLOW;
+        else
+          return SPEED_FAST;
+      case SLOPE_UP_1:
+        if(dir == LEFT)
+          return SPEED_VERY_FAST;
+        else
+          return SPEED_VERY_SLOW;
+      case SLOPE_DOWN_1:
+        if(dir == LEFT)
+          return SPEED_VERY_SLOW;
+        else
+          return SPEED_VERY_FAST;
+      default:
+        return SPEED_VERY_SLOW;
+    }
+  return SPEED_VERY_SLOW;
+}
+
 void Player::moveLeft(Terrain* terrain){
-	if (screenX == 0) return;
-	if (screenX - width == opponent->getScreenX()) return;
-	initPosition(terrain, screenX-1);
+  TerrainCell cell = terrain->getGround(((int)screenX+width/2)/width);
+  float newScreenX = screenX - getSpeed(cell.getType(), LEFT);
+	if (newScreenX <= 0) return;
+	if (newScreenX >= opponent->getScreenX() && newScreenX <= opponent->getScreenX() + width) return;
+	initPosition(terrain, newScreenX);
 }
 
 void Player::moveRight(Terrain* terrain){
-	if (screenX + width == terrain->getCols()*TERRAIN_CELL_WIDTH) return;
-	if (screenX + width == opponent->getScreenX()) return;
-	initPosition(terrain, screenX+1);
+  TerrainCell cell = terrain->getGround(((int)screenX+width/2)/width);
+  float newScreenX = screenX + getSpeed(cell.getType(), RIGHT);  
+	if (newScreenX + width >= terrain->getCols()*TERRAIN_CELL_WIDTH) return;
+	if (newScreenX + width >= opponent->getScreenX() && newScreenX + width <= opponent->getScreenX() + width) return;
+	initPosition(terrain, newScreenX);
 }
 
 Cannon* Player::getCannon() {
@@ -75,7 +113,7 @@ void Player::init() {
 	initGame();
 }
 
-void Player::initPosition(Terrain* terrain, int _screenX){
+void Player::initPosition(Terrain* terrain, float _screenX){
 	screenX = _screenX;
 	int row;
 	for(row=0;terrain->getType((screenX+width/2)/width, row) == EMPTY;row++);
