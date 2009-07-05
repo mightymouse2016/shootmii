@@ -2,7 +2,7 @@
 
 namespace shootmii {
 
-Cell::Cell(const int _width, const int _height, const int _screenX, const int _screenY) :
+Cell::Cell(const int _width, const int _height, const float _screenX, const float _screenY) :
 	width(_width),
 	height(_height),
 	screenX(_screenX),
@@ -19,11 +19,11 @@ int Cell::getHeight() const {
 	return height;
 }
 
-int Cell::getScreenX() const {
+float Cell::getScreenX() const {
 	return screenX;
 }
 
-int Cell::getScreenY() const {
+float Cell::getScreenY() const {
 	return screenY;
 }
 
@@ -35,11 +35,11 @@ int Cell::getRow() const{
 	return int(screenY/height);
 }
 
-void Cell::setScreenX(const int _screenX) {
+void Cell::setScreenX(const float _screenX) {
 	screenX = _screenX;
 }
 
-void Cell::setScreenY(const int _screenY) {
+void Cell::setScreenY(const float _screenY) {
 	screenY = _screenY;
 }
 
@@ -51,7 +51,7 @@ void Cell::setRow(const int _row){
 	screenY = _row*height;
 }
 
-void Cell::setScreenCoords(const int _screenX, const int _screenY){
+void Cell::setScreenCoords(const float _screenX, const float _screenY){
 	screenX = _screenX;
 	screenY = _screenY;
 }

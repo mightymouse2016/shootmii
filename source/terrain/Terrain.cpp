@@ -28,6 +28,12 @@ int Terrain::getHeight(const int screenX, const int rowIndex) const {
   return (rowIndex+1)*TERRAIN_CELL_HEIGHT - grille[rowIndex][screenX/TANK_WIDTH].getHeight(screenX%TERRAIN_CELL_WIDTH);
 }
 
+TerrainCell Terrain::getGround(const int colIndex) const {
+  int rowIndex;
+  for(rowIndex = 0; getType(colIndex, rowIndex) == EMPTY; rowIndex++);
+  return grille[rowIndex][colIndex];
+}
+
 CellType Terrain::getType(const int colIndex, const int rowIndex) const {
 	return grille[rowIndex][colIndex].getType();
 }
