@@ -9,9 +9,18 @@ const int TANK_WIDTH(16);
 const int TANK_HEIGHT(32);
 const int TANK_ROTATION_AXIS_X(8);
 const int TANK_ROTATION_AXIS_Y(8);
+const float SPEED_VERY_FAST(1.5);
+const float SPEED_FAST(1.25);
+const float SPEED_NORMAL(1);
+const float SPEED_SLOW(0.5);
+const float SPEED_VERY_SLOW(0.25);
 
 enum Bonus {
-	NORMAL, FIRE, FREEZE,
+	NORMAL, FIRE, FREEZE
+};
+
+enum Direction {
+  LEFT, RIGHT
 };
 
 class Player: public Cell {
@@ -54,9 +63,10 @@ public:
 	void setScore(const int _score);
 	void incScore();
 	void init();
-	void initPosition(Terrain* terrain, int _screenX);
+	void initPosition(Terrain* terrain, float _screenX);
 	void initGame();
 	void draw() const;
+	float getSpeed(const CellType type, const Direction dir) const;
 };
 
 }
