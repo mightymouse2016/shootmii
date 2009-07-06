@@ -21,6 +21,7 @@ Cannon::Cannon(
 	reloadTime(0),
 	ammoLook(GRRLIB_LoadTexture(ammo_2)),
 	cannonLook(GRRLIB_LoadTexture(cannon)),
+	hairCross(GRRLIB_LoadTexture(haircross_1)),
 	loadedAmmo(new CannonBall(angle * PI / 180,wind,&ammoLook,_owner)),
 	owner(_owner),
 	stillHeld(false)
@@ -88,17 +89,16 @@ void Cannon::up(){
 void Cannon::draw(const int screenX, const int screenY) const {
 	// On dessine la jauge de puissance
 	GRRLIB_Line(
-				screenX+TANK_ROTATION_AXIS_X,
-				screenY+TANK_ROTATION_AXIS_Y,
-				screenX+TANK_ROTATION_AXIS_X+100*cos(-angle*PI/180),
-				screenY+TANK_ROTATION_AXIS_Y+100*sin(-angle*PI/180),
-				BLACK);
-	GRRLIB_Line(
 			screenX+TANK_ROTATION_AXIS_X,
 			screenY+TANK_ROTATION_AXIS_Y,
 			screenX+TANK_ROTATION_AXIS_X+strength*cos(-angle*PI/180),
 			screenY+TANK_ROTATION_AXIS_Y+strength*sin(-angle*PI/180),
 			RED);
+	// On dessine le réticule de visée
+	GRRLIB_DrawImg(
+			screenX+TANK_ROTATION_AXIS_X+(100-CROSS_WIDTH/2)*cos(-angle*PI/180)-CROSS_WIDTH/2,
+			screenY+TANK_ROTATION_AXIS_Y+(100-CROSS_WIDTH/2)*sin(-angle*PI/180)-CROSS_WIDTH/2,
+			hairCross,-angle, 1, 1, WHITE);
 	// On dessine la munition
 	if (loadedAmmo) {
 		loadedAmmo->setScreenX(screenX);
@@ -134,7 +134,7 @@ void Cannon::incStrength(Manager* manager){
 		shoot(manager);
 		stillHeld = true;
 	}
-	else strength++;
+	else strength+=STRENGTHEN_STEP;
 }
 
 void Cannon::shoot(Manager* manager) {
