@@ -41,6 +41,7 @@ public:
 		const u32 _color,
 		Wind* _wind,
 		Player* _opponent,
+		bool _player,
 		const float _angleOffSet = ANGLE_OFFSET,
 		const float _angleRange = ROTATION_RANGE,
 		const float _angle = INIT_ANGLE,

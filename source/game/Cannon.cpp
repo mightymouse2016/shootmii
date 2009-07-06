@@ -8,7 +8,8 @@ Cannon::Cannon(
 		const float _angle,
 		const float _rotationStep,
 		Wind* _wind,
-		Player* _owner) :
+		Player* _owner,
+		bool _player) :
 	angleOffSet(_angleOffSet),
 	angleRange(_angleRange),
 	angle(_angle),
@@ -19,14 +20,19 @@ Cannon::Cannon(
 	blockedTime(0),
 	heatCool(0),
 	reloadTime(0),
-	ammoLook(GRRLIB_LoadTexture(ammo_2)),
 	cannonLook(GRRLIB_LoadTexture(cannon)),
-	hairCross(GRRLIB_LoadTexture(haircross_1)),
 	loadedAmmo(new CannonBall(angle * PI / 180,wind,&ammoLook,_owner)),
 	owner(_owner),
 	stillHeld(false)
 {
-
+	if (_player) {
+		ammoLook = GRRLIB_LoadTexture(ammo_1);
+		hairCross = GRRLIB_LoadTexture(haircross_1);
+	}
+	else {
+		ammoLook = GRRLIB_LoadTexture(ammo_2);
+		hairCross = GRRLIB_LoadTexture(haircross_2);
+	}
 }
 
 Cannon::~Cannon() {

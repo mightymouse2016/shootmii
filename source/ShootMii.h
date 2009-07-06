@@ -44,6 +44,8 @@ namespace shootmii {
 // Images
 #include "gfx/ammo_1.h"
 #include "gfx/ammo_2.h"
+#include "gfx/haircross_1.h"
+#include "gfx/haircross_2.h"
 #include "gfx/cannon.h"
 #include "gfx/tank.h"
 #include "gfx/score_panel.h"
@@ -55,7 +57,7 @@ namespace shootmii {
 #include "gfx/background_cloud.h"
 #include "gfx/foreground_cloud.h"
 #include "gfx/tile_set.h"
-#include "gfx/haircross_1.h"
+
 // Fontes
 #include "gfx/font1.h"
 #include "gfx/font2.h"
