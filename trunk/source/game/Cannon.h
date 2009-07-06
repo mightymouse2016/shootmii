@@ -23,7 +23,7 @@ const u8 HEAT_COOL_SLOW(10);
 const u32 CLOCK_RANGE(5000);
 const u32 BLOCKING_TIME(2000);
 const u32 FLICKERING_TIME(500);
-const u8 RELOAD_TIME(20);
+const u8 RELOAD_TIME(60);
 
 class Cannon {
 private:
@@ -41,6 +41,7 @@ private:
 	GRRLIB_texImg cannonLook;
 	Ammo* loadedAmmo;
 	Player* owner;
+	bool stillHeld;
 public:
 	Cannon(const float _angleOffSet, const float _angleRange, const float _angle, const float _rotationStep, Wind* _wind, Player* _owner);
 	~Cannon();
@@ -48,12 +49,15 @@ public:
 	int getStrength() const;
 	int getHeat() const;
 	int getBlockedTime() const;
+	void up();
 	void decHeat();
 	void draw(const int screenX, const int screenY) const;
 	void rotateLeft();
 	void rotateRight();
+	void incStrength(Manager*);
 	void shoot(Manager*);
 	void reload();
+	bool isLoaded() const;
 };
 
 }

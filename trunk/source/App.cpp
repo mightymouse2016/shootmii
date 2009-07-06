@@ -62,8 +62,8 @@ void App::dealEvent() {
 		break;
 	case GAME_SCREEN:
 		if ((player1Events[DOWN] | player2Events[DOWN]) & WPAD_BUTTON_HOME) {
-		  console->addDebug("titleScreen !!!");
-		  screen = TITLE_SCREEN;
+			console->addDebug("titleScreen !!!");
+			screen = TITLE_SCREEN;
 		}
 		else gameScreen->dealEvent(player1Events, player2Events);
 		break;
