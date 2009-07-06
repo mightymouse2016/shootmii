@@ -22,14 +22,14 @@ Cannon::Cannon(
 	ammoLook(GRRLIB_LoadTexture(ammo_2)),
 	cannonLook(GRRLIB_LoadTexture(cannon)),
 	loadedAmmo(new CannonBall(angle * PI / 180,wind,&ammoLook,_owner)),
-	owner(_owner)
+	owner(_owner),
+	stillHeld(false)
 {
 
 }
 
 Cannon::~Cannon() {
-	if (loadedAmmo)
-		delete loadedAmmo;
+	if (loadedAmmo) delete loadedAmmo;
 }
 
 void Cannon::init() {
@@ -38,8 +38,7 @@ void Cannon::init() {
 	blockedTime = 0;
 	heatCool = 0;
 	reloadTime = 0;
-	if (loadedAmmo)
-		delete loadedAmmo;
+	if (loadedAmmo) delete loadedAmmo;
 	loadedAmmo = new CannonBall(-angle * PI / 180, wind, &ammoLook, owner);
 }
 
@@ -82,7 +81,24 @@ void Cannon::decHeat() {
 	reload();
 }
 
+void Cannon::up(){
+	stillHeld = false;
+}
+
 void Cannon::draw(const int screenX, const int screenY) const {
+	// On dessine la jauge de puissance
+	GRRLIB_Line(
+				screenX+TANK_ROTATION_AXIS_X,
+				screenY+TANK_ROTATION_AXIS_Y,
+				screenX+TANK_ROTATION_AXIS_X+100*cos(-angle*PI/180),
+				screenY+TANK_ROTATION_AXIS_Y+100*sin(-angle*PI/180),
+				BLACK);
+	GRRLIB_Line(
+			screenX+TANK_ROTATION_AXIS_X,
+			screenY+TANK_ROTATION_AXIS_Y,
+			screenX+TANK_ROTATION_AXIS_X+strength*cos(-angle*PI/180),
+			screenY+TANK_ROTATION_AXIS_Y+strength*sin(-angle*PI/180),
+			RED);
 	// On dessine la munition
 	if (loadedAmmo) {
 		loadedAmmo->setScreenX(screenX);
@@ -111,30 +127,38 @@ void Cannon::rotateRight() {
 		loadedAmmo->setAngle(-angle * PI / 180);
 }
 
+void Cannon::incStrength(Manager* manager){
+	// Si il n'y a pas de munition dans le canon
+	if (!loadedAmmo) return;
+	if (strength >= 100) {
+		shoot(manager);
+		stillHeld = true;
+	}
+	else strength++;
+}
+
 void Cannon::shoot(Manager* manager) {
+	float topCos = cos(angle * PI / 180);
+	float topSin = sin(angle * PI / 180);
+	// Si il n'y a pas de munition dans le canon
+	if (!loadedAmmo) return;
+	// Saturation du canon
+	if (heat + HEAT_STEP >= 100) {
+		heat = 100;
+		blockedTime = ticks_to_millisecs(gettime());
+	}
+	else heat += HEAT_STEP;
 	// Si le canon est trop chaud, on ne peux pas tirer
 	if (heat == 100) return;
-	if (loadedAmmo) {
-		// Saturation du canon
-		if (heat + HEAT_STEP >= 100) {
-			heat = 100;
-			blockedTime = ticks_to_millisecs(gettime());
-		}
-		// Ou incrémentation normale
-		else heat += HEAT_STEP;
-
-		float topCos = cos(angle * PI / 180);
-		float topSin = sin(angle * PI / 180);
-		// Mise à jour des coefficients qui définissent l'inclinaison de la courbe (si on a bougé le cannon)
-		loadedAmmo->getCalcX()->setC(loadedAmmo->getScreenX() + CANNON_LENGTH * topCos); // X
-		loadedAmmo->getCalcY()->setC(loadedAmmo->getScreenY() - CANNON_LENGTH * topSin); // Y
-		loadedAmmo->getCalcX()->setB(DEFAULT_POWER * topCos); // X
-		loadedAmmo->getCalcY()->setB(-DEFAULT_POWER * topSin); // Y
-		// On confie la munition au manager
-		manager->addAmmosToDraw(loadedAmmo);
-		loadedAmmo = NULL;
-	}
-
+	// Mise à jour des coefficients qui définissent l'inclinaison de la courbe (si on a bougé le cannon)
+	loadedAmmo->getCalcX()->setC(loadedAmmo->getScreenX() + CANNON_LENGTH * topCos); // X
+	loadedAmmo->getCalcY()->setC(loadedAmmo->getScreenY() - CANNON_LENGTH * topSin); // Y
+	loadedAmmo->getCalcX()->setB(strength * topCos); // X
+	loadedAmmo->getCalcY()->setB(-strength * topSin); // Y
+	// On confie la munition au manager
+	manager->addAmmosToDraw(loadedAmmo);
+	loadedAmmo = NULL;
+	strength = 0;
 }
 
 void Cannon::reload() {
@@ -142,7 +166,14 @@ void Cannon::reload() {
 		if (reloadTime > RELOAD_TIME) {
 			loadedAmmo = new CannonBall(-angle * PI / 180, wind, &ammoLook, owner);
 			reloadTime = 0;
-		} else reloadTime++;
+		} else if(!stillHeld){
+			reloadTime++;
+		}
+}
+
+bool Cannon::isLoaded() const{
+	if (loadedAmmo) return true;
+	return false;
 }
 
 }

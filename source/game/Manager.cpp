@@ -137,6 +137,7 @@ void Manager::initPlayers() const {
 void Manager::dealEvent(const u32* player1Events, const u32* player2Events) {
 	const u32 pad1Held = player1Events[HELD], pad2Held = player2Events[HELD];
 	const u32 pad1Down = player1Events[DOWN], pad2Down = player2Events[DOWN];
+	const u32 pad1Up = player1Events[UP], pad2Up = player2Events[UP];
 
 	if (pad1Held & WPAD_BUTTON_LEFT) player1->moveLeft(world->getTerrain());
 	if (pad1Held & WPAD_BUTTON_RIGHT) player1->moveRight(world->getTerrain());
@@ -148,15 +149,22 @@ void Manager::dealEvent(const u32* player1Events, const u32* player2Events) {
 	if (pad2Held & WPAD_BUTTON_UP) player2->getCannon()->rotateRight();
 	if (pad2Held & WPAD_BUTTON_DOWN) player2->getCannon()->rotateLeft();
 
-	if (pad1Down & WPAD_BUTTON_A) {
+	if (pad1Down & WPAD_BUTTON_A) WPAD_Rumble(WPAD_CHAN_0, 1);
+	if (pad1Held & WPAD_BUTTON_A) {
+		player1->getCannon()->incStrength(this);
+		if (!player1->getCannon()->isLoaded()) WPAD_Rumble(WPAD_CHAN_0, 0);
+	}
+	if (pad1Up & WPAD_BUTTON_A) {
+		player1->getCannon()->up();
 		player1->getCannon()->shoot(this);
-		WPAD_Rumble(WPAD_CHAN_0, 1);
 		WPAD_Rumble(WPAD_CHAN_0, 0);
 	}
 
-	if (pad2Down & WPAD_BUTTON_A) {
+	if (pad2Down & WPAD_BUTTON_A) WPAD_Rumble(WPAD_CHAN_1, 1);
+	if (pad2Held & WPAD_BUTTON_A) player1->getCannon()->incStrength(this);
+	if (pad2Up & WPAD_BUTTON_A) {
+		player1->getCannon()->up();
 		player2->getCannon()->shoot(this);
-		WPAD_Rumble(WPAD_CHAN_1, 1);
 		WPAD_Rumble(WPAD_CHAN_1, 0);
 	}
 }
