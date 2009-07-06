@@ -14,6 +14,7 @@ Manager::Manager(
 			BLUE,
 			world->getWind(),
 			NULL,
+			true,
 			0,
 			ROTATION_RANGE,
 			INIT_ANGLE,
@@ -24,6 +25,7 @@ Manager::Manager(
 			RED,
 			world->getWind(),
 			player1,
+			false,
 			ANGLE_OFFSET,
 			ROTATION_RANGE,
 			INIT_ANGLE + ANGLE_OFFSET,
@@ -161,9 +163,12 @@ void Manager::dealEvent(const u32* player1Events, const u32* player2Events) {
 	}
 
 	if (pad2Down & WPAD_BUTTON_A) WPAD_Rumble(WPAD_CHAN_1, 1);
-	if (pad2Held & WPAD_BUTTON_A) player1->getCannon()->incStrength(this);
+	if (pad2Held & WPAD_BUTTON_A) {
+		player2->getCannon()->incStrength(this);
+		if (!player2->getCannon()->isLoaded()) WPAD_Rumble(WPAD_CHAN_1, 0);
+	}
 	if (pad2Up & WPAD_BUTTON_A) {
-		player1->getCannon()->up();
+		player2->getCannon()->up();
 		player2->getCannon()->shoot(this);
 		WPAD_Rumble(WPAD_CHAN_1, 0);
 	}

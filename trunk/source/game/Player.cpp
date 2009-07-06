@@ -7,6 +7,7 @@ Player::Player(
 		const u32 _color,
 		Wind* _wind,
 		Player* _opponent,
+		bool _player,
 		const float _angleOffSet,
 		const float _angleRange,
 		const float _angle,
@@ -20,7 +21,7 @@ Player::Player(
 	life(_life),
 	fury(_fury),
 	bonus(_bonus),
-	cannon(new Cannon(_angleOffSet, _angleRange, _angle, _rotationStep,_wind, this)),
+	cannon(new Cannon(_angleOffSet, _angleRange, _angle, _rotationStep,_wind, this, _player)),
 	nbGamesWon(0),
 	color(_color),
 	tankLook(GRRLIB_LoadTexture(tank)),
@@ -94,7 +95,7 @@ void Player::moveLeft(Terrain* terrain){
 
 void Player::moveRight(Terrain* terrain){
   TerrainCell cell = terrain->getGround(((int)screenX+width/2)/width);
-  float newScreenX = screenX + getSpeed(cell.getType(), RIGHT);  
+  float newScreenX = screenX + getSpeed(cell.getType(), RIGHT);
 	if (newScreenX + width >= terrain->getCols()*TERRAIN_CELL_WIDTH) return;
 	if (newScreenX + width >= opponent->getScreenX() && newScreenX + width <= opponent->getScreenX() + width) return;
 	initPosition(terrain, newScreenX);

@@ -47,7 +47,7 @@ private:
 	Player* owner;
 	bool stillHeld;
 public:
-	Cannon(const float _angleOffSet, const float _angleRange, const float _angle, const float _rotationStep, Wind* _wind, Player* _owner);
+	Cannon(const float _angleOffSet, const float _angleRange, const float _angle, const float _rotationStep, Wind* _wind, Player* _owner, bool _player);
 	~Cannon();
 	void init();
 	int getStrength() const;
