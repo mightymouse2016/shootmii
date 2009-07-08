@@ -3,15 +3,15 @@
 namespace shootmii {
 
 Cannon::Cannon(
-		const float _angleOffSet,
-		const float _angleRange,
+		const float _angleMin,
+		const float _angleMax,
 		const float _angle,
 		const float _rotationStep,
 		Wind* _wind,
 		Player* _owner,
 		bool _player) :
-	angleOffSet(_angleOffSet),
-	angleRange(_angleRange),
+	angleMin(_angleMin),
+	angleMax(_angleMax),
 	angle(_angle),
 	rotationStep(_rotationStep),
 	wind(_wind),
@@ -21,7 +21,7 @@ Cannon::Cannon(
 	heatCool(0),
 	reloadTime(0),
 	cannonLook(GRRLIB_LoadTexture(cannon)),
-	loadedAmmo(new CannonBall(angle * PI / 180,wind,&ammoLook,_owner)),
+	loadedAmmo(new CannonBall(angle,wind,&ammoLook,_owner)),
 	owner(_owner),
 	stillHeld(false)
 {
@@ -46,7 +46,7 @@ void Cannon::init() {
 	heatCool = 0;
 	reloadTime = 0;
 	if (loadedAmmo) delete loadedAmmo;
-	loadedAmmo = new CannonBall(-angle * PI / 180, wind, &ammoLook, owner);
+	loadedAmmo = new CannonBall(-angle, wind, &ammoLook, owner);
 }
 
 int Cannon::getStrength() const {
@@ -69,20 +69,17 @@ void Cannon::decHeat() {
 
 	// Mode bloqué quand on a harcelé le canon
 	if (heat == 100) {
-		if (currentTime - blockedTime > BLOCKING_TIME)
-			heat -= 1;
+		if (currentTime - blockedTime > BLOCKING_TIME) heat -= 1;
 	}
 
 	// Mode lent quand le canon est chaud
 	else if (heat > 50) {
-		if (!(heatCool % HEAT_COOL_SLOW))
-			heat -= 1;
+		if (!(heatCool % HEAT_COOL_SLOW)) heat -= 1;
 	}
 
 	// Mode normal 50 premiers % de la jauge
 	else if (heat > 0) {
-		if (!(heatCool % HEAT_COOL_FAST))
-			heat -= 1;
+		if (!(heatCool % HEAT_COOL_FAST)) heat -= 1;
 	}
 
 	reload();
@@ -93,44 +90,36 @@ void Cannon::up(){
 }
 
 void Cannon::draw(const int screenX, const int screenY) const {
+	int centerX = screenX + TANK_ROTATION_AXIS_X;
+	int centerY = screenY + TANK_ROTATION_AXIS_Y;
 	// On dessine la jauge de puissance
-	GRRLIB_Line(
-			screenX+TANK_ROTATION_AXIS_X,
-			screenY+TANK_ROTATION_AXIS_Y,
-			screenX+TANK_ROTATION_AXIS_X+strength*cos(-angle*PI/180),
-			screenY+TANK_ROTATION_AXIS_Y+strength*sin(-angle*PI/180),
-			RED);
+	GRRLIB_Line(centerX,centerY,centerX+strength*cos(angle),centerY-strength*sin(angle),RED);
 	// On dessine le réticule de visée
 	GRRLIB_DrawImg(
-			screenX+TANK_ROTATION_AXIS_X+(100-CROSS_WIDTH/2)*cos(-angle*PI/180)-CROSS_WIDTH/2,
-			screenY+TANK_ROTATION_AXIS_Y+(100-CROSS_WIDTH/2)*sin(-angle*PI/180)-CROSS_WIDTH/2,
-			hairCross,-angle, 1, 1, WHITE);
+			centerX+(100-CROSS_WIDTH/2)*cos(angle)-CROSS_WIDTH/2,
+			centerY-(100-CROSS_WIDTH/2)*sin(angle)-CROSS_WIDTH/2,
+			hairCross,-angle*180/PI, 1, 1, WHITE);
 	// On dessine la munition
 	if (loadedAmmo) {
-		loadedAmmo->setScreenX(screenX);
-		loadedAmmo->setScreenY(screenY);
+		loadedAmmo->setScreenX(screenX+AMMO_OVERTAKE*cos(angle));
+		loadedAmmo->setScreenY(screenY-AMMO_OVERTAKE*sin(angle));
+		loadedAmmo->compute();
 		loadedAmmo->draw();
 	}
 	// On dessine le canon
-	GRRLIB_DrawImg(screenX, screenY, cannonLook, -angle, 1, 1, WHITE);
+	GRRLIB_DrawImg(screenX, screenY, cannonLook, -angle*180/PI, 1, 1, WHITE);
 }
 
 void Cannon::rotateLeft() {
-	if (angle + rotationStep <= angleOffSet + angleRange)
-		angle += rotationStep;
-	else
-		angle = angleOffSet + angleRange;
-	if (loadedAmmo)
-		loadedAmmo->setAngle(-angle * PI / 180);
+	if (angle + rotationStep < angleMax) angle += rotationStep;
+	else angle = angleMax;
+	if (loadedAmmo) loadedAmmo->setAngle(-angle);
 }
 
 void Cannon::rotateRight() {
-	if (angle - rotationStep >= angleOffSet)
-		angle -= rotationStep;
-	else
-		angle = angleOffSet;
-	if (loadedAmmo)
-		loadedAmmo->setAngle(-angle * PI / 180);
+	if (angle - rotationStep > angleMin) angle -= rotationStep;
+	else angle = angleMin;
+	if (loadedAmmo) loadedAmmo->setAngle(-angle);
 }
 
 void Cannon::incStrength(Manager* manager){
@@ -144,8 +133,8 @@ void Cannon::incStrength(Manager* manager){
 }
 
 void Cannon::shoot(Manager* manager) {
-	float topCos = cos(angle * PI / 180);
-	float topSin = sin(angle * PI / 180);
+	float topCos = cos(angle);
+	float topSin = sin(angle);
 	// Si il n'y a pas de munition dans le canon
 	if (!loadedAmmo) return;
 	// Saturation du canon
@@ -162,6 +151,7 @@ void Cannon::shoot(Manager* manager) {
 	loadedAmmo->getCalcX()->setB(strength * topCos); // X
 	loadedAmmo->getCalcY()->setB(-strength * topSin); // Y
 	// On confie la munition au manager
+	loadedAmmo->fire();
 	manager->addAmmosToDraw(loadedAmmo);
 	loadedAmmo = NULL;
 	strength = 0;
@@ -170,7 +160,7 @@ void Cannon::shoot(Manager* manager) {
 void Cannon::reload() {
 	if (!loadedAmmo)
 		if (reloadTime > RELOAD_TIME) {
-			loadedAmmo = new CannonBall(-angle * PI / 180, wind, &ammoLook, owner);
+			loadedAmmo = new CannonBall(-angle, wind, &ammoLook, owner);
 			reloadTime = 0;
 		} else if(!stillHeld){
 			reloadTime++;

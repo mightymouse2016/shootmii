@@ -11,6 +11,10 @@ private:
 	float y;
 public:
 	Coordinates(const float _x = 0, const float _y = 0);
+	int getX() const;
+	int getY() const;
+	void setX(const int _x);
+	void setY(const int _y);
 };
 
 class Function {

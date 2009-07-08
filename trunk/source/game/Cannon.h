@@ -13,10 +13,8 @@ const int CROSS_WIDTH(24);
 
 const float DEFAULT_POWER(75);
 const float CANNON_LENGTH(20.);
-const float INIT_ANGLE(45.);
-const float ROTATION_STEP(1.);
-const float ROTATION_RANGE(90.);
-const float ANGLE_OFFSET(90.);
+const float INIT_ANGLE(0);
+const float ROTATION_STEP(.01);
 
 const float STRENGTHEN_STEP(1.5);
 
@@ -30,8 +28,8 @@ const u8 RELOAD_TIME(60);
 
 class Cannon {
 private:
-	float angleOffSet;
-	float angleRange;
+	float angleMin;
+	float angleMax;
 	float angle;
 	float rotationStep;
 	Wind* wind;
@@ -47,7 +45,7 @@ private:
 	Player* owner;
 	bool stillHeld;
 public:
-	Cannon(const float _angleOffSet, const float _angleRange, const float _angle, const float _rotationStep, Wind* _wind, Player* _owner, bool _player);
+	Cannon(const float _angleMin, const float _angleMax, const float _angle, const float _rotationStep, Wind* _wind, Player* _owner, bool _player);
 	~Cannon();
 	void init();
 	int getStrength() const;

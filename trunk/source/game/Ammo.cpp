@@ -15,14 +15,32 @@ Ammo::Ammo(
 	angle(_angle),
 	destroyed(false),
 	outOfCannon(false),
+	fired(false),
 	ammoLook(_ammoLook),
 	owner(_owner)
 {
+	skeleton.reserve(5);
+	rayons.reserve(5);
+	alphas.reserve(5);
 
+	skeleton.push_back(Coordinates(0,-80));
+	skeleton.push_back(Coordinates(70,-20));
+	skeleton.push_back(Coordinates(70,80));
+	skeleton.push_back(Coordinates(-70,80));
+	skeleton.push_back(Coordinates(-70,-20));
+
+
+	// précalculs, passage en coordonnées polaires
+	for(unsigned int i=0,x,y;i<5;i++){
+		x = skeleton[i].getX();
+		y = skeleton[i].getY();
+		rayons.push_back(sqrt(x*x+y*y));
+		alphas.push_back(atan2(y,x));
+	}
 }
 
 Ammo::~Ammo() {
-	// NOTHING TO DO
+	skeleton.clear();
 }
 
 void Ammo::incT() {
@@ -50,10 +68,20 @@ int Ammo::getRow() const{
 }
 
 void Ammo::compute() {
-	incT();
-	screenX = (*calcX)(t);
-	screenY = (*calcY)(t);
-	angle = atan2((*calcY)[t],(*calcX)[t]);
+	if (fired) {
+		incT();
+		screenX = (*calcX)(t);
+		screenY = (*calcY)(t);
+		angle = atan2((*calcY)[t],(*calcX)[t]);
+	}
+
+	int centerX = screenX+width/2;
+	int centerY = screenY+height/2;
+	for (unsigned int i=0;i<skeleton.size();i++){
+		skeleton[i].setX(centerX+rayons[i]*cos(alphas[i]+angle));
+		skeleton[i].setY(centerY+rayons[i]*sin(alphas[i]+angle));
+	}
+
 	if (!isOutOfCannon())if (!cellIntersect(owner)) out();
 }
 
@@ -86,8 +114,14 @@ bool Ammo::isTooLow() const{
 }
 
 bool Ammo::hitTheGround(Terrain* terrain) const{
-	if (terrain->getType(getCol(), getRow()) == EMPTY) return false;
-		return true;
+	/*
+	if (ammoIntersect(terrain->getGrille()[getRow()][getCol()])) return true;
+	if (ammoIntersect(terrain->getGrille()[getRow()+1][getCol()])) return true;
+	if (ammoIntersect(terrain->getGrille()[getRow()][getCol()+1])) return true;
+	if (ammoIntersect(terrain->getGrille()[getRow()-1][getCol()])) return true;
+	if (ammoIntersect(terrain->getGrille()[getRow()][getCol()-1])) return true;
+	*/
+	return false;
 }
 
 Ammo* Ammo::hitAnotherAmmo(list<Ammo*>* ammoList) const{
@@ -104,4 +138,34 @@ Player* Ammo::hitAPlayer(Player* player1, Player* player2) const{
 	return NULL;
 }
 
+void Ammo::drawSkeleton() const{
+	int s = skeleton.size();
+	for(int i=0,j;i<s;i++){
+		if (i+1 == s) j = 0;
+		else j = i+1;
+		GRRLIB_Line(skeleton[i].getX(),skeleton[i].getY(),skeleton[j].getX(),skeleton[j].getY(),BLACK);
+	}
 }
+
+void Ammo::fire(){
+	fired = true;
+}
+
+bool Ammo::ammoIntersect(const TerrainCell& c) const{
+	int screenX = c.getScreenX();
+	int screenY = c.getScreenY();
+	int x,y;
+	//Pour chaque point on vérifie qu'il n'est pas dans le quadrilatère.
+	for (unsigned int i=0;i<skeleton.size();i++){
+		x = skeleton[i].getX();
+		y = skeleton[i].getY();
+		if (x >= screenX &&
+			x <= screenX + c.getWidth() &&
+			y <= screenY + c.getHeight() &&
+			y >= c.getAbsoluteHeight(x)) return true;
+	}
+	return false;
+}
+
+}
+

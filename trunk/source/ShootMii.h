@@ -27,6 +27,7 @@ namespace shootmii {
   class PolyDeg2;
   class Function;
   class Console;
+  class Coordinates;
 }
 
 // GRRLib
