@@ -10,7 +10,7 @@ const float TIME_STEP(.1);
 const int AMMO_WEIGHT(1);
 const int AMMO_WIDTH(16);
 const int AMMO_HEIGHT(16);
-const int AMMO_OVERTAKE(5); // dépassement de la munition du canon
+const int AMMO_OVERTAKE(50); // dépassement de la munition du canon
 
 class Ammo: public Cell {
 protected:
@@ -18,8 +18,12 @@ protected:
 	Function* calcY;
 	float t;
 	float angle;
+	vector<Coordinates> skeleton;
+	vector<float> rayons;
+	vector<float> alphas;
 	bool destroyed;
 	bool outOfCannon; // pour que le gestionnaire de collision ignore le contact
+	bool fired; // pour savoir si on incrémente le compteur de temps ou non
 	GRRLIB_texImg* ammoLook;
 	Player* owner;
 	Terrain* terrain;
@@ -49,6 +53,9 @@ public:
 	bool hitTheGround(Terrain* terrain) const;
 	Ammo* hitAnotherAmmo(list<Ammo*>* ammoList) const;
 	Player* hitAPlayer(Player* player1, Player* player2) const;
+	void drawSkeleton() const;
+	void fire();
+	bool ammoIntersect(const TerrainCell&) const;
 };
 
 }

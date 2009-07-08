@@ -25,7 +25,7 @@ int Terrain::getCols() const {
 }
 
 int Terrain::getHeight(const int screenX, const int rowIndex) const {
-  return (rowIndex+1)*TERRAIN_CELL_HEIGHT - grille[rowIndex][screenX/TANK_WIDTH].getHeight(screenX%TERRAIN_CELL_WIDTH);
+  return (rowIndex+1)*TERRAIN_CELL_HEIGHT - grille[rowIndex][screenX/TANK_WIDTH].getAbsoluteHeight(screenX%TERRAIN_CELL_WIDTH);
 }
 
 TerrainCell Terrain::getGround(const int colIndex) const {
