@@ -24,7 +24,7 @@ namespace shootmii {
       void draw() const;
       void generate();
       bool contains(float screenX, float screenY) const;
-      int getHeight(const int screenX, const int rowIndex) const;
+      int getHeight(const int screenX) const;
       TerrainCell getGround(const int colIndex) const;
   };
 

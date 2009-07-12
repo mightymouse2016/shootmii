@@ -34,7 +34,7 @@ void TerrainCell::setCell(const CellType _type, const float _y1, const float _y2
   y2 = _y2;
 }
 
-int TerrainCell::getAbsoluteHeight(const int x) const {
+int TerrainCell::getRelativeHeight(const int x) const {
   return height*((y2 - y1)*x/width + y1);
 }
 

@@ -108,9 +108,7 @@ void Player::init() {
 
 void Player::initPosition(Terrain* terrain, float _screenX){
 	screenX = _screenX;
-	int row;
-	for(row=0;terrain->getType((screenX+width/2)/width, row) == EMPTY;row++);
-	screenY = terrain->getHeight(screenX+width/2, row) - height;
+	screenY = terrain->getHeight(screenX+width/2) - height;
 }
 
 void Player::initGame() {

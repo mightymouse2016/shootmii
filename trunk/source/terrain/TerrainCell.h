@@ -48,7 +48,7 @@ public:
 	int getY2() const;
 	void setType(const CellType);
 	void setCell(const CellType, const float, const float);
-	int getAbsoluteHeight(const int x) const;
+	int getRelativeHeight(const int x) const;
 	void draw() const;
 };
 
