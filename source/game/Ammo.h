@@ -10,7 +10,7 @@ const float TIME_STEP(.1);
 const int AMMO_WEIGHT(1);
 const int AMMO_WIDTH(16);
 const int AMMO_HEIGHT(16);
-const int AMMO_OVERTAKE(50); // dépassement de la munition du canon
+const int AMMO_OVERTAKE(5); // dépassement de la munition du canon
 
 class Ammo: public Cell {
 protected:

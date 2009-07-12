@@ -22,7 +22,7 @@ CannonBall::CannonBall(
 }
 
 void CannonBall::draw() const {
-	//GRRLIB_DrawImg(screenX,screenY,*ammoLook,angle*180/PI,1,1,WHITE);
+	GRRLIB_DrawImg(screenX,screenY,*ammoLook,angle*180/PI,1,1,WHITE);
 	drawSkeleton();
 }
 

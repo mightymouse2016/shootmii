@@ -20,22 +20,21 @@ Ammo::Ammo(
 	owner(_owner)
 {
 	skeleton.reserve(5);
-	rayons.reserve(5);
-	alphas.reserve(5);
-
-	skeleton.push_back(Coordinates(0,-80));
-	skeleton.push_back(Coordinates(70,-20));
-	skeleton.push_back(Coordinates(70,80));
-	skeleton.push_back(Coordinates(-70,80));
-	skeleton.push_back(Coordinates(-70,-20));
+	skeleton.push_back(Coordinates(8,0));
+	skeleton.push_back(Coordinates(2,-7));
+	skeleton.push_back(Coordinates(-8,-7));
+	skeleton.push_back(Coordinates(-8,7));
+	skeleton.push_back(Coordinates(2,7));
 
 
+	rayons.reserve(skeleton.size());
+	alphas.reserve(skeleton.size());
 	// précalculs, passage en coordonnées polaires
-	for(unsigned int i=0,x,y;i<5;i++){
+	for(int i=0,x,y;i<5;i++){
 		x = skeleton[i].getX();
 		y = skeleton[i].getY();
-		rayons.push_back(sqrt(x*x+y*y));
-		alphas.push_back(atan2(y,x));
+		rayons.push_back(sqrt(x*x+y*y)); // Module
+		alphas.push_back(atan2(y,x)); // Angle initial
 	}
 }
 
@@ -143,7 +142,7 @@ void Ammo::drawSkeleton() const{
 	for(int i=0,j;i<s;i++){
 		if (i+1 == s) j = 0;
 		else j = i+1;
-		GRRLIB_Line(skeleton[i].getX(),skeleton[i].getY(),skeleton[j].getX(),skeleton[j].getY(),BLACK);
+		GRRLIB_Line(skeleton[i].getX(),skeleton[i].getY(),skeleton[j].getX(),skeleton[j].getY(),WHITE);
 	}
 }
 

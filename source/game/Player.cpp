@@ -59,26 +59,18 @@ float Player::getSpeed(const CellType type, const Direction dir) const {
         return SPEED_NORMAL;
       case SLOPE_UP_05_1:
       case SLOPE_UP_05_2:
-        if(dir == LEFT)
-          return SPEED_FAST;
-        else
-          return SPEED_SLOW;
+        if(dir == LEFT) return SPEED_FAST;
+        return SPEED_SLOW;
       case SLOPE_DOWN_05_1:
       case SLOPE_DOWN_05_2:
-        if(dir == LEFT)
-          return SPEED_SLOW;
-        else
-          return SPEED_FAST;
+        if(dir == LEFT) return SPEED_SLOW;
+        return SPEED_FAST;
       case SLOPE_UP_1:
-        if(dir == LEFT)
-          return SPEED_VERY_FAST;
-        else
-          return SPEED_VERY_SLOW;
+        if(dir == LEFT) return SPEED_VERY_FAST;
+        return SPEED_VERY_SLOW;
       case SLOPE_DOWN_1:
-        if(dir == LEFT)
-          return SPEED_VERY_SLOW;
-        else
-          return SPEED_VERY_FAST;
+        if(dir == LEFT) return SPEED_VERY_SLOW;
+        return SPEED_VERY_FAST;
       default:
         return SPEED_VERY_SLOW;
     }
