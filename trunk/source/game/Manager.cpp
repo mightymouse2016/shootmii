@@ -15,9 +15,9 @@ Manager::Manager(
 			world->getWind(),
 			NULL,
 			true,
+			-PI/2,
 			0,
-			PI/2,
-			PI/4,
+			-PI/4,
 			ROTATION_STEP)),
 	player2(
 		new Player(
@@ -26,9 +26,9 @@ Manager::Manager(
 			world->getWind(),
 			player1,
 			false,
-			PI/2,
-			PI,
-			3*PI/4,
+			-PI,
+			-PI/2,
+			-3*PI/4,
 			ROTATION_STEP)),
 	ammosToDraw(new list<Ammo*>)
 {
