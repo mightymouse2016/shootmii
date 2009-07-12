@@ -24,8 +24,10 @@ int Terrain::getCols() const {
 	return cols;
 }
 
-int Terrain::getHeight(const int screenX, const int rowIndex) const {
-  return (rowIndex+1)*TERRAIN_CELL_HEIGHT - grille[rowIndex][screenX/TANK_WIDTH].getAbsoluteHeight(screenX%TERRAIN_CELL_WIDTH);
+int Terrain::getHeight(const int screenX) const {
+	int row;
+	for(row=0;getType(screenX/TERRAIN_CELL_WIDTH, row) == EMPTY;row++);
+	return (row+1)*TERRAIN_CELL_HEIGHT - grille[row][screenX/TANK_WIDTH].getRelativeHeight(screenX%TERRAIN_CELL_WIDTH);
 }
 
 TerrainCell Terrain::getGround(const int colIndex) const {
@@ -67,58 +69,57 @@ void Terrain::generate() {
 
 	for (int i=1,variation;i<cols-1;i++){
 
-	  if (height == highLimit) variation = -rand()%(VARIATION_TERRAIN + 1);
-	  else if (height == lowLimit) variation = rand()%(VARIATION_TERRAIN + 1);
-	  else variation = rand() % (2* VARIATION_TERRAIN + 1) - VARIATION_TERRAIN;
+		if (height == highLimit) variation = -rand()%(VARIATION_TERRAIN + 1);
+		else if (height == lowLimit) variation = rand()%(VARIATION_TERRAIN + 1);
+		else variation = rand() % (2* VARIATION_TERRAIN + 1) - VARIATION_TERRAIN;
 
-    switch (variation) {
-      case 2:
-        height--;
-        grille[height][i].setCell(SLOPE_UP_1, 0, 1);
-        grille[height+1][i].setType(GROUND_SLOPE_UP_1);
-        for (int j=height+2;j<rows-1;j++) grille[j][i].setType(GROUND_MID);
-        break;
-      case 1:
-        height--;
-        grille[height][i].setCell(SLOPE_UP_05_1, 0, 0.5);
-        grille[height+1][i].setType(GROUND_SLOPE_UP_05_1);
-        i++;
-        grille[height][i].setCell(SLOPE_UP_05_2, 0.5, 1);
-        grille[height+1][i].setType(GROUND_SLOPE_UP_05_2);
-        for (int j=height+2;j<rows-1;j++) grille[j][i-1].setType(GROUND_MID);
-        for (int j=height+2;j<rows-1;j++) grille[j][i].setType(GROUND_MID);
-        break;
-      case 0:
-        grille[height][i].setCell(GRASS_MID, 1, 1);
-        for (int j=height+1;j<rows-1;j++) grille[j][i].setType(GROUND_MID);
-        break;
-      case -1:
-        grille[height][i].setCell(SLOPE_DOWN_05_1, 1, 0.5);
-        grille[height+1][i].setType(GROUND_SLOPE_DOWN_05_1);
-        i++;
-        grille[height][i].setCell(SLOPE_DOWN_05_2, 0.5, 0);
-        grille[height+1][i].setType(GROUND_SLOPE_DOWN_05_2);
-        height++;
-        for (int j=height+1;j<rows-1;j++) grille[j][i-1].setType(GROUND_MID);
-        for (int j=height+1;j<rows-1;j++) grille[j][i].setType(GROUND_MID);
-        break;
-      case -2:
-        grille[height][i].setCell(SLOPE_DOWN_1, 1, 0);
-        grille[height+1][i].setType(GROUND_SLOPE_DOWN_1);
-        height++;
-        for (int j=height+1;j<rows-1;j++) grille[j][i].setType(GROUND_MID);
-        break;
-    }
-
+		switch (variation) {
+		  case 2:
+			height--;
+			grille[height][i].setCell(SLOPE_UP_1, 0, 1);
+			grille[height+1][i].setType(GROUND_SLOPE_UP_1);
+			for (int j=height+2;j<rows-1;j++) grille[j][i].setType(GROUND_MID);
+			break;
+		  case 1:
+			height--;
+			grille[height][i].setCell(SLOPE_UP_05_1, 0, 0.5);
+			grille[height+1][i].setType(GROUND_SLOPE_UP_05_1);
+			i++;
+			grille[height][i].setCell(SLOPE_UP_05_2, 0.5, 1);
+			grille[height+1][i].setType(GROUND_SLOPE_UP_05_2);
+			for (int j=height+2;j<rows-1;j++) grille[j][i-1].setType(GROUND_MID);
+			for (int j=height+2;j<rows-1;j++) grille[j][i].setType(GROUND_MID);
+			break;
+		  case 0:
+			grille[height][i].setCell(GRASS_MID, 1, 1);
+			for (int j=height+1;j<rows-1;j++) grille[j][i].setType(GROUND_MID);
+			break;
+		  case -1:
+			grille[height][i].setCell(SLOPE_DOWN_05_1, 1, 0.5);
+			grille[height+1][i].setType(GROUND_SLOPE_DOWN_05_1);
+			i++;
+			grille[height][i].setCell(SLOPE_DOWN_05_2, 0.5, 0);
+			grille[height+1][i].setType(GROUND_SLOPE_DOWN_05_2);
+			height++;
+			for (int j=height+1;j<rows-1;j++) grille[j][i-1].setType(GROUND_MID);
+			for (int j=height+1;j<rows-1;j++) grille[j][i].setType(GROUND_MID);
+			break;
+		  case -2:
+			grille[height][i].setCell(SLOPE_DOWN_1, 1, 0);
+			grille[height+1][i].setType(GROUND_SLOPE_DOWN_1);
+			height++;
+			for (int j=height+1;j<rows-1;j++) grille[j][i].setType(GROUND_MID);
+			break;
+		}
 	}
 
 	// Tout en bas
 	for (int i=1;i<cols;i++) grille[rows-1][i].setType(GROUND_BOTTOM_MID);
 
 	// Dernière Colonne
-  grille[height][cols-1].setCell(GRASS_RIGHT, 1, 1);
-  for(int i=height+1;i<rows-1;i++) grille[i][cols-1].setType(GROUND_RIGHT);
-  grille[rows-1][cols-1].setType(GROUND_BOTTOM_RIGHT);
+	grille[height][cols-1].setCell(GRASS_RIGHT, 1, 1);
+	for(int i=height+1;i<rows-1;i++) grille[i][cols-1].setType(GROUND_RIGHT);
+	grille[rows-1][cols-1].setType(GROUND_BOTTOM_RIGHT);
 
 }
 

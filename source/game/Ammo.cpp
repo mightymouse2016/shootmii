@@ -30,7 +30,8 @@ Ammo::Ammo(
 	rayons.reserve(skeleton.size());
 	alphas.reserve(skeleton.size());
 	// précalculs, passage en coordonnées polaires
-	for(int i=0,x,y;i<5;i++){
+	int x,y;
+	for(unsigned int i=0;i<skeleton.size();i++){
 		x = skeleton[i].getX();
 		y = skeleton[i].getY();
 		rayons.push_back(sqrt(x*x+y*y)); // Module
@@ -113,13 +114,12 @@ bool Ammo::isTooLow() const{
 }
 
 bool Ammo::hitTheGround(Terrain* terrain) const{
-	/*
-	if (ammoIntersect(terrain->getGrille()[getRow()][getCol()])) return true;
-	if (ammoIntersect(terrain->getGrille()[getRow()+1][getCol()])) return true;
-	if (ammoIntersect(terrain->getGrille()[getRow()][getCol()+1])) return true;
-	if (ammoIntersect(terrain->getGrille()[getRow()-1][getCol()])) return true;
-	if (ammoIntersect(terrain->getGrille()[getRow()][getCol()-1])) return true;
-	*/
+	int screenX, screenY;
+	for (unsigned int i=0;i<skeleton.size();i++){
+		screenY = skeleton[i].getY();
+		screenX = skeleton[i].getX();
+		if (screenX >= 0 && screenX < terrain->getCols()*TERRAIN_CELL_WIDTH && screenY >= terrain->getHeight(screenX)) return true;
+	}
 	return false;
 }
 
@@ -142,7 +142,7 @@ void Ammo::drawSkeleton() const{
 	for(int i=0,j;i<s;i++){
 		if (i+1 == s) j = 0;
 		else j = i+1;
-		GRRLIB_Line(skeleton[i].getX(),skeleton[i].getY(),skeleton[j].getX(),skeleton[j].getY(),WHITE);
+		GRRLIB_Line(skeleton[i].getX(),skeleton[i].getY(),skeleton[j].getX(),skeleton[j].getY(),RED);
 	}
 }
 
@@ -151,17 +151,20 @@ void Ammo::fire(){
 }
 
 bool Ammo::ammoIntersect(const TerrainCell& c) const{
-	int screenX = c.getScreenX();
-	int screenY = c.getScreenY();
+	int xGauche = c.getScreenX();
+	int xDroite = xGauche + c.getWidth();
+	int yBas = c.getScreenY() +  c.getHeight();
+	int yHaut;
 	int x,y;
 	//Pour chaque point on vérifie qu'il n'est pas dans le quadrilatère.
 	for (unsigned int i=0;i<skeleton.size();i++){
 		x = skeleton[i].getX();
 		y = skeleton[i].getY();
-		if (x >= screenX &&
-			x <= screenX + c.getWidth() &&
-			y <= screenY + c.getHeight() &&
-			y >= c.getAbsoluteHeight(x)) return true;
+		yHaut = yBas - c.getRelativeHeight(x-xGauche);
+		if (x >= xGauche && // On est à droite de la bordure gauche
+			x < xDroite && // On est à gauche de la bordure droite
+			y >= yHaut && // On est au dessus de la bordure inférieure
+			y < yBas) return true; // On est en dessous de la bordure supérieure
 	}
 	return false;
 }
