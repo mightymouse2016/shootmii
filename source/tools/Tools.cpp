@@ -1,6 +1,7 @@
 #include "../ShootMii.h"
 
 namespace shootmii {
+  
 GRRLIB_texImg loadFont(const unsigned char font[], unsigned int size,unsigned int tilestart) {
 	GRRLIB_texImg texture_font = GRRLIB_LoadTexture(font);
 	GRRLIB_InitTileSet(&texture_font, size, size, tilestart);

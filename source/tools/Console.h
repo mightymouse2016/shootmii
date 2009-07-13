@@ -15,14 +15,18 @@ static const u8 CONSOLE_TIME_BG_WIDTH = 150;
 
 class Console {
 public:
-	Console(App* _app, u8 _screenY);
+	Console(u8 _screenY);
 	~Console();
 	void draw();
 	void addDebug(string txt);
-
+  bool isDebug() const;
+  void toggleDebug();
+  void setFPS(u8);
+  
 private:
-	App* app;
 	u8 screenY;
+	u8 fps;
+	bool debug;
 	GRRLIB_texImg console_font;
 	vector<string> history;
 	void drawFPS();
