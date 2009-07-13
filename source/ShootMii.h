@@ -28,6 +28,7 @@ namespace shootmii {
   class Function;
   class Console;
   class Coordinates;
+  class ImageBank;
 }
 
 // GRRLib
@@ -51,7 +52,6 @@ namespace shootmii {
 #include "gfx/tank.h"
 #include "gfx/score_panel.h"
 #include "gfx/title_screen.h"
-#include "gfx/game_select_screen.h"
 #include "gfx/heat_jauge.h"
 #include "gfx/life_jauge.h"
 #include "gfx/strength_jauge.h"
@@ -82,6 +82,7 @@ namespace shootmii {
 #include "tools/Colors.h"
 #include "tools/Tools.h"
 #include "tools/Console.h"
+#include "tools/ImageBank.h"
 // Terrain
 #include "terrain/Cell.h"
 #include "terrain/TerrainCell.h"

@@ -5,15 +5,15 @@ namespace shootmii {
 World::World() :
 	wind(new Wind),
 	terrain(new Terrain(N_ROWS, N_COLS, TERRAIN_CELL_WIDTH, TERRAIN_CELL_HEIGHT)),
-	backgroundCloud(GRRLIB_LoadTexture(background_cloud)),
-	foregroundCloud(GRRLIB_LoadTexture(foreground_cloud)),
 	cloudsBackToDraw(new list<Cloud*>),
 	cloudsFrontToDraw(new list<Cloud*>)
 {
+  backgroundCloud = App::imageBank->get(TXT_BG_CLOUD);
+  foregroundCloud = App::imageBank->get(TXT_FG_CLOUD);
 	for (int i = 0; i < N_BACKGROUND_CLOUDS; i++)
-		cloudsBackToDraw->push_back(new Cloud(wind, &backgroundCloud,BACK_CLOUD_WIDTH, BACK_CLOUD_HEIGHT));
+		cloudsBackToDraw->push_back(new Cloud(wind, backgroundCloud,BACK_CLOUD_WIDTH, BACK_CLOUD_HEIGHT));
 	for (int i = 0; i < N_FOREGROUND_CLOUDS; i++)
-		cloudsFrontToDraw->push_back(new Cloud(wind, &foregroundCloud,FRONT_CLOUD_WIDTH, FRONT_CLOUD_HEIGHT));
+		cloudsFrontToDraw->push_back(new Cloud(wind, foregroundCloud,FRONT_CLOUD_WIDTH, FRONT_CLOUD_HEIGHT));
 }
 
 World::~World() {

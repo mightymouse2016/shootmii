@@ -8,14 +8,12 @@ namespace shootmii {
 		  string nick_p2) :
     Screen(_app),
     manager(new Manager(_app, nick_p1,nick_p2)),
-    score_manager(new ScoreManager(_app,manager)),
-    tex_screen(GRRLIB_LoadTexture(game_select_screen))
+    score_manager(new ScoreManager(_app,manager))
 {
     // NOTHING TO BE DONE
 }
 
 GameScreen::~GameScreen() {
-	free(tex_screen.data);
 	delete score_manager;
 	delete manager;
 }

@@ -9,7 +9,6 @@ namespace shootmii {
     private:
       Manager* manager;
       ScoreManager* score_manager;
-      GRRLIB_texImg tex_screen;
     public:
       GameScreen(App* _app, string nick_p1 = "Player 1", string nick_p2 = "Player 2");
       virtual ~GameScreen();
