@@ -11,11 +11,11 @@ Terrain::Terrain(
 		cols(_cols),
 		cellWidth(_cellWidth),
 		cellHeight(_cellHeight),
-		grille(vector<vector<TerrainCell> > (rows,vector<TerrainCell> (cols,TerrainCell(&tileSet,cellWidth,cellHeight)))),
-		tileSet(GRRLIB_LoadTexture(tile_set))
+	  tileSet(App::imageBank->get(TXT_TERRAIN)),
+		grille(vector<vector<TerrainCell> > (rows,vector<TerrainCell> (cols,TerrainCell(tileSet,cellWidth,cellHeight))))
 {
 	// Initialisation des coordonnées contenues dans les Cell
-	GRRLIB_InitTileSet(&tileSet, cellWidth, cellHeight, 0);
+	GRRLIB_InitTileSet(tileSet, cellWidth, cellHeight, 0);
 	for (int i=0;i<rows;i++)
 		for (int j=0;j<cols;j++)
 			grille[i][j].setIndexCoords(j,i);

@@ -15,8 +15,8 @@ namespace shootmii {
       int cols;
       int cellWidth;
       int cellHeight;
+      GRRLIB_texImg* tileSet;
       vector<vector<TerrainCell> > grille; // Vecteur de lignes
-      GRRLIB_texImg tileSet;
     public:
       Terrain(const int _rows, const int _cols, const int _cellWidth, const int _cellHeight);
       int getRows() const;

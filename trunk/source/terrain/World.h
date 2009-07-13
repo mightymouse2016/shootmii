@@ -18,8 +18,8 @@ class World {
 private:
 	Wind* wind;
 	Terrain* terrain;
-	GRRLIB_texImg backgroundCloud;
-	GRRLIB_texImg foregroundCloud;
+	GRRLIB_texImg* backgroundCloud;
+	GRRLIB_texImg* foregroundCloud;
 	list<Cloud*>* cloudsBackToDraw;
 	list<Cloud*>* cloudsFrontToDraw;
 public:

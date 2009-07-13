@@ -2,21 +2,23 @@
 
 namespace shootmii {
 
+  Console* App::console = new Console(225);
+  ImageBank* App::imageBank = new ImageBank;
+  
 App::App() :
   fps(0),
   lastTime(0),
   frameCount(0),
-  debug(false),
   running(true),
   nbFrame(0),
-  screen(TITLE_SCREEN),
-  titleScreen(new TitleScreen(this)),
-  gameScreen(new GameScreen(this)),
-  console(new Console(this, 225))
+  screen(TITLE_SCREEN)
 {
 	srand(time(NULL));
 	GRRLIB_Init();
 	WPAD_Init();
+	App::imageBank->init();
+  titleScreen = new TitleScreen(this);
+  gameScreen = new GameScreen(this);
 }
 
 App::~App() {
@@ -24,6 +26,7 @@ App::~App() {
 	delete titleScreen;
 	delete gameScreen;
 	delete console;
+	delete imageBank;
 	exit(0);
 }
 
@@ -45,8 +48,7 @@ void App::dealEvent() {
 
 	// Gestion du mode DEBUG
 	if (player1Events[DOWN] & WPAD_BUTTON_MINUS) {
-		debug = !debug;
-		console->addDebug("passage en mode debug !!!");
+		console->toggleDebug();
 		return;
 	}
 
@@ -91,14 +93,6 @@ bool App::isRunning() const {
 	return running;
 }
 
-bool App::isDebug() const {
-	return debug;
-}
-
-Console* App::getConsole() const {
-	return console;
-}
-
 u8 App::getFPS() const {
 	return fps;
 }
@@ -114,6 +108,7 @@ void App::calculateFrameRate() {
 		lastTime = currentTime;
 		fps = frameCount;
 		frameCount = 0;
+		App::console->setFPS(fps);
 	}
 }
 

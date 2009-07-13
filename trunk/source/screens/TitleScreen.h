@@ -12,7 +12,7 @@ namespace shootmii {
       void draw();
       void dealEvent(const u32*, const u32*);
     private:
-      GRRLIB_texImg tex_title_screen;
+      GRRLIB_texImg* tex_title_screen;
       GRRLIB_texImg tex_font;
   };
   
