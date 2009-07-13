@@ -2,9 +2,10 @@
 
 namespace shootmii {
 
-Console::Console(App* _app, u8 _screenY) :
-	app(_app),
+Console::Console(u8 _screenY) :
 	screenY(_screenY),
+	fps(0),
+	debug(false),
 	console_font(loadFont(font_console, 8, 0))
 {
 
@@ -15,14 +16,25 @@ Console::~Console() {
 }
 
 void Console::addDebug(string txt) {
-	if (app->isDebug()) {
+	if (debug) {
 		if (history.size() == MAX_HISTORY) history.erase(history.begin());
 		history.push_back(txt);
 	}
 }
 
+bool Console::isDebug() const {
+  return debug;
+}
+
+void Console::toggleDebug() {
+  debug = !debug;
+  if(debug) {
+    this->addDebug("passage en mode debug !!!");
+  }
+}
+
 void Console::draw() {
-	if (app->isDebug()) {
+	if (debug) {
 		drawFPS();
 		drawTime();
 		// Affichage du BACKGROUND
@@ -37,7 +49,11 @@ void Console::drawFPS() {
 	// Affichage du BACKGROUND
 	GRRLIB_Rectangle(CONSOLE_X_OFFSET, CONSOLE_X_OFFSET, CONSOLE_FPS_BG_WIDTH,25, CONSOLE_COLOR, true);
 	// Affichage des FPS
-	GRRLIB_Printf(CONSOLE_X_OFFSET + 10, CONSOLE_X_OFFSET + 10, console_font,WHITE, 1, "FPS: %d", app->getFPS());
+	GRRLIB_Printf(CONSOLE_X_OFFSET + 10, CONSOLE_X_OFFSET + 10, console_font,WHITE, 1, "FPS: %d", fps);
+}
+
+void Console::setFPS(u8 fps) {
+  this->fps = fps;
 }
 
 void Console::drawTime() {
