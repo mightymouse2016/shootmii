@@ -8,6 +8,7 @@ Manager::Manager(
 		string nick_p2) :
 	app(_app),
 	world(new World),
+	
 	player1(
 		new Player(
 			nick_p1,
@@ -20,6 +21,7 @@ Manager::Manager(
 			0,
 			-PI/4,
 			ROTATION_STEP)),
+			
 	player2(
 		new Player(
 			nick_p2,
@@ -32,7 +34,9 @@ Manager::Manager(
 			-PI/2,
 			-3*PI/4,
 			ROTATION_STEP)),
-	ammosToDraw(new list<Ammo*>)
+			
+			ammosToDraw(new list<Ammo*>),
+			explosionsToDraw(new list<Explosion*>)
 {
 	player1->setOpponent(player2);
 }
@@ -44,10 +48,16 @@ Manager::~Manager() {
 	// Destroy Ammos that are still in the air
 	ammosToDraw->clear();
 	delete ammosToDraw;
+	explosionsToDraw->clear();
+	delete explosionsToDraw;
 }
 
 void Manager::addAmmosToDraw(Ammo* ammo) const {
 	ammosToDraw->push_back(ammo);
+}
+
+void Manager::addExplosionsToDraw(Explosion* explosion) const {
+  explosionsToDraw->push_back(explosion);
 }
 
 Player* Manager::getPlayer1() const {
@@ -62,21 +72,30 @@ void Manager::compute() {
 	world->compute();
 	player1->getCannon()->decHeat();
 	player2->getCannon()->decHeat();
-	computeAmmosCollisions();
+	computeAmmos();
+	computeExplosions();
 	computeVictory();
 }
 
 void Manager::draw() const {
 	world->drawBackground();
-	drawAmmos();
 	player1->draw();
 	player2->draw();
+  drawAmmos();
+  drawExplosions();
 	world->drawForeground();
 }
 
 void Manager::drawAmmos() const {
-	for (list<Ammo*>::iterator i=ammosToDraw->begin();i!=ammosToDraw->end();i++)
-		if (!((*i)->isBeingDestroyed())) (*i)->draw();
+	for (list<Ammo*>::iterator i=ammosToDraw->begin();i!=ammosToDraw->end();i++){
+	  (*i)->draw();
+	}
+}
+
+void Manager::drawExplosions() const {
+  for (list<Explosion*>::iterator i=explosionsToDraw->begin();i!=explosionsToDraw->end();i++){
+    (*i)->draw();
+  }
 }
 
 void Manager::computeVictory() {
@@ -92,29 +111,54 @@ void Manager::computeVictory() {
 			player2->setScore(0);
 		}
 		ammosToDraw->clear();
+		explosionsToDraw->clear();
 		world->init();
 		initPlayers();
 	}
 }
 
-void Manager::computeAmmosCollisions() {
+void Manager::computeAmmos() {
 	list<Ammo*>* newAmmosToDraw = new list<Ammo*> ;
-	for (list<Ammo*>::iterator i = ammosToDraw->begin(); i
-			!= ammosToDraw->end(); i++) {
-		if ((*i)->isBeingDestroyed()) delete *i;
-		else if ((*i)->isTooLow()) delete *i;
+	for (list<Ammo*>::iterator i=ammosToDraw->begin();i!=ammosToDraw->end();i++) {
+	  // Le missile vient de rencontrer un autre missile qui a déjà géré la collision
+	  if ((*i)->isDestroyed()) {
+      //app->getConsole()->addDebug("missile détruit en l'air");
+      addExplosionsToDraw((*i)->destruction(HIT_ANOTHER_AMMO));
+      delete *i;
+	  }
+	  // Le missile est trop bas
+	   else if ((*i)->isTooLow()) {
+		  //app->getConsole()->addDebug("missile est trop bas");
+		  delete *i;
+		}
+	  // Missile en dehors de l'ecran
 		else if (!world->getTerrain()->contains((*i)->getScreenX(),(*i)->getScreenY())) {
+		  //app->getConsole()->addDebug("missile en dehors de l'ecran");
 			newAmmosToDraw->push_back(*i);
 			(*i)->compute();
 		}
-		else if ((*i)->hitTheGround(world->getTerrain())) (*i)->destruction();
+	  // Le missile touche le sol : explosion
+		else if ((*i)->hitTheGround(world->getTerrain())){
+		  //app->getConsole()->addDebug("missile touche le sol : explosion");
+		  addExplosionsToDraw((*i)->destruction(HIT_THE_GROUND));
+		  delete *i;
+		}
+	  // Collision inter-missile
 		else if (Ammo * inFrontAmmo = (*i)->hitAnotherAmmo(ammosToDraw)) {
-			(*i)->destruction();
-			inFrontAmmo->destruction();
-		} else if (Player * playerHit = (*i)->hitAPlayer(player1,player2)) {
-			(*i)->destruction();
+		  //app->getConsole()->addDebug("collision inter-missile");
+		  addExplosionsToDraw((*i)->destruction(HIT_ANOTHER_AMMO));
+		  delete *i;
+		  inFrontAmmo->destroy();
+		} 
+		// Collision avec un player
+		else if (Player * playerHit = (*i)->hitAPlayer(player1,player2)) {
+		  //app->getConsole()->addDebug("collision player");
+		  addExplosionsToDraw((*i)->destruction(HIT_A_PLAYER));
+		  delete *i;
 			playerHit->looseLife(25);
-		} else {
+		} 
+		// Il ne se passe encore rien
+		else {
 			newAmmosToDraw->push_back(*i);
 			(*i)->compute();
 		}
@@ -123,8 +167,26 @@ void Manager::computeAmmosCollisions() {
 	ammosToDraw = newAmmosToDraw;
 }
 
+void Manager::computeExplosions() {
+  list<Explosion*>* newExplosionsToDraw = new list<Explosion*>;
+  for (list<Explosion*>::iterator i=explosionsToDraw->begin();i!=explosionsToDraw->end();i++) {
+    if ((*i)->isFinished()) {
+      app->getConsole()->addDebug("explosion est finished ...");
+      delete *i;
+    }
+    else {
+        app->getConsole()->addDebug("explosion en cours ...");
+        (*i)->compute();
+        newExplosionsToDraw->push_back(*i);
+      }
+  }
+  delete explosionsToDraw;
+  explosionsToDraw = newExplosionsToDraw;
+}
+
 void Manager::init() const {
 	ammosToDraw->clear();
+	explosionsToDraw->clear();
 	world->init();
 	player1->init();
 	player2->init();

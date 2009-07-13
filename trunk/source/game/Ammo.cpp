@@ -7,7 +7,7 @@ Ammo::Ammo(
 		GRRLIB_texImg* _ammoLook,
 		Function* _calcX,
 		Function* _calcY,
-		Player* _owner) :
+		Player* _owner):
 	Cell(AMMO_WIDTH, AMMO_HEIGHT),
 	calcX(_calcX),
 	calcY(_calcY),
@@ -16,6 +16,7 @@ Ammo::Ammo(
 	destroyed(false),
 	outOfCannon(false),
 	fired(false),
+	explosionFinished(false),
 	ammoLook(_ammoLook),
 	owner(_owner)
 {
@@ -24,7 +25,7 @@ Ammo::Ammo(
 
 Ammo::~Ammo() {
 	vertices.clear();
-}
+} 
 
 void Ammo::incT() {
 	t += TIME_STEP;
@@ -72,16 +73,12 @@ void Ammo::setAngle(const float _angle){
 	angle = _angle;
 }
 
-void Ammo::destruction() {
+void Ammo::destroy() {
 	destroyed = true;
 }
 
 void Ammo::out(){
 	outOfCannon = true;
-}
-
-bool Ammo::isBeingDestroyed() const {
-	return destroyed;
 }
 
 bool Ammo::isOutOfCannon() const{
@@ -94,6 +91,10 @@ bool Ammo::isOffScreen() const{
 
 bool Ammo::isTooLow() const{
 	return (screenY > SCREEN_HEIGHT);
+}
+
+bool Ammo::isDestroyed() const{
+  return destroyed;
 }
 
 bool Ammo::hitTheGround(Terrain* terrain) const{
