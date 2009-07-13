@@ -5,6 +5,7 @@ namespace shootmii {
 Player::Player(
 		const string & _nickName,
 		const u32 _color,
+		Terrain* _terrain,
 		Wind* _wind,
 		Player* _opponent,
 		bool _player,
@@ -25,7 +26,8 @@ Player::Player(
 	nbGamesWon(0),
 	color(_color),
 	tankLook(GRRLIB_LoadTexture(tank)),
-	opponent(_opponent)
+	opponent(_opponent),
+	terrain(_terrain)
 {
 
 }
@@ -35,16 +37,16 @@ Player::~Player() {
 }
 
 int Player::getCol() const{
-	return (screenX+width/2-TERRAIN_CELL_WIDTH/2)/TERRAIN_CELL_WIDTH;
+	return (screenX+width/2-terrain->getCellWidth()/2)/terrain->getCellWidth();
 }
 
 int Player::getRow() const{
-	return (screenY+height)/TERRAIN_CELL_HEIGHT;
+	return (screenY+height)/terrain->getCellHeight();
 }
 
 void Player::setIndexCoords(const int _colIndex, const int _rowIndex){
-	screenX = _colIndex*TERRAIN_CELL_WIDTH+TERRAIN_CELL_WIDTH/2-width/2;
-	screenY = _rowIndex*TERRAIN_CELL_HEIGHT-height;
+	screenX = _colIndex*terrain->getCellWidth()+terrain->getCellWidth()/2-width/2;
+	screenY = _rowIndex*terrain->getCellHeight()-height;
 }
 
 void Player::setOpponent(Player* _opponent){
@@ -88,7 +90,7 @@ void Player::moveLeft(Terrain* terrain){
 void Player::moveRight(Terrain* terrain){
   TerrainCell cell = terrain->getGround(((int)screenX+width/2)/width);
   float newScreenX = screenX + getSpeed(cell.getType(), RIGHT);
-	if (newScreenX + width >= terrain->getCols()*TERRAIN_CELL_WIDTH) return;
+	if (newScreenX + width >= terrain->getCols()*terrain->getCellWidth()) return;
 	if (newScreenX + width >= opponent->getScreenX() && newScreenX + width <= opponent->getScreenX() + width) return;
 	initPosition(terrain, newScreenX);
 }

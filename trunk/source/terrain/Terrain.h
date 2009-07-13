@@ -13,12 +13,16 @@ namespace shootmii {
     private:
       int rows;
       int cols;
+      int cellWidth;
+      int cellHeight;
       vector<vector<TerrainCell> > grille; // Vecteur de lignes
       GRRLIB_texImg tileSet;
     public:
-      Terrain(const int _rows, const int _cols);
+      Terrain(const int _rows, const int _cols, const int _cellWidth, const int _cellHeight);
       int getRows() const;
       int getCols() const;
+      int getCellWidth() const;
+      int getCellHeight() const;
       const vector<vector<TerrainCell> > & getGrille() const;
       CellType getType(const int colIndex, const int rowIndex) const;
       void draw() const;

@@ -3,11 +3,12 @@
 namespace shootmii {
 
 TerrainCell::TerrainCell(
-  GRRLIB_texImg* _tileSet) :
-    Cell(TERRAIN_CELL_WIDTH,
-        TERRAIN_CELL_HEIGHT),
-        type(EMPTY),
-        tileSet(_tileSet)
+	GRRLIB_texImg* _tileSet,
+	const int _width,
+	const int _height) :
+		Cell(_width,_height),
+		type(EMPTY),
+		tileSet(_tileSet)
 {
 
 }

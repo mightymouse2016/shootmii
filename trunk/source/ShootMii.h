@@ -45,8 +45,8 @@ namespace shootmii {
 // Images
 #include "gfx/ammo_1.h"
 #include "gfx/ammo_2.h"
-#include "gfx/haircross_1.h"
-#include "gfx/haircross_2.h"
+#include "gfx/crosshair_1.h"
+#include "gfx/crosshair_2.h"
 #include "gfx/cannon.h"
 #include "gfx/tank.h"
 #include "gfx/score_panel.h"
@@ -68,11 +68,14 @@ namespace shootmii {
 #include "gfx/font_fun.h"
 #include "gfx/font_military.h"
 #include "gfx/font_score.h"
-// Tools
+
+// Maths
 #include "tools/Coordinates.h"
 #include "tools/Function.h"
 #include "tools/Affine.h"
 #include "tools/PolyDeg2.h"
+
+// Tools
 #include "tools/Colors.h"
 #include "tools/Tools.h"
 #include "tools/Console.h"

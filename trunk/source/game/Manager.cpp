@@ -12,6 +12,7 @@ Manager::Manager(
 		new Player(
 			nick_p1,
 			BLUE,
+			world->getTerrain(),
 			world->getWind(),
 			NULL,
 			true,
@@ -23,6 +24,7 @@ Manager::Manager(
 		new Player(
 			nick_p2,
 			RED,
+			world->getTerrain(),
 			world->getWind(),
 			player1,
 			false,
@@ -131,7 +133,7 @@ void Manager::init() const {
 
 void Manager::initPlayers() const {
 	player1->initPosition(world->getTerrain(), PLAYER_OFFSET);
-	player2->initPosition(world->getTerrain(), world->getTerrain()->getCols()*TERRAIN_CELL_WIDTH - PLAYER_OFFSET);
+	player2->initPosition(world->getTerrain(), world->getTerrain()->getCols()*world->getTerrain()->getCellWidth() - PLAYER_OFFSET);
 	player1->initGame();
 	player2->initGame();
 }
