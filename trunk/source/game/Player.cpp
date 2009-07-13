@@ -25,11 +25,10 @@ Player::Player(
 	cannon(new Cannon(_angleMin, _angleMax, _angle, _rotationStep,_wind, this, _player)),
 	nbGamesWon(0),
 	color(_color),
-	tankLook(GRRLIB_LoadTexture(tank)),
 	opponent(_opponent),
 	terrain(_terrain)
 {
-
+		  tankLook = App::imageBank->get(TXT_TANK);
 }
 
 Player::~Player() {
@@ -122,7 +121,7 @@ void Player::initGame() {
 
 void Player::draw() const {
 	cannon->draw(screenX, screenY);
-	GRRLIB_DrawImg(screenX,screenY,tankLook, 0, 1, 1, WHITE);
+	GRRLIB_DrawImg(screenX,screenY,*tankLook, 0, 1, 1, WHITE);
 }
 
 u8 Player::getLife() const {

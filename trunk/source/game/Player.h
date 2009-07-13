@@ -33,7 +33,7 @@ private:
 	Cannon* cannon;
 	u8 nbGamesWon;
 	u32 color;
-	GRRLIB_texImg tankLook;
+	GRRLIB_texImg* tankLook;
 	Player* opponent;
 	Terrain* terrain;
 public:
