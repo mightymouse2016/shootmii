@@ -14,7 +14,10 @@ private:
 	Player* player1;
 	Player* player2;
 	list<Ammo*>* ammosToDraw;
-	void computeAmmosCollisions();
+	list<Explosion*>* explosionsToDraw;
+	GRRLIB_texImg explosionTiles;
+	void computeAmmos();
+	void computeExplosions();
 	void computeVictory();
 public:
 	Manager(App*, string nick_p1 = "Player 1", string nick_p2 = "Player 2");
@@ -27,9 +30,11 @@ public:
 	void initPlayers() const;
 	void draw() const;
 	void drawAmmos() const;
+	void drawExplosions() const;
 	void init() const;
 	void dealEvent(const u32*, const u32*);
 	void addAmmosToDraw(Ammo*) const;
+	void addExplosionsToDraw(Explosion*) const;
 };
 
 }
