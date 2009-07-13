@@ -43,11 +43,11 @@ Function* Ammo::getCalcY() {
 }
 
 int Ammo::getCol() const{
-	return (screenX+width/2-TERRAIN_CELL_WIDTH/2)/TERRAIN_CELL_WIDTH;
+	return (screenX+width/2-terrain->getCellWidth()/2)/terrain->getCellWidth();
 }
 
 int Ammo::getRow() const{
-	return (screenY+height)/TERRAIN_CELL_HEIGHT;
+	return (screenY+height)/terrain->getCellHeight();
 }
 
 void Ammo::compute() {
@@ -89,7 +89,7 @@ bool Ammo::isOutOfCannon() const{
 }
 
 bool Ammo::isOffScreen() const{
-	return (screenX > SCREEN_WIDTH || screenX < -TERRAIN_CELL_WIDTH);
+	return (screenX > SCREEN_WIDTH || screenX < - terrain->getCellWidth());
 }
 
 bool Ammo::isTooLow() const{
@@ -101,7 +101,7 @@ bool Ammo::hitTheGround(Terrain* terrain) const{
 	for (unsigned int i=0;i<vertices.size();i++){
 		screenY = vertices[i].getY();
 		screenX = vertices[i].getX();
-		if (screenX >= 0 && screenX < terrain->getCols()*TERRAIN_CELL_WIDTH && screenY >= terrain->getHeight(screenX)) return true;
+		if (screenX >= 0 && screenX < terrain->getCols()*terrain->getCellWidth() && screenY >= terrain->getHeight(screenX)) return true;
 	}
 	return false;
 }

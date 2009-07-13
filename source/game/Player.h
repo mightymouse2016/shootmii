@@ -35,10 +35,12 @@ private:
 	u32 color;
 	GRRLIB_texImg tankLook;
 	Player* opponent;
+	Terrain* terrain;
 public:
 	Player(
 		const string & _nickName,
 		const u32 _color,
+		Terrain* _terrain,
 		Wind* _wind,
 		Player* _opponent,
 		bool _player,

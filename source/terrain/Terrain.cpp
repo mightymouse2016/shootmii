@@ -2,17 +2,22 @@
 
 namespace shootmii {
 
-Terrain::Terrain(const int _rows, const int _cols) :
-    rows(_rows),
-    cols(_cols),
-  	grille(vector<vector<TerrainCell> > (
-  	    _rows,
-  			vector<TerrainCell> (_cols, TerrainCell(&tileSet)))),
-  	tileSet(GRRLIB_LoadTexture(tile_set)){
+Terrain::Terrain(
+	const int _rows,
+	const int _cols,
+	const int _cellWidth,
+	const int _cellHeight) :
+		rows(_rows),
+		cols(_cols),
+		cellWidth(_cellWidth),
+		cellHeight(_cellHeight),
+		grille(vector<vector<TerrainCell> > (rows,vector<TerrainCell> (cols,TerrainCell(&tileSet,cellWidth,cellHeight)))),
+		tileSet(GRRLIB_LoadTexture(tile_set))
+{
 	// Initialisation des coordonnées contenues dans les Cell
-  GRRLIB_InitTileSet(&tileSet, TERRAIN_CELL_WIDTH, TERRAIN_CELL_HEIGHT, 0);
-	for (int i = 0; i < rows; i++)
-		for (int j = 0; j < cols; j++)
+	GRRLIB_InitTileSet(&tileSet, cellWidth, cellHeight, 0);
+	for (int i=0;i<rows;i++)
+		for (int j=0;j<cols;j++)
 			grille[i][j].setIndexCoords(j,i);
 }
 
@@ -24,10 +29,20 @@ int Terrain::getCols() const {
 	return cols;
 }
 
+int Terrain::getCellWidth() const{
+	return cellWidth;
+}
+
+int Terrain::getCellHeight() const{
+  return cellHeight;
+}
+
 int Terrain::getHeight(const int screenX) const {
 	int row;
-	for(row=0;getType(screenX/TERRAIN_CELL_WIDTH, row) == EMPTY;row++);
-	return (row+1)*TERRAIN_CELL_HEIGHT - grille[row][screenX/TANK_WIDTH].getRelativeHeight(screenX%TERRAIN_CELL_WIDTH);
+	int col = screenX/cellWidth;
+	int relativeX = screenX%cellWidth;
+	for(row=0;getType(col,row)==EMPTY;row++);
+	return (row+1)*cellHeight - grille[row][screenX/cellWidth].getRelativeHeight(relativeX);
 }
 
 TerrainCell Terrain::getGround(const int colIndex) const {
@@ -125,9 +140,9 @@ void Terrain::generate() {
 
 bool Terrain::contains(float screenX, float screenY) const {
 	if (screenX < 0) return false;
-	else if (screenX > TERRAIN_CELL_WIDTH *cols-1) return false;
+	else if (screenX > cellWidth*cols-1) return false;
 	else if (screenY < 0) return false;
-	else if (screenY > TERRAIN_CELL_HEIGHT*rows-1) return false;
+	else if (screenY > cellHeight*rows-1) return false;
 	return true;
 }
 

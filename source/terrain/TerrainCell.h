@@ -31,7 +31,7 @@ enum CellType {
 	GROUND_BOTTOM_LEFT,
 	GROUND_BOTTOM_MID,
 	GROUND_BOTTOM_RIGHT,
-  EMPTY
+	EMPTY
 };
 
 class TerrainCell: public Cell {
@@ -42,7 +42,7 @@ private:
 	float y2;
 
 public:
-	TerrainCell(GRRLIB_texImg* _tileSet);
+	TerrainCell(GRRLIB_texImg* _tileSet, const int _width, const int _height);
 	CellType getType() const;
 	int getY1() const;
 	int getY2() const;

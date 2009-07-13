@@ -40,7 +40,7 @@ private:
 	u8 reloadTime;
 	GRRLIB_texImg ammoLook;
 	GRRLIB_texImg cannonLook;
-	GRRLIB_texImg hairCross;
+	GRRLIB_texImg crossHair;
 	Ammo* loadedAmmo;
 	Player* owner;
 	bool stillHeld;

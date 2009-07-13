@@ -27,11 +27,11 @@ Cannon::Cannon(
 {
 	if (_player) {
 		ammoLook = GRRLIB_LoadTexture(ammo_1);
-		hairCross = GRRLIB_LoadTexture(haircross_1);
+		crossHair = GRRLIB_LoadTexture(crosshair_1);
 	}
 	else {
 		ammoLook = GRRLIB_LoadTexture(ammo_2);
-		hairCross = GRRLIB_LoadTexture(haircross_2);
+		crossHair = GRRLIB_LoadTexture(crosshair_2);
 	}
 }
 
@@ -100,7 +100,7 @@ void Cannon::draw(const int screenX, const int screenY) const {
 	GRRLIB_DrawImg(
 			centerX+(100-CROSS_WIDTH/2)*cosinus-CROSS_WIDTH/2,
 			centerY+(100-CROSS_WIDTH/2)*sinus-CROSS_WIDTH/2,
-			hairCross,angle*180/PI, 1, 1, WHITE);
+			crossHair,angle*180/PI, 1, 1, WHITE);
 	// On dessine la munition
 	if (loadedAmmo) {
 		loadedAmmo->setScreenX(screenX+AMMO_OVERTAKE*cosinus);
