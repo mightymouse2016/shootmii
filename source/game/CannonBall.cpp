@@ -24,10 +24,11 @@ namespace shootmii {
   }
 
   Explosion* CannonBall::destruction(explosionType _type) {
+    
     switch (_type){
       case HIT_ANOTHER_AMMO:
         return new Explosion(
-          &CANNONBALL_AIR_EXPLOSION,
+          App::imageBank->get(TXT_CANNONBALL_AIR_EXPLOSION),
           screenX+width/2,
           screenY+height,
           CANNONBALL_AIR_EXPLOSION_WIDTH,
@@ -36,7 +37,7 @@ namespace shootmii {
           CANNONBALL_AIR_EXPLOSION_DURATION);
       case HIT_A_PLAYER:
         return new Explosion(
-          &CANNONBALL_HIT_EXPLOSION,
+          App::imageBank->get(TXT_CANNONBALL_HIT_EXPLOSION),
           screenX+width/2,
           screenY+height,
           CANNONBALL_HIT_EXPLOSION_WIDTH,
@@ -45,7 +46,7 @@ namespace shootmii {
           CANNONBALL_HIT_EXPLOSION_DURATION);
       case HIT_THE_GROUND:
         return new Explosion(
-          &CANNONBALL_GROUND_EXPLOSION,
+          App::imageBank->get(TXT_CANNONBALL_GROUND_EXPLOSION),
           screenX+width/2,
           screenY+height,
           CANNONBALL_GROUND_EXPLOSION_WIDTH,

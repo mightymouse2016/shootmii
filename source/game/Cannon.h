@@ -38,9 +38,9 @@ private:
 	u32 blockedTime;
 	u8 heatCool;
 	u8 reloadTime;
-	GRRLIB_texImg ammoLook;
-	GRRLIB_texImg cannonLook;
-	GRRLIB_texImg crossHair;
+	GRRLIB_texImg* ammoLook;
+	GRRLIB_texImg* cannonLook;
+	GRRLIB_texImg* crossHair;
 	Ammo* loadedAmmo;
 	Player* owner;
 	bool stillHeld;

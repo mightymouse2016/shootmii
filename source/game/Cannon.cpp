@@ -20,18 +20,18 @@ Cannon::Cannon(
 	blockedTime(0),
 	heatCool(0),
 	reloadTime(0),
-	cannonLook(GRRLIB_LoadTexture(cannon)),
-	loadedAmmo(new CannonBall(angle,wind,&ammoLook,_owner)),
+	loadedAmmo(new CannonBall(angle,wind,ammoLook,_owner)),
 	owner(_owner),
 	stillHeld(false)
 {
+  cannonLook = App::imageBank->get(TXT_CANNON);
 	if (_player) {
-		ammoLook = GRRLIB_LoadTexture(ammo_1);
-		crossHair = GRRLIB_LoadTexture(crosshair_1);
+	  ammoLook = App::imageBank->get(TXT_AMMO1);
+	  crossHair = App::imageBank->get(TXT_CROSSHAIR1);
 	}
 	else {
-		ammoLook = GRRLIB_LoadTexture(ammo_2);
-		crossHair = GRRLIB_LoadTexture(crosshair_2);
+    ammoLook = App::imageBank->get(TXT_AMMO2);
+    crossHair = App::imageBank->get(TXT_CROSSHAIR2);
 	}
 }
 
@@ -46,7 +46,7 @@ void Cannon::init() {
 	heatCool = 0;
 	reloadTime = 0;
 	if (loadedAmmo) delete loadedAmmo;
-	loadedAmmo = new CannonBall(angle, wind, &ammoLook, owner);
+	loadedAmmo = new CannonBall(angle, wind, ammoLook, owner);
 }
 
 int Cannon::getStrength() const {
@@ -100,7 +100,7 @@ void Cannon::draw(const int screenX, const int screenY) const {
 	GRRLIB_DrawImg(
 			centerX+(100-CROSS_WIDTH/2)*cosinus-CROSS_WIDTH/2,
 			centerY+(100-CROSS_WIDTH/2)*sinus-CROSS_WIDTH/2,
-			crossHair,angle*180/PI, 1, 1, WHITE);
+			*crossHair,angle*180/PI, 1, 1, WHITE);
 	// On dessine la munition
 	if (loadedAmmo) {
 		loadedAmmo->setScreenX(screenX+AMMO_OVERTAKE*cosinus);
@@ -109,7 +109,7 @@ void Cannon::draw(const int screenX, const int screenY) const {
 		loadedAmmo->draw();
 	}
 	// On dessine le canon
-	GRRLIB_DrawImg(screenX, screenY, cannonLook, angle*180/PI, 1, 1, WHITE);
+	GRRLIB_DrawImg(screenX, screenY, *cannonLook, angle*180/PI, 1, 1, WHITE);
 }
 
 void Cannon::rotateLeft() {
@@ -162,7 +162,7 @@ void Cannon::shoot(Manager* manager) {
 void Cannon::reload() {
 	if (!loadedAmmo)
 		if (reloadTime > RELOAD_TIME) {
-			loadedAmmo = new CannonBall(angle, wind, &ammoLook, owner);
+			loadedAmmo = new CannonBall(angle, wind, ammoLook, owner);
 			reloadTime = 0;
 		} else if(!stillHeld){
 			reloadTime++;
