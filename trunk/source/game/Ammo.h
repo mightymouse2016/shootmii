@@ -18,9 +18,9 @@ protected:
 	Function* calcY;
 	float t;
 	float angle;
-	vector<Coordinates> skeleton;
-	vector<float> rayons;
-	vector<float> alphas;
+	vector<Coordinates> vertices;
+	vector<float> radials;
+	vector<float> thetas;
 	bool destroyed;
 	bool outOfCannon; // pour que le gestionnaire de collision ignore le contact
 	bool fired; // pour savoir si on incrémente le compteur de temps ou non
@@ -53,9 +53,10 @@ public:
 	bool hitTheGround(Terrain* terrain) const;
 	Ammo* hitAnotherAmmo(list<Ammo*>* ammoList) const;
 	Player* hitAPlayer(Player* player1, Player* player2) const;
-	void drawSkeleton() const;
 	void fire();
 	bool ammoIntersect(const TerrainCell&) const;
+	void initRadials();
+	void initThetas();
 };
 
 }
