@@ -69,7 +69,10 @@ namespace shootmii {
 #include "gfx/font_military.h"
 #include "gfx/font_score.h"
 // Tools
-#include "tools/Curves.h"
+#include "tools/Coordinates.h"
+#include "tools/Function.h"
+#include "tools/Affine.h"
+#include "tools/PolyDeg2.h"
 #include "tools/Colors.h"
 #include "tools/Tools.h"
 #include "tools/Console.h"

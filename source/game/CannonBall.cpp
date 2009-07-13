@@ -18,12 +18,22 @@ CannonBall::CannonBall(
 		new PolyDeg2(-G/(2*AMMO_WEIGHT),-_vInitY,_yInit),
 		_owner)
 {
+	vertices.reserve(5);
+	vertices.push_back(Coordinates(8,0));
+	vertices.push_back(Coordinates(2,-7));
+	vertices.push_back(Coordinates(-8,-7));
+	vertices.push_back(Coordinates(-8,7));
+	vertices.push_back(Coordinates(2,7));
+
+	// précalculs, passage en coordonnées polaires
+	initRadials();
+	initThetas();
 
 }
 
 void CannonBall::draw() const {
 	GRRLIB_DrawImg(screenX,screenY,*ammoLook,angle*180/PI,1,1,WHITE);
-	drawSkeleton();
+	Ammo::draw();
 }
 
 }

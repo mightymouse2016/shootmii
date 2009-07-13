@@ -19,28 +19,11 @@ Ammo::Ammo(
 	ammoLook(_ammoLook),
 	owner(_owner)
 {
-	skeleton.reserve(5);
-	skeleton.push_back(Coordinates(8,0));
-	skeleton.push_back(Coordinates(2,-7));
-	skeleton.push_back(Coordinates(-8,-7));
-	skeleton.push_back(Coordinates(-8,7));
-	skeleton.push_back(Coordinates(2,7));
 
-
-	rayons.reserve(skeleton.size());
-	alphas.reserve(skeleton.size());
-	// précalculs, passage en coordonnées polaires
-	int x,y;
-	for(unsigned int i=0;i<skeleton.size();i++){
-		x = skeleton[i].getX();
-		y = skeleton[i].getY();
-		rayons.push_back(sqrt(x*x+y*y)); // Module
-		alphas.push_back(atan2(y,x)); // Angle initial
-	}
 }
 
 Ammo::~Ammo() {
-	skeleton.clear();
+	vertices.clear();
 }
 
 void Ammo::incT() {
@@ -77,9 +60,9 @@ void Ammo::compute() {
 
 	int centerX = screenX+width/2;
 	int centerY = screenY+height/2;
-	for (unsigned int i=0;i<skeleton.size();i++){
-		skeleton[i].setX(centerX+rayons[i]*cos(alphas[i]+angle));
-		skeleton[i].setY(centerY+rayons[i]*sin(alphas[i]+angle));
+	for (unsigned int i=0;i<vertices.size();i++){
+		vertices[i].setX(centerX+radials[i]*cos(thetas[i]+angle));
+		vertices[i].setY(centerY+radials[i]*sin(thetas[i]+angle));
 	}
 
 	if (!isOutOfCannon())if (!cellIntersect(owner)) out();
@@ -115,9 +98,9 @@ bool Ammo::isTooLow() const{
 
 bool Ammo::hitTheGround(Terrain* terrain) const{
 	int screenX, screenY;
-	for (unsigned int i=0;i<skeleton.size();i++){
-		screenY = skeleton[i].getY();
-		screenX = skeleton[i].getX();
+	for (unsigned int i=0;i<vertices.size();i++){
+		screenY = vertices[i].getY();
+		screenX = vertices[i].getX();
 		if (screenX >= 0 && screenX < terrain->getCols()*TERRAIN_CELL_WIDTH && screenY >= terrain->getHeight(screenX)) return true;
 	}
 	return false;
@@ -137,12 +120,12 @@ Player* Ammo::hitAPlayer(Player* player1, Player* player2) const{
 	return NULL;
 }
 
-void Ammo::drawSkeleton() const{
-	int s = skeleton.size();
-	for(int i=0,j;i<s;i++){
-		if (i+1 == s) j = 0;
+void Ammo::draw() const{
+	int size = vertices.size();
+	for(int i=0,j;i<size;i++){
+		if (i+1 == size) j = 0;
 		else j = i+1;
-		GRRLIB_Line(skeleton[i].getX(),skeleton[i].getY(),skeleton[j].getX(),skeleton[j].getY(),RED);
+		GRRLIB_Line(vertices[i].getX(),vertices[i].getY(),vertices[j].getX(),vertices[j].getY(),RED);
 	}
 }
 
@@ -157,9 +140,9 @@ bool Ammo::ammoIntersect(const TerrainCell& c) const{
 	int yHaut;
 	int x,y;
 	//Pour chaque point on vérifie qu'il n'est pas dans le quadrilatère.
-	for (unsigned int i=0;i<skeleton.size();i++){
-		x = skeleton[i].getX();
-		y = skeleton[i].getY();
+	for (unsigned int i=0;i<vertices.size();i++){
+		x = vertices[i].getX();
+		y = vertices[i].getY();
 		yHaut = yBas - c.getRelativeHeight(x-xGauche);
 		if (x >= xGauche && // On est à droite de la bordure gauche
 			x < xDroite && // On est à gauche de la bordure droite
@@ -169,5 +152,26 @@ bool Ammo::ammoIntersect(const TerrainCell& c) const{
 	return false;
 }
 
+void Ammo::initRadials(){
+	int x,y,size = vertices.size();
+	radials.reserve(size);
+	for(int i=0;i<size;i++){
+		x = vertices[i].getX();
+		y = vertices[i].getY();
+		radials.push_back(sqrt(x*x+y*y)); // Module
+	}
 }
+
+void Ammo::initThetas(){
+	int x,y,size = vertices.size();
+	thetas.reserve(size);
+	for(int i=0;i<size;i++){
+		x = vertices[i].getX();
+		y = vertices[i].getY();
+		thetas.push_back(atan2(y,x)); // Angle initial
+	}
+}
+
+}
+
 
