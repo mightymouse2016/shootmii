@@ -58,6 +58,9 @@ namespace shootmii {
 #include "gfx/background_cloud.h"
 #include "gfx/foreground_cloud.h"
 #include "gfx/tile_set.h"
+#include "gfx/cannonball_hit_explosion.h"
+#include "gfx/cannonball_air_explosion.h"
+#include "gfx/cannonball_ground_explosion.h"
 
 // Fontes
 #include "gfx/font1.h"
@@ -87,6 +90,7 @@ namespace shootmii {
 #include "terrain/Terrain.h"
 #include "terrain/World.h"
 // Game
+#include "game/Explosion.h"
 #include "game/Cannon.h"
 #include "game/Ammo.h"
 #include "game/CannonBall.h"
