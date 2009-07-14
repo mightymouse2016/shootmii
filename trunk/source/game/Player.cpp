@@ -28,7 +28,7 @@ Player::Player(
 	opponent(_opponent),
 	terrain(_terrain)
 {
-		  tankLook = App::imageBank->get(TXT_TANK);
+	tankLook = App::imageBank->get(TXT_TANK);
 }
 
 Player::~Player() {

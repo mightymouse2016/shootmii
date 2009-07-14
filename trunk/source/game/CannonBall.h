@@ -14,12 +14,12 @@ namespace shootmii {
   const int CANNONBALL_AIR_EXPLOSION_HEIGHT(48);
   const int CANNONBALL_AIR_EXPLOSION_DEPTH(0);
   const int CANNONBALL_AIR_EXPLOSION_DURATION(12);
-  
+
   const int CANNONBALL_HIT_EXPLOSION_WIDTH(64);
   const int CANNONBALL_HIT_EXPLOSION_HEIGHT(64);
   const int CANNONBALL_HIT_EXPLOSION_DEPTH(0);
-  const int CANNONBALL_HIT_EXPLOSION_DURATION(16); 
-  
+  const int CANNONBALL_HIT_EXPLOSION_DURATION(16);
+
   class CannonBall : public Ammo {
 
     public:

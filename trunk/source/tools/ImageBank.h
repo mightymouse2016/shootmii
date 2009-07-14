@@ -4,7 +4,7 @@
 #include "../ShootMii.h"
 
 namespace shootmii {
-  
+
   enum ImageTexture {
     TXT_TITLE_SCREEN,
     TXT_CANNON,
@@ -16,6 +16,7 @@ namespace shootmii {
     TXT_SCORE_PANEL,
     TXT_LIFE_JAUGE,
     TXT_STRENGTH_JAUGE,
+    TXT_STRENGTH_SPRITES,
     TXT_HEAT_JAUGE,
     TXT_TERRAIN,
     TXT_BG_CLOUD,
@@ -23,10 +24,10 @@ namespace shootmii {
     TXT_CANNONBALL_AIR_EXPLOSION,
     TXT_CANNONBALL_HIT_EXPLOSION,
     TXT_CANNONBALL_GROUND_EXPLOSION,
-    
+
     NUMBER_OF_TEXTURES // Utilisé uniquement pour les boucle
   };
-  
+
   class ImageBank {
     public:
       ImageBank();

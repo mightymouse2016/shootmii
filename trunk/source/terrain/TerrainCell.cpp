@@ -8,7 +8,9 @@ TerrainCell::TerrainCell(
 	const int _height) :
 		Cell(_width,_height),
 		type(EMPTY),
-		tileSet(_tileSet)
+		tileSet(_tileSet),
+		y1(1),
+		y2(1)
 {
 
 }
@@ -40,7 +42,21 @@ int TerrainCell::getRelativeHeight(const int x) const {
 }
 
 void TerrainCell::draw() const {
-	  GRRLIB_DrawTile(screenX, screenY, *tileSet, 0, 1, 1, WHITE, type);
+	GRRLIB_DrawTile(screenX, screenY, *tileSet, 0, 1, 1, WHITE, type);
+	if (!App::console->isDebug()) return;
+	if (type == EMPTY) return;
+
+	int x_gauche = screenX;
+	int x_droite = screenX + width;
+	int y_bas = screenY + height;
+	int y_haut_gauche = screenY + (1-y1)*height;
+	int y_haut_droite = screenY + (1-y2)*height;
+
+	GRRLIB_Line(x_gauche,y_haut_gauche,x_droite,y_haut_droite,RED);
+	GRRLIB_Line(x_droite,y_haut_droite,x_droite,y_bas,RED);
+	GRRLIB_Line(x_droite,y_bas,x_gauche,y_bas,RED);
+	GRRLIB_Line(x_gauche,y_bas,x_gauche,y_haut_gauche,RED);
+
 }
 
 }

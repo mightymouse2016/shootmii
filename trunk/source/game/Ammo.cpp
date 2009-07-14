@@ -25,7 +25,7 @@ Ammo::Ammo(
 
 Ammo::~Ammo() {
 	vertices.clear();
-} 
+}
 
 void Ammo::incT() {
 	t += TIME_STEP;
@@ -122,11 +122,16 @@ Player* Ammo::hitAPlayer(Player* player1, Player* player2) const{
 }
 
 void Ammo::draw() const{
+	if (!App::console->isDebug()) return;
 	int size = vertices.size();
 	for(int i=0,j;i<size;i++){
 		if (i+1 == size) j = 0;
 		else j = i+1;
 		GRRLIB_Line(vertices[i].getX(),vertices[i].getY(),vertices[j].getX(),vertices[j].getY(),RED);
+		GRRLIB_Line(vertices[i].getX()-1,vertices[i].getY(),vertices[j].getX()-1,vertices[j].getY(),RED);
+		GRRLIB_Line(vertices[i].getX()+1,vertices[i].getY(),vertices[j].getX()+1,vertices[j].getY(),RED);
+		GRRLIB_Line(vertices[i].getX(),vertices[i].getY()-1,vertices[j].getX(),vertices[j].getY()-1,RED);
+		GRRLIB_Line(vertices[i].getX(),vertices[i].getY()+1,vertices[j].getX(),vertices[j].getY()+1,RED);
 	}
 }
 
