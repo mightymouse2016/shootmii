@@ -11,6 +11,10 @@ const int CANNON_WIDTH(16);
 const int CANNON_HEIGHT(16);
 const int CROSS_WIDTH(24);
 
+const int STRENGHT_JAUGE_STATES(12);
+const int STRENGHT_JAUGE_SPRITE_WIDTH(24);
+const int STRENGHT_JAUGE_SPRITE_HEIGHT(24);
+
 const float DEFAULT_POWER(75);
 const float CANNON_LENGTH(20.);
 const float INIT_ANGLE(0);

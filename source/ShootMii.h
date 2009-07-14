@@ -43,6 +43,7 @@ namespace shootmii {
 #include <list>
 #include <time.h>
 #include <math.h>
+
 // Images
 #include "gfx/ammo_1.h"
 #include "gfx/ammo_2.h"
@@ -55,6 +56,7 @@ namespace shootmii {
 #include "gfx/heat_jauge.h"
 #include "gfx/life_jauge.h"
 #include "gfx/strength_jauge.h"
+#include "gfx/strength_sprites.h"
 #include "gfx/background_cloud.h"
 #include "gfx/foreground_cloud.h"
 #include "gfx/tile_set.h"

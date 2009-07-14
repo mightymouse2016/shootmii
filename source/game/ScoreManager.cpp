@@ -3,13 +3,13 @@
 namespace shootmii {
 
   ScoreManager::ScoreManager(App* _app, Manager* _manager) :
-    app(_app), manager(_manager)   
+    app(_app), manager(_manager)
     {
     tex_font = loadFont(font_score, 48, 48);// 48 c pas la height, c l'indice dans la table ascii
     tex_score_panel = App::imageBank->get(TXT_SCORE_PANEL);
     tex_jauge_life = App::imageBank->get(TXT_LIFE_JAUGE);
     tex_jauge_strength = App::imageBank->get(TXT_STRENGTH_JAUGE);
-    tex_jauge_heat = App::imageBank->get(TXT_HEAT_JAUGE); 
+    tex_jauge_heat = App::imageBank->get(TXT_HEAT_JAUGE);
   }
 
   ScoreManager::~ScoreManager() {
@@ -43,8 +43,7 @@ namespace shootmii {
   }
 
   void ScoreManager::drawBackGround() const {
-    GRRLIB_DrawImg(0, SCREEN_HEIGHT-SCORE_PANEL_HEIGHT, *tex_score_panel, 0, 1,
-        1, WHITE);
+    GRRLIB_DrawImg(0, SCREEN_HEIGHT-SCORE_PANEL_HEIGHT, *tex_score_panel, 0, 1, 1, WHITE);
   }
 
   void ScoreManager::drawScore() const {
@@ -59,18 +58,18 @@ namespace shootmii {
 
   void ScoreManager::drawPlayer(const Player* player) const {
     Cannon* cannon = player->getCannon();
-    
+
     int screenX;
     if (player == manager->getPlayer1()) screenX = 68;
     else screenX = 504;
-    
+
     // On dessine les jauges
-    drawJauge(screenX, 480-29-13*2, 68, 8, 100/*player->getCannon()->getStrength()*/, tex_jauge_strength);
+    drawJauge(screenX, 480-29-13*2, 68, 8, player->getCannon()->getStrength(), tex_jauge_strength);
     drawJauge(screenX, 480-29-13, 68, 8, player->getCannon()->getHeat(), tex_jauge_heat);
     drawJauge(screenX, 480-29, 68, 8, player->getLife(), tex_jauge_life);
     // en cas de surchauffe, rectangle rouge clignotant
     if (cannon->getHeat() == 100 && ticks_to_millisecs(gettime())%FLICKERING_TIME < FLICKERING_TIME/2)
       GRRLIB_Rectangle(screenX,480-42,68,8,RED,1);
-    
+
   }
 }

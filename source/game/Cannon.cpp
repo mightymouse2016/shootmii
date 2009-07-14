@@ -92,15 +92,12 @@ void Cannon::up(){
 void Cannon::draw(const int screenX, const int screenY) const {
 	int centerX = screenX + TANK_ROTATION_AXIS_X;
 	int centerY = screenY + TANK_ROTATION_AXIS_Y;
+	int beginStrenght = CANNON_WIDTH/2+AMMO_OVERTAKE;
+	int strenghtRange = 100-CROSS_WIDTH/2-AMMO_OVERTAKE;
+	int offset;
 	float cosinus = cos(angle);
 	float sinus = sin(angle);
-	// On dessine la jauge de puissance
-	GRRLIB_Line(centerX,centerY,centerX+strength*cos(angle),centerY+strength*sin(angle),RED);
-	// On dessine le réticule de visée
-	GRRLIB_DrawImg(
-			centerX+(100-CROSS_WIDTH/2)*cosinus-CROSS_WIDTH/2,
-			centerY+(100-CROSS_WIDTH/2)*sinus-CROSS_WIDTH/2,
-			*crossHair,angle*180/PI, 1, 1, WHITE);
+
 	// On dessine la munition
 	if (loadedAmmo) {
 		loadedAmmo->setScreenX(screenX+AMMO_OVERTAKE*cosinus);
@@ -110,6 +107,21 @@ void Cannon::draw(const int screenX, const int screenY) const {
 	}
 	// On dessine le canon
 	GRRLIB_DrawImg(screenX, screenY, *cannonLook, angle*180/PI, 1, 1, WHITE);
+
+	// On dessine le réticule de visée
+		GRRLIB_DrawImg(
+				centerX+(100-CROSS_WIDTH/2)*cosinus-CROSS_WIDTH/2,
+				centerY+(100-CROSS_WIDTH/2)*sinus-CROSS_WIDTH/2,
+				*crossHair,angle*180/PI, 1, 1, WHITE);
+
+	// On dessine la jauge de puissance
+		for (int i=0;i<strength*STRENGHT_JAUGE_STATES/100;i++){
+			offset = beginStrenght+i*strenghtRange/STRENGHT_JAUGE_STATES;
+			GRRLIB_DrawTile(
+					centerX+offset*cosinus-STRENGHT_JAUGE_SPRITE_WIDTH/2,
+					centerY+offset*sinus-STRENGHT_JAUGE_SPRITE_HEIGHT/2,
+					*App::imageBank->get(TXT_STRENGTH_SPRITES), 0, 1, 1, WHITE, i);
+		}
 }
 
 void Cannon::rotateLeft() {

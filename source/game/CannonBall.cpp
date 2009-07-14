@@ -19,12 +19,12 @@ namespace shootmii {
   }
 
   void CannonBall::draw() const {
-    GRRLIB_DrawImg(screenX, screenY, *ammoLook, angle*180/PI, 1, 1, WHITE);
-    Ammo::draw();
+	  GRRLIB_DrawImg(screenX, screenY, *ammoLook, angle*180/PI, 1, 1, WHITE);
+	  Ammo::draw();
   }
 
   Explosion* CannonBall::destruction(explosionType _type) {
-    
+
     switch (_type){
       case HIT_ANOTHER_AMMO:
         return new Explosion(
