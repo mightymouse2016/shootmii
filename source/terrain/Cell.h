@@ -9,12 +9,21 @@ class Cell {
 protected:
 	int width;
 	int height;
+	int rotationCenterX;
+	int rotationCenterY;
 	float screenX;
 	float screenY;
 	float angle;
-	
+
 public:
-	Cell(const int _width, const int _height, const float _screenX = 0, const float _screenY = 0);
+	Cell(
+		const int _width,
+		const int _height,
+		const int _rotationCenterX = 0,
+		const int _rotationCenterY = 0,
+		const float _screenX = 0,
+		const float _screenY = 0,
+		const float _angle = 0);
 	int getWidth() const;
 	int getHeight() const;
 	float getScreenX() const;
@@ -29,6 +38,7 @@ public:
 	virtual void setIndexCoords(const int _colIndex, const int _rowIndex);
 	bool cellIntersect(const Cell* c) const;
 };
+
 }
 
 #endif /*CELL_H_*/

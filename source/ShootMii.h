@@ -11,6 +11,7 @@ namespace shootmii {
   class ScoreManager;
   class Manager;
   class Player;
+  class Polygon;
   class Cell;
   class TerrainCell;
   class Wind;
@@ -79,12 +80,14 @@ namespace shootmii {
 #include "tools/Function.h"
 #include "tools/Affine.h"
 #include "tools/PolyDeg2.h"
+#include "tools/Polygon.h"
 
 // Tools
 #include "tools/Colors.h"
 #include "tools/Tools.h"
 #include "tools/Console.h"
 #include "tools/ImageBank.h"
+
 // Terrain
 #include "terrain/Cell.h"
 #include "terrain/TerrainCell.h"
@@ -92,6 +95,7 @@ namespace shootmii {
 #include "terrain/Cloud.h"
 #include "terrain/Terrain.h"
 #include "terrain/World.h"
+
 // Game
 #include "game/Explosion.h"
 #include "game/Cannon.h"
@@ -100,10 +104,12 @@ namespace shootmii {
 #include "game/Player.h"
 #include "game/Manager.h"
 #include "game/ScoreManager.h"
+
 // Screens
 #include "screens/Screen.h"
 #include "screens/GameScreen.h"
 #include "screens/TitleScreen.h"
+
 // Main
 #include "App.h"
 

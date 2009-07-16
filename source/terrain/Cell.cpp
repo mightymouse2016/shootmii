@@ -2,11 +2,21 @@
 
 namespace shootmii {
 
-Cell::Cell(const int _width, const int _height, const float _screenX, const float _screenY) :
+Cell::Cell(
+		const int _width,
+		const int _height,
+		const int _rotationCenterX,
+		const int _rotationCenterY,
+		const float _screenX,
+		const float _screenY,
+		const float _angle) :
 	width(_width),
 	height(_height),
+	rotationCenterX(_rotationCenterX),
+	rotationCenterY(_rotationCenterY),
 	screenX(_screenX),
-	screenY(_screenY)
+	screenY(_screenY),
+	angle(_angle)
 {
 
 }

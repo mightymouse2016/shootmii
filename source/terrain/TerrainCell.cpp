@@ -45,17 +45,8 @@ void TerrainCell::draw() const {
 	GRRLIB_DrawTile(screenX, screenY, *tileSet, 0, 1, 1, WHITE, type);
 	if (!App::console->isDebug()) return;
 	if (type == EMPTY) return;
-
-	int x_gauche = screenX;
-	int x_droite = screenX + width;
-	int y_bas = screenY + height;
-	int y_haut_gauche = screenY + (1-y1)*height;
-	int y_haut_droite = screenY + (1-y2)*height;
-
-	GRRLIB_Line(x_gauche,y_haut_gauche,x_droite,y_haut_droite,RED);
-	GRRLIB_Line(x_droite,y_haut_droite,x_droite,y_bas,RED);
-	GRRLIB_Line(x_droite,y_bas,x_gauche,y_bas,RED);
-	GRRLIB_Line(x_gauche,y_bas,x_gauche,y_haut_gauche,RED);
+	GRRLIB_Line(screenX,screenY+(1-y1)*height,screenX,screenY+height,RED);
+	GRRLIB_Line(screenX,screenY+(1-y1)*height,screenX+width,screenY+(1-y2)*height,RED);
 
 }
 

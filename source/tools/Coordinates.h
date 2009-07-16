@@ -9,12 +9,20 @@ class Coordinates {
 private:
 	float x;
 	float y;
+	float angle;
+	float radial;
 public:
-	Coordinates(const float _x = 0, const float _y = 0);
-	int getX() const;
-	int getY() const;
-	void setX(const int _x);
-	void setY(const int _y);
+	Coordinates(const float x = 0, const float y = 0);
+	float getX() const;
+	float getY() const;
+	float getAngle() const;
+	float getRadial() const;
+	void setX(const float x);
+	void setY(const float y);
+	void setCoordinates(const float _x,const float _y);
+	void grow(const float k);
+	void growX(const float k);
+	void growY(const float k);
 };
 
 // Fonction template qui prends en arguments un objet fonctionnel, un intervalle, un pas et qui retourne une liste de points
