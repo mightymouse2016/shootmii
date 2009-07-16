@@ -4,25 +4,59 @@ namespace shootmii {
 
 Coordinates::Coordinates(const float _x, const float _y) :
 	x(_x),
-	y(_y)
+	y(_y),
+	angle(atan2(y,x)),
+	radial(x*x+y*y)
+
 {
 
 }
 
-int Coordinates::getX() const{
+float Coordinates::getX() const{
 	return x;
 }
 
-int Coordinates::getY() const{
+float Coordinates::getY() const{
 	return y;
 }
 
-void Coordinates::setX(const int _x){
-	x = _x;
+float Coordinates::getAngle() const{
+	return angle;
 }
 
-void Coordinates::setY(const int _y){
+float Coordinates::getRadial() const{
+	return radial;
+}
+
+void Coordinates::setX(const float _x){
+	x = _x;
+	radial = x*x+y*y;
+	angle = atan2(y,x);
+}
+
+void Coordinates::setY(const float _y){
 	y = _y;
+	radial = x*x+y*y;
+	angle = atan2(y,x);
+}
+
+void Coordinates::setCoordinates(const float _x,const float _y){
+	x = _x;
+	y = _y;
+	radial = x*x+y*y;
+	angle = atan2(y,x);
+}
+
+void Coordinates::grow(const float k){
+	growX(k);
+	growY(k);
+}
+void Coordinates::growX(const float k){
+	x*=k;
+}
+
+void Coordinates::growY(const float k){
+	y*=k;
 }
 
 }
