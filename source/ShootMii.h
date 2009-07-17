@@ -12,6 +12,7 @@ namespace shootmii {
   class Manager;
   class Player;
   class Polygon;
+  class Rectangle;
   class Cell;
   class TerrainCell;
   class Wind;
@@ -36,6 +37,7 @@ namespace shootmii {
 #include "../../../GRRLib4.0.0/GRRLIB/GRRLIB/GRRLIB.h"
 #include <wiiuse/wpad.h>
 #include <ogc/lwp_watchdog.h>
+
 // Bibliothèques standard
 #include <stdlib.h>
 #include <string>
@@ -81,6 +83,7 @@ namespace shootmii {
 #include "tools/Affine.h"
 #include "tools/PolyDeg2.h"
 #include "tools/Polygon.h"
+#include "tools/Rectangle.h"
 
 // Tools
 #include "tools/Colors.h"
