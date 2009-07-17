@@ -12,23 +12,24 @@ namespace shootmii {
  */
 
 class Polygon{
-private:
+protected:
 	float originX; // L'origine relative
 	float originY;
 	float radial;
 	float spin; //0 -> translation circulaire. 1 -> rotation synchrone. autre -> rotation asynchrone
 	float angle;
 	Polygon* father;
+	list<Polygon*> children; //Pour le destructeur
 	vector<Coordinates> vertices;
 public:
 	Polygon(
-		vector<Coordinates> vertices,
 		const float originX = 0,
 		const float originY = 0,
 		const float radial = 0,
 		const float angle = 0,
 		Polygon* father = NULL
 	);
+	~Polygon();
 
 	const vector<Coordinates>& getVertices() const;
 	vector<Coordinates>* getAbsoluteVertices() const;
@@ -51,6 +52,8 @@ public:
 	void setSpin(const float spin);
 	void setAngle(const float angle);
 	void setFather(Polygon* father);
+
+	void addChild(Polygon * child);
 
 	void rotate(const float deltaAngle);
 	void lengthenRadial(const float deltaRadial);

@@ -3,7 +3,6 @@
 namespace shootmii {
 
 Polygon::Polygon(
-	vector<Coordinates> _vertices,
 	const float _originX,
 	const float _originY,
 	const float _radial,
@@ -13,10 +12,13 @@ Polygon::Polygon(
 		originY(_originY),
 		radial(_radial),
 		angle(_angle),
-		father(_father),
-		vertices(_vertices)
+		father(_father)
 {
 	// NOTHING TO DO
+}
+
+Polygon::~Polygon(){
+	children.clear();
 }
 
 const vector<Coordinates>& Polygon::getVertices() const{
@@ -114,6 +116,11 @@ void Polygon::setFather(Polygon* _father){
 	father = _father;
 }
 
+void Polygon::addChild(Polygon * child){
+	children.push_front(child);
+	child->setFather(this);
+}
+
 void Polygon::rotate(const float deltaAngle){
 	angle += deltaAngle;
 }
@@ -141,17 +148,16 @@ void Polygon::grow(const float k){
 }
 
 void Polygon::draw() const{
-	int originX = getAbsoluteOriginX();
-	int originY = getAbsoluteOriginY();
-	int size = vertices.size();
+	vector<Coordinates>* verticesRotated = getAbsoluteVertices();
+	int size = verticesRotated->size();
 	for(int i=0,j;i<size;i++){
 		if (i+1 == size) j = 0;
 		else j = i+1;
 		GRRLIB_Line(
-			originX + vertices[i].getX(),
-			originY + vertices[i].getY(),
-			originX + vertices[j].getX(),
-			originY + vertices[j].getY(),RED);
+			(*verticesRotated)[i].getX(),
+			(*verticesRotated)[i].getY(),
+			(*verticesRotated)[j].getX(),
+			(*verticesRotated)[j].getY(),RED);
 	}
 }
 

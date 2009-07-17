@@ -9,8 +9,6 @@ class Cell {
 protected:
 	int width;
 	int height;
-	int rotationCenterX;
-	int rotationCenterY;
 	float screenX;
 	float screenY;
 	float angle;
@@ -19,8 +17,6 @@ public:
 	Cell(
 		const int _width,
 		const int _height,
-		const int _rotationCenterX = 0,
-		const int _rotationCenterY = 0,
 		const float _screenX = 0,
 		const float _screenY = 0,
 		const float _angle = 0);

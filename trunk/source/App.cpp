@@ -4,7 +4,7 @@ namespace shootmii {
 
   Console* App::console = new Console(225);
   ImageBank* App::imageBank = new ImageBank;
-  
+
 App::App() :
   fps(0),
   lastTime(0),
@@ -17,8 +17,8 @@ App::App() :
 	GRRLIB_Init();
 	WPAD_Init();
 	App::imageBank->init();
-  titleScreen = new TitleScreen(this);
-  gameScreen = new GameScreen(this);
+	titleScreen = new TitleScreen(this);
+	gameScreen = new GameScreen(this);
 }
 
 App::~App() {
