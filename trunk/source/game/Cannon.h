@@ -9,7 +9,10 @@ const float PI(3.14159265);
 
 const int CANNON_WIDTH(16);
 const int CANNON_HEIGHT(16);
-const int CROSS_WIDTH(24);
+
+const int CROSSHAIR_WIDTH(24);
+const int CROSSHAIR_HEIGHT(24);
+const int CROSSHAIR_OVERTAKE(100);
 
 const int STRENGHT_JAUGE_STATES(12);
 const int STRENGHT_JAUGE_SPRITE_WIDTH(24);
@@ -29,6 +32,11 @@ const u32 CLOCK_RANGE(5000);
 const u32 BLOCKING_TIME(2000);
 const u32 FLICKERING_TIME(500);
 const u8 RELOAD_TIME(60);
+
+enum CannonChild{
+	CHILD_CROSSHAIR,
+	CHILD_AMMO
+};
 
 class Cannon : public Rectangle{
 private:

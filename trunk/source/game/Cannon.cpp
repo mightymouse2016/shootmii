@@ -23,16 +23,20 @@ Cannon::Cannon(
 	loadedAmmo(new CannonBall(angle,wind,ammoLook,_owner)),
 	stillHeld(false)
 {
+	GRRLIB_texImg *crossHair_image, *ammo_Image;
 	switch (_playerNumber){
 	case 1:
-		ammoLook = App::imageBank->get(TXT_AMMO1);
-		//crossHair = App::imageBank->get(TXT_CROSSHAIR1);
+		ammo_Image = App::imageBank->get(TXT_AMMO1);
+		crossHair_image = App::imageBank->get(TXT_CROSSHAIR1);
 		break;
 	case 2:
-		ammoLook = App::imageBank->get(TXT_AMMO2);
-		//crossHair = App::imageBank->get(TXT_CROSSHAIR2);
+		ammo_Image = App::imageBank->get(TXT_AMMO2);
+		crossHair_image = App::imageBank->get(TXT_CROSSHAIR2);
 		break;
 	}
+	ammoLook = ammo_Image;
+	vertices.reserve(2);
+	addChild(new Rectangle(CROSSHAIR_WIDTH, CROSSHAIR_HEIGHT, 0, 0, CROSSHAIR_OVERTAKE, angle, 0, 1, crossHair_image, _owner));
 }
 
 Cannon::~Cannon() {
