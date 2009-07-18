@@ -34,7 +34,7 @@ protected:
 	GRRLIB_texImg* ammoLook;
 	Player* owner;
 	Terrain* terrain;
-	
+
 public:
 	Ammo(
 		const float _angle,

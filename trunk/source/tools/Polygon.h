@@ -18,21 +18,29 @@ protected:
 	float radial;
 	float spin; //0 -> translation circulaire. 1 -> rotation synchrone. autre -> rotation asynchrone
 	float angle;
+	float polygonAngle;
 	Polygon* father;
-	list<Polygon*> children; //Pour le destructeur
+	vector<Polygon*> children; //Pour le destructeur
 	vector<Coordinates> vertices;
+	Coordinates drawOrigin;
+	GRRLIB_texImg* image;
 public:
 	Polygon(
 		const float originX = 0,
 		const float originY = 0,
 		const float radial = 0,
 		const float angle = 0,
-		Polygon* father = NULL
-	);
+		const float polygonAngle = 0,
+		const float spin = 1,
+		Polygon* father = NULL,
+		Coordinates drawOrigin = Coordinates(0,0),
+		GRRLIB_texImg* image = NULL);
 	~Polygon();
 
 	const vector<Coordinates>& getVertices() const;
-	vector<Coordinates>* getAbsoluteVertices() const;
+	vector<Coordinates> getRotatedVertices() const;
+	const Coordinates& getDrawOrigin() const;
+	const Coordinates getRotatedDrawOrigin() const;
 	int getOriginX() const;
 	int getOriginY() const;
 	int getAbsoluteOriginX() const;
@@ -44,6 +52,9 @@ public:
 	int getRadial() const;
 	float getSpin() const;
 	float getAngle() const;
+	float getAbsoluteAngle() const;
+	float getPolygonAngle() const;
+	float getAbsolutePolygonAngle() const;
 	Polygon* getFather() const;
 
 	void setOriginX(const int originX);

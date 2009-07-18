@@ -9,8 +9,6 @@ class Coordinates {
 private:
 	float x;
 	float y;
-	float angle;
-	float radial;
 public:
 	Coordinates(const float x = 0, const float y = 0);
 	float getX() const;

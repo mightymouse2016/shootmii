@@ -66,7 +66,7 @@ void Ammo::compute() {
 		vertices[i].setY(centerY+radials[i]*sin(thetas[i]+angle));
 	}
 
-	if (!isOutOfCannon())if (!cellIntersect(owner)) out();
+	//if (!isOutOfCannon())if (!cellIntersect(owner)) out();
 }
 
 void Ammo::setAngle(const float _angle){
@@ -116,8 +116,10 @@ Ammo* Ammo::hitAnotherAmmo(list<Ammo*>* ammoList) const{
 
 Player* Ammo::hitAPlayer(Player* player1, Player* player2) const{
 	if (!isOutOfCannon()) return NULL;
+	/*
 	if (cellIntersect(player1)) return player1;
 	if (cellIntersect(player2)) return player2;
+	*/
 	return NULL;
 }
 

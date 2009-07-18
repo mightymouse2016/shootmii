@@ -2,43 +2,35 @@
 
 namespace shootmii {
 
-Manager::Manager(
-		App* _app,
-		string nick_p1,
-		string nick_p2) :
+Manager::Manager(App* _app) :
 	app(_app),
 	world(new World),
-	
+
 	player1(
 		new Player(
-			nick_p1,
-			BLUE,
 			world->getTerrain(),
 			world->getWind(),
-			NULL,
-			true,
+			1,
+			0,
+			PI/2,
+			PI/4,
+			ROTATION_STEP)),
+
+	player2(
+		new Player(
+			world->getTerrain(),
+			world->getWind(),
+			2,
 			-PI/2,
 			0,
 			-PI/4,
 			ROTATION_STEP)),
-			
-	player2(
-		new Player(
-			nick_p2,
-			RED,
-			world->getTerrain(),
-			world->getWind(),
-			player1,
-			false,
-			-PI,
-			-PI/2,
-			-3*PI/4,
-			ROTATION_STEP)),
-			
+
 			ammosToDraw(new list<Ammo*>),
 			explosionsToDraw(new list<Explosion*>)
 {
 	player1->setOpponent(player2);
+	player2->setOpponent(player1);
 }
 
 Manager::~Manager() {
@@ -149,14 +141,14 @@ void Manager::computeAmmos() {
 		  addExplosionsToDraw((*i)->destruction(HIT_ANOTHER_AMMO));
 		  delete *i;
 		  inFrontAmmo->destroy();
-		} 
+		}
 		// Collision avec un player
 		else if (Player * playerHit = (*i)->hitAPlayer(player1,player2)) {
 		  //app->getConsole()->addDebug("collision player");
 		  addExplosionsToDraw((*i)->destruction(HIT_A_PLAYER));
 		  delete *i;
 			playerHit->looseLife(25);
-		} 
+		}
 		// Il ne se passe encore rien
 		else {
 			newAmmosToDraw->push_back(*i);

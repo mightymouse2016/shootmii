@@ -30,11 +30,10 @@ const u32 BLOCKING_TIME(2000);
 const u32 FLICKERING_TIME(500);
 const u8 RELOAD_TIME(60);
 
-class Cannon {
+class Cannon : public Rectangle{
 private:
 	float angleMin;
 	float angleMax;
-	float angle;
 	float rotationStep;
 	Wind* wind;
 	float strength; // 0 -> 100
@@ -43,13 +42,17 @@ private:
 	u8 heatCool;
 	u8 reloadTime;
 	GRRLIB_texImg* ammoLook;
-	GRRLIB_texImg* cannonLook;
-	GRRLIB_texImg* crossHair;
 	Ammo* loadedAmmo;
-	Player* owner;
 	bool stillHeld;
 public:
-	Cannon(const float _angleMin, const float _angleMax, const float _angle, const float _rotationStep, Wind* _wind, Player* _owner, bool _player);
+	Cannon(
+		const float angleMin,
+		const float angleMax,
+		const float angle,
+		const float rotationStep,
+		Wind* wind,
+		Player* owner,
+		int playerNumber);
 	~Cannon();
 	void init();
 	int getStrength() const;
