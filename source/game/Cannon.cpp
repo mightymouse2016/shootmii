@@ -9,10 +9,10 @@ Cannon::Cannon(
 		const float _rotationStep,
 		Wind* _wind,
 		Player* _owner,
-		bool _player) :
+		int _playerNumber) :
+	Rectangle(CANNON_WIDTH,CANNON_HEIGHT,0,0,TANK_HEIGHT/4,0,_angle,1,App::imageBank->get(TXT_CANNON),_owner),
 	angleMin(_angleMin),
 	angleMax(_angleMax),
-	angle(_angle),
 	rotationStep(_rotationStep),
 	wind(_wind),
 	strength(0),
@@ -21,17 +21,17 @@ Cannon::Cannon(
 	heatCool(0),
 	reloadTime(0),
 	loadedAmmo(new CannonBall(angle,wind,ammoLook,_owner)),
-	owner(_owner),
 	stillHeld(false)
 {
-  cannonLook = App::imageBank->get(TXT_CANNON);
-	if (_player) {
-	  ammoLook = App::imageBank->get(TXT_AMMO1);
-	  crossHair = App::imageBank->get(TXT_CROSSHAIR1);
-	}
-	else {
-    ammoLook = App::imageBank->get(TXT_AMMO2);
-    crossHair = App::imageBank->get(TXT_CROSSHAIR2);
+	switch (_playerNumber){
+	case 1:
+		ammoLook = App::imageBank->get(TXT_AMMO1);
+		//crossHair = App::imageBank->get(TXT_CROSSHAIR1);
+		break;
+	case 2:
+		ammoLook = App::imageBank->get(TXT_AMMO2);
+		//crossHair = App::imageBank->get(TXT_CROSSHAIR2);
+		break;
 	}
 }
 
@@ -46,7 +46,7 @@ void Cannon::init() {
 	heatCool = 0;
 	reloadTime = 0;
 	if (loadedAmmo) delete loadedAmmo;
-	loadedAmmo = new CannonBall(angle, wind, ammoLook, owner);
+	loadedAmmo = new CannonBall(angle, wind, ammoLook, static_cast<Player*>(getFather()));
 }
 
 int Cannon::getStrength() const {
@@ -89,6 +89,7 @@ void Cannon::up(){
 	stillHeld = false;
 }
 
+/*
 void Cannon::draw(const int screenX, const int screenY) const {
 	int centerX = screenX + TANK_ROTATION_AXIS_X;
 	int centerY = screenY + TANK_ROTATION_AXIS_Y;
@@ -123,17 +124,18 @@ void Cannon::draw(const int screenX, const int screenY) const {
 					*App::imageBank->get(TXT_STRENGTH_SPRITES), 0, 1, 1, WHITE, i);
 		}
 }
+*/
 
 void Cannon::rotateLeft() {
-	if (angle - rotationStep > angleMin) angle -= rotationStep;
-	else angle = angleMin;
-	if (loadedAmmo) loadedAmmo->setAngle(angle);
+	if (polygonAngle - rotationStep > angleMin) polygonAngle -= rotationStep;
+	else polygonAngle = angleMin;
+	if (loadedAmmo) loadedAmmo->setAngle(polygonAngle);
 }
 
 void Cannon::rotateRight() {
-	if (angle + rotationStep < angleMax) angle += rotationStep;
-	else angle = angleMax;
-	if (loadedAmmo) loadedAmmo->setAngle(angle);
+	if (polygonAngle + rotationStep < angleMax) polygonAngle += rotationStep;
+	else polygonAngle = angleMax;
+	if (loadedAmmo) loadedAmmo->setAngle(polygonAngle);
 }
 
 void Cannon::incStrength(Manager* manager){
@@ -174,7 +176,7 @@ void Cannon::shoot(Manager* manager) {
 void Cannon::reload() {
 	if (!loadedAmmo)
 		if (reloadTime > RELOAD_TIME) {
-			loadedAmmo = new CannonBall(angle, wind, ammoLook, owner);
+			loadedAmmo = new CannonBall(angle, wind, ammoLook, static_cast<Player*>(getFather()));
 			reloadTime = 0;
 		} else if(!stillHeld){
 			reloadTime++;
@@ -185,5 +187,6 @@ bool Cannon::isLoaded() const{
 	if (loadedAmmo) return true;
 	return false;
 }
+
 
 }

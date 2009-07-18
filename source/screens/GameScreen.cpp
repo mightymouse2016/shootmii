@@ -2,12 +2,9 @@
 
 namespace shootmii {
 
-  GameScreen::GameScreen(
-		  App* _app,
-		  string nick_p1,
-		  string nick_p2) :
+  GameScreen::GameScreen(App* _app) :
     Screen(_app),
-    manager(new Manager(_app, nick_p1,nick_p2)),
+    manager(new Manager(_app)),
     score_manager(new ScoreManager(_app,manager))
 {
     // NOTHING TO BE DONE

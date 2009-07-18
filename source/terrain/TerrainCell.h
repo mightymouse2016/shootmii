@@ -45,8 +45,9 @@ private:
 public:
 	TerrainCell(GRRLIB_texImg* _tileSet, const int _width, const int _height);
 	CellType getType() const;
-	int getY1() const;
-	int getY2() const;
+	float getY1() const;
+	float getY2() const;
+	float getAngle() const;
 	void setType(const CellType);
 	void setCell(const CellType, const float, const float);
 	int getRelativeHeight(const int x) const;

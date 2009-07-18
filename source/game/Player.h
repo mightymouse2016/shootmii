@@ -15,61 +15,53 @@ const float SPEED_NORMAL(1);
 const float SPEED_SLOW(0.5);
 const float SPEED_VERY_SLOW(0.25);
 
-enum Bonus {
-	NORMAL, FIRE, FREEZE
-};
-
 enum Direction {
-  LEFT, RIGHT
+  LEFT,
+  RIGHT
 };
 
-class Player: public Cell {
+enum PlayerChildren{
+	CHILD_CANNON,
+	CHILD_OPPONENT
+};
+
+class Player: public Rectangle {
 private:
-	std::string nickName;
 	int score;
-	u8 life; // 0 -> 100
+	int life; // 0 -> 100
 	bool fury;
-	Bonus bonus;
-	Cannon* cannon;
-	u8 nbGamesWon;
-	u32 color;
-	GRRLIB_texImg* tankLook;
-	Player* opponent;
+	int nbGamesWon;
 	Terrain* terrain;
 public:
 	Player(
-		const string & _nickName,
-		const u32 _color,
-		Terrain* _terrain,
-		Wind* _wind,
-		Player* _opponent,
-		bool _player,
-		const float _angleMin,
-		const float _angleMax,
-		const float _angle,
-		const float _rotationStep = ROTATION_STEP,
-		const u8 _life = 100,
-		const bool _fury = false,
-		Bonus _bonus = NORMAL);
-	~Player();
+		Terrain* terrain,
+		Wind* wind,
+		int playerNumber,
+		const float angleMin,
+		const float angleMax,
+		const float angle,
+		const float rotationStep = ROTATION_STEP,
+		const int life = 100,
+		const bool fury = false);
 	int getCol() const;
 	int getRow() const;
-	u8 getLife() const;
+	int getLife() const;
 	int getScore() const;
 	Cannon* getCannon();
 	Cannon* getCannon() const;
-	void setIndexCoords(const int _colIndex, const int _rowIndex);
+	Player* getOpponent();
+	Player* getOpponent() const;
+	float getSpeed(const CellType type, const Direction dir) const;
 	void setOpponent(Player* _opponent);
 	void moveLeft(Terrain* terrain);
 	void moveRight(Terrain* terrain);
 	void looseLife(u8 lifeAmount);
-	void setScore(const int _score);
+	void setScore(const int score);
 	void incScore();
 	void init();
-	void initPosition(Terrain* terrain, float _screenX);
+	void initPosition(Terrain* terrain, float screenX);
 	void initGame();
-	void draw() const;
-	float getSpeed(const CellType type, const Direction dir) const;
+
 };
 
 }

@@ -19,12 +19,16 @@ CellType TerrainCell::getType() const {
 	return type;
 }
 
-int TerrainCell::getY1() const{
+float TerrainCell::getY1() const{
 	return y1;
 }
 
-int TerrainCell::getY2() const{
+float TerrainCell::getY2() const{
 	return y2;
+}
+
+float TerrainCell::getAngle() const{
+	return atan2(y1-y2,1);
 }
 
 void TerrainCell::setType(CellType _type) {

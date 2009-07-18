@@ -1,7 +1,7 @@
 #include "../ShootMii.h"
 
 namespace shootmii {
-  
+
 GRRLIB_texImg loadFont(const unsigned char font[], unsigned int size,unsigned int tilestart) {
 	GRRLIB_texImg texture_font = GRRLIB_LoadTexture(font);
 	GRRLIB_InitTileSet(&texture_font, size, size, tilestart);
@@ -31,6 +31,10 @@ void drawRectangle(f32 x, f32 y, f32 width, f32 height, u32 colors[4]) {
 	}
 
 	GX_End();
+}
+
+bool segmentIntersect(Coordinates M11, Coordinates M12, Coordinates M21, Coordinates M22){
+	//TODO
 }
 
 }

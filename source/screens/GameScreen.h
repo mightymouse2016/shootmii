@@ -4,13 +4,13 @@
 #include "../ShootMii.h"
 
 namespace shootmii {
-  
+
   class GameScreen : public Screen {
     private:
       Manager* manager;
       ScoreManager* score_manager;
     public:
-      GameScreen(App* _app, string nick_p1 = "Player 1", string nick_p2 = "Player 2");
+      GameScreen(App* _app);
       virtual ~GameScreen();
       void compute();
       void draw();

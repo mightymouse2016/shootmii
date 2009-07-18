@@ -20,7 +20,7 @@ private:
 	void computeExplosions();
 	void computeVictory();
 public:
-	Manager(App*, string nick_p1 = "Player 1", string nick_p2 = "Player 2");
+	Manager(App*);
 	~Manager();
 	// Accesseurs
 	Player* getPlayer1() const;
