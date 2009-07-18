@@ -13,16 +13,7 @@ Rectangle::Rectangle(
 	const float _spin,
 	GRRLIB_texImg* _image,
 	Polygon* _father) :
-		Polygon(
-			_originX,
-			_originY,
-			_radial,
-			_angle,
-			_polygonAngle,
-			_spin,
-			_father,
-			Coordinates(-_width/2,-_height/2),
-			_image)
+		Polygon(_originX,_originY,_radial,_angle,_polygonAngle,_spin,_father,Coordinates(-_width/2,-_height/2),_image)
 {
 	vertices.reserve(4);
 	vertices.push_back(Coordinates(-_width/2,-_height/2));

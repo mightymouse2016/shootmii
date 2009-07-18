@@ -20,7 +20,7 @@ enum Direction {
   RIGHT
 };
 
-enum PlayerChildren{
+enum PlayerChild{
 	CHILD_CANNON,
 	CHILD_OPPONENT
 };
