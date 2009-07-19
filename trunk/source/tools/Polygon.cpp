@@ -58,45 +58,45 @@ const Coordinates Polygon::getRotatedDrawOrigin() const{
 	return Coordinates(drawOriginRadial*cos(angle*spin+polygonAngle+drawOriginAngle),drawOriginRadial*sin(angle*spin+polygonAngle+drawOriginAngle));
 }
 
-int Polygon::getOriginX() const{
+float Polygon::getOriginX() const{
 	return originX;
 }
 
-int Polygon::getOriginY() const{
+float Polygon::getOriginY() const{
 	return originY;
 }
 
-int Polygon::getAbsoluteOriginX() const{
+float Polygon::getAbsoluteOriginX() const{
 	if (father) return father->getAbsoluteX()
 		+ originX*cos(father->getAbsolutePolygonAngle())
 		+ originY*sin(father->getAbsolutePolygonAngle());
 	return originX;
 }
 
-int Polygon::getAbsoluteOriginY() const{
+float Polygon::getAbsoluteOriginY() const{
 	if (father) return father->getAbsoluteY()
 		+ originX*sin(father->getAbsolutePolygonAngle())
 		+ originY*cos(father->getAbsolutePolygonAngle());
 	return originY;
 }
 
-int Polygon::getX() const{
+float Polygon::getX() const{
 	return originX + radial*cos(getAbsoluteAngle());
 }
 
-int Polygon::getY() const{
+float Polygon::getY() const{
 	return originY + radial*sin(getAbsoluteAngle());
 }
 
-int Polygon::getAbsoluteX() const{
+float Polygon::getAbsoluteX() const{
 	return getAbsoluteOriginX() + radial*cos(getAbsoluteAngle());
 }
 
-int Polygon::getAbsoluteY() const{
+float Polygon::getAbsoluteY() const{
 	return getAbsoluteOriginY() + radial*sin(getAbsoluteAngle());
 }
 
-int Polygon::getRadial() const{
+float Polygon::getRadial() const{
 	return radial;
 }
 
@@ -201,11 +201,11 @@ void Polygon::draw() const{
 		// Le rayon
 		GRRLIB_Line(getAbsoluteOriginX(),getAbsoluteOriginY(),getAbsoluteX(),getAbsoluteY(),RED);
 		// L'origine
-		GRRLIB_Line(getAbsoluteOriginX()-4,getAbsoluteOriginY(),getAbsoluteOriginX()+4,getAbsoluteOriginY(),BLACK);
-		GRRLIB_Line(getAbsoluteOriginX(),getAbsoluteOriginY()-4,getAbsoluteOriginX(),getAbsoluteOriginY()+4,BLACK);
+		GRRLIB_Line(getAbsoluteOriginX()-4,getAbsoluteOriginY()-4,getAbsoluteOriginX()+4,getAbsoluteOriginY()+4,BLACK);
+		GRRLIB_Line(getAbsoluteOriginX()+4,getAbsoluteOriginY()-4,getAbsoluteOriginX()-4,getAbsoluteOriginY()+4,BLACK);
 		// La nouvelle origine
-		GRRLIB_Line(getAbsoluteX()-4,getAbsoluteY(),getAbsoluteX()+4,getAbsoluteY(),BLACK);
-		GRRLIB_Line(getAbsoluteX(),getAbsoluteY()-4,getAbsoluteX(),getAbsoluteY()+4,BLACK);
+		GRRLIB_Line(getAbsoluteX()-4,getAbsoluteY()-4,getAbsoluteX()+4,getAbsoluteY()+4,BLACK);
+		GRRLIB_Line(getAbsoluteX()+4,getAbsoluteY()-4,getAbsoluteX()-4,getAbsoluteY()+4,BLACK);
 	} else {
 		// L'objet en lui même (image)
 		GRRLIB_DrawImg(
