@@ -11,6 +11,17 @@ namespace shootmii {
  * ainsi on travaille ici en relatif.
  */
 
+/* Uniquement pour les quadrilatère */
+enum Corner{
+	UP_LEFT,
+	UP_RIGHT,
+	DOWN_RIGHT,
+	DOWN_LEFT
+};
+
+const int ORIGIN_CROSS_WIDTH(2);
+const int ORIGIN_CROSS_HEIGHT(2);
+
 class Polygon{
 protected:
 	float originX; // L'origine relative
@@ -24,6 +35,9 @@ protected:
 	vector<Coordinates> vertices;
 	Coordinates drawOrigin;
 	GRRLIB_texImg* image;
+	int spriteIndex;
+	int spriteWidth;
+	int spriteHeight;
 public:
 	Polygon(
 		const float originX = 0,
@@ -34,7 +48,10 @@ public:
 		const float spin = 1,
 		Polygon* father = NULL,
 		Coordinates drawOrigin = Coordinates(0,0),
-		GRRLIB_texImg* image = NULL);
+		GRRLIB_texImg* image = NULL,
+		const int spriteIndex = 0,
+		const int spriteWidth = 0,
+		const int spriteHeight = 0);
 	~Polygon();
 
 	const vector<Coordinates>& getVertices() const;

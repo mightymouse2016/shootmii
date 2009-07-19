@@ -3,13 +3,6 @@
 
 #include "../ShootMii.h"
 
-enum Corner{
-	UP_LEFT,
-	UP_RIGHT,
-	DOWN_RIGHT,
-	DOWN_LEFT
-};
-
 namespace shootmii{
 
 class Rectangle : public Polygon{

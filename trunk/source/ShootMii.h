@@ -13,7 +13,6 @@ namespace shootmii {
   class Player;
   class Polygon;
   class Rectangle;
-  class Cell;
   class TerrainCell;
   class Wind;
   class Cloud;
@@ -92,7 +91,6 @@ namespace shootmii {
 #include "tools/ImageBank.h"
 
 // Terrain
-#include "terrain/Cell.h"
 #include "terrain/TerrainCell.h"
 #include "terrain/Wind.h"
 #include "terrain/Cloud.h"
