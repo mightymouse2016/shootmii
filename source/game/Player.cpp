@@ -91,7 +91,6 @@ void Player::setOpponent(Player* _opponent){
 	children[CHILD_OPPONENT] = _opponent;
 }
 
-/* Modification */
 void Player::moveLeft(Terrain* terrain){
 	float newOriginX = originX - getSpeed(terrain->getGround(originX/terrain->getCellWidth()).getType(), LEFT);
 	initPosition(terrain, newOriginX);
@@ -112,6 +111,7 @@ void Player::initPosition(Terrain* terrain, float _originX){
 	angle =
 		- PI/2 // -PI/2 car on est orthogonal au terrain !
 		// Moyenne de pente de dans 1/4 de cell et de dans - 1/4  de cell
+		// auncune continuité : + terrain->getGround(originX/terrain->getCellWidth()).getAngle();
 		+ terrain->getGround((originX+getHeight()/4)/terrain->getCellWidth()).getAngle()/2
 		+ terrain->getGround((originX-getHeight()/4)/terrain->getCellWidth()).getAngle()/2;
 	// TODO améliorer la continuité !

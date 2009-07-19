@@ -11,7 +11,10 @@ Polygon::Polygon(
 	const float _spin,
 	Polygon* _father,
 	Coordinates _drawOrigin,
-	GRRLIB_texImg* _image) :
+	GRRLIB_texImg* _image,
+	const int _spriteIndex,
+	const int _spriteWidth,
+	const int _spriteHeight) :
 		originX(_originX),
 		originY(_originY),
 		radial(_radial),
@@ -20,9 +23,14 @@ Polygon::Polygon(
 		polygonAngle(_polygonAngle),
 		father(_father),
 		drawOrigin(_drawOrigin),
-		image(_image)
+		image(_image),
+		spriteIndex(_spriteIndex),
+		spriteWidth(_spriteWidth),
+		spriteHeight(_spriteHeight)
 {
-	// NOTHING TO DO
+	if (spriteWidth && spriteHeight) { // Si c'est un sprite et non une image
+		GRRLIB_InitTileSet(image, spriteWidth, spriteHeight, 0);
+	}
 }
 
 Polygon::~Polygon(){
@@ -186,6 +194,7 @@ void Polygon::draw() const{
 		if (children[i]) children[i]->draw();
 	}
 	if(App::console->isDebug()){
+		if (spriteIndex == -1) return;
 		// Le mode debug (squelette)
 		vector<Coordinates> rotatedVertices = getRotatedVertices();
 		int size = rotatedVertices.size();
@@ -201,17 +210,40 @@ void Polygon::draw() const{
 		// Le rayon
 		GRRLIB_Line(getAbsoluteOriginX(),getAbsoluteOriginY(),getAbsoluteX(),getAbsoluteY(),RED);
 		// L'origine
-		GRRLIB_Line(getAbsoluteOriginX()-4,getAbsoluteOriginY()-4,getAbsoluteOriginX()+4,getAbsoluteOriginY()+4,BLACK);
-		GRRLIB_Line(getAbsoluteOriginX()+4,getAbsoluteOriginY()-4,getAbsoluteOriginX()-4,getAbsoluteOriginY()+4,BLACK);
+		GRRLIB_Line(
+			getAbsoluteOriginX()-ORIGIN_CROSS_WIDTH,
+			getAbsoluteOriginY()-ORIGIN_CROSS_HEIGHT,
+			getAbsoluteOriginX()+ORIGIN_CROSS_WIDTH,
+			getAbsoluteOriginY()+ORIGIN_CROSS_HEIGHT,BLACK);
+		GRRLIB_Line(
+			getAbsoluteOriginX()+ORIGIN_CROSS_WIDTH,
+			getAbsoluteOriginY()-ORIGIN_CROSS_HEIGHT,
+			getAbsoluteOriginX()-ORIGIN_CROSS_WIDTH,
+			getAbsoluteOriginY()+ORIGIN_CROSS_HEIGHT,BLACK);
 		// La nouvelle origine
-		GRRLIB_Line(getAbsoluteX()-4,getAbsoluteY()-4,getAbsoluteX()+4,getAbsoluteY()+4,BLACK);
-		GRRLIB_Line(getAbsoluteX()+4,getAbsoluteY()-4,getAbsoluteX()-4,getAbsoluteY()+4,BLACK);
+		GRRLIB_Line(
+			getAbsoluteX()-ORIGIN_CROSS_WIDTH,
+			getAbsoluteY()-ORIGIN_CROSS_HEIGHT,
+			getAbsoluteX()+ORIGIN_CROSS_WIDTH,
+			getAbsoluteY()+ORIGIN_CROSS_HEIGHT,BLACK);
+		GRRLIB_Line(
+			getAbsoluteX()+ORIGIN_CROSS_WIDTH,
+			getAbsoluteY()-ORIGIN_CROSS_HEIGHT,
+			getAbsoluteX()-ORIGIN_CROSS_WIDTH,
+			getAbsoluteY()+ORIGIN_CROSS_HEIGHT,BLACK);
 	} else {
 		// L'objet en lui même (image)
-		GRRLIB_DrawImg(
-			getAbsoluteX()+getDrawOrigin().getX(),
-			getAbsoluteY()+getDrawOrigin().getY(),
-			*image, getAbsolutePolygonAngle()*180/PI, 1, 1, WHITE);
+		if (spriteWidth && spriteHeight) { // Si c'est un sprite et non une image
+			GRRLIB_DrawTile(
+				getAbsoluteX()+getDrawOrigin().getX(),
+				getAbsoluteY()+getDrawOrigin().getY(),
+				*image, getAbsolutePolygonAngle()*180/PI, 1, 1, WHITE, spriteIndex);
+		} else {
+			GRRLIB_DrawImg(
+				getAbsoluteX()+getDrawOrigin().getX(),
+				getAbsoluteY()+getDrawOrigin().getY(),
+				*image, getAbsolutePolygonAngle()*180/PI, 1, 1, WHITE);
+		}
 	}
 }
 
