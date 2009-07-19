@@ -10,7 +10,7 @@ Cannon::Cannon(
 		Wind* _wind,
 		Player* _owner,
 		int _playerNumber) :
-	Rectangle(CANNON_WIDTH,CANNON_HEIGHT,0,0,TANK_HEIGHT/4,0,_angle,1,App::imageBank->get(TXT_CANNON),_owner),
+	Rectangle(CANNON_WIDTH,CANNON_HEIGHT,TANK_HEIGHT/4,0,_angle,0,0,1,App::imageBank->get(TXT_CANNON),_owner),
 	angleMin(_angleMin),
 	angleMax(_angleMax),
 	rotationStep(_rotationStep),
@@ -20,7 +20,6 @@ Cannon::Cannon(
 	blockedTime(0),
 	heatCool(0),
 	reloadTime(0),
-	loadedAmmo(new CannonBall(angle,wind,ammoLook,_owner)),
 	stillHeld(false)
 {
 	GRRLIB_texImg *crossHair_image, *ammo_Image;
@@ -33,14 +32,18 @@ Cannon::Cannon(
 		ammo_Image = App::imageBank->get(TXT_AMMO2);
 		crossHair_image = App::imageBank->get(TXT_CROSSHAIR2);
 		break;
+	default:
+		ammo_Image = App::imageBank->get(TXT_AMMO1);
+		crossHair_image = App::imageBank->get(TXT_CROSSHAIR1);
+		break;
 	}
-	ammoLook = ammo_Image;
 	vertices.reserve(2);
 	addChild(new Rectangle(CROSSHAIR_WIDTH, CROSSHAIR_HEIGHT, 0, 0, CROSSHAIR_OVERTAKE, angle, 0, 1, crossHair_image, _owner));
+	addChild(new CannonBall(angle,wind,ammo_Image,_owner,static_cast<Player*>(getFather())->getTerrain()));
 }
 
 Cannon::~Cannon() {
-	if (loadedAmmo) delete loadedAmmo;
+	if (isLoaded()) delete getAmmo();
 }
 
 void Cannon::init() {
@@ -49,8 +52,9 @@ void Cannon::init() {
 	blockedTime = 0;
 	heatCool = 0;
 	reloadTime = 0;
-	if (loadedAmmo) delete loadedAmmo;
-	loadedAmmo = new CannonBall(angle, wind, ammoLook, static_cast<Player*>(getFather()));
+	if (isLoaded()) delete getAmmo();
+	setAmmo(new CannonBall(angle, wind, App::imageBank->get(TXT_AMMO1), static_cast<Player*>(getFather()),static_cast<Player*>(getFather())->getTerrain()));
+	getAmmo()->setAngle(angle);
 }
 
 int Cannon::getStrength() const {
@@ -63,6 +67,18 @@ int Cannon::getHeat() const {
 
 int Cannon::getBlockedTime() const {
 	return blockedTime;
+}
+
+Ammo* Cannon::getAmmo(){
+	return static_cast<Ammo*>(children[CHILD_AMMO]);
+}
+
+Ammo* Cannon::getAmmo() const{
+	return static_cast<Ammo*>(children[CHILD_AMMO]);
+}
+
+void Cannon::setAmmo(Ammo* _ammo){
+	children[CHILD_AMMO] = _ammo;
 }
 
 void Cannon::decHeat() {
@@ -131,20 +147,20 @@ void Cannon::draw(const int screenX, const int screenY) const {
 */
 
 void Cannon::rotateLeft() {
-	if (polygonAngle - rotationStep > angleMin) polygonAngle -= rotationStep;
-	else polygonAngle = angleMin;
-	if (loadedAmmo) loadedAmmo->setAngle(polygonAngle);
+	if (angle - rotationStep > angleMin) angle -= rotationStep;
+	else angle = angleMin;
+	if (isLoaded()) getAmmo()->setAngle(angle);
 }
 
 void Cannon::rotateRight() {
-	if (polygonAngle + rotationStep < angleMax) polygonAngle += rotationStep;
-	else polygonAngle = angleMax;
-	if (loadedAmmo) loadedAmmo->setAngle(polygonAngle);
+	if (angle + rotationStep < angleMax) angle += rotationStep;
+	else angle = angleMax;
+	if (isLoaded()) getAmmo()->setAngle(angle);
 }
 
 void Cannon::incStrength(Manager* manager){
 	// Si il n'y a pas de munition dans le canon
-	if (!loadedAmmo) return;
+	if (!isLoaded()) return;
 	if (strength >= 100) {
 		shoot(manager);
 		stillHeld = true;
@@ -153,10 +169,10 @@ void Cannon::incStrength(Manager* manager){
 }
 
 void Cannon::shoot(Manager* manager) {
-	float cosinus = cos(angle);
-	float sinus = sin(angle);
+	float cosinus = cos(getAbsolutePolygonAngle());
+	float sinus = sin(getAbsolutePolygonAngle());
 	// Si il n'y a pas de munition dans le canon
-	if (!loadedAmmo) return;
+	if (!isLoaded()) return;
 	// Saturation du canon
 	if (heat + HEAT_STEP >= 100) {
 		heat = 100;
@@ -165,22 +181,26 @@ void Cannon::shoot(Manager* manager) {
 	else heat += HEAT_STEP;
 	// Si le canon est trop chaud, on ne peux pas tirer
 	if (heat == 100) return;
+	// A partir de ce point, le lancé est autorisé et a lieu !
 	// Mise à jour des coefficients qui définissent l'inclinaison de la courbe (si on a bougé le cannon)
-	loadedAmmo->getCalcX()->setC(loadedAmmo->getScreenX() + CANNON_LENGTH * cosinus); // X
-	loadedAmmo->getCalcY()->setC(loadedAmmo->getScreenY() + CANNON_LENGTH * sinus); // Y
-	loadedAmmo->getCalcX()->setB(strength * cosinus); // X
-	loadedAmmo->getCalcY()->setB(strength * sinus); // Y
+	getAmmo()->getCalcX()->setC(getAmmo()->getAbsoluteOriginX() + CANNON_LENGTH * cosinus); // X
+	getAmmo()->getCalcY()->setC(getAmmo()->getAbsoluteOriginY() + CANNON_LENGTH * sinus); // Y
+	getAmmo()->getCalcX()->setB(strength * cosinus); // X
+	getAmmo()->getCalcY()->setB(strength * sinus); // Y
+	// On libère la munition de l'emprise du cannon
+	getAmmo()->setFather(NULL);
 	// On confie la munition au manager
-	loadedAmmo->fire();
-	manager->addAmmosToDraw(loadedAmmo);
-	loadedAmmo = NULL;
+	getAmmo()->fire();
+	getAmmo()->setRadial(0);
+	manager->addAmmosToDraw(getAmmo());
+	setAmmo(NULL);
 	strength = 0;
 }
 
 void Cannon::reload() {
-	if (!loadedAmmo)
+	if (!isLoaded())
 		if (reloadTime > RELOAD_TIME) {
-			loadedAmmo = new CannonBall(angle, wind, ammoLook, static_cast<Player*>(getFather()));
+			setAmmo(new CannonBall(angle, wind, App::imageBank->get(TXT_AMMO1), static_cast<Player*>(getFather()),static_cast<Player*>(getFather())->getTerrain()));
 			reloadTime = 0;
 		} else if(!stillHeld){
 			reloadTime++;
@@ -188,7 +208,7 @@ void Cannon::reload() {
 }
 
 bool Cannon::isLoaded() const{
-	if (loadedAmmo) return true;
+	if (getAmmo()) return true;
 	return false;
 }
 

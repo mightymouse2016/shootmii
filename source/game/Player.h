@@ -28,8 +28,8 @@ enum PlayerChild{
 class Player: public Rectangle {
 private:
 	int score;
-	int life; // 0 -> 100
-	bool fury;
+	int life;	// 0->100
+	bool fury;	// 0->100
 	int nbGamesWon;
 	Terrain* terrain;
 public:
@@ -45,8 +45,12 @@ public:
 		const bool fury = false);
 	int getCol() const;
 	int getRow() const;
-	int getLife() const;
 	int getScore() const;
+	int getLife() const;
+	int getFury() const;
+	int getNbGamesWon() const;
+	Terrain* getTerrain();
+	Terrain* getTerrain() const;
 	Cannon* getCannon();
 	Cannon* getCannon() const;
 	Player* getOpponent();

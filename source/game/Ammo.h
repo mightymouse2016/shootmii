@@ -18,34 +18,28 @@ enum explosionType {
   HIT_A_PLAYER
 };
 
-class Ammo: public Cell {
+class Ammo: public Polygon {
 protected:
 	Function* calcX;
 	Function* calcY;
 	float t;
-	float angle;
-	vector<Coordinates> vertices;
-	vector<float> radials;
-	vector<float> thetas;
 	bool destroyed;
-	bool outOfCannon; // pour que le gestionnaire de collision ignore le contact
+	bool outOfCannon; // pour que le gestionnaire de collisions ignore l'auto-contact
 	bool fired; // pour savoir si on incrémente le compteur de temps ou non
 	bool explosionFinished;
-	GRRLIB_texImg* ammoLook;
-	Player* owner;
 	Terrain* terrain;
-
 public:
 	Ammo(
-		const float _angle,
-		GRRLIB_texImg* _ammoLook,
-		Function* _calcX,
-		Function* _calcY,
-		Player* _owner);
+		const float angle,
+		GRRLIB_texImg* image,
+		Function* calcX,
+		Function* calcY,
+		Player* owner,
+		Terrain* terrain);
 	virtual ~Ammo();
 	void incT();
 	void decT();
-	virtual void draw() const=0;
+	//virtual void draw() const=0;
 	Function* getCalcX();
 	Function* getCalcY();
 	int getCol() const;
@@ -64,8 +58,10 @@ public:
 	Player* hitAPlayer(Player* player1, Player* player2) const;
 	void fire();
 	bool ammoIntersect(const TerrainCell&) const;
+	/*
 	void initRadials();
 	void initThetas();
+	*/
 };
 
 }

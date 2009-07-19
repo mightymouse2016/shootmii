@@ -39,6 +39,22 @@ int Player::getScore() const {
 	return score;
 }
 
+int Player::getFury() const{
+	return fury;
+}
+
+int Player::getNbGamesWon() const{
+	return nbGamesWon;
+}
+
+Terrain* Player::getTerrain(){
+	return terrain;
+}
+
+Terrain* Player::getTerrain() const{
+	return terrain;
+}
+
 Cannon* Player::getCannon() {
 	return static_cast<Cannon*>(children[CHILD_CANNON]);
 }

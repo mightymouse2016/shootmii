@@ -2,8 +2,7 @@
 
 namespace shootmii {
 
-Console::Console(u8 _screenY) :
-	screenY(_screenY),
+Console::Console() :
 	fps(0),
 	debug(false),
 	console_font(loadFont(font_console, 8, 0))
@@ -38,10 +37,10 @@ void Console::draw() {
 		drawFPS();
 		drawTime();
 		// Affichage du BACKGROUND
-		GRRLIB_Rectangle(CONSOLE_X_OFFSET, screenY, SCREEN_WIDTH - 2*CONSOLE_X_OFFSET , CONSOLE_HEIGHT, CONSOLE_COLOR, true);
+		GRRLIB_Rectangle(CONSOLE_X_OFFSET, CONSOLE_Y_OFFSET, SCREEN_WIDTH - 2*CONSOLE_X_OFFSET , CONSOLE_HEIGHT, CONSOLE_COLOR, true);
 		// Affichage des debug
 		for (u8 i = 0; i < history.size(); i++)
-			GRRLIB_Printf(CONSOLE_TEXT_X_OFFSET, screenY + (i + 1)*CONSOLE_TEXT_Y_OFFSET, console_font, WHITE, 1,history[i].c_str());
+			GRRLIB_Printf(CONSOLE_TEXT_X_OFFSET, CONSOLE_Y_OFFSET + (i + 1)*CONSOLE_TEXT_Y_OFFSET, console_font, WHITE, 1,history[i].c_str());
 	}
 }
 

@@ -3,24 +3,23 @@
 namespace shootmii {
 
 Ammo::Ammo(
-		const float _angle,
-		GRRLIB_texImg* _ammoLook,
-		Function* _calcX,
-		Function* _calcY,
-		Player* _owner):
-	Cell(AMMO_WIDTH, AMMO_HEIGHT),
-	calcX(_calcX),
-	calcY(_calcY),
-	t(0),
-	angle(_angle),
-	destroyed(false),
-	outOfCannon(false),
-	fired(false),
-	explosionFinished(false),
-	ammoLook(_ammoLook),
-	owner(_owner)
+	const float _angle,
+	GRRLIB_texImg* _image,
+	Function* _calcX,
+	Function* _calcY,
+	Player* _owner,
+	Terrain* _terrain):
+		Polygon(TANK_HEIGHT/4, 0, AMMO_OVERTAKE, _angle, 0, 1, _owner, Coordinates(-AMMO_WIDTH/2,-AMMO_HEIGHT/2), _image),
+		calcX(_calcX),
+		calcY(_calcY),
+		t(0),
+		destroyed(false),
+		outOfCannon(false),
+		fired(false),
+		explosionFinished(false),
+		terrain(_terrain)
 {
-
+	// NOTHING TO DO
 }
 
 Ammo::~Ammo() {
@@ -44,28 +43,21 @@ Function* Ammo::getCalcY() {
 }
 
 int Ammo::getCol() const{
-	return (screenX+width/2-terrain->getCellWidth()/2)/terrain->getCellWidth();
+	return originX/terrain->getCellWidth();
 }
 
 int Ammo::getRow() const{
-	return (screenY+height)/terrain->getCellHeight();
+	return originY/terrain->getCellHeight();
 }
 
 void Ammo::compute() {
 	if (fired) {
 		incT();
-		screenX = (*calcX)(t);
-		screenY = (*calcY)(t);
+		originX = (*calcX)(t);
+		originY = (*calcY)(t);
 		angle = atan2((*calcY)[t],(*calcX)[t]);
 	}
-
-	int centerX = screenX+width/2;
-	int centerY = screenY+height/2;
-	for (unsigned int i=0;i<vertices.size();i++){
-		vertices[i].setX(centerX+radials[i]*cos(thetas[i]+angle));
-		vertices[i].setY(centerY+radials[i]*sin(thetas[i]+angle));
-	}
-
+	// TODO Mise à jour
 	//if (!isOutOfCannon())if (!cellIntersect(owner)) out();
 }
 
@@ -86,11 +78,14 @@ bool Ammo::isOutOfCannon() const{
 }
 
 bool Ammo::isOffScreen() const{
-	return (screenX > SCREEN_WIDTH || screenX < - terrain->getCellWidth());
+	for (unsigned int i=0,size=vertices.size();i<size;i++){
+		if (vertices[i].getX() >= 0 && vertices[i].getX() < terrain->getCols()*terrain->getCellWidth()) return false;
+	}
+	return true;
 }
 
 bool Ammo::isTooLow() const{
-	return (screenY > SCREEN_HEIGHT);
+	return (originY > SCREEN_HEIGHT);
 }
 
 bool Ammo::isDestroyed() const{
@@ -98,24 +93,26 @@ bool Ammo::isDestroyed() const{
 }
 
 bool Ammo::hitTheGround(Terrain* terrain) const{
-	int screenX, screenY;
-	for (unsigned int i=0;i<vertices.size();i++){
-		screenY = vertices[i].getY();
-		screenX = vertices[i].getX();
-		if (screenX >= 0 && screenX < terrain->getCols()*terrain->getCellWidth() && screenY >= terrain->getHeight(screenX)) return true;
+	if (isOffScreen()) return false;
+	for (unsigned int i=0,size=vertices.size();i<size;i++){
+		if (vertices[i].getY() >= terrain->getHeight(vertices[i].getX())) return true;
 	}
 	return false;
 }
 
 Ammo* Ammo::hitAnotherAmmo(list<Ammo*>* ammoList) const{
+	//TODO Mise à jour
+	/*
 	list<Ammo*>::iterator it;
 	for (it = ammoList->begin();it!=ammoList->end();it++)
 		if (this != *it && cellIntersect(*it)) return *it;
+	*/
 	return NULL;
 }
 
 Player* Ammo::hitAPlayer(Player* player1, Player* player2) const{
 	if (!isOutOfCannon()) return NULL;
+	//TODO Mise à jour
 	/*
 	if (cellIntersect(player1)) return player1;
 	if (cellIntersect(player2)) return player2;
@@ -123,21 +120,12 @@ Player* Ammo::hitAPlayer(Player* player1, Player* player2) const{
 	return NULL;
 }
 
-void Ammo::draw() const{
-	if (!App::console->isDebug()) return;
-	int size = vertices.size();
-	for(int i=0,j;i<size;i++){
-		if (i+1 == size) j = 0;
-		else j = i+1;
-		GRRLIB_Line(vertices[i].getX(),vertices[i].getY(),vertices[j].getX(),vertices[j].getY(),RED);
-	}
-}
-
 void Ammo::fire(){
 	fired = true;
 }
 
 bool Ammo::ammoIntersect(const TerrainCell& c) const{
+	/*
 	int xGauche = c.getScreenX();
 	int xDroite = xGauche + c.getWidth();
 	int yBas = c.getScreenY() +  c.getHeight();
@@ -153,27 +141,8 @@ bool Ammo::ammoIntersect(const TerrainCell& c) const{
 			y >= yHaut && // On est au dessus de la bordure inférieure
 			y < yBas) return true; // On est en dessous de la bordure supérieure
 	}
+	*/
 	return false;
-}
-
-void Ammo::initRadials(){
-	int x,y,size = vertices.size();
-	radials.reserve(size);
-	for(int i=0;i<size;i++){
-		x = vertices[i].getX();
-		y = vertices[i].getY();
-		radials.push_back(sqrt(x*x+y*y)); // Module
-	}
-}
-
-void Ammo::initThetas(){
-	int x,y,size = vertices.size();
-	thetas.reserve(size);
-	for(int i=0;i<size;i++){
-		x = vertices[i].getX();
-		y = vertices[i].getY();
-		thetas.push_back(atan2(y,x)); // Angle initial
-	}
 }
 
 }

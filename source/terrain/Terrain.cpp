@@ -70,7 +70,7 @@ void Terrain::generate() {
   // Remise à zero(EMPTY) du terrain
   for (int i = 0; i < rows; i++)
       for (int j = 0; j < cols; j++)
-        grille[i][j].setType(EMPTY);
+        grille[i][j].setCell(EMPTY,1,1);
 
 	// Initialisation
   int highLimit = rows*(CENTER_TERRAIN-AMPLITUDE_TERRAIN/2)/100;
