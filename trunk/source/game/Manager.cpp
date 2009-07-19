@@ -21,9 +21,9 @@ Manager::Manager(App* _app) :
 			world->getTerrain(),
 			world->getWind(),
 			2,
-			-PI/2,
-			0,
-			-PI/4,
+			-PI,
+						-PI/2,
+						-3*PI/4,
 			ROTATION_STEP)),
 
 			ammosToDraw(new list<Ammo*>),
@@ -124,7 +124,7 @@ void Manager::computeAmmos() {
 		  delete *i;
 		}
 	  // Missile en dehors de l'ecran
-		else if (!world->getTerrain()->contains((*i)->getScreenX(),(*i)->getScreenY())) {
+		else if (!world->getTerrain()->contains((*i)->getAbsoluteOriginX(),(*i)->getAbsoluteOriginY())) {
 		  //app->getConsole()->addDebug("missile en dehors de l'ecran");
 			newAmmosToDraw->push_back(*i);
 			(*i)->compute();

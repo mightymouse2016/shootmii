@@ -35,11 +35,10 @@ const vector<Coordinates>& Polygon::getVertices() const{
 
 vector<Coordinates> Polygon::getRotatedVertices() const{
 	float verticeAngle;
-	int verticeRadial;
-	int size = vertices.size();
+	float verticeRadial;
 	vector<Coordinates> rotatedVertices;
-	rotatedVertices.reserve(size);
-	for(int i=0;i<size;i++){
+	rotatedVertices.reserve(vertices.size());
+	for(int i=0,size=vertices.size();i<size;i++){
 		verticeAngle =  vertices[i].getAngle();
 		verticeRadial = vertices[i].getRadial();
 		rotatedVertices.push_back(
@@ -68,12 +67,16 @@ int Polygon::getOriginY() const{
 }
 
 int Polygon::getAbsoluteOriginX() const{
-	if (father) return father->getAbsoluteX() + originX;
+	if (father) return father->getAbsoluteX()
+		+ originX*cos(father->getAbsolutePolygonAngle())
+		+ originY*sin(father->getAbsolutePolygonAngle());
 	return originX;
 }
 
 int Polygon::getAbsoluteOriginY() const{
-	if (father) return father->getAbsoluteY() + originY;
+	if (father) return father->getAbsoluteY()
+		+ originX*sin(father->getAbsolutePolygonAngle())
+		+ originY*cos(father->getAbsolutePolygonAngle());
 	return originY;
 }
 
@@ -86,13 +89,11 @@ int Polygon::getY() const{
 }
 
 int Polygon::getAbsoluteX() const{
-	if (father) return father->getAbsoluteX() + getX();
-	return getX();
+	return getAbsoluteOriginX() + radial*cos(getAbsoluteAngle());
 }
 
 int Polygon::getAbsoluteY() const{
-	if (father) return father->getAbsoluteY() + getY();
-	return getY();
+	return getAbsoluteOriginY() + radial*sin(getAbsoluteAngle());
 }
 
 int Polygon::getRadial() const{
@@ -180,11 +181,10 @@ void Polygon::grow(const float k){
 }
 
 void Polygon::draw() const{
-	// Les enfants d'abords
-	for(int i=0, size = children.size();i<size;i++){
-		children[i]->draw();
+	// Les enfants d'abords (pour qu'ils soient à l'arrière plan)
+	for(int i=0,size=children.size();i<size;i++){
+		if (children[i]) children[i]->draw();
 	}
-
 	if(App::console->isDebug()){
 		// Le mode debug (squelette)
 		vector<Coordinates> rotatedVertices = getRotatedVertices();
@@ -203,8 +203,11 @@ void Polygon::draw() const{
 		// L'origine
 		GRRLIB_Line(getAbsoluteOriginX()-4,getAbsoluteOriginY(),getAbsoluteOriginX()+4,getAbsoluteOriginY(),BLACK);
 		GRRLIB_Line(getAbsoluteOriginX(),getAbsoluteOriginY()-4,getAbsoluteOriginX(),getAbsoluteOriginY()+4,BLACK);
+		// La nouvelle origine
+		GRRLIB_Line(getAbsoluteX()-4,getAbsoluteY(),getAbsoluteX()+4,getAbsoluteY(),BLACK);
+		GRRLIB_Line(getAbsoluteX(),getAbsoluteY()-4,getAbsoluteX(),getAbsoluteY()+4,BLACK);
 	} else {
-		// L'objet en lui même
+		// L'objet en lui même (image)
 		GRRLIB_DrawImg(
 			getAbsoluteX()+getDrawOrigin().getX(),
 			getAbsoluteY()+getDrawOrigin().getY(),

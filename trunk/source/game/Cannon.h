@@ -5,7 +5,7 @@
 
 namespace shootmii {
 
-const float PI(3.14159265);
+const float PI(3.14159265358979323846264338327950288419716939937510);
 
 const int CANNON_WIDTH(16);
 const int CANNON_HEIGHT(16);
@@ -49,8 +49,6 @@ private:
 	u32 blockedTime;
 	u8 heatCool;
 	u8 reloadTime;
-	GRRLIB_texImg* ammoLook;
-	Ammo* loadedAmmo;
 	bool stillHeld;
 public:
 	Cannon(
@@ -66,6 +64,9 @@ public:
 	int getStrength() const;
 	int getHeat() const;
 	int getBlockedTime() const;
+	Ammo* getAmmo();
+	Ammo* getAmmo() const;
+	void setAmmo(Ammo* ammo);
 	void up();
 	void decHeat();
 	void draw(const int screenX, const int screenY) const;
