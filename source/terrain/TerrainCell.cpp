@@ -66,17 +66,4 @@ void TerrainCell::setIndexCoords(const int _colIndex, const int _rowIndex){
 	originY = _rowIndex*spriteHeight;
 }
 
-/*
-void TerrainCell::draw() const {
-	if (type == EMPTY) return;
-	if (App::console->isDebug()){
-		GRRLIB_Line(screenX,screenY+(1-y1)*height,screenX,screenY+height,RED);
-		GRRLIB_Line(screenX,screenY+(1-y1)*height,screenX+width,screenY+(1-y2)*height,RED);
-	} else {
-		GRRLIB_DrawTile(screenX, screenY, *tileSet, 0, 1, 1, WHITE, type);
-	}
-
-}
-*/
-
 }
