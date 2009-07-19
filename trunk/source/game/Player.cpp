@@ -108,13 +108,18 @@ void Player::init() {
 
 void Player::initPosition(Terrain* terrain, float _originX){
 	originY = terrain->getHeight(originX = _originX);
-	angle =
-		- PI/2 // -PI/2 car on est orthogonal au terrain !
-		// Moyenne de pente de dans 1/4 de cell et de dans - 1/4  de cell
-		// auncune continuité : + terrain->getGround(originX/terrain->getCellWidth()).getAngle();
-		+ terrain->getGround((originX+getHeight()/4)/terrain->getCellWidth()).getAngle()/2
-		+ terrain->getGround((originX-getHeight()/4)/terrain->getCellWidth()).getAngle()/2;
-	// TODO améliorer la continuité !
+	float alpha1, alpha2;
+	int x1, x = originX, width = terrain->getCellWidth();
+	if (x%width > width/2){
+		alpha1 = terrain->getGround(x/width).getAngle();
+		alpha2 = terrain->getGround(x/width+1).getAngle();
+		x1 = (x/width)*width+width/2;
+	} else {
+		alpha1 = terrain->getGround(x/width-1).getAngle();
+		alpha2 = terrain->getGround(x/width).getAngle();
+		x1 = (x/width)*width-width/2;
+	}
+	angle = (alpha2-alpha1)*(originX-x1)/width + alpha1 - PI/2; // -PI/2 pour l'othogonalité au terrain
 }
 
 void Player::initGame() {
