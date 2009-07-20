@@ -40,6 +40,7 @@ int Terrain::getCellHeight() const{
 float Terrain::getHeight(const int screenX) const {
 	int row;
 	int col = screenX/cellWidth;
+	if (screenX < 0 || screenX >= cellWidth*cols) return cellHeight*rows;
 	for(row=0;getType(col,row)==EMPTY;row++);
 	return grille[row][screenX/cellWidth].getAbsoluteHeight(screenX);
 }

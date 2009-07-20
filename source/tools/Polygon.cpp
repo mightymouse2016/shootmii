@@ -7,10 +7,7 @@ bool intervalIntersect(const float MA1,const float MA2,const float MB1,const flo
 	return ((MB1 >= m && MB1 <= M) || (MB2 >= m && MB2 <= M));
 }
 
-bool segmentIntersect(Coordinates A, Coordinates B, Coordinates C, Coordinates D){
-	//return (intervalIntersect(a.getX(),A.getX(),b.getX(),B.getX()) && intervalIntersect(a.getY(),A.getY(),b.getY(),B.getY()));
-	float Ax = A.getX(), Bx = B.getX(), Cx = C.getX(), Dx = D.getX();
-	float Ay = A.getY(), By = B.getY(), Cy = C.getY(), Dy = D.getY();
+bool segmentIntersect(const float Ax, const float Ay, const float Bx, const float By, const float Cx, const float Cy, const float Dx, const float Dy){
 	float r = ((Ay-Cy)*(Dx-Cx)-(Ax-Cx)*(Dy-Cy))/((Bx-Ax)*(Dy-Cy)-(By-Ay)*(Dx-Cx));
 	float s = ((Ay-Cy)*(Bx-Ax)-(Ax-Cx)*(By-Ay))/((Bx-Ax)*(Dy-Cy)-(By-Ay)*(Dx-Cx));
 	if (0 <= r && r <= 1 && 0 <= s && s <= 1) return true;
@@ -263,13 +260,22 @@ void Polygon::draw() const{
 }
 
 bool Polygon::intersect(Polygon* polygon) const{
+	float x = getAbsoluteX(),y = getAbsoluteY(),xp = polygon->getAbsoluteX(),yp = polygon->getAbsoluteY();
 	for (int i=0,k1,size=vertices.size();i<size;i++){
 		if (i == size-1) k1 = 0;
 		else k1 = i+1;
 		for (int j=0,k2,size2=polygon->getVertices().size();j<size2;j++){
 			if (j == size2-1) k2 = 0;
 			else k2 = j+1;
-			if (segmentIntersect(vertices[i], vertices[k1], vertices[j], vertices[k2])) return true;
+			if (segmentIntersect(
+					vertices[i].getX() + x,
+					vertices[i].getY() + y,
+					vertices[k1].getX() + x,
+					vertices[k1].getY() + y,
+					polygon->getVertices()[j].getX() + xp,
+					polygon->getVertices()[j].getY() + yp,
+					polygon->getVertices()[k2].getX() + xp,
+					polygon->getVertices()[k2].getY() + yp)) return true;
 		}
 	}
 	return false;

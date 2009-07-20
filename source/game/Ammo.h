@@ -28,6 +28,7 @@ protected:
 	bool fired; // pour savoir si on incrémente le compteur de temps ou non
 	bool explosionFinished;
 	Terrain* terrain;
+	Player* owner;
 public:
 	Ammo(
 		const float angle,
@@ -39,7 +40,6 @@ public:
 	virtual ~Ammo();
 	void incT();
 	void decT();
-	//virtual void draw() const=0;
 	Function* getCalcX();
 	Function* getCalcY();
 	int getCol() const;
@@ -57,11 +57,6 @@ public:
 	Ammo* hitAnotherAmmo(list<Ammo*>* ammoList) const;
 	Player* hitAPlayer(Player* player1, Player* player2) const;
 	void fire();
-	bool ammoIntersect(const TerrainCell&) const;
-	/*
-	void initRadials();
-	void initThetas();
-	*/
 };
 
 }

@@ -17,7 +17,8 @@ Ammo::Ammo(
 		outOfCannon(false),
 		fired(false),
 		explosionFinished(false),
-		terrain(_terrain)
+		terrain(_terrain),
+		owner(_owner)
 {
 	// NOTHING TO DO
 }
@@ -57,8 +58,7 @@ void Ammo::compute() {
 		originY = (*calcY)(t);
 		angle = atan2((*calcY)[t],(*calcX)[t]);
 	}
-	// TODO Mise à jour
-	//if (!isOutOfCannon())if (!cellIntersect(owner)) out();
+	if (!isOutOfCannon()) if (!intersect(owner)) out();
 }
 
 void Ammo::setAngle(const float _angle){
@@ -109,37 +109,13 @@ Ammo* Ammo::hitAnotherAmmo(list<Ammo*>* ammoList) const{
 
 Player* Ammo::hitAPlayer(Player* player1, Player* player2) const{
 	if (!isOutOfCannon()) return NULL;
-	//TODO Mise à jour
-	/*
-	if (cellIntersect(player1)) return player1;
-	if (cellIntersect(player2)) return player2;
-	*/
+	if (intersect(player1)) return player1;
+	if (intersect(player2)) return player2;
 	return NULL;
 }
 
 void Ammo::fire(){
 	fired = true;
-}
-
-bool Ammo::ammoIntersect(const TerrainCell& c) const{
-	/*
-	int xGauche = c.getScreenX();
-	int xDroite = xGauche + c.getWidth();
-	int yBas = c.getScreenY() +  c.getHeight();
-	int yHaut;
-	int x,y;
-	//Pour chaque point on vérifie qu'il n'est pas dans le quadrilatère.
-	for (unsigned int i=0;i<vertices.size();i++){
-		x = vertices[i].getX();
-		y = vertices[i].getY();
-		yHaut = yBas - c.getRelativeHeight(x-xGauche);
-		if (x >= xGauche && // On est à droite de la bordure gauche
-			x < xDroite && // On est à gauche de la bordure droite
-			y >= yHaut && // On est au dessus de la bordure inférieure
-			y < yBas) return true; // On est en dessous de la bordure supérieure
-	}
-	*/
-	return false;
 }
 
 }
