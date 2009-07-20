@@ -93,11 +93,13 @@ void Player::setOpponent(Player* _opponent){
 
 void Player::moveLeft(Terrain* terrain){
 	float newOriginX = originX - getSpeed(terrain->getGround(originX/terrain->getCellWidth()).getType(), LEFT);
+	if (newOriginX <= getWidth()/2) return;
 	initPosition(terrain, newOriginX);
 }
 
 void Player::moveRight(Terrain* terrain){
 	float newOriginX = originX + getSpeed(terrain->getGround(originX/terrain->getCellWidth()).getType(), RIGHT);
+	if (newOriginX >= terrain->getCols()*terrain->getCellWidth() - getWidth()/2) return;
 	initPosition(terrain, newOriginX);
 }
 

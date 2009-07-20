@@ -176,6 +176,7 @@ void Cannon::shoot(Manager* manager) {
 	// Saturation du canon
 	if (heat + HEAT_STEP >= 100) {
 		heat = 100;
+		strength = 0;
 		blockedTime = ticks_to_millisecs(gettime());
 	}
 	else heat += HEAT_STEP;
