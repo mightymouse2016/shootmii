@@ -94,19 +94,16 @@ bool Ammo::isDestroyed() const{
 
 bool Ammo::hitTheGround(Terrain* terrain) const{
 	if (isOffScreen()) return false;
-	for (unsigned int i=0,size=vertices.size();i<size;i++){
-		if (vertices[i].getY() >= terrain->getHeight(vertices[i].getX())) return true;
+	for (int i=0,size=vertices.size();i<size;i++){
+		if (vertices[i].getY()+getAbsoluteY() >= terrain->getHeight(vertices[i].getX()+getAbsoluteX())) return true;
 	}
 	return false;
 }
 
 Ammo* Ammo::hitAnotherAmmo(list<Ammo*>* ammoList) const{
-	//TODO Mise à jour
-	/*
 	list<Ammo*>::iterator it;
 	for (it = ammoList->begin();it!=ammoList->end();it++)
-		if (this != *it && cellIntersect(*it)) return *it;
-	*/
+		if (this != *it && intersect(*it)) return *it;
 	return NULL;
 }
 

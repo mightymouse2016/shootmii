@@ -21,9 +21,9 @@ Manager::Manager(App* _app) :
 			world->getTerrain(),
 			world->getWind(),
 			2,
-			-PI,
-						-PI/2,
-						-3*PI/4,
+			-PI/2,
+			0,
+			-PI/4,
 			ROTATION_STEP)),
 
 			ammosToDraw(new list<Ammo*>),
@@ -114,37 +114,37 @@ void Manager::computeAmmos() {
 	for (list<Ammo*>::iterator i=ammosToDraw->begin();i!=ammosToDraw->end();i++) {
 	  // Le missile vient de rencontrer un autre missile qui a déjà géré la collision
 	  if ((*i)->isDestroyed()) {
-      //app->getConsole()->addDebug("missile détruit en l'air");
+      App::console->addDebug("missile détruit en l'air");
       addExplosionsToDraw((*i)->destruction(HIT_ANOTHER_AMMO));
       delete *i;
 	  }
 	  // Le missile est trop bas
 	   else if ((*i)->isTooLow()) {
-		  //app->getConsole()->addDebug("missile est trop bas");
+		   App::console->addDebug("missile est trop bas");
 		  delete *i;
 		}
 	  // Missile en dehors de l'ecran
 		else if (!world->getTerrain()->contains((*i)->getAbsoluteOriginX(),(*i)->getAbsoluteOriginY())) {
-		  //app->getConsole()->addDebug("missile en dehors de l'ecran");
+			App::console->addDebug("missile en dehors de l'ecran");
 			newAmmosToDraw->push_back(*i);
 			(*i)->compute();
 		}
 	  // Le missile touche le sol : explosion
 		else if ((*i)->hitTheGround(world->getTerrain())){
-		  //app->getConsole()->addDebug("missile touche le sol : explosion");
+			App::console->addDebug("missile touche le sol : explosion");
 		  addExplosionsToDraw((*i)->destruction(HIT_THE_GROUND));
 		  delete *i;
 		}
 	  // Collision inter-missile
 		else if (Ammo * inFrontAmmo = (*i)->hitAnotherAmmo(ammosToDraw)) {
-		  //app->getConsole()->addDebug("collision inter-missile");
+			App::console->addDebug("collision inter-missile");
 		  addExplosionsToDraw((*i)->destruction(HIT_ANOTHER_AMMO));
 		  delete *i;
 		  inFrontAmmo->destroy();
 		}
 		// Collision avec un player
 		else if (Player * playerHit = (*i)->hitAPlayer(player1,player2)) {
-		  //app->getConsole()->addDebug("collision player");
+			App::console->addDebug("collision player");
 		  addExplosionsToDraw((*i)->destruction(HIT_A_PLAYER));
 		  delete *i;
 			playerHit->looseLife(25);

@@ -10,6 +10,5 @@ namespace shootmii {
   void printXCentered(f32 ypos, GRRLIB_texImg tex, u32 color, f32 zoom,const char *text);
   void printRight(f32 ypos, GRRLIB_texImg tex, u32 color, f32 zoom,const char *text);
   void drawRectangle(f32 x, f32 y, f32 width, f32 height, u32 colors[4]);
-  bool segmentIntersect(Coordinates M11, Coordinates M12, Coordinates M21, Coordinates M22);
 }
 #endif
