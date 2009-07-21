@@ -110,53 +110,59 @@ void Manager::computeVictory() {
 }
 
 void Manager::computeAmmos() {
-	list<Ammo*>* newAmmosToDraw = new list<Ammo*> ;
-	for (list<Ammo*>::iterator i=ammosToDraw->begin();i!=ammosToDraw->end();i++) {
-	  // Le missile vient de rencontrer un autre missile qui a déjà géré la collision
-	  if ((*i)->isDestroyed()) {
+  list<Ammo*>* newAmmosToDraw = new list<Ammo*> ;
+  for (list<Ammo*>::iterator i=ammosToDraw->begin();i!=ammosToDraw->end();i++) {
+    // Le missile vient de rencontrer un autre missile qui a déjà géré la collision
+    if ((*i)->isDestroyed()) {
       App::console->addDebug("missile détruit en l'air");
       addExplosionsToDraw((*i)->destruction(HIT_ANOTHER_AMMO));
       delete *i;
-	  }
-	  // Le missile est trop bas
-	   else if ((*i)->isTooLow()) {
-		   App::console->addDebug("missile est trop bas");
-		  delete *i;
-		}
-	  // Missile en dehors de l'ecran
-		else if (!world->getTerrain()->contains((*i)->getAbsoluteOriginX(),(*i)->getAbsoluteOriginY())) {
-			App::console->addDebug("missile en dehors de l'ecran");
-			newAmmosToDraw->push_back(*i);
-			(*i)->compute();
-		}
-	  // Le missile touche le sol : explosion
-		else if ((*i)->hitTheGround(world->getTerrain())){
-			App::console->addDebug("missile touche le sol : explosion");
-		  addExplosionsToDraw((*i)->destruction(HIT_THE_GROUND));
-		  delete *i;
-		}
-	  // Collision inter-missile
-		else if (Ammo * inFrontAmmo = (*i)->hitAnotherAmmo(ammosToDraw)) {
-			App::console->addDebug("collision inter-missile");
-		  addExplosionsToDraw((*i)->destruction(HIT_ANOTHER_AMMO));
-		  delete *i;
-		  inFrontAmmo->destroy();
-		}
-		// Collision avec un player
-		else if (Player * playerHit = (*i)->hitAPlayer(player1,player2)) {
-			App::console->addDebug("collision player");
-		  addExplosionsToDraw((*i)->destruction(HIT_A_PLAYER));
-		  delete *i;
-			playerHit->looseLife(25);
-		}
-		// Il ne se passe encore rien
-		else {
-			newAmmosToDraw->push_back(*i);
-			(*i)->compute();
-		}
-	}
-	delete ammosToDraw;
-	ammosToDraw = newAmmosToDraw;
+    }
+    // Le missile est trop bas
+     else if ((*i)->isTooLow()) {
+  	   App::console->addDebug("missile est trop bas");
+  	  delete *i;
+  	}
+    // Missile en dehors de l'ecran
+  	else if (!world->getTerrain()->contains((*i)->getAbsoluteOriginX(),(*i)->getAbsoluteOriginY())) {
+  		App::console->addDebug("missile en dehors de l'ecran");
+  		newAmmosToDraw->push_back(*i);
+  		(*i)->compute();
+  	}
+    // Le missile touche le sol : explosion
+  	else if ((*i)->hitTheGround(world->getTerrain())){
+  		App::console->addDebug("missile touche le sol : explosion");
+  		player1->computeDamage(*i);
+  		player2->computeDamage(*i);
+  	  addExplosionsToDraw((*i)->destruction(HIT_THE_GROUND));
+  	  delete *i;
+  	}
+    // Collision inter-missile
+  	else if (Ammo * inFrontAmmo = (*i)->hitAnotherAmmo(ammosToDraw)) {
+  		App::console->addDebug("collision inter-missile");
+  		player1->computeDamage(*i);
+  		player2->computeDamage(*i);
+  	  addExplosionsToDraw((*i)->destruction(HIT_ANOTHER_AMMO));
+  	  delete *i;
+  	  inFrontAmmo->destroy();
+  	}
+  	// Collision avec un player
+  	else if (Player * playerHit = (*i)->hitAPlayer(player1,player2)) {
+  		App::console->addDebug("collision player");
+  		player1->computeDamage(*i);
+  		player2->computeDamage(*i);
+  		playerHit->looseLife(10); // Un petit bonus pour le touché
+  		addExplosionsToDraw((*i)->destruction(HIT_A_PLAYER));
+  		delete *i;
+  	}
+  	// Il ne se passe encore rien
+  	else {
+  		newAmmosToDraw->push_back(*i);
+  		(*i)->compute();
+  	}
+  }
+  delete ammosToDraw;
+  ammosToDraw = newAmmosToDraw;
 }
 
 void Manager::computeExplosions() {

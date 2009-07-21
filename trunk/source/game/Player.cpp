@@ -153,4 +153,16 @@ void Player::looseLife(u8 lifeAmount) {
 	else life -= lifeAmount;
 }
 
+void Player::computeDamage(Ammo* ammo){
+    float x = ammo->getAbsoluteX() - getAbsoluteX();
+    float y = ammo->getAbsoluteY() - getAbsoluteY();
+    int distance = sqrt(x*x+y*y);
+    if (distance > MINIMUM_LENGTH_FOR_DAMAGE) return;
+    int degat = (MINIMUM_LENGTH_FOR_DAMAGE - distance)*DAMAGE_COEF;
+    char buffer[100];
+    sprintf(buffer, "Distance = %d; Degat = %d;", distance, degat);
+    App::console->addDebug(buffer);
+    looseLife(degat);
+}
+
 }
