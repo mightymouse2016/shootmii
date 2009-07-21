@@ -6,16 +6,21 @@
 namespace shootmii {
 
 class Explosion {
-  public:
-        Explosion(GRRLIB_texImg* _tiles, const float _screenX, const float _screenY,
-          const int _width, const int _height, const int _depth,
-          const int _duration);
+public:
+	Explosion(
+		GRRLIB_texImg* _tiles,
+		const float _screenX,
+		const float _screenY,
+        const int _width,
+        const int _height,
+        const int _depth,
+        const int _duration);
     ~Explosion();
     void draw();
     void compute();
     bool isFinished();
-    
-  private:
+
+private:
     GRRLIB_texImg* tiles;
     float screenX;
     float screenY;
