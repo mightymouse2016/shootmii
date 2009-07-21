@@ -32,51 +32,39 @@ namespace shootmii {
     vertices.push_back(Coordinates(-8, -7));
     vertices.push_back(Coordinates(-8, 7));
     vertices.push_back(Coordinates(2, 7));
+}
 
-    // précalculs, passage en coordonnées polaires
-    /*
-    initRadials();
-    initThetas();
-    */
-  }
-/*
-  void CannonBall::draw() const {
-	  GRRLIB_DrawImg(screenX, screenY, *ammoLook, angle*180/PI, 1, 1, WHITE);
-	  Ammo::draw();
-  }
-*/
-  Explosion* CannonBall::destruction(explosionType _type) {
-
+Explosion* CannonBall::destruction(explosionType _type) {
     switch (_type){
-      case HIT_ANOTHER_AMMO:
+    case HIT_ANOTHER_AMMO:
         return new Explosion(
-          App::imageBank->get(TXT_CANNONBALL_AIR_EXPLOSION),
-          originX,
-          originY,
-          CANNONBALL_AIR_EXPLOSION_WIDTH,
-          CANNONBALL_AIR_EXPLOSION_HEIGHT,
-          CANNONBALL_AIR_EXPLOSION_DEPTH,
-          CANNONBALL_AIR_EXPLOSION_DURATION);
-      case HIT_A_PLAYER:
+			App::imageBank->get(TXT_CANNONBALL_AIR_EXPLOSION),
+			originX,
+			originY,
+			CANNONBALL_AIR_EXPLOSION_WIDTH,
+			CANNONBALL_AIR_EXPLOSION_HEIGHT,
+			CANNONBALL_AIR_EXPLOSION_DEPTH,
+			CANNONBALL_AIR_EXPLOSION_DURATION);
+    case HIT_A_PLAYER:
         return new Explosion(
-          App::imageBank->get(TXT_CANNONBALL_HIT_EXPLOSION),
-          originX,
-          originY,
-          CANNONBALL_HIT_EXPLOSION_WIDTH,
-          CANNONBALL_HIT_EXPLOSION_HEIGHT,
-          CANNONBALL_HIT_EXPLOSION_DEPTH,
-          CANNONBALL_HIT_EXPLOSION_DURATION);
-      case HIT_THE_GROUND:
+			App::imageBank->get(TXT_CANNONBALL_HIT_EXPLOSION),
+			originX,
+			originY,
+			CANNONBALL_HIT_EXPLOSION_WIDTH,
+			CANNONBALL_HIT_EXPLOSION_HEIGHT,
+			CANNONBALL_HIT_EXPLOSION_DEPTH,
+			CANNONBALL_HIT_EXPLOSION_DURATION);
+    case HIT_THE_GROUND:
         return new Explosion(
-          App::imageBank->get(TXT_CANNONBALL_GROUND_EXPLOSION),
-          originX,
-          originY,
-          CANNONBALL_GROUND_EXPLOSION_WIDTH,
-          CANNONBALL_GROUND_EXPLOSION_HEIGHT,
-          CANNONBALL_GROUND_EXPLOSION_DEPTH,
-          CANNONBALL_GROUND_EXPLOSION_DURATION);
+			App::imageBank->get(TXT_CANNONBALL_GROUND_EXPLOSION),
+			originX,
+			originY,
+			CANNONBALL_GROUND_EXPLOSION_WIDTH,
+			CANNONBALL_GROUND_EXPLOSION_HEIGHT,
+			CANNONBALL_GROUND_EXPLOSION_DEPTH,
+			CANNONBALL_GROUND_EXPLOSION_DURATION);
     }
     return NULL;
-  }
+}
 
 }
