@@ -40,14 +40,14 @@ Cannon::Cannon(
 	vertices.reserve(2);
 	addChild(new Rectangle(CROSSHAIR_WIDTH, CROSSHAIR_HEIGHT, 0, 0, CROSSHAIR_OVERTAKE, angle, 0, 1, crossHair_image, _owner));
 	addChild(new CannonBall(angle,wind,ammo_Image,_owner,static_cast<Player*>(getFather())->getTerrain()));
-	for (int i=0;i<STRENGHT_JAUGE_STATES;i++){
+	for (int i=0;i<STRENGTH_JAUGE_STATES;i++){
 		addChild(
 			new Rectangle(
 					STRENGHT_JAUGE_SPRITE_WIDTH,
 					STRENGHT_JAUGE_SPRITE_HEIGHT,
 					CANNON_WIDTH/2,
 					0,
-					i*100/STRENGHT_JAUGE_STATES,
+					i*100/STRENGTH_JAUGE_STATES,
 					0,0,0,
 					App::imageBank->get(TXT_STRENGTH_SPRITES),
 					this,
@@ -65,21 +65,21 @@ Cannon::~Cannon() {
 
 void Cannon::init() {
 	strength = 0;
-	for (int i=0;i<STRENGHT_JAUGE_STATES;i++){
-		children[CHILDREN_STRENGHT+i]->hide();
+	for (int i=0;i<STRENGTH_JAUGE_STATES;i++){
+		children[CHILDREN_STRENGTH+i]->hide();
 	}
 	heat = 0;
 	blockedTime = 0;
 	heatCool = 0;
 	reloadTime = 0;
 	if (isLoaded()) delete getAmmo();
-	GRRLIB_texImg* image;
-	switch (static_cast<Player*>(getFather())->getPlayerNumber()){
+	Player* owner = static_cast<Player*>(getFather());
+	switch (owner->getPlayerNumber()){
 	case 1: image = App::imageBank->get(TXT_AMMO1);break;
 	case 2: image = App::imageBank->get(TXT_AMMO2);break;
 	//default : image = App::imageBank->get(TXT_AMMO1);break;
 	}
-	setAmmo(new CannonBall(angle, wind, image, static_cast<Player*>(getFather()),static_cast<Player*>(getFather())->getTerrain()));
+	setAmmo(new CannonBall(angle, wind, image, owner, owner->getTerrain()));
 	getAmmo()->setAngle(angle);
 }
 
@@ -152,14 +152,14 @@ void Cannon::incStrength(Manager* manager){
 	if (!isLoaded()) return;
 	if (strength >= 100) {
 		shoot(manager);
-		for (int i=0;i<STRENGHT_JAUGE_STATES;i++){
-			children[CHILDREN_STRENGHT+i]->hide();
+		for (int i=0;i<STRENGTH_JAUGE_STATES;i++){
+			children[CHILDREN_STRENGTH+i]->hide();
 		}
 		stillHeld = true;
 	}
 	else {
 		strength+=STRENGTHEN_STEP;
-		children[CHILDREN_STRENGHT+strength*STRENGHT_JAUGE_STATES/100-1]->show();
+		children[CHILDREN_STRENGTH+strength*STRENGTH_JAUGE_STATES/100-1]->show();
 	}
 }
 
@@ -172,8 +172,8 @@ void Cannon::shoot(Manager* manager) {
 	if (heat + HEAT_STEP >= 100) {
 		heat = 100;
 		strength = 0;
-		for (int i=0;i<STRENGHT_JAUGE_STATES;i++){
-			children[CHILDREN_STRENGHT+i]->hide();
+		for (int i=0;i<STRENGTH_JAUGE_STATES;i++){
+			children[CHILDREN_STRENGTH+i]->hide();
 		}
 		blockedTime = ticks_to_millisecs(gettime());
 	}
@@ -194,19 +194,27 @@ void Cannon::shoot(Manager* manager) {
 	manager->addAmmosToDraw(getAmmo());
 	setAmmo(NULL);
 	strength = 0;
-	for (int i=0;i<STRENGHT_JAUGE_STATES;i++){
-		children[CHILDREN_STRENGHT+i]->hide();
+	for (int i=0;i<STRENGTH_JAUGE_STATES;i++){
+		children[CHILDREN_STRENGTH+i]->hide();
 	}
 }
 
 void Cannon::reload() {
-	if (!isLoaded())
+  Player* owner = static_cast<Player*>(getFather());
+  GRRLIB_texImg* ammoImage = NULL;
+	if (!isLoaded()) {
+	  switch(owner->getPlayerNumber()){
+	    case 1: ammoImage = App::imageBank->get(TXT_AMMO1);break;
+	    case 2: ammoImage = App::imageBank->get(TXT_AMMO2);break;
+	    default: ammoImage = App::imageBank->get(TXT_AMMO1);break;
+	  }
 		if (reloadTime > RELOAD_TIME) {
-			setAmmo(new CannonBall(angle, wind, App::imageBank->get(TXT_AMMO1), static_cast<Player*>(getFather()),static_cast<Player*>(getFather())->getTerrain()));
+			setAmmo(new CannonBall(angle, wind, ammoImage, owner, owner->getTerrain()));
 			reloadTime = 0;
 		} else if(!stillHeld){
 			reloadTime++;
 		}
+	}
 }
 
 bool Cannon::isLoaded() const{
