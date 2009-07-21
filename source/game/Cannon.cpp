@@ -32,6 +32,10 @@ Cannon::Cannon(
 		ammo_Image = App::imageBank->get(TXT_AMMO2);
 		crossHair_image = App::imageBank->get(TXT_CROSSHAIR2);
 		break;
+	default:
+		ammo_Image = App::imageBank->get(TXT_AMMO1);
+		crossHair_image = App::imageBank->get(TXT_CROSSHAIR1);
+		break;
 	}
 	vertices.reserve(2);
 	addChild(new Rectangle(CROSSHAIR_WIDTH, CROSSHAIR_HEIGHT, 0, 0, CROSSHAIR_OVERTAKE, angle, 0, 1, crossHair_image, _owner));
@@ -69,7 +73,13 @@ void Cannon::init() {
 	heatCool = 0;
 	reloadTime = 0;
 	if (isLoaded()) delete getAmmo();
-	setAmmo(new CannonBall(angle, wind, App::imageBank->get(TXT_AMMO1), static_cast<Player*>(getFather()),static_cast<Player*>(getFather())->getTerrain()));
+	GRRLIB_texImg* image;
+	switch (static_cast<Player*>(getFather())->getPlayerNumber()){
+	case 1: image = App::imageBank->get(TXT_AMMO1);break;
+	case 2: image = App::imageBank->get(TXT_AMMO2);break;
+	//default : image = App::imageBank->get(TXT_AMMO1);break;
+	}
+	setAmmo(new CannonBall(angle, wind, image, static_cast<Player*>(getFather()),static_cast<Player*>(getFather())->getTerrain()));
 	getAmmo()->setAngle(angle);
 }
 
