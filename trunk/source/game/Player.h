@@ -30,6 +30,7 @@ enum PlayerChild{
 
 class Player: public Rectangle {
 private:
+	int playerNumber;
 	int score;
 	int life;	// 0->100
 	bool fury;	// 0->100
@@ -46,6 +47,7 @@ public:
 		const float rotationStep = ROTATION_STEP,
 		const int life = 100,
 		const bool fury = false);
+	int getPlayerNumber() const;
 	int getCol() const;
 	int getRow() const;
 	int getScore() const;
