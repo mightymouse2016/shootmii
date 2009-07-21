@@ -2,11 +2,13 @@
 
 namespace shootmii {
 
-Cloud::Cloud(Wind* _wind, GRRLIB_texImg* _cloudImg, const int _cloudWidth, const int _cloudHeight) :
+Cloud::Cloud(
+		Wind* _wind,
+		GRRLIB_texImg* _image,
+		const int _width,
+		const int _height) :
+	Rectangle(_width, _height, 0, 0, 0, 0, 0, 0, _image),
 	wind(_wind),
-	cloudImg(_cloudImg),
-	cloudWidth(_cloudWidth),
-	cloudHeight(_cloudHeight),
 	t(0)
 {
 	randomX();
@@ -21,32 +23,32 @@ void Cloud::updateT() {
 void Cloud::updateX() {
 	if (!t){
 		if (wind->getWindDirection()){
-			if (screenX > SCREEN_WIDTH) {screenX = -cloudWidth; randomY();}
-			else screenX++;
+			if (originX - getWidth()/2 > SCREEN_WIDTH) {
+				originX = - getWidth()/2;
+				randomY();
+			} else originX++;
 		}
 		else {
-			if (screenX < -cloudWidth) {screenX = SCREEN_WIDTH; randomY();}
-			else screenX--;
+			if (originX < - getWidth()/2){
+				originX = SCREEN_WIDTH + getWidth()/2;
+				randomY();
+			} else originX--;
 		}
 	}
 }
 
 void Cloud::randomX() {
-	screenX = rand() % (cloudWidth + static_cast<int> (SCREEN_WIDTH)) - cloudWidth;
+	originX = rand()%static_cast<int>(getWidth() + SCREEN_WIDTH) - getWidth()/2;
 }
 
 void Cloud::randomY() {
-	screenY = rand() % (static_cast<int> (SCREEN_HEIGHT)*CLOUD_SPACE/100 - cloudHeight);
+	originY = rand()%static_cast<int>(SCREEN_HEIGHT*CLOUD_SPACE/100) + getHeight()/2;
 }
 
 void Cloud::init() {
 	slow = (MAX_WIND_SPEED-wind->getWindSpeed())*WIND_INFLUENCE_ON_CLOUDS/100;
 	randomX();
 	randomY();
-}
-
-void Cloud::draw() const {
-	GRRLIB_DrawImg(screenX, screenY, *cloudImg, 0, 1, 1, WHITE);
 }
 
 }

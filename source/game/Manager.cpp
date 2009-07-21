@@ -163,11 +163,10 @@ void Manager::computeExplosions() {
   list<Explosion*>* newExplosionsToDraw = new list<Explosion*>;
   for (list<Explosion*>::iterator i=explosionsToDraw->begin();i!=explosionsToDraw->end();i++) {
     if ((*i)->isFinished()) {
-      App::console->addDebug("explosion est finished ...");
+      App::console->addDebug("explosion finie");
       delete *i;
     }
     else {
-        App::console->addDebug("explosion en cours ...");
         (*i)->compute();
         newExplosionsToDraw->push_back(*i);
       }

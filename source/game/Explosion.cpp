@@ -27,18 +27,18 @@ Explosion::~Explosion() {
 }
 
 void Explosion::draw() {
-GRRLIB_DrawTile(
-	screenX-width/2,
-	screenY-height+depth,
-	*tiles, 0, 1, 1, WHITE, t);
+	GRRLIB_DrawTile(
+		screenX-width/2,
+		screenY-height+depth,
+		*tiles, 0, 1, 1, WHITE, t);
 }
 
 void Explosion::compute() {
-t++;
+	t++;
 }
 
 bool Explosion::isFinished() {
-  return (t == duration);
+	return (t == duration);
 }
 
 }
