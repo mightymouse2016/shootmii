@@ -42,6 +42,7 @@ protected:
 	int spriteIndex;
 	int spriteWidth;
 	int spriteHeight;
+	bool hidden;
 public:
 	Polygon(
 		const float originX = 0,
@@ -55,7 +56,8 @@ public:
 		GRRLIB_texImg* image = NULL,
 		const int spriteIndex = 0,
 		const int spriteWidth = 0,
-		const int spriteHeight = 0);
+		const int spriteHeight = 0,
+		const bool hidden = false);
 	~Polygon();
 
 	const vector<Coordinates>& getVertices() const;
@@ -95,6 +97,8 @@ public:
 	void grow(const float k);
 
 	void draw() const;
+	void hide();
+	void show();
 
 	bool intersect(Polygon* polygon) const;
 

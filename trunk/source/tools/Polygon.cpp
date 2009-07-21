@@ -26,7 +26,8 @@ Polygon::Polygon(
 	GRRLIB_texImg* _image,
 	const int _spriteIndex,
 	const int _spriteWidth,
-	const int _spriteHeight) :
+	const int _spriteHeight,
+	const bool _hidden) :
 		originX(_originX),
 		originY(_originY),
 		radial(_radial),
@@ -38,7 +39,8 @@ Polygon::Polygon(
 		image(_image),
 		spriteIndex(_spriteIndex),
 		spriteWidth(_spriteWidth),
-		spriteHeight(_spriteHeight)
+		spriteHeight(_spriteHeight),
+		hidden(_hidden)
 {
 	if (spriteWidth && spriteHeight) { // Si c'est un sprite et non une image
 		GRRLIB_InitTileSet(image, spriteWidth, spriteHeight, 0);
@@ -62,8 +64,8 @@ vector<Coordinates> Polygon::getRotatedVertices() const{
 		verticeAngle =  vertices[i].getAngle();
 		verticeRadial = vertices[i].getRadial();
 		rotatedVertices.push_back(
-			Coordinates(verticeRadial*cos(getAbsolutePolygonAngle()+verticeAngle),
-						verticeRadial*sin(getAbsolutePolygonAngle()+verticeAngle)));
+			Coordinates(verticeRadial*cos(getAbsolutePolygonAngle()*spin+verticeAngle),
+						verticeRadial*sin(getAbsolutePolygonAngle()*spin+verticeAngle)));
 	}
 	return rotatedVertices;
 }
@@ -205,6 +207,7 @@ void Polygon::draw() const{
 	for(int i=0,size=children.size();i<size;i++){
 		if (children[i]) children[i]->draw();
 	}
+	if (hidden) return;
 	if(App::console->isDebug()){
 		if (spriteIndex == -1) return;
 		// Le mode debug (squelette)
@@ -249,14 +252,22 @@ void Polygon::draw() const{
 			GRRLIB_DrawTile(
 				getAbsoluteX()+getDrawOrigin().getX(),
 				getAbsoluteY()+getDrawOrigin().getY(),
-				*image, getAbsolutePolygonAngle()*180/PI, 1, 1, WHITE, spriteIndex);
+				*image, getAbsolutePolygonAngle()*spin*180/PI, 1, 1, WHITE, spriteIndex);
 		} else {
 			GRRLIB_DrawImg(
 				getAbsoluteX()+getDrawOrigin().getX(),
 				getAbsoluteY()+getDrawOrigin().getY(),
-				*image, getAbsolutePolygonAngle()*180/PI, 1, 1, WHITE);
+				*image, getAbsolutePolygonAngle()*spin*180/PI, 1, 1, WHITE);
 		}
 	}
+}
+
+void Polygon::hide(){
+	hidden = true;
+}
+
+void Polygon::show(){
+	hidden = false;
 }
 
 bool Polygon::intersect(Polygon* polygon) const{

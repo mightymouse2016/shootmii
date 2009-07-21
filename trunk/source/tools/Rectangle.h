@@ -17,7 +17,11 @@ public:
 		const float polygonAngle = 0,
 		const float spin = 1,
 		GRRLIB_texImg* image = NULL,
-		Polygon* father = NULL);
+		Polygon* father = NULL,
+		const int spriteIndex = 0,
+		const int spriteWidth = 0,
+		const int spriteHeight = 0,
+		const bool hidden = false);
 	float getWidth() const;
 	float getHeight() const;
 };

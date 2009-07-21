@@ -35,7 +35,8 @@ const u8 RELOAD_TIME(60);
 
 enum CannonChild{
 	CHILD_CROSSHAIR,
-	CHILD_AMMO
+	CHILD_AMMO,
+	CHILDREN_STRENGHT
 };
 
 class Cannon : public Rectangle{
