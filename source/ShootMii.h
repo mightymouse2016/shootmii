@@ -16,6 +16,7 @@ namespace shootmii {
   class TerrainCell;
   class Wind;
   class Cloud;
+  class Sun;
   class Terrain;
   class World;
   class Wheels;
@@ -40,7 +41,6 @@ namespace shootmii {
 // Bibliothèques standard
 #include <stdlib.h>
 #include <string>
-#include <string.h>
 #include <vector>
 #include <list>
 #include <time.h>
@@ -61,6 +61,7 @@ namespace shootmii {
 #include "gfx/strength_sprites.h"
 #include "gfx/background_cloud.h"
 #include "gfx/foreground_cloud.h"
+#include "gfx/sun.h"
 #include "gfx/tile_set.h"
 #include "gfx/cannonball_hit_explosion.h"
 #include "gfx/cannonball_air_explosion.h"
@@ -95,6 +96,7 @@ namespace shootmii {
 #include "terrain/Wind.h"
 #include "terrain/Cloud.h"
 #include "terrain/Terrain.h"
+#include "terrain/Sun.h"
 #include "terrain/World.h"
 
 // Game

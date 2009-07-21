@@ -5,6 +5,9 @@
 
 namespace shootmii {
 
+const int MINIMUM_LENGTH_FOR_DAMAGE(TERRAIN_CELL_WIDTH*3);
+const float DAMAGE_COEF(0.5);
+  
 const float G(-9.81);
 const float TIME_STEP(.1);
 const int AMMO_WEIGHT(1);

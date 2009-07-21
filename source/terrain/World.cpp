@@ -5,6 +5,7 @@ namespace shootmii {
 World::World() :
 	wind(new Wind),
 	terrain(new Terrain(N_ROWS, N_COLS, TERRAIN_CELL_WIDTH, TERRAIN_CELL_HEIGHT)),
+	sun(new Sun),
 	cloudsBackToDraw(new list<Cloud*>),
 	cloudsFrontToDraw(new list<Cloud*>)
 {
@@ -43,6 +44,7 @@ void World::init() {
 
 void World::compute() {
 	computeClouds();
+	sun->compute();
 }
 
 void World::computeClouds() {
@@ -58,8 +60,22 @@ void World::computeClouds() {
 
 void World::drawBackground() const {
 	// Ciel
-	u32 colors[] = { BLUE_SKY_1, BLUE_SKY_1, BLUE_SKY_2, BLUE_SKY_2 };
+  float ratio = (1-SUN_LIGHT_INFLUENCE) - sin(sun->getAngle())*SUN_LIGHT_INFLUENCE;
+  u8 r = (BLUE_SKY_1 & 0xFF000000) >> 24;
+  u8 g = (BLUE_SKY_1 & 0x00FF0000) >> 16;
+  u8 b = (BLUE_SKY_1 & 0x0000FF00) >> 8;
+  u32 colorSky1 = (static_cast<u32>(r*ratio)<<24) | (static_cast<u32>(g*ratio)<<16) | (static_cast<u32>(b*ratio)<<8) | 0xFF;
+
+  r = (BLUE_SKY_2 & 0xFF000000) >> 24;
+  g = (BLUE_SKY_2 & 0x00FF0000) >> 16;
+  b = (BLUE_SKY_2 & 0x0000FF00) >> 8;
+  u32 colorSky2 = (static_cast<u32>(r*ratio)<<24) | (static_cast<u32>(g*ratio)<<16) | (static_cast<u32>(b*ratio)<<8) | 0xFF;
+  
+  
+	u32 colors[] = { colorSky1, colorSky1, colorSky2, colorSky2 };
 	drawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, colors);
+	// Soleil
+	sun->draw();
 	// Nuages lointains
 	for (list<Cloud*>::iterator i=cloudsBackToDraw->begin();i!=cloudsBackToDraw->end();i++)
 		(*i)->draw();

@@ -5,8 +5,8 @@
 
 namespace shootmii {
 
-  const int AMPLITUDE_TERRAIN(20); // les variations du terrains peuvent recouvrir 50% de l'écran
-  const int CENTER_TERRAIN(70); // centré à 70% de l'écran en partant du haut
+  const int AMPLITUDE_TERRAIN(20); // les variations du terrains peuvent recouvrir 2*20% de l'écran
+  const int CENTER_TERRAIN(75); // centré à 75% de l'écran en partant du haut
   const int VARIATION_TERRAIN(2); // une pente entre -VARIATION_TERRAIN et +VARIATION_TERRAIN
 
   class Terrain {

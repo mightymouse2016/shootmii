@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <?fileVersion 4.0.0?>
 
 <cproject>
@@ -15,7 +15,7 @@
 </extensions>
 </storageModule>
 <storageModule moduleId="cdtBuildSystem" version="4.0.0">
-<configuration artifactName="WiiJap" buildProperties="" description="" id="0.1222020304" name="Default" parent="org.eclipse.cdt.build.core.prefbase.cfg">
+<configuration artifactExtension="" artifactName="WiiJap" buildProperties="" description="" id="0.1222020304" name="Default" parent="org.eclipse.cdt.build.core.prefbase.cfg">
 <folderInfo id="0.1222020304." name="/" resourcePath="">
 <toolChain id="org.eclipse.cdt.build.core.prefbase.toolchain.1889739608" name="No ToolChain" resourceTypeBasedDiscovery="false" superClass="org.eclipse.cdt.build.core.prefbase.toolchain">
 <targetPlatform id="org.eclipse.cdt.build.core.prefbase.toolchain.1889739608.27661912" name=""/>
@@ -29,12 +29,14 @@
 </tool>
 <tool id="org.eclipse.cdt.build.core.settings.holder.1121311154" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
 <option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1355004297" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
-<listOptionValue builtIn="false" value="&quot;${DEVKITARM}\include\c++\4.1.2&quot;"/>
+<listOptionValue builtIn="false" value="&quot;D:\devkitPro\devkitARM\include\c++\4.1.2&quot;"/>
 <listOptionValue builtIn="false" value="&quot;D:\devkitPro\GRRLib4.0.0\GRRLIB\lib&quot;"/>
 <listOptionValue builtIn="false" value="&quot;D:\devkitPro\libogc\include&quot;"/>
 <listOptionValue builtIn="false" value="&quot;D:\devkitPro\GRRLib4.0.0\GRRLIB\GRRLIB&quot;"/>
 </option>
-<option id="org.eclipse.cdt.build.core.settings.holder.undef.incpaths.572946128" name="Undefined Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.undef.incpaths"/>
+<option id="org.eclipse.cdt.build.core.settings.holder.undef.incpaths.572946128" name="Undefined Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.undef.incpaths" valueType="undefIncludePath">
+<listOptionValue builtIn="false" value="${DEVKITARM}\include\c++\4.1.2"/>
+</option>
 <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1009154873" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 </tool>
 </toolChain>
@@ -65,6 +67,7 @@
 </buildTargets>
 </storageModule>
 <storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+
 <storageModule moduleId="scannerConfiguration">
 <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile"/>
 <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">

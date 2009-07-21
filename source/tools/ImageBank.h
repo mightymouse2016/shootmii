@@ -24,6 +24,7 @@ namespace shootmii {
     TXT_CANNONBALL_AIR_EXPLOSION,
     TXT_CANNONBALL_HIT_EXPLOSION,
     TXT_CANNONBALL_GROUND_EXPLOSION,
+    TXT_SUN,
 
     NUMBER_OF_TEXTURES // Utilisé comme condition d'arrêt des boucles
   };

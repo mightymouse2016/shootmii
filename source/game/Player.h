@@ -65,6 +65,7 @@ public:
 	void moveLeft(Terrain* terrain);
 	void moveRight(Terrain* terrain);
 	void looseLife(u8 lifeAmount);
+	void computeDamage(Ammo* ammo);
 	void setScore(const int score);
 	void incScore();
 	void init();
