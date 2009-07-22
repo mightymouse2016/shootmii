@@ -72,6 +72,10 @@ Player* Manager::getPlayer2() const {
 	return player2;
 }
 
+Wind* Manager::getWind() const{
+	return world->getWind();
+}
+
 void Manager::compute() {
 	world->compute();
 	player1->getCannon()->decHeat();

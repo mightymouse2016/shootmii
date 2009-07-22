@@ -36,10 +36,9 @@ Terrain* World::getTerrain() {
 void World::init() {
 	terrain->generate();
 	wind->init();
-	for (list<Cloud*>::iterator i=cloudsBackToDraw->begin();i!=cloudsBackToDraw->end();i++)
-		(*i)->init();
-	for (list<Cloud*>::iterator i=cloudsFrontToDraw->begin();i!=cloudsFrontToDraw->end();i++)
-		(*i)->init();
+	sun->init();
+	for (list<Cloud*>::iterator i=cloudsBackToDraw->begin();i!=cloudsBackToDraw->end();i++) (*i)->init();
+	for (list<Cloud*>::iterator i=cloudsFrontToDraw->begin();i!=cloudsFrontToDraw->end();i++) (*i)->init();
 }
 
 void World::compute() {
@@ -60,25 +59,27 @@ void World::computeClouds() {
 
 void World::drawBackground() const {
 	// Ciel
-  float ratio = (1-SUN_LIGHT_INFLUENCE) - sin(sun->getAngle())*SUN_LIGHT_INFLUENCE;
-  u8 r = (BLUE_SKY_1 & 0xFF000000) >> 24;
-  u8 g = (BLUE_SKY_1 & 0x00FF0000) >> 16;
-  u8 b = (BLUE_SKY_1 & 0x0000FF00) >> 8;
-  u32 colorSky1 = (static_cast<u32>(r*ratio)<<24) | (static_cast<u32>(g*ratio)<<16) | (static_cast<u32>(b*ratio)<<8) | 0xFF;
+	float ratio = (1-SUN_LIGHT_INFLUENCE) - sin(sun->getAngle())*SUN_LIGHT_INFLUENCE;
+	u8 r = (BLUE_SKY_1 & 0xFF000000) >> 24;
+	u8 g = (BLUE_SKY_1 & 0x00FF0000) >> 16;
+	u8 b = (BLUE_SKY_1 & 0x0000FF00) >> 8;
+	u32 colorSky1 = (static_cast<u32>(r*ratio)<<24) | (static_cast<u32>(g*ratio)<<16) | (static_cast<u32>(b*ratio)<<8) | 0xFF;
 
-  r = (BLUE_SKY_2 & 0xFF000000) >> 24;
-  g = (BLUE_SKY_2 & 0x00FF0000) >> 16;
-  b = (BLUE_SKY_2 & 0x0000FF00) >> 8;
-  u32 colorSky2 = (static_cast<u32>(r*ratio)<<24) | (static_cast<u32>(g*ratio)<<16) | (static_cast<u32>(b*ratio)<<8) | 0xFF;
-  
-  
+	r = (BLUE_SKY_2 & 0xFF000000) >> 24;
+	g = (BLUE_SKY_2 & 0x00FF0000) >> 16;
+	b = (BLUE_SKY_2 & 0x0000FF00) >> 8;
+	u32 colorSky2 = (static_cast<u32>(r*ratio)<<24) | (static_cast<u32>(g*ratio)<<16) | (static_cast<u32>(b*ratio)<<8) | 0xFF;
+
+	if (App::console->isDebug()) {
+		colorSky1 = colorSky2 = WHITE;
+	}
+
 	u32 colors[] = { colorSky1, colorSky1, colorSky2, colorSky2 };
 	drawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, colors);
 	// Soleil
 	sun->draw();
 	// Nuages lointains
-	for (list<Cloud*>::iterator i=cloudsBackToDraw->begin();i!=cloudsBackToDraw->end();i++)
-		(*i)->draw();
+	for (list<Cloud*>::iterator i=cloudsBackToDraw->begin();i!=cloudsBackToDraw->end();i++) (*i)->draw();
 	// Terrain
 	terrain->draw();
 }

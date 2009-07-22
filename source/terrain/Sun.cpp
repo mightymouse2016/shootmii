@@ -14,12 +14,16 @@ Sun::Sun() :
       0,
       App::imageBank->get(TXT_SUN))
 {
-  
+
 }
 
 void Sun::compute(){
   if (angle >= 0) angle = -PI;
   else angle += SUN_SLOW;
+}
+
+void Sun::init(){
+	angle = - static_cast<float>(rand()%180)*PI/180;
 }
 
 }

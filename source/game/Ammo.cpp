@@ -67,7 +67,14 @@ void Ammo::compute() {
 					originY,
 					SMOKE_WIDTH,
 					SMOKE_HEIGHT,
-					SMOKE_DURATION));
+					SMOKE_DURATION,
+					SMOKE_SLOW,
+					1,
+					new PolyDeg2(
+							float(manager->getWind()->getWindSpeed())
+							*(manager->getWind()->getWindDirection()*2-1)
+							*WIND_INFLUENCE_ON_SMOKE/(2*100* SMOKE_WEIGHT),0,originX),
+					new PolyDeg2(-G*SMOKE_AIR_RESISTANCE/2,0,originY)));
 		}
 	}
 	if (!isOutOfCannon()) if (!intersect(owner)) out();
