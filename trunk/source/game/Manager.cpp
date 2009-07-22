@@ -14,7 +14,10 @@ Manager::Manager(App* _app) :
 			0,
 			PI/2,
 			PI/4,
-			ROTATION_STEP)),
+			ROTATION_STEP,
+			100,
+			false,
+			this)),
 
 	player2(
 		new Player(
@@ -24,10 +27,14 @@ Manager::Manager(App* _app) :
 			-PI/2,
 			0,
 			-PI/4,
-			ROTATION_STEP)),
+			ROTATION_STEP,
+			100,
+			false,
+			this)),
 
 			ammosToDraw(new list<Ammo*>),
-			explosionsToDraw(new list<Explosion*>)
+			explosionsToDraw(new list<Explosion*>),
+			animationsToDraw(new list<Animation*>)
 {
 	player1->setOpponent(player2);
 	player2->setOpponent(player1);
@@ -37,11 +44,12 @@ Manager::~Manager() {
 	delete player1;
 	delete player2;
 	delete world;
-	// Destroy Ammos that are still in the air
 	ammosToDraw->clear();
 	delete ammosToDraw;
 	explosionsToDraw->clear();
 	delete explosionsToDraw;
+	animationsToDraw->clear();
+	delete animationsToDraw;
 }
 
 void Manager::addAmmosToDraw(Ammo* ammo) const {
@@ -49,7 +57,11 @@ void Manager::addAmmosToDraw(Ammo* ammo) const {
 }
 
 void Manager::addExplosionsToDraw(Explosion* explosion) const {
-  explosionsToDraw->push_back(explosion);
+	explosionsToDraw->push_back(explosion);
+}
+
+void Manager::addAnimationsToDraw(Animation* animation) const {
+	animationsToDraw->push_back(animation);
 }
 
 Player* Manager::getPlayer1() const {
@@ -66,6 +78,7 @@ void Manager::compute() {
 	player2->getCannon()->decHeat();
 	computeAmmos();
 	computeExplosions();
+	computeAnimations();
 	computeVictory();
 }
 
@@ -73,8 +86,9 @@ void Manager::draw() const {
 	world->drawBackground();
 	player1->draw();
 	player2->draw();
-  drawAmmos();
-  drawExplosions();
+	drawAnimations();
+	drawAmmos();
+	drawExplosions();
 	world->drawForeground();
 }
 
@@ -86,6 +100,12 @@ void Manager::drawAmmos() const {
 
 void Manager::drawExplosions() const {
   for (list<Explosion*>::iterator i=explosionsToDraw->begin();i!=explosionsToDraw->end();i++){
+    (*i)->draw();
+  }
+}
+
+void Manager::drawAnimations() const {
+  for (list<Animation*>::iterator i=animationsToDraw->begin();i!=animationsToDraw->end();i++){
     (*i)->draw();
   }
 }
@@ -151,7 +171,7 @@ void Manager::computeAmmos() {
   		App::console->addDebug("collision player");
   		player1->computeDamage(*i);
   		player2->computeDamage(*i);
-  		playerHit->looseLife(10); // Un petit bonus pour le touché
+  		playerHit->looseLife(HIT_DAMAGE_BONUS); // Un petit bonus pour le touché
   		addExplosionsToDraw((*i)->destruction(HIT_A_PLAYER));
   		delete *i;
   	}
@@ -181,9 +201,26 @@ void Manager::computeExplosions() {
   explosionsToDraw = newExplosionsToDraw;
 }
 
+void Manager::computeAnimations() {
+	list<Animation*>* newAnimationsToDraw = new list<Animation*>;
+	for (list<Animation*>::iterator i=animationsToDraw->begin();i!=animationsToDraw->end();i++){
+		if ((*i)->isFinished()){
+			App::console->addDebug("animation finie");
+			delete *i;
+		}
+		else {
+			(*i)->compute();
+			newAnimationsToDraw->push_back(*i);
+		}
+	}
+	delete animationsToDraw;
+	animationsToDraw = newAnimationsToDraw;
+}
+
 void Manager::init() const {
 	ammosToDraw->clear();
 	explosionsToDraw->clear();
+	animationsToDraw->clear();
 	world->init();
 	player1->init();
 	player2->init();
@@ -214,23 +251,23 @@ void Manager::dealEvent(const u32* player1Events, const u32* player2Events) {
 
 	if (pad1Down & WPAD_BUTTON_A) WPAD_Rumble(WPAD_CHAN_0, 1);
 	if (pad1Held & WPAD_BUTTON_A) {
-		player1->getCannon()->incStrength(this);
+		player1->getCannon()->incStrength();
 		if (!player1->getCannon()->isLoaded()) WPAD_Rumble(WPAD_CHAN_0, 0);
 	}
 	if (pad1Up & WPAD_BUTTON_A) {
 		player1->getCannon()->up();
-		player1->getCannon()->shoot(this);
+		player1->getCannon()->shoot();
 		WPAD_Rumble(WPAD_CHAN_0, 0);
 	}
 
 	if (pad2Down & WPAD_BUTTON_A) WPAD_Rumble(WPAD_CHAN_1, 1);
 	if (pad2Held & WPAD_BUTTON_A) {
-		player2->getCannon()->incStrength(this);
+		player2->getCannon()->incStrength();
 		if (!player2->getCannon()->isLoaded()) WPAD_Rumble(WPAD_CHAN_1, 0);
 	}
 	if (pad2Up & WPAD_BUTTON_A) {
 		player2->getCannon()->up();
-		player2->getCannon()->shoot(this);
+		player2->getCannon()->shoot();
 		WPAD_Rumble(WPAD_CHAN_1, 0);
 	}
 }

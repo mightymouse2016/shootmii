@@ -15,9 +15,11 @@ private:
 	Player* player2;
 	list<Ammo*>* ammosToDraw;
 	list<Explosion*>* explosionsToDraw;
+	list<Animation*>* animationsToDraw;
 	GRRLIB_texImg explosionTiles;
 	void computeAmmos();
 	void computeExplosions();
+	void computeAnimations();
 	void computeVictory();
 public:
 	Manager(App*);
@@ -31,10 +33,12 @@ public:
 	void draw() const;
 	void drawAmmos() const;
 	void drawExplosions() const;
+	void drawAnimations() const;
 	void init() const;
 	void dealEvent(const u32*, const u32*);
 	void addAmmosToDraw(Ammo*) const;
 	void addExplosionsToDraw(Explosion*) const;
+	void addAnimationsToDraw(Animation*) const;
 };
 
 }

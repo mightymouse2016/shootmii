@@ -11,7 +11,8 @@ Player::Player(
 	const float _angle,
 	const float _rotationStep,
 	const int _life,
-	const bool _fury) :
+	const bool _fury,
+	Manager* _manager) :
 		Rectangle(TANK_HEIGHT,TANK_WIDTH,0,0,TANK_HEIGHT/2,-PI/2,0,1,App::imageBank->get(TXT_TANK)),
 		playerNumber(_playerNumber),
 		score(0),
@@ -21,7 +22,7 @@ Player::Player(
 		terrain(_terrain)
 {
 	children.reserve(2);
-	addChild(new Cannon(_angleMin, _angleMax, _angle, _rotationStep,_wind, this, _playerNumber));
+	addChild(new Cannon(_angleMin, _angleMax, _angle, _rotationStep,_wind, this, _playerNumber, _manager));
 }
 
 int Player::getPlayerNumber() const{

@@ -4,33 +4,35 @@
 using namespace std;
 
 namespace shootmii {
-  class App;
-  class Screen;
-  class TitleScreen;
-  class GameScreen;
-  class ScoreManager;
-  class Manager;
-  class Player;
-  class Polygon;
-  class Rectangle;
-  class TerrainCell;
-  class Wind;
-  class Cloud;
-  class Sun;
-  class Terrain;
-  class World;
-  class Wheels;
-  class Cannon;
-  class Tank;
-  class MovementHandler;
-  class Ammo;
-  class CannonBall;
-  class Affine;
-  class PolyDeg2;
-  class Function;
-  class Console;
-  class Coordinates;
-  class ImageBank;
+
+	class App;
+	class Screen;
+	class TitleScreen;
+	class GameScreen;
+	class ScoreManager;
+	class Manager;
+	class Player;
+	class Polygon;
+	class Rectangle;
+	class TerrainCell;
+	class Wind;
+	class Cloud;
+	class Sun;
+	class Terrain;
+	class World;
+	class Wheels;
+	class Cannon;
+	class Tank;
+	class MovementHandler;
+	class Ammo;
+	class CannonBall;
+	class Affine;
+	class PolyDeg2;
+	class Animation;
+	class Function;
+	class Console;
+	class Coordinates;
+	class ImageBank;
 }
 
 // GRRLib
@@ -66,6 +68,7 @@ namespace shootmii {
 #include "gfx/cannonball_hit_explosion.h"
 #include "gfx/cannonball_air_explosion.h"
 #include "gfx/cannonball_ground_explosion.h"
+#include "gfx/smoke_sprites.h"
 
 // Fontes
 #include "gfx/font1.h"
@@ -90,6 +93,7 @@ namespace shootmii {
 #include "tools/Tools.h"
 #include "tools/Console.h"
 #include "tools/ImageBank.h"
+#include "tools/Animation.h"
 
 // Terrain
 #include "terrain/TerrainCell.h"

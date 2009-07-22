@@ -9,7 +9,8 @@ Cannon::Cannon(
 		const float _rotationStep,
 		Wind* _wind,
 		Player* _owner,
-		int _playerNumber) :
+		int _playerNumber,
+		Manager* _manager) :
 	Rectangle(CANNON_WIDTH,CANNON_HEIGHT,TANK_HEIGHT/4,0,_angle,0,0,1,App::imageBank->get(TXT_CANNON),_owner),
 	angleMin(_angleMin),
 	angleMax(_angleMax),
@@ -20,7 +21,8 @@ Cannon::Cannon(
 	blockedTime(0),
 	heatCool(0),
 	reloadTime(0),
-	stillHeld(false)
+	stillHeld(false),
+	manager(_manager)
 {
 	GRRLIB_texImg *crossHair_image, *ammo_Image;
 	switch (_playerNumber){
@@ -39,7 +41,7 @@ Cannon::Cannon(
 	}
 	vertices.reserve(2);
 	addChild(new Rectangle(CROSSHAIR_WIDTH, CROSSHAIR_HEIGHT, 0, 0, CROSSHAIR_OVERTAKE, angle, 0, 1, crossHair_image, _owner));
-	addChild(new CannonBall(angle,wind,ammo_Image,_owner,static_cast<Player*>(getFather())->getTerrain()));
+	addChild(new CannonBall(angle,wind,ammo_Image,_owner,static_cast<Player*>(getFather())->getTerrain(), manager));
 	for (int i=0;i<STRENGTH_JAUGE_STATES;i++){
 		addChild(
 			new Rectangle(
@@ -79,7 +81,7 @@ void Cannon::init() {
 	case 2: image = App::imageBank->get(TXT_AMMO2);break;
 	//default : image = App::imageBank->get(TXT_AMMO1);break;
 	}
-	setAmmo(new CannonBall(angle, wind, image, owner, owner->getTerrain()));
+	setAmmo(new CannonBall(angle, wind, image, owner, owner->getTerrain(), manager));
 	getAmmo()->setAngle(angle);
 }
 
@@ -147,11 +149,11 @@ void Cannon::rotateRight() {
 	if (isLoaded()) getAmmo()->setAngle(angle);
 }
 
-void Cannon::incStrength(Manager* manager){
+void Cannon::incStrength(){
 	// Si il n'y a pas de munition dans le canon
 	if (!isLoaded()) return;
 	if (strength >= 100) {
-		shoot(manager);
+		shoot();
 		for (int i=0;i<STRENGTH_JAUGE_STATES;i++){
 			children[CHILDREN_STRENGTH+i]->hide();
 		}
@@ -163,7 +165,7 @@ void Cannon::incStrength(Manager* manager){
 	}
 }
 
-void Cannon::shoot(Manager* manager) {
+void Cannon::shoot() {
 	float cosinus = cos(getAbsolutePolygonAngle());
 	float sinus = sin(getAbsolutePolygonAngle());
 	// Si il n'y a pas de munition dans le canon
@@ -194,6 +196,7 @@ void Cannon::shoot(Manager* manager) {
 	manager->addAmmosToDraw(getAmmo());
 	setAmmo(NULL);
 	strength = 0;
+	// On cache la jauge de puissance
 	for (int i=0;i<STRENGTH_JAUGE_STATES;i++){
 		children[CHILDREN_STRENGTH+i]->hide();
 	}
@@ -209,7 +212,7 @@ void Cannon::reload() {
 	    default: ammoImage = App::imageBank->get(TXT_AMMO1);break;
 	  }
 		if (reloadTime > RELOAD_TIME) {
-			setAmmo(new CannonBall(angle, wind, ammoImage, owner, owner->getTerrain()));
+			setAmmo(new CannonBall(angle, wind, ammoImage, owner, owner->getTerrain(), manager));
 			reloadTime = 0;
 		} else if(!stillHeld){
 			reloadTime++;

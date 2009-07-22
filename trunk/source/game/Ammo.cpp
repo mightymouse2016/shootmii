@@ -8,7 +8,8 @@ Ammo::Ammo(
 	Function* _calcX,
 	Function* _calcY,
 	Player* _owner,
-	Terrain* _terrain):
+	Terrain* _terrain,
+	Manager* _manager):
 		Polygon(TANK_HEIGHT/4, 0, AMMO_OVERTAKE, _angle, 0, 1, _owner, Coordinates(-AMMO_WIDTH/2,-AMMO_HEIGHT/2), _image),
 		calcX(_calcX),
 		calcY(_calcY),
@@ -18,7 +19,8 @@ Ammo::Ammo(
 		fired(false),
 		explosionFinished(false),
 		terrain(_terrain),
-		owner(_owner)
+		owner(_owner),
+		manager(_manager)
 {
 	// NOTHING TO DO
 }
@@ -57,8 +59,19 @@ void Ammo::compute() {
 		originX = (*calcX)(t);
 		originY = (*calcY)(t);
 		angle = atan2((*calcY)[t],(*calcX)[t]);
+		if (!(static_cast<int>(t/TIME_STEP)%TIME_BETWEEN_TWO_SMOKLET)){
+			manager->addAnimationsToDraw(
+				new Animation(
+					App::imageBank->get(TXT_SMOKE),
+					originX,
+					originY,
+					SMOKE_WIDTH,
+					SMOKE_HEIGHT,
+					SMOKE_DURATION));
+		}
 	}
 	if (!isOutOfCannon()) if (!intersect(owner)) out();
+
 }
 
 void Ammo::setAngle(const float _angle){

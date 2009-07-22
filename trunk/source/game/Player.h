@@ -46,7 +46,8 @@ public:
 		const float angle,
 		const float rotationStep = ROTATION_STEP,
 		const int life = 100,
-		const bool fury = false);
+		const bool fury = false,
+		Manager* manager = NULL);
 	int getPlayerNumber() const;
 	int getCol() const;
 	int getRow() const;

@@ -28,11 +28,11 @@ public:
 	GRRLIB_texImg* ammoLook,
 	Player* owner,
 	Terrain* terrain,
+	Manager* manager,
 	const float vInitX = DEFAULT_POWER,
 	const float vInitY = DEFAULT_POWER,
 	const float xInit = 0,
 	const float yInit = 0);
-	//void draw() const;
 	Explosion* destruction(explosionType _type);
 };
 
