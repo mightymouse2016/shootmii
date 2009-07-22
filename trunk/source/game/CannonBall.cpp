@@ -17,7 +17,7 @@ namespace shootmii {
     		_angle,
     		_ammoLook,
     		new PolyDeg2(
-    			float(wind->getWindSpeed())*(wind->getWindDirection()*2-1)*WIND_INFLUENCE_ON_AMMO/(2*100* AMMO_WEIGHT ),
+    			float(wind->getWindSpeed())*(wind->getWindDirection()*2-1)*WIND_INFLUENCE_ON_AMMO/(2*100* AMMO_WEIGHT),
     			_vInitX,
     			_xInit),
     		new PolyDeg2(

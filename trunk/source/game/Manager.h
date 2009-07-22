@@ -24,10 +24,9 @@ private:
 public:
 	Manager(App*);
 	~Manager();
-	// Accesseurs
 	Player* getPlayer1() const;
 	Player* getPlayer2() const;
-	// Autres méthodes
+	Wind* getWind() const;
 	void compute();
 	void initPlayers() const;
 	void draw() const;

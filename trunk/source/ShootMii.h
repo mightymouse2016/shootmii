@@ -5,34 +5,45 @@ using namespace std;
 
 namespace shootmii {
 
-	class App;
-	class Screen;
-	class TitleScreen;
-	class GameScreen;
-	class ScoreManager;
-	class Manager;
-	class Player;
-	class Polygon;
-	class Rectangle;
-	class TerrainCell;
-	class Wind;
-	class Cloud;
-	class Sun;
-	class Terrain;
-	class World;
-	class Wheels;
-	class Cannon;
-	class Tank;
-	class MovementHandler;
-	class Ammo;
-	class CannonBall;
-	class Affine;
-	class PolyDeg2;
-	class Animation;
-	class Function;
-	class Console;
-	class Coordinates;
-	class ImageBank;
+// Math
+class Coordinates;
+class Function;
+class NullFunction;
+class Affine;
+class PolyDeg2;
+class Polygon;
+class Rectangle;
+
+// Tools
+class Console;
+class ImageBank;
+class Animation;
+
+// World
+class TerrainCell;
+class Wind;
+class Cloud;
+class Sun;
+class Terrain;
+class World;
+
+// Game
+class Explosion;
+class Cannon;
+class Ammo;
+class CannonBall;
+class Player;
+class Manager;
+class ScoreManager;
+
+// Screens
+class Screen;
+class GameScreen;
+class TitleScreen;
+
+// Main
+class App;
+
 }
 
 // GRRLib
@@ -70,7 +81,7 @@ namespace shootmii {
 #include "gfx/cannonball_ground_explosion.h"
 #include "gfx/smoke_sprites.h"
 
-// Fontes
+// Fonts
 #include "gfx/font1.h"
 #include "gfx/font2.h"
 #include "gfx/font3.h"
@@ -80,9 +91,10 @@ namespace shootmii {
 #include "gfx/font_military.h"
 #include "gfx/font_score.h"
 
-// Maths
+// Math
 #include "tools/Coordinates.h"
 #include "tools/Function.h"
+#include "tools/NullFunction.h"
 #include "tools/Affine.h"
 #include "tools/PolyDeg2.h"
 #include "tools/Polygon.h"
@@ -95,12 +107,12 @@ namespace shootmii {
 #include "tools/ImageBank.h"
 #include "tools/Animation.h"
 
-// Terrain
+// World
 #include "terrain/TerrainCell.h"
 #include "terrain/Wind.h"
 #include "terrain/Cloud.h"
-#include "terrain/Terrain.h"
 #include "terrain/Sun.h"
+#include "terrain/Terrain.h"
 #include "terrain/World.h"
 
 // Game
