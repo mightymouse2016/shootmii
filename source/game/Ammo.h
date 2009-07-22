@@ -5,9 +5,12 @@
 
 namespace shootmii {
 
+const int TIME_BETWEEN_TWO_SMOKLET(5);
+
 const int MINIMUM_LENGTH_FOR_DAMAGE(TERRAIN_CELL_WIDTH*3);
 const float DAMAGE_COEF(0.5);
-  
+const int HIT_DAMAGE_BONUS(20);
+
 const float G(-9.81);
 const float TIME_STEP(.1);
 const int AMMO_WEIGHT(1);
@@ -32,6 +35,7 @@ protected:
 	bool explosionFinished;
 	Terrain* terrain;
 	Player* owner;
+	Manager* manager;
 public:
 	Ammo(
 		const float angle,
@@ -39,7 +43,8 @@ public:
 		Function* calcX,
 		Function* calcY,
 		Player* owner,
-		Terrain* terrain);
+		Terrain* terrain,
+		Manager* manager);
 	virtual ~Ammo();
 	void incT();
 	void decT();

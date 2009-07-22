@@ -10,6 +10,10 @@ const float PI(3.14159265358979323846264338327950288419716939937510);
 const int CANNON_WIDTH(16);
 const int CANNON_HEIGHT(16);
 
+const int SMOKE_WIDTH(16);
+const int SMOKE_HEIGHT(16);
+const int SMOKE_DURATION(28);
+
 const int CROSSHAIR_WIDTH(24);
 const int CROSSHAIR_HEIGHT(24);
 const int CROSSHAIR_OVERTAKE(100);
@@ -51,6 +55,7 @@ private:
 	u8 heatCool;
 	u8 reloadTime;
 	bool stillHeld;
+	Manager* manager;
 public:
 	Cannon(
 		const float angleMin,
@@ -59,7 +64,8 @@ public:
 		const float rotationStep,
 		Wind* wind,
 		Player* owner,
-		int playerNumber);
+		int playerNumber,
+		Manager* manager);
 	~Cannon();
 	void init();
 	int getStrength() const;
@@ -73,8 +79,8 @@ public:
 	void draw(const int screenX, const int screenY) const;
 	void rotateLeft();
 	void rotateRight();
-	void incStrength(Manager*);
-	void shoot(Manager*);
+	void incStrength();
+	void shoot();
 	void reload();
 	bool isLoaded() const;
 };

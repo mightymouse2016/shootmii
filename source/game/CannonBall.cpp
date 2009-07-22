@@ -8,6 +8,7 @@ namespace shootmii {
     GRRLIB_texImg* _ammoLook,
     Player* _owner,
     Terrain* _terrain,
+    Manager* _manager,
     const float _vInitX,
     const float _vInitY,
     const float _xInit,
@@ -24,7 +25,8 @@ namespace shootmii {
     			-_vInitY,
     			_yInit),
     		_owner,
-    		_terrain)
+    		_terrain,
+    		_manager)
 {
     vertices.reserve(5);
     vertices.push_back(Coordinates(8, 0));
