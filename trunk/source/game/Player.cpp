@@ -15,6 +15,7 @@ Player::Player(
 	Manager* _manager) :
 		Rectangle(TANK_HEIGHT,TANK_WIDTH,0,0,TANK_HEIGHT/2,-PI/2,0,1,App::imageBank->get(TXT_TANK)),
 		playerNumber(_playerNumber),
+		recoil(0),
 		score(0),
 		life(_life),
 		fury(_fury),
@@ -97,28 +98,29 @@ void Player::setOpponent(Player* _opponent){
 	children[CHILD_OPPONENT] = _opponent;
 }
 
-void Player::moveLeft(Terrain* terrain){
+void Player::moveLeft(float speed){
 	float oldOriginX = originX;
-	float newOriginX = originX - getSpeed(terrain->getGround(originX/terrain->getCellWidth()).getType(), LEFT);
+	float newOriginX = originX - speed*getSpeed(terrain->getGround(originX/terrain->getCellWidth()).getType(), LEFT);
 	if (newOriginX <= getWidth()/2) return;
-	initPosition(terrain, newOriginX);
-	if (intersect(getOpponent())) initPosition(terrain, oldOriginX);
+	initPosition(newOriginX);
+	if (intersect(getOpponent())) initPosition(oldOriginX);
 }
 
-void Player::moveRight(Terrain* terrain){
+void Player::moveRight(float speed){
 	float oldOriginX = originX;
-	float newOriginX = originX + getSpeed(terrain->getGround(originX/terrain->getCellWidth()).getType(), RIGHT);
+	float newOriginX = originX + speed*getSpeed(terrain->getGround(originX/terrain->getCellWidth()).getType(), RIGHT);
 	if (newOriginX >= terrain->getCols()*terrain->getCellWidth() - getWidth()/2) return;
-	initPosition(terrain, newOriginX);
-	if (intersect(getOpponent())) initPosition(terrain, oldOriginX);
+	initPosition(newOriginX);
+	if (intersect(getOpponent())) initPosition(oldOriginX);
 }
 
 void Player::init() {
 	nbGamesWon = 0;
+	recoil = 0;
 	initGame();
 }
 
-void Player::initPosition(Terrain* terrain, float _originX){
+void Player::initPosition(float _originX){
 	originY = terrain->getHeight(originX = _originX);
 	float alpha1, alpha2;
 	int x1, x = originX, width = terrain->getCellWidth();
@@ -160,10 +162,31 @@ void Player::computeDamage(Ammo* ammo){
     int distance = sqrt(x*x+y*y);
     if (distance > MINIMUM_LENGTH_FOR_DAMAGE) return;
     int degat = (MINIMUM_LENGTH_FOR_DAMAGE - distance)*DAMAGE_COEF;
+    int intensity = (MINIMUM_LENGTH_FOR_DAMAGE - distance)*RECOIL_COEF;
+    //Debug
     char buffer[100];
     sprintf(buffer, "Distance = %d; Degat = %d;", distance, degat);
     App::console->addDebug(buffer);
     looseLife(degat);
+    if (x < 0) addRecoil(-intensity);
+    else addRecoil(intensity);
+}
+
+void Player::computeRecoil(){
+	if (recoil > 0) {
+		App::console->addDebug("<-- Recoil");
+		moveLeft(recoil);
+		recoil--;
+	}
+	if (recoil < 0) {
+		App::console->addDebug("Recoil -->");
+		moveRight(-recoil);
+		recoil++;
+	}
+}
+
+void Player::addRecoil(int intensity){
+	recoil += intensity;
 }
 
 }

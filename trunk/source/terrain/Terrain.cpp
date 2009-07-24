@@ -82,6 +82,9 @@ void Terrain::generate() {
 	for(int i=height+1;i<rows-1;i++) grille[i][0].setType(GROUND_LEFT);
 	grille[rows-1][0].setType(GROUND_BOTTOM_LEFT);
 
+	// Tout en bas
+	for (int i=1;i<cols;i++) grille[rows-1][i].setType(GROUND_BOTTOM_MID);
+
 	for (int i=1,variation;i<cols-1;i++){
 
 		if (height == highLimit) variation = -rand()%(VARIATION_TERRAIN + 1);
@@ -127,9 +130,6 @@ void Terrain::generate() {
 			break;
 		}
 	}
-
-	// Tout en bas
-	for (int i=1;i<cols;i++) grille[rows-1][i].setType(GROUND_BOTTOM_MID);
 
 	// Dernière Colonne
 	grille[height][cols-1].setType(GRASS_RIGHT);

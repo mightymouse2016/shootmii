@@ -52,12 +52,12 @@ class App;
 #include <ogc/lwp_watchdog.h>
 
 // Bibliothèques standard
-#include <stdlib.h>
+#include <cstdlib>
 #include <string>
 #include <vector>
 #include <list>
-#include <time.h>
-#include <math.h>
+#include <ctime>
+#include <cmath>
 
 // Images
 #include "gfx/ammo_1.h"
