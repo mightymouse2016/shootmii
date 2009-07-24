@@ -5,6 +5,8 @@
 
 namespace shootmii {
 
+const int SHOT_RECOIL(5);
+
 const int TANK_WIDTH(16);
 const int TANK_HEIGHT(32);
 const int TANK_ROTATION_AXIS_X(8);
@@ -31,6 +33,7 @@ enum PlayerChild{
 class Player: public Rectangle {
 private:
 	int playerNumber;
+	int recoil; // Le recul : >0 recul vers la gauche <0 recul vers la gauche
 	int score;
 	int life;	// 0->100
 	bool fury;	// 0->100
@@ -63,14 +66,16 @@ public:
 	Player* getOpponent() const;
 	float getSpeed(const CellType type, const Direction dir) const;
 	void setOpponent(Player* _opponent);
-	void moveLeft(Terrain* terrain);
-	void moveRight(Terrain* terrain);
+	void moveLeft(float speed = 1);
+	void moveRight(float speed = 1);
 	void looseLife(u8 lifeAmount);
 	void computeDamage(Ammo* ammo);
+	void computeRecoil();
+	void addRecoil(int intensity);
 	void setScore(const int score);
 	void incScore();
 	void init();
-	void initPosition(Terrain* terrain, float screenX);
+	void initPosition(float screenX);
 	void initGame();
 
 };

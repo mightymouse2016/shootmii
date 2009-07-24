@@ -5,11 +5,13 @@
 
 namespace shootmii {
 
+const float RECOIL_COEF(.25);
+
 const int TIME_BETWEEN_TWO_SMOKLET(5);
 const int SMOKE_SLOW(2);
-const float SMOKE_WEIGHT(.1);
+const float SMOKE_WEIGHT(1);
 const float WIND_INFLUENCE_ON_SMOKE(.5);
-const int SMOKE_AIR_RESISTANCE(.5);
+const float SMOKE_AIR_RESISTANCE(.3);
 
 const int MINIMUM_LENGTH_FOR_DAMAGE(TERRAIN_CELL_WIDTH*3);
 const float DAMAGE_COEF(.5);

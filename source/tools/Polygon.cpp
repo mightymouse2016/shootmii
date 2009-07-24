@@ -247,6 +247,7 @@ void Polygon::draw() const{
 			getAbsoluteX()-ORIGIN_CROSS_WIDTH,
 			getAbsoluteY()+ORIGIN_CROSS_HEIGHT,BLACK);
 	} else {
+		if (image == NULL) return;
 		// L'objet en lui même (image)
 		if (spriteWidth && spriteHeight) { // Si c'est un sprite et non une image
 			GRRLIB_DrawTile(

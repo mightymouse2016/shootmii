@@ -80,6 +80,8 @@ void Manager::compute() {
 	world->compute();
 	player1->getCannon()->decHeat();
 	player2->getCannon()->decHeat();
+	player1->computeRecoil();
+	player2->computeRecoil();
 	computeAmmos();
 	computeExplosions();
 	computeAnimations();
@@ -232,8 +234,8 @@ void Manager::init() const {
 }
 
 void Manager::initPlayers() const {
-	player1->initPosition(world->getTerrain(), PLAYER_OFFSET);
-	player2->initPosition(world->getTerrain(), world->getTerrain()->getCols()*world->getTerrain()->getCellWidth() - PLAYER_OFFSET);
+	player1->initPosition(PLAYER_OFFSET);
+	player2->initPosition(world->getTerrain()->getCols()*world->getTerrain()->getCellWidth() - PLAYER_OFFSET);
 	player1->initGame();
 	player2->initGame();
 }
@@ -243,13 +245,13 @@ void Manager::dealEvent(const u32* player1Events, const u32* player2Events) {
 	const u32 pad1Down = player1Events[DOWN], pad2Down = player2Events[DOWN];
 	const u32 pad1Up = player1Events[UP], pad2Up = player2Events[UP];
 
-	if (pad1Held & WPAD_BUTTON_LEFT) player1->moveLeft(world->getTerrain());
-	if (pad1Held & WPAD_BUTTON_RIGHT) player1->moveRight(world->getTerrain());
+	if (pad1Held & WPAD_BUTTON_LEFT) player1->moveLeft();
+	if (pad1Held & WPAD_BUTTON_RIGHT) player1->moveRight();
 	if (pad1Held & WPAD_BUTTON_UP) player1->getCannon()->rotateLeft();
 	if (pad1Held & WPAD_BUTTON_DOWN) player1->getCannon()->rotateRight();
 
-	if (pad2Held & WPAD_BUTTON_LEFT) player2->moveLeft(world->getTerrain());
-	if (pad2Held & WPAD_BUTTON_RIGHT) player2->moveRight(world->getTerrain());
+	if (pad2Held & WPAD_BUTTON_LEFT) player2->moveLeft();
+	if (pad2Held & WPAD_BUTTON_RIGHT) player2->moveRight();
 	if (pad2Held & WPAD_BUTTON_UP) player2->getCannon()->rotateRight();
 	if (pad2Held & WPAD_BUTTON_DOWN) player2->getCannon()->rotateLeft();
 
