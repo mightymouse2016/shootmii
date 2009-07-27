@@ -6,6 +6,7 @@ using namespace std;
 namespace shootmii {
 
 // Math
+class Timer;
 class Coordinates;
 class Function;
 class NullFunction;
@@ -92,6 +93,7 @@ class App;
 #include "gfx/font_score.h"
 
 // Math
+#include "tools/Timer.h"
 #include "tools/Coordinates.h"
 #include "tools/Function.h"
 #include "tools/NullFunction.h"
