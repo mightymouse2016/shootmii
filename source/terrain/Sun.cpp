@@ -2,24 +2,27 @@
 
 namespace shootmii{
 
-Sun::Sun() :
-  Rectangle(
-      SUN_WIDTH,
-      SUN_HEIGHT,
-      SCREEN_WIDTH/2,
-      (CENTER_TERRAIN+AMPLITUDE_TERRAIN+SUN_HEIGHT/2)*N_ROWS*TERRAIN_CELL_WIDTH/100,
-      (SCREEN_WIDTH - SUN_WIDTH)/2,
-      -PI/2,
-      0,
-      0,
-      App::imageBank->get(TXT_SUN))
+Sun::Sun(float _a, float _b) :
+	Rectangle(
+		SUN_WIDTH,
+		SUN_HEIGHT,
+		SCREEN_WIDTH/2,
+		(SCREEN_HEIGHT-SCORE_PANEL_HEIGHT)*(static_cast<float>(CENTER_TERRAIN+AMPLITUDE_TERRAIN)/100),
+		0,
+		-PI/2,
+		0,
+		0,
+		App::imageBank->get(TXT_SUN)),
+		a(_a),
+		e(sqrt(_b*_b-_a*_a)/_b)
 {
 
 }
 
 void Sun::compute(){
-  if (angle >= 0) angle = -PI;
-  else angle += SUN_SLOW;
+	radial = a/sqrt(abs(1-e*e*cos(angle+PI/2)*cos(angle+PI/2)));
+	if (angle >= 0) angle = -PI;
+	else angle += SUN_SLOW;
 }
 
 void Sun::init(){

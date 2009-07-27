@@ -110,12 +110,13 @@ class App;
 #include "tools/Animation.h"
 
 // World
+#include "terrain/World.h"
 #include "terrain/TerrainCell.h"
 #include "terrain/Wind.h"
 #include "terrain/Cloud.h"
-#include "terrain/Sun.h"
 #include "terrain/Terrain.h"
-#include "terrain/World.h"
+#include "terrain/Sun.h"
+
 
 // Game
 #include "game/Explosion.h"
