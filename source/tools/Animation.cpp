@@ -12,13 +12,10 @@ Animation::Animation(
 		const int _spriteSlow,
 		const int _loops,
 		Function* _calcX,
-		Function* _calcY,
-		float _timeStep) :
+		Function* _calcY) :
 	Rectangle(_width,_height,_originX,_originY, 0, 0, 0, 0, _tiles, NULL, 0, _width, _height),
-	t(0),
+	Timer(_spriteSlow),
 	loops(_loops),
-	spriteSlow(_spriteSlow),
-	timeStep(_timeStep),
 	calcX(_calcX),
 	calcY(_calcY)
 {
@@ -31,14 +28,14 @@ Animation::~Animation(){
 }
 
 void Animation::compute(){
-	if (!(t%spriteSlow)) spriteIndex++;
+	if (timeIsOver()) spriteIndex++;
 	if (spriteIndex == duration) {
 		loops--;
 		spriteIndex = 0;
 	}
-	if (dynamic_cast<NullFunction*>(calcX) == NULL) originX = (*calcX)(t*timeStep);
-	if (dynamic_cast<NullFunction*>(calcY) == NULL) originY = (*calcY)(t*timeStep);
-	t++;
+	if (dynamic_cast<NullFunction*>(calcX) == NULL) originX = (*calcX)(getT());
+	if (dynamic_cast<NullFunction*>(calcY) == NULL) originY = (*calcY)(getT());
+	Timer::compute();
 }
 
 bool Animation::isFinished(){

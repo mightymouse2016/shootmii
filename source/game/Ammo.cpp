@@ -11,9 +11,9 @@ Ammo::Ammo(
 	Terrain* _terrain,
 	Manager* _manager):
 		Polygon(TANK_HEIGHT/4, 0, AMMO_OVERTAKE, _angle, 0, 1, _owner, Coordinates(-AMMO_WIDTH/2,-AMMO_HEIGHT/2), _image),
+		Timer(),
 		calcX(_calcX),
 		calcY(_calcY),
-		t(0),
 		destroyed(false),
 		outOfCannon(false),
 		fired(false),
@@ -27,14 +27,6 @@ Ammo::Ammo(
 
 Ammo::~Ammo() {
 	vertices.clear();
-}
-
-void Ammo::incT() {
-	t += TIME_STEP;
-}
-
-void Ammo::decT() {
-	t -= TIME_STEP;
 }
 
 Function* Ammo::getCalcX() {
@@ -55,11 +47,12 @@ int Ammo::getRow() const{
 
 void Ammo::compute() {
 	if (fired) {
-		incT();
-		originX = (*calcX)(t);
-		originY = (*calcY)(t);
-		angle = atan2((*calcY)[t],(*calcX)[t]);
-		if (!(static_cast<int>(t/TIME_STEP)%TIME_BETWEEN_TWO_SMOKLET)){
+		float _t = getT();
+		Timer::compute();
+		originX = (*calcX)(_t);
+		originY = (*calcY)(_t);
+		angle = atan2((*calcY)[_t],(*calcX)[_t]);
+		if (!(static_cast<int>(_t/TIME_STEP)%TIME_BETWEEN_TWO_SMOKLET)){
 			manager->addAnimationsToDraw(
 				new Animation(
 					App::imageBank->get(TXT_SMOKE),

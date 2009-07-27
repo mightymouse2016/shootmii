@@ -5,13 +5,10 @@
 
 namespace shootmii{
 
-class Animation : public Rectangle{
+class Animation : public Rectangle, public Timer{
 private:
-	int t;
-	int loops; // -1 -> infinite
-	int spriteSlow;
+	int loops; // -1 = infinite
 	int duration;
-	float timeStep; // example : originX = (*calcX)(t*timeStep)
 	Function* calcX;
 	Function* calcY;
 public:
@@ -25,8 +22,7 @@ public:
 		const int spriteSlow = 1,
 		const int loops = 1,
 		Function* calcX = new NullFunction,
-		Function* calcY = new NullFunction,
-		float timeStep = .1);
+		Function* calcY = new NullFunction);
 	~Animation();
 	void compute();
 	bool isFinished();

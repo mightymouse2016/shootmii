@@ -30,11 +30,10 @@ enum explosionType {
   HIT_A_PLAYER
 };
 
-class Ammo: public Polygon {
+class Ammo: public Polygon, public Timer {
 protected:
 	Function* calcX;
 	Function* calcY;
-	float t;
 	bool destroyed;
 	bool outOfCannon; // pour que le gestionnaire de collisions ignore l'auto-contact
 	bool fired; // pour savoir si on incrémente le compteur de temps ou non
@@ -52,8 +51,6 @@ public:
 		Terrain* terrain,
 		Manager* manager);
 	virtual ~Ammo();
-	void incT();
-	void decT();
 	Function* getCalcX();
 	Function* getCalcY();
 	int getCol() const;
