@@ -77,7 +77,6 @@ public:
 	void init();
 	void initPosition(float screenX);
 	void initGame();
-
 };
 
 }
