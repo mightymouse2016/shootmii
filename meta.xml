@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<app version="0.5">
+  <name>ShootMii</name>
+  <coder>denisgeorge666 &amp; Altarfinch</coder>
+  <version>0.5 svn r107</version>
+  <release_date>20090804193000</release_date>
+  <short_description>A Wii Shooting Tank Game</short_description>
+  <long_description>For 2 players</long_description>
+</app>
+
