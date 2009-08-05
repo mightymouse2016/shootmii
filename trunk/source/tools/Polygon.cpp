@@ -2,11 +2,6 @@
 
 namespace shootmii {
 
-bool intervalIntersect(const float MA1,const float MA2,const float MB1,const float MB2){
-	float m = min(MA1,MA2), M = max(MA1,MA2);
-	return ((MB1 >= m && MB1 <= M) || (MB2 >= m && MB2 <= M));
-}
-
 bool segmentIntersect(const float Ax, const float Ay, const float Bx, const float By, const float Cx, const float Cy, const float Dx, const float Dy){
 	float r = ((Ay-Cy)*(Dx-Cx)-(Ax-Cx)*(Dy-Cy))/((Bx-Ax)*(Dy-Cy)-(By-Ay)*(Dx-Cx));
 	float s = ((Ay-Cy)*(Bx-Ax)-(Ax-Cx)*(By-Ay))/((Bx-Ax)*(Dy-Cy)-(By-Ay)*(Dx-Cx));
@@ -272,22 +267,24 @@ void Polygon::show(){
 }
 
 bool Polygon::intersect(Polygon* polygon) const{
+	vector<Coordinates> v1 = getRotatedVertices();
+	vector<Coordinates> v2 = polygon->getRotatedVertices();
 	float x = getAbsoluteX(),y = getAbsoluteY(),xp = polygon->getAbsoluteX(),yp = polygon->getAbsoluteY();
-	for (int i=0,k1,size=vertices.size();i<size;i++){
+	for (int i=0,k1,size=v1.size();i<size;i++){
 		if (i == size-1) k1 = 0;
 		else k1 = i+1;
-		for (int j=0,k2,size2=polygon->getVertices().size();j<size2;j++){
+		for (int j=0,k2,size2=v2.size();j<size2;j++){
 			if (j == size2-1) k2 = 0;
 			else k2 = j+1;
 			if (segmentIntersect(
-					vertices[i].getX() + x,
-					vertices[i].getY() + y,
-					vertices[k1].getX() + x,
-					vertices[k1].getY() + y,
-					polygon->getVertices()[j].getX() + xp,
-					polygon->getVertices()[j].getY() + yp,
-					polygon->getVertices()[k2].getX() + xp,
-					polygon->getVertices()[k2].getY() + yp)) return true;
+					v1[i].getX() + x,
+					v1[i].getY() + y,
+					v1[k1].getX() + x,
+					v1[k1].getY() + y,
+					v2[j].getX() + xp,
+					v2[j].getY() + yp,
+					v2[k2].getX() + xp,
+					v2[k2].getY() + yp)) return true;
 		}
 	}
 	return false;

@@ -22,7 +22,6 @@ enum Corner{
 const int ORIGIN_CROSS_WIDTH(2);
 const int ORIGIN_CROSS_HEIGHT(2);
 
-bool intervalIntersect(const float MA1,const float MA2,const float MB1,const float MB2);
 bool segmentIntersect(const float Ax, const float Ay, const float Bx, const float By,
 		const float Cx, const float Cy, const float Dx, const float Dy);
 
