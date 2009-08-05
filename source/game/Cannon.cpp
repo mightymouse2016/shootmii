@@ -41,7 +41,7 @@ Cannon::Cannon(
 	}
 	vertices.reserve(2);
 	addChild(new Rectangle(CROSSHAIR_WIDTH, CROSSHAIR_HEIGHT, 0, 0, CROSSHAIR_OVERTAKE, angle, 0, 1, crossHair_image, _owner));
-	addChild(new CannonBall(angle,wind,ammo_Image,_owner,static_cast<Player*>(getFather())->getTerrain(), manager));
+	addChild(new CannonBall(angle,wind,ammo_Image,_owner,_owner->getTerrain(), manager));
 	for (int i=0;i<STRENGTH_JAUGE_STATES;i++){
 		addChild(
 			new Rectangle(
@@ -76,12 +76,12 @@ void Cannon::init() {
 	reloadTime = 0;
 	if (isLoaded()) delete getAmmo();
 	Player* owner = static_cast<Player*>(getFather());
+	GRRLIB_texImg* ammo_Image;
 	switch (owner->getPlayerNumber()){
-	case 1: image = App::imageBank->get(TXT_AMMO1);break;
-	case 2: image = App::imageBank->get(TXT_AMMO2);break;
-	//default : image = App::imageBank->get(TXT_AMMO1);break;
+	case 1: ammo_Image = App::imageBank->get(TXT_AMMO1);break;
+	case 2: ammo_Image = App::imageBank->get(TXT_AMMO2);break;
 	}
-	setAmmo(new CannonBall(angle, wind, image, owner, owner->getTerrain(), manager));
+	setAmmo(new CannonBall(angle, wind, ammo_Image, owner, owner->getTerrain(), manager));
 	getAmmo()->setAngle(angle);
 }
 
