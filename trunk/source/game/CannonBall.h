@@ -23,17 +23,17 @@ const int CANNONBALL_HIT_EXPLOSION_DURATION(16);
 class CannonBall : public Ammo {
 public:
 	CannonBall(
-	const float angle,
-	Wind* wind,
-	GRRLIB_texImg* ammoLook,
-	Player* owner,
-	Terrain* terrain,
-	Manager* manager,
-	const float vInitX = DEFAULT_POWER,
-	const float vInitY = DEFAULT_POWER,
-	const float xInit = 0,
-	const float yInit = 0);
-	Explosion* destruction(explosionType _type);
+		const float angle,
+		Wind* wind,
+		GRRLIB_texImg* ammoLook,
+		Player* owner,
+		Terrain* terrain,
+		Manager* manager,
+		const float vInitX = DEFAULT_POWER,
+		const float vInitY = DEFAULT_POWER,
+		const float xInit = 0,
+		const float yInit = 0);
+	Animation* destruction(explosionType _type, Player* _playerHit = NULL);
 };
 
 }

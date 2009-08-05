@@ -5,8 +5,8 @@
 
 namespace shootmii {
 
-const int WIND_INFLUENCE_ON_AMMO(5); // 0->100
-const int WIND_INFLUENCE_ON_CLOUDS(10); // 0->100
+const float WIND_INFLUENCE_ON_AMMO(10); // 0->100
+const float WIND_INFLUENCE_ON_CLOUDS(10); // 0->100
 
 class Wind {
 private:

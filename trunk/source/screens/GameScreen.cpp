@@ -24,7 +24,7 @@ void GameScreen::draw() {
 	score_manager->draw();
 }
 
-void GameScreen::show() {
+void GameScreen::init() {
 	manager->init();
 }
 

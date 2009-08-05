@@ -23,19 +23,19 @@ private:
 	ScreenType screen;
 	TitleScreen* titleScreen;
 	GameScreen* gameScreen;
-
 public:
-  static Console* console;
-  static ImageBank* imageBank;
-  App();
+	static Console* console;
+	static ImageBank* imageBank;
+	App();
 	virtual ~App();
-	void run();
-	void draw();
-	void dealEvent();
-	bool isRunning() const;
 	u8 getFPS() const;
 	u8 getFrameCount() const;
-	void calculateFrameRate();
+	bool isRunning() const;
+	void run();
+	void dealEvent();
+	void computeFrameRate();
+	void compute();
+	void draw() const;
 };
 
 }

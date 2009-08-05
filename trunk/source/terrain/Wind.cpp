@@ -3,7 +3,7 @@
 namespace shootmii {
 
 int Wind::getWindSpeed() const{
-	return windSpeed;
+	return windSpeed*(windDirection*2-1);
 }
 
 bool Wind::getWindDirection() const{

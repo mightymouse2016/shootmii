@@ -7,7 +7,7 @@ Sun::Sun(float _a, float _b) :
 		SUN_WIDTH,
 		SUN_HEIGHT,
 		SCREEN_WIDTH/2,
-		(SCREEN_HEIGHT-SCORE_PANEL_HEIGHT)*(static_cast<float>(CENTER_TERRAIN+AMPLITUDE_TERRAIN)/100),
+		(SCREEN_HEIGHT-SCORE_PANEL_HEIGHT)*(static_cast<float>(TERRAIN_DOWN_LIMIT)/100),
 		0,
 		-PI/2,
 		0,

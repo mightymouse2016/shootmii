@@ -14,30 +14,26 @@ private:
 	Player* player1;
 	Player* player2;
 	list<Ammo*>* ammosToDraw;
-	list<Explosion*>* explosionsToDraw;
 	list<Animation*>* animationsToDraw;
 	GRRLIB_texImg explosionTiles;
-	void computeAmmos();
-	void computeExplosions();
-	void computeAnimations();
-	void computeVictory();
 public:
 	Manager(App*);
 	~Manager();
 	Player* getPlayer1() const;
 	Player* getPlayer2() const;
 	Wind* getWind() const;
-	void compute();
+	void addAmmosToDraw(Ammo*) const;
+	void addAnimationsToDraw(Animation*) const;
 	void initPlayers() const;
-	void draw() const;
-	void drawAmmos() const;
-	void drawExplosions() const;
-	void drawAnimations() const;
 	void init() const;
 	void dealEvent(const u32*, const u32*);
-	void addAmmosToDraw(Ammo*) const;
-	void addExplosionsToDraw(Explosion*) const;
-	void addAnimationsToDraw(Animation*) const;
+	void computeAnimations();
+	void computeVictory();
+	void computeAmmos();
+	void compute();
+	void drawAnimations() const;
+	void drawAmmos() const;
+	void draw() const;
 };
 
 }
