@@ -7,7 +7,7 @@ namespace shootmii{
 
 class Animation : public Rectangle, public Timer{
 private:
-	int loops; // -1 = infinite
+	int loops; // <0 = infinite
 	int duration;
 	Function* calcX;
 	Function* calcY;
@@ -16,13 +16,17 @@ public:
 		GRRLIB_texImg* tiles,
 		const float originX,
 		const float originY,
+		const float radial,
+		const float angle,
+		const float rectangleAngle,
+		Polygon* father,
 		const int width,
 		const int height,
 		const int duration,
 		const int spriteSlow = 1,
 		const int loops = 1,
-		Function* calcX = new NullFunction,
-		Function* calcY = new NullFunction);
+		Function* calcX = NULL,
+		Function* calcY = NULL);
 	~Animation();
 	void compute();
 	bool isFinished();

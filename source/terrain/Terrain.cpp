@@ -45,6 +45,21 @@ float Terrain::getHeight(const int screenX) const {
 	return grille[row][screenX/cellWidth].getAbsoluteHeight(screenX);
 }
 
+float Terrain::getAngle(const float screenX) const{
+	int x1, x = screenX;
+	float alpha1, alpha2;
+	if (x%cellWidth > cellWidth/2){
+		alpha1 = getGround(x/cellWidth).getAngle();
+		alpha2 = getGround(x/cellWidth+1).getAngle();
+		x1 = (x/cellWidth)*cellWidth+cellWidth/2;
+	} else {
+		alpha1 = getGround(x/cellWidth-1).getAngle();
+		alpha2 = getGround(x/cellWidth).getAngle();
+		x1 = (x/cellWidth)*cellWidth-cellWidth/2;
+	}
+	return (alpha2-alpha1)*(screenX-x1)/cellWidth + alpha1;
+}
+
 TerrainCell Terrain::getGround(const int colIndex) const {
   int rowIndex;
   for(rowIndex = 0; getType(colIndex, rowIndex) == EMPTY; rowIndex++);
@@ -66,16 +81,15 @@ void Terrain::draw() const {
 }
 
 void Terrain::generate() {
-
 	// Remise à zero(EMPTY) du terrain
 	for (int i = 0; i < rows; i++)
-	  for (int j = 0; j < cols; j++)
-		grille[i][j].setType(EMPTY);
+		for (int j = 0; j < cols; j++)
+			grille[i][j].setType(EMPTY);
 
 	// Initialisation
-	int highLimit = rows*(CENTER_TERRAIN-AMPLITUDE_TERRAIN/2)/100;
-	int lowLimit = rows*(CENTER_TERRAIN+AMPLITUDE_TERRAIN/2)/100;
-	int height = rand()%(lowLimit-highLimit)+(lowLimit+highLimit)/2;
+	int highLimit = rows*TERRAIN_UP_LIMIT/100;
+	int lowLimit = rows*TERRAIN_DOWN_LIMIT/100;
+	int height = rand()%(lowLimit-highLimit)+highLimit;
 
 	// Première Colonne
 	grille[height][0].setType(GRASS_LEFT);
@@ -83,13 +97,26 @@ void Terrain::generate() {
 	grille[rows-1][0].setType(GROUND_BOTTOM_LEFT);
 
 	// Tout en bas
-	for (int i=1;i<cols;i++) grille[rows-1][i].setType(GROUND_BOTTOM_MID);
+	for (int i=1;i<cols-1;i++) grille[rows-1][i].setType(GROUND_BOTTOM_MID);
 
 	for (int i=1,variation;i<cols-1;i++){
 
-		if (height == highLimit) variation = -rand()%(VARIATION_TERRAIN + 1);
-		else if (height == lowLimit) variation = rand()%(VARIATION_TERRAIN + 1);
-		else variation = rand() % (2* VARIATION_TERRAIN + 1) - VARIATION_TERRAIN;
+		if (i == cols-2){
+			if (height == highLimit) {
+				if (rand()%100 > 50) variation = -VARIATION_TERRAIN;
+				else variation = 0;
+			}
+			else if (height == lowLimit) {
+				if (rand()%100 > 50) variation = VARIATION_TERRAIN;
+				else variation = 0;
+			}
+			else variation = VARIATION_TERRAIN*(rand() % (VARIATION_TERRAIN + 1) - 1);
+		}
+		else {
+			if (height == highLimit) variation = -rand()%(VARIATION_TERRAIN + 1);
+			else if (height == lowLimit) variation = rand()%(VARIATION_TERRAIN + 1);
+			else variation = rand() % (2* VARIATION_TERRAIN + 1) - VARIATION_TERRAIN;
+		}
 
 		switch (variation) {
 		  case 2:

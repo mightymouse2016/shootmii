@@ -58,7 +58,7 @@ public:
 	void compute();
 	void setAngle(const float _angle);
 	void destroy();
-	virtual Explosion* destruction(explosionType _type)=0;
+	virtual Animation* destruction(explosionType _type, Player* _playerHit = NULL)=0;
 	void out();
 	bool isOutOfCannon() const;
 	bool isOffScreen() const;

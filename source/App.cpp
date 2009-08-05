@@ -2,36 +2,48 @@
 
 namespace shootmii {
 
-  Console* App::console = new Console();
-  ImageBank* App::imageBank = new ImageBank;
+Console* App::console = new Console;
+ImageBank* App::imageBank = new ImageBank;
 
-App::App() :
-  fps(0),
-  lastTime(0),
-  frameCount(0),
-  running(true),
-  nbFrame(0),
-  screen(TITLE_SCREEN)
+App::App():
+	fps(0),
+	lastTime(0),
+	frameCount(0),
+	running(true),
+	nbFrame(0),
+	screen(TITLE_SCREEN)
 {
-	srand(time(NULL));
 	GRRLIB_Init();
 	WPAD_Init();
 	App::imageBank->init();
+	srand(time(NULL));
 	titleScreen = new TitleScreen(this);
 	gameScreen = new GameScreen(this);
 }
 
 App::~App() {
-	GRRLIB_Exit();
 	delete titleScreen;
 	delete gameScreen;
 	delete console;
 	delete imageBank;
-	exit(0);
+	GRRLIB_Exit();
+}
+
+bool App::isRunning() const {
+	return running;
+}
+
+u8 App::getFPS() const {
+	return fps;
+}
+
+u8 App::getFrameCount() const {
+	return frameCount;
 }
 
 void App::run() {
 	dealEvent();
+	compute();
 	draw();
 }
 
@@ -54,54 +66,31 @@ void App::dealEvent() {
 
 	switch (screen) {
 	case TITLE_SCREEN:
-		if ((player1Events[DOWN] | player2Events[DOWN]) & WPAD_BUTTON_HOME) this->running = false;
+		if ((player1Events[DOWN] | player2Events[DOWN]) & WPAD_BUTTON_HOME) {
+			this->running = false;
+		}
 		else if ((player1Events[DOWN] | player2Events[DOWN]) & WPAD_BUTTON_A) {
 		  console->addDebug("gameScreen !!!");
 		  screen = GAME_SCREEN;
-		  gameScreen->show();
+		  gameScreen->init();
 		}
-		else titleScreen->dealEvent(player1Events, player2Events);
+		else {
+			titleScreen->dealEvent(player1Events, player2Events);
+		}
 		break;
 	case GAME_SCREEN:
 		if ((player1Events[DOWN] | player2Events[DOWN]) & WPAD_BUTTON_HOME) {
 			console->addDebug("titleScreen !!!");
 			screen = TITLE_SCREEN;
 		}
-		else gameScreen->dealEvent(player1Events, player2Events);
+		else {
+			gameScreen->dealEvent(player1Events, player2Events);
+		}
 		break;
 	}
 }
 
-void App::draw() {
-	switch (screen) {
-	case TITLE_SCREEN:
-		titleScreen->draw();
-		break;
-	case GAME_SCREEN:
-		gameScreen->compute();
-		gameScreen->draw();
-		break;
-	}
-
-	console->draw();
-
-	GRRLIB_Render();
-	calculateFrameRate();
-}
-
-bool App::isRunning() const {
-	return running;
-}
-
-u8 App::getFPS() const {
-	return fps;
-}
-
-u8 App::getFrameCount() const {
-	return frameCount;
-}
-
-void App::calculateFrameRate() {
+void App::computeFrameRate() {
 	u32 currentTime = ticks_to_millisecs(gettime());
 	frameCount++;
 	if(currentTime - lastTime > 1000) {
@@ -110,6 +99,24 @@ void App::calculateFrameRate() {
 		frameCount = 0;
 		App::console->setFPS(fps);
 	}
+}
+
+void App::compute(){
+	switch (screen) {
+	case TITLE_SCREEN: titleScreen->draw();break;
+	case GAME_SCREEN: gameScreen->draw();break;
+	}
+	computeFrameRate();
+}
+
+void App::draw() const{
+	switch (screen) {
+	case TITLE_SCREEN:break;
+	case GAME_SCREEN:gameScreen->compute();break;
+	}
+	console->draw();
+	GRRLIB_Render();
+
 }
 
 }

@@ -9,7 +9,6 @@ namespace shootmii {
 class Timer;
 class Coordinates;
 class Function;
-class NullFunction;
 class Affine;
 class PolyDeg2;
 class Polygon;
@@ -29,7 +28,6 @@ class Terrain;
 class World;
 
 // Game
-class Explosion;
 class Cannon;
 class Ammo;
 class CannonBall;
@@ -96,7 +94,6 @@ class App;
 #include "tools/Timer.h"
 #include "tools/Coordinates.h"
 #include "tools/Function.h"
-#include "tools/NullFunction.h"
 #include "tools/Affine.h"
 #include "tools/PolyDeg2.h"
 #include "tools/Polygon.h"
@@ -117,9 +114,7 @@ class App;
 #include "terrain/Terrain.h"
 #include "terrain/Sun.h"
 
-
 // Game
-#include "game/Explosion.h"
 #include "game/Cannon.h"
 #include "game/Ammo.h"
 #include "game/CannonBall.h"

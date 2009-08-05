@@ -193,6 +193,7 @@ void Cannon::shoot() {
 	// On confie la munition au manager
 	getAmmo()->fire();
 	getAmmo()->setRadial(0);
+	getAmmo()->compute(); // On initialise la position, car dans le canon elle est relative !
 	manager->addAmmosToDraw(getAmmo());
 	setAmmo(NULL);
 	strength = 0;
@@ -201,8 +202,6 @@ void Cannon::shoot() {
 		children[CHILDREN_STRENGTH+i]->hide();
 	}
 	char buffer[100];
-	sprintf(buffer,"angle = %f",angle);
-	App::console->addDebug(buffer);
 	sprintf(buffer,"recul = %d",int(SHOT_RECOIL*sin(angle)));
 	App::console->addDebug(buffer);
 	static_cast<Player*>(getFather())->addRecoil(SHOT_RECOIL*sin(angle));

@@ -5,18 +5,19 @@
 
 namespace shootmii {
 
-  class GameScreen : public Screen {
-    private:
-      Manager* manager;
-      ScoreManager* score_manager;
-    public:
-      GameScreen(App* _app);
-      virtual ~GameScreen();
-      void compute();
-      void draw();
-      void show();
-      void dealEvent(const u32*, const u32*);
-    };
+class GameScreen : public Screen {
+private:
+	Manager* manager;
+	ScoreManager* score_manager;
+public:
+	GameScreen(App* _app);
+	virtual ~GameScreen();
+	void init();
+	void dealEvent(const u32*, const u32*);
+	void compute();
+	void draw();
+};
+
 }
 
 #endif // __GAME_SCREEN_H__
