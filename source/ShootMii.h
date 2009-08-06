@@ -10,6 +10,8 @@ class Timer;
 class Coordinates;
 class Function;
 class Affine;
+class Sinus;
+class Cosinus;
 class PolyDeg2;
 class Polygon;
 class Rectangle;
@@ -28,6 +30,7 @@ class Terrain;
 class World;
 
 // Game
+class Bonus;
 class Cannon;
 class Ammo;
 class CannonBall;
@@ -51,50 +54,55 @@ class App;
 #include <ogc/lwp_watchdog.h>
 
 // Bibliothèques standard
-#include <cstdlib>
-#include <string>
-#include <vector>
 #include <list>
 #include <ctime>
 #include <cmath>
+#include <string>
+#include <vector>
+#include <cstdlib>
 
 // Images
+#include "gfx/sun.h"
+#include "gfx/tank.h"
+#include "gfx/cannon.h"
 #include "gfx/ammo_1.h"
 #include "gfx/ammo_2.h"
-#include "gfx/crosshair_1.h"
-#include "gfx/crosshair_2.h"
-#include "gfx/cannon.h"
-#include "gfx/tank.h"
-#include "gfx/score_panel.h"
-#include "gfx/title_screen.h"
+#include "gfx/tile_set.h"
 #include "gfx/heat_jauge.h"
 #include "gfx/life_jauge.h"
+#include "gfx/crosshair_1.h"
+#include "gfx/crosshair_2.h"
+#include "gfx/score_panel.h"
+#include "gfx/title_screen.h"
+#include "gfx/bonus_homing.h"
+#include "gfx/smoke_sprites.h"
 #include "gfx/strength_jauge.h"
 #include "gfx/strength_sprites.h"
 #include "gfx/background_cloud.h"
 #include "gfx/foreground_cloud.h"
-#include "gfx/sun.h"
-#include "gfx/tile_set.h"
 #include "gfx/cannonball_hit_explosion.h"
 #include "gfx/cannonball_air_explosion.h"
 #include "gfx/cannonball_ground_explosion.h"
-#include "gfx/smoke_sprites.h"
+
 
 // Fonts
 #include "gfx/font1.h"
 #include "gfx/font2.h"
 #include "gfx/font3.h"
 #include "gfx/font4.h"
-#include "gfx/font_console.h"
 #include "gfx/font_fun.h"
-#include "gfx/font_military.h"
 #include "gfx/font_score.h"
+#include "gfx/font_console.h"
+#include "gfx/font_military.h"
+
 
 // Math
 #include "tools/Timer.h"
 #include "tools/Coordinates.h"
 #include "tools/Function.h"
 #include "tools/Affine.h"
+#include "tools/Sinus.h"
+#include "tools/Cosinus.h"
 #include "tools/PolyDeg2.h"
 #include "tools/Polygon.h"
 #include "tools/Rectangle.h"
@@ -115,6 +123,7 @@ class App;
 #include "terrain/Sun.h"
 
 // Game
+#include "game/Bonus.h"
 #include "game/Cannon.h"
 #include "game/Ammo.h"
 #include "game/CannonBall.h"

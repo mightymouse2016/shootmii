@@ -8,8 +8,8 @@ namespace shootmii{
 const float DEFAULT_TIME_STEP(.1);
 
 class Timer{
-private:
-	int t;
+protected:
+	int t; //  Utiliser l'accesseur !
 	int slow;
 	float step; // Le vrai temps est en fait égal à t*step
 public:

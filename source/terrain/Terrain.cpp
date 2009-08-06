@@ -40,22 +40,24 @@ int Terrain::getCellHeight() const{
 float Terrain::getHeight(const int screenX) const {
 	int row;
 	int col = screenX/cellWidth;
-	if (screenX < 0 || screenX >= cellWidth*cols) return cellHeight*rows;
+	if (screenX < 0 || col >= cols) return cellHeight*rows;
 	for(row=0;getType(col,row)==EMPTY;row++);
-	return grille[row][screenX/cellWidth].getAbsoluteHeight(screenX);
+	return grille[row][col].getAbsoluteHeight(screenX);
 }
 
 float Terrain::getAngle(const float screenX) const{
-	int x1, x = screenX;
+	int x1, x = screenX, col = x/cellWidth;
 	float alpha1, alpha2;
 	if (x%cellWidth > cellWidth/2){
-		alpha1 = getGround(x/cellWidth).getAngle();
-		alpha2 = getGround(x/cellWidth+1).getAngle();
-		x1 = (x/cellWidth)*cellWidth+cellWidth/2;
+		if (col < 0 || col+1 >= cols) return 0;
+		alpha1 = getGround(col).getAngle();
+		alpha2 = getGround(col+1).getAngle();
+		x1 = col*cellWidth+cellWidth/2;
 	} else {
-		alpha1 = getGround(x/cellWidth-1).getAngle();
-		alpha2 = getGround(x/cellWidth).getAngle();
-		x1 = (x/cellWidth)*cellWidth-cellWidth/2;
+		if (col-1 < 0 || col >= cols) return 0;
+		alpha1 = getGround(col-1).getAngle();
+		alpha2 = getGround(col).getAngle();
+		x1 = col*cellWidth-cellWidth/2;
 	}
 	return (alpha2-alpha1)*(screenX-x1)/cellWidth + alpha1;
 }
@@ -119,13 +121,13 @@ void Terrain::generate() {
 		}
 
 		switch (variation) {
-		  case 2:
+		case 2:
 			height--;
 			grille[height][i].setType(SLOPE_UP_1);
 			grille[height+1][i].setType(GROUND_SLOPE_UP_1);
 			for (int j=height+2;j<rows-1;j++) grille[j][i].setType(GROUND_MID);
 			break;
-		  case 1:
+		case 1:
 			height--;
 			grille[height][i].setType(SLOPE_UP_05_1);
 			grille[height+1][i].setType(GROUND_SLOPE_UP_05_1);
@@ -135,11 +137,11 @@ void Terrain::generate() {
 			for (int j=height+2;j<rows-1;j++) grille[j][i-1].setType(GROUND_MID);
 			for (int j=height+2;j<rows-1;j++) grille[j][i].setType(GROUND_MID);
 			break;
-		  case 0:
+		case 0:
 			grille[height][i].setType(GRASS_MID);
 			for (int j=height+1;j<rows-1;j++) grille[j][i].setType(GROUND_MID);
 			break;
-		  case -1:
+		case -1:
 			grille[height][i].setType(SLOPE_DOWN_05_1);
 			grille[height+1][i].setType(GROUND_SLOPE_DOWN_05_1);
 			i++;
@@ -149,7 +151,7 @@ void Terrain::generate() {
 			for (int j=height+1;j<rows-1;j++) grille[j][i-1].setType(GROUND_MID);
 			for (int j=height+1;j<rows-1;j++) grille[j][i].setType(GROUND_MID);
 			break;
-		  case -2:
+		case -2:
 			grille[height][i].setType(SLOPE_DOWN_1);
 			grille[height+1][i].setType(GROUND_SLOPE_DOWN_1);
 			height++;
@@ -167,9 +169,9 @@ void Terrain::generate() {
 
 bool Terrain::contains(float screenX, float screenY) const {
 	if (screenX < 0) return false;
-	else if (screenX > cellWidth*cols-1) return false;
+	else if (screenX >= cellWidth*cols) return false;
 	else if (screenY < 0) return false;
-	else if (screenY > cellHeight*rows-1) return false;
+	else if (screenY >= cellHeight*rows) return false;
 	return true;
 }
 

@@ -107,9 +107,10 @@ bool Ammo::isDestroyed() const{
 }
 
 bool Ammo::hitTheGround(Terrain* terrain) const{
-	if (isOffScreen()) return false;
-	for (int i=0,size=vertices.size();i<size;i++){
-		if (vertices[i].getY()+getAbsoluteY() >= terrain->getHeight(vertices[i].getX()+getAbsoluteX())) return true;
+	//if (isOffScreen()) return false;
+	vector<Coordinates> v = getRotatedVertices();
+	for (int i=0,size=v.size();i<size;i++){
+		if (v[i].getY()+getAbsoluteY() >= terrain->getHeight(v[i].getX()+getAbsoluteX())) return true;
 	}
 	return false;
 }

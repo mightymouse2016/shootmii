@@ -26,7 +26,8 @@ public:
 		const int spriteSlow = 1,
 		const int loops = 1,
 		Function* calcX = NULL,
-		Function* calcY = NULL);
+		Function* calcY = NULL,
+		float step = DEFAULT_TIME_STEP);
 	~Animation();
 	void compute();
 	bool isFinished();

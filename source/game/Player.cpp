@@ -101,7 +101,7 @@ void Player::setOpponent(Player* _opponent){
 void Player::moveLeft(float speed){
 	float oldOriginX = originX;
 	float newOriginX = originX - speed*getSpeed(terrain->getGround(originX/terrain->getCellWidth()).getType(), LEFT);
-	if (newOriginX <= getWidth()/2) return;
+	if (newOriginX < getHeight()/2) newOriginX = getHeight()/2;
 	initPosition(newOriginX);
 	if (intersect(getOpponent())) initPosition(oldOriginX);
 }
@@ -109,14 +109,13 @@ void Player::moveLeft(float speed){
 void Player::moveRight(float speed){
 	float oldOriginX = originX;
 	float newOriginX = originX + speed*getSpeed(terrain->getGround(originX/terrain->getCellWidth()).getType(), RIGHT);
-	if (newOriginX >= terrain->getCols()*terrain->getCellWidth() - getWidth()/2) return;
+	if (newOriginX > terrain->getCols()*terrain->getCellWidth() - getHeight()/2) newOriginX = terrain->getCols()*terrain->getCellWidth() - getHeight()/2;
 	initPosition(newOriginX);
 	if (intersect(getOpponent())) initPosition(oldOriginX);
 }
 
 void Player::init() {
 	nbGamesWon = 0;
-	recoil = 0;
 	initGame();
 }
 
@@ -126,6 +125,7 @@ void Player::initPosition(float _originX){
 }
 
 void Player::initGame() {
+	recoil = 0;
 	life = 100;
 	fury = false;
 	getCannon()->init();
@@ -152,10 +152,12 @@ void Player::computeDamage(Ammo* ammo){
     if (distance > MINIMUM_LENGTH_FOR_DAMAGE) return;
     int degat = (MINIMUM_LENGTH_FOR_DAMAGE - distance)*DAMAGE_COEF;
     int intensity = (MINIMUM_LENGTH_FOR_DAMAGE - distance)*RECOIL_COEF;
+
     //Debug
     char buffer[100];
     sprintf(buffer, "Distance = %d; Degat = %d;", distance, degat);
     App::console->addDebug(buffer);
+
     looseLife(degat);
     if (x < 0) addRecoil(-intensity);
     else addRecoil(intensity);

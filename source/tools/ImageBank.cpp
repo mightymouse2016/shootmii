@@ -7,9 +7,7 @@ ImageBank::ImageBank() {
 }
 
 ImageBank::~ImageBank() {
-	for(int i=0;i<NUMBER_OF_TEXTURES;i++){
-		free(allTextures[i].data);
-	}
+	for(int i=0;i<NUMBER_OF_TEXTURES;i++) free(allTextures[i].data);
 }
 
 void ImageBank::init() {
@@ -26,6 +24,7 @@ void ImageBank::init() {
 	allTextures[TXT_CROSSHAIR1] = GRRLIB_LoadTexture(crosshair_1);
 	allTextures[TXT_CROSSHAIR2] = GRRLIB_LoadTexture(crosshair_2);
 	allTextures[TXT_SCORE_PANEL] = GRRLIB_LoadTexture(score_panel);
+	allTextures[TXT_BONUS_HOMING] = GRRLIB_LoadTexture(bonus_homing);
 	allTextures[TXT_TITLE_SCREEN] = GRRLIB_LoadTexture(title_screen);
 	allTextures[TXT_BG_CLOUD] = GRRLIB_LoadTexture(background_cloud);
 	allTextures[TXT_FG_CLOUD] = GRRLIB_LoadTexture(foreground_cloud);

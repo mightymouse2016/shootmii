@@ -80,6 +80,7 @@ void Cannon::init() {
 	switch (owner->getPlayerNumber()){
 	case 1: ammo_Image = App::imageBank->get(TXT_AMMO1);break;
 	case 2: ammo_Image = App::imageBank->get(TXT_AMMO2);break;
+	default: ammo_Image = App::imageBank->get(TXT_AMMO1);break;
 	}
 	setAmmo(new CannonBall(angle, wind, ammo_Image, owner, owner->getTerrain(), manager));
 	getAmmo()->setAngle(angle);
