@@ -45,6 +45,7 @@ Wind* Manager::getWind() const{
 }
 
 void Manager::compute() {
+	if (!(rand()%(60*60))) addAnimationsToDraw(new Bonus);
 	world->compute();
 	player1->getCannon()->decHeat();
 	player2->getCannon()->decHeat();
@@ -100,7 +101,7 @@ void Manager::computeAmmos() {
   for (list<Ammo*>::iterator i=ammosToDraw->begin();i!=ammosToDraw->end();i++) {
     // Le missile vient de rencontrer un autre missile qui a déjà géré la collision
     if ((*i)->isDestroyed()) {
-      App::console->addDebug("missile détruit en l'air");
+      App::console->addDebug("collision inter-missile 2/2");
       addAnimationsToDraw((*i)->destruction(HIT_ANOTHER_AMMO));
       delete *i;
     }
@@ -110,14 +111,14 @@ void Manager::computeAmmos() {
   	  delete *i;
   	}
     // Missile en dehors de l'ecran
-  	else if (!world->getTerrain()->contains((*i)->getAbsoluteOriginX(),(*i)->getAbsoluteOriginY())) {
+  	 else if (!world->getTerrain()->contains((*i)->getAbsoluteOriginX(),(*i)->getAbsoluteOriginY())) {
   		//App::console->addDebug("missile en dehors de l'ecran");
   		newAmmosToDraw->push_back(*i);
   		(*i)->compute();
   	}
     // Le missile touche le sol : explosion
   	else if ((*i)->hitTheGround(world->getTerrain())){
-  		App::console->addDebug("missile touche le sol : explosion");
+  		App::console->addDebug("collision sol");
   		player1->computeDamage(*i);
   		player2->computeDamage(*i);
   		addAnimationsToDraw((*i)->destruction(HIT_THE_GROUND));
@@ -125,7 +126,7 @@ void Manager::computeAmmos() {
   	}
     // Collision inter-missile
   	else if (Ammo * inFrontAmmo = (*i)->hitAnotherAmmo(ammosToDraw)) {
-  		App::console->addDebug("collision inter-missile");
+  		App::console->addDebug("collision inter-missile 1/2");
   		player1->computeDamage(*i);
   		player2->computeDamage(*i);
   		addAnimationsToDraw((*i)->destruction(HIT_ANOTHER_AMMO));
@@ -149,6 +150,7 @@ void Manager::computeAmmos() {
   }
   delete ammosToDraw;
   ammosToDraw = newAmmosToDraw;
+
 }
 
 void Manager::computeAnimations() {
