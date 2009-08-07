@@ -22,6 +22,10 @@ HomingMissile::HomingMissile(
     		_terrain,
     		_manager)
 {
+	if (owner == manager->getPlayer1()) target = manager->getPlayer2();
+	else target = manager->getPlayer1();
+
+	// La silhouette du homing (pour des intersections plus fines)
     vertices.reserve(8);
     vertices.push_back(Coordinates( 8,-2));
     vertices.push_back(Coordinates( 0,-2));
@@ -76,6 +80,8 @@ Animation* HomingMissile::destruction(explosionType _type, Player* _playerHit) {
 }
 
 void HomingMissile::compute(){
+	// Comportement normal
+	/*
 	if (fired) {
 		float _t = getT();
 		Timer::compute();
@@ -98,6 +104,46 @@ void HomingMissile::compute(){
 				1,
 				new PolyDeg2(manager->getWind()->getWindSpeed()*WIND_INFLUENCE_ON_SMOKE/(2*100* SMOKE_WEIGHT),0,originX+HOMING_SMOKE_OVERTAKE*cos(angle)),
 				new PolyDeg2(-G*SMOKE_AIR_RESISTANCE/2,0,originY+HOMING_SMOKE_OVERTAKE*sin(angle))));
+	}
+	if (!isOutOfCannon()) if (!intersect(owner)) out();
+	*/
+	if (fired) {
+		float _t = getT();
+		Timer::compute();
+		// Avant d'être activée la munition tourne sur elle même et a une trajectoire parabolique
+		if (_t < HOMING_ACTIVATION_DELAY){
+			originX = (*calcX)(_t);
+			originY = (*calcY)(_t);
+			angle += HOMING_SPIN_ANGLE;
+		}
+		else {
+			// A l'activation, elle se positionne sur la trajectoire du lancé
+			if (_t == HOMING_ACTIVATION_DELAY){
+				angle = atan2((*calcY)[_t],(*calcX)[_t]);
+			}
+			// Après activation son angle est asservi, de manière a ce que l'angle entre la munition et l'adversaire soit nul
+			originX += HOMING_SPEED*cos(angle);
+			originY += HOMING_SPEED*sin(angle);
+			float erreur = -angle+atan2(target->getAbsoluteY()-getAbsoluteY(),target->getAbsoluteX()-getAbsoluteX());
+			angle += erreur*HOMING_REACTIVITY;
+			// Smoklets
+			manager->addSmokletsToDraw(
+				new Animation(
+					App::imageBank->get(TXT_HOMING_SMOKE),
+					originX+HOMING_SMOKE_OVERTAKE*cos(angle),
+					originY+HOMING_SMOKE_OVERTAKE*sin(angle),
+					0,
+					0,
+					0,
+					NULL,
+					HOMING_SMOKE_WIDTH,
+					HOMING_SMOKE_HEIGHT,
+					HOMING_SMOKE_DURATION,
+					HOMING_SMOKE_SLOW,
+					1,
+					new PolyDeg2(manager->getWind()->getWindSpeed()*WIND_INFLUENCE_ON_SMOKE/(2*100* SMOKE_WEIGHT),0,originX+HOMING_SMOKE_OVERTAKE*cos(angle)),
+					new PolyDeg2(-G*SMOKE_AIR_RESISTANCE/2,0,originY+HOMING_SMOKE_OVERTAKE*sin(angle))));
+		}
 	}
 	if (!isOutOfCannon()) if (!intersect(owner)) out();
 }
