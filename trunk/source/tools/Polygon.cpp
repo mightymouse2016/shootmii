@@ -166,6 +166,10 @@ void Polygon::setFather(Polygon* _father){
 	father = _father;
 }
 
+void Polygon::setImage(GRRLIB_texImg* _image){
+	image = _image;
+}
+
 void Polygon::addChild(Polygon * child){
 	children.push_back(child);
 	child->setFather(this);

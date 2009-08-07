@@ -209,14 +209,14 @@ void Cannon::shoot() {
 }
 
 void Cannon::reload() {
-  Player* owner = static_cast<Player*>(getFather());
-  GRRLIB_texImg* ammoImage = NULL;
+	Player* owner = static_cast<Player*>(getFather());
+	GRRLIB_texImg* ammoImage = NULL;
 	if (!isLoaded()) {
-	  switch(owner->getPlayerNumber()){
-	    case 1: ammoImage = App::imageBank->get(TXT_AMMO1);break;
-	    case 2: ammoImage = App::imageBank->get(TXT_AMMO2);break;
-	    default: ammoImage = App::imageBank->get(TXT_AMMO1);break;
-	  }
+		switch(owner->getPlayerNumber()){
+			case 1: ammoImage = App::imageBank->get(TXT_AMMO1);break;
+			case 2: ammoImage = App::imageBank->get(TXT_AMMO2);break;
+			default: ammoImage = App::imageBank->get(TXT_AMMO1);break;
+		}
 		if (reloadTime > RELOAD_TIME) {
 			setAmmo(new CannonBall(angle, wind, ammoImage, owner, owner->getTerrain(), manager));
 			reloadTime = 0;
@@ -224,6 +224,20 @@ void Cannon::reload() {
 			reloadTime++;
 		}
 	}
+}
+
+void Cannon::loadHoming(){
+	// Le homing se met à la place de l'autre munition si il y en a une
+	if (isLoaded()) delete getAmmo();
+	Player* owner = static_cast<Player*>(getFather());
+	GRRLIB_texImg* ammoImage = NULL;
+	switch(owner->getPlayerNumber()){
+		case 1: ammoImage = App::imageBank->get(TXT_HOMING1);break;
+		case 2: ammoImage = App::imageBank->get(TXT_HOMING2);break;
+		default: ammoImage = App::imageBank->get(TXT_HOMING1);break;
+	}
+	setAmmo(new HomingMissile(angle, wind, ammoImage, owner, owner->getTerrain(), manager));
+	reloadTime = 0;
 }
 
 bool Cannon::isLoaded() const{

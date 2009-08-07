@@ -17,8 +17,11 @@ void ImageBank::init() {
 	allTextures[TXT_AMMO1] = GRRLIB_LoadTexture(ammo_1);
 	allTextures[TXT_AMMO2] = GRRLIB_LoadTexture(ammo_2);
 	allTextures[TXT_CANNON] = GRRLIB_LoadTexture(cannon);
+	allTextures[TXT_HOMING1] = GRRLIB_LoadTexture(homing_1);
+	allTextures[TXT_HOMING2] = GRRLIB_LoadTexture(homing_2);
 	allTextures[TXT_TERRAIN] = GRRLIB_LoadTexture(tile_set);
 	allTextures[TXT_SMOKE] = GRRLIB_LoadTexture(smoke_sprites);
+	allTextures[TXT_BONUS_LIFE] = GRRLIB_LoadTexture(bonus_life);
 	allTextures[TXT_LIFE_JAUGE] = GRRLIB_LoadTexture(life_jauge);
 	allTextures[TXT_HEAT_JAUGE] = GRRLIB_LoadTexture(heat_jauge);
 	allTextures[TXT_CROSSHAIR1] = GRRLIB_LoadTexture(crosshair_1);

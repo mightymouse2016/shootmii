@@ -34,6 +34,7 @@ class Bonus;
 class Cannon;
 class Ammo;
 class CannonBall;
+class HomingMissile;
 class Player;
 class Manager;
 class ScoreManager;
@@ -54,6 +55,7 @@ class App;
 #include <ogc/lwp_watchdog.h>
 
 // Bibliothèques standard
+#include <pair>
 #include <list>
 #include <ctime>
 #include <cmath>
@@ -67,7 +69,10 @@ class App;
 #include "gfx/cannon.h"
 #include "gfx/ammo_1.h"
 #include "gfx/ammo_2.h"
+#include "gfx/homing_1.h"
+#include "gfx/homing_2.h"
 #include "gfx/tile_set.h"
+#include "gfx/bonus_life.h"
 #include "gfx/heat_jauge.h"
 #include "gfx/life_jauge.h"
 #include "gfx/crosshair_1.h"
@@ -127,6 +132,7 @@ class App;
 #include "game/Cannon.h"
 #include "game/Ammo.h"
 #include "game/CannonBall.h"
+#include "game/HomingMissile.h"
 #include "game/Player.h"
 #include "game/Manager.h"
 #include "game/ScoreManager.h"

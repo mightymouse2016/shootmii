@@ -139,6 +139,10 @@ void Player::incScore() {
 	score++;
 }
 
+void Player::setLife(const int _life){
+	life = _life;
+}
+
 void Player::looseLife(u8 lifeAmount) {
 	if (life == 0) return;
 	if (lifeAmount >= life) life = 0;

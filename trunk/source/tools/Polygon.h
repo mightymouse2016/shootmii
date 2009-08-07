@@ -85,6 +85,7 @@ public:
 	void setSpin(const float spin);
 	void setAngle(const float angle);
 	void setFather(Polygon* father);
+	void setImage(GRRLIB_texImg* image);
 
 	void addChild(Polygon * child);
 
