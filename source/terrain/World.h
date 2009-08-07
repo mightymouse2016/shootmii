@@ -32,6 +32,7 @@ public:
 	void compute();
 	void computeClouds();
 	void drawBackground() const;
+	void drawMiddleground() const;
 	void drawForeground() const;
 };
 

@@ -15,8 +15,8 @@ private:
 	Player* player2;
 	list<Ammo*>* ammosToDraw;
 	list<Bonus*>* bonusToDraw;
-	list<Animation*>* animationsToDraw;
-	GRRLIB_texImg explosionTiles;
+	list<Animation*>* smokletsToDraw;
+	list<Animation*>* explosionsToDraw;
 public:
 	Manager(App*);
 	~Manager();
@@ -25,7 +25,8 @@ public:
 	Wind* getWind() const;
 	void addAmmosToDraw(Ammo*) const;
 	void addBonusToDraw(Bonus* bonus) const;
-	void addAnimationsToDraw(Animation*) const;
+	void addSmokletsToDraw(Animation*) const;
+	void addExplosionsToDraw(Animation*) const;
 	void initPlayers() const;
 	void init() const;
 	void dealEvent(const u32*, const u32*);
@@ -34,7 +35,8 @@ public:
 	void computeBonus();
 	void computeAmmos();
 	void compute();
-	void drawAnimations() const;
+	void drawExplosions() const;
+	void drawSmoklets() const;
 	void drawBonus() const;
 	void drawAmmos() const;
 	void draw() const;

@@ -53,7 +53,7 @@ void Ammo::compute() {
 		originY = (*calcY)(_t);
 		angle = atan2((*calcY)[_t],(*calcX)[_t]);
 		if (!(static_cast<int>(_t/TIME_STEP)%TIME_BETWEEN_TWO_SMOKLET)){
-			manager->addAnimationsToDraw(
+			manager->addSmokletsToDraw(
 				new Animation(
 					App::imageBank->get(TXT_SMOKE),
 					originX,
@@ -72,7 +72,6 @@ void Ammo::compute() {
 		}
 	}
 	if (!isOutOfCannon()) if (!intersect(owner)) out();
-
 }
 
 void Ammo::setAngle(const float _angle){

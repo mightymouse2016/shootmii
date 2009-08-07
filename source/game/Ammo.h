@@ -7,8 +7,6 @@ namespace shootmii {
 
 const float RECOIL_COEF(.25);
 
-const int TIME_BETWEEN_TWO_SMOKLET(5);
-const int SMOKE_SLOW(2);
 const float SMOKE_WEIGHT(1);
 const float WIND_INFLUENCE_ON_SMOKE(.5);
 const float SMOKE_AIR_RESISTANCE(.3);
@@ -55,7 +53,7 @@ public:
 	Function* getCalcY();
 	int getCol() const;
 	int getRow() const;
-	void compute();
+	virtual void compute();
 	void setAngle(const float _angle);
 	void destroy();
 	virtual Animation* destruction(explosionType _type, Player* _playerHit = NULL)=0;

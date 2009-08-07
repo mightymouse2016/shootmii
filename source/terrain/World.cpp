@@ -80,6 +80,9 @@ void World::drawBackground() const {
 	sun->draw();
 	// Nuages lointains
 	for (list<Cloud*>::iterator i=cloudsBackToDraw->begin();i!=cloudsBackToDraw->end();i++) (*i)->draw();
+}
+
+void World::drawMiddleground() const{
 	// Terrain
 	terrain->draw();
 }

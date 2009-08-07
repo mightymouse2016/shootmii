@@ -85,6 +85,7 @@ class App;
 #include "gfx/strength_sprites.h"
 #include "gfx/background_cloud.h"
 #include "gfx/foreground_cloud.h"
+#include "gfx/homing_smoke_sprites.h"
 #include "gfx/cannonball_hit_explosion.h"
 #include "gfx/cannonball_air_explosion.h"
 #include "gfx/cannonball_ground_explosion.h"
