@@ -115,6 +115,16 @@ bool Ammo::hitTheGround(Terrain* terrain) const{
 	return false;
 }
 
+pair<Player*,Bonus*>* Ammo::hitABonus(list<Bonus*>* bonusList) const{
+	list<Bonus*>::iterator it;
+	for (it = bonusList->begin();it!=bonusList->end();it++)
+		if (intersect(*it)) {
+			(*it)->finish();
+			return new pair<Player*,Bonus*>(owner,*it);
+		}
+	return NULL;
+}
+
 Ammo* Ammo::hitAnotherAmmo(list<Ammo*>* ammoList) const{
 	list<Ammo*>::iterator it;
 	for (it = ammoList->begin();it!=ammoList->end();it++)
@@ -128,6 +138,8 @@ Player* Ammo::hitAPlayer(Player* player1, Player* player2) const{
 	if (intersect(player2)) return player2;
 	return NULL;
 }
+
+
 
 void Ammo::fire(){
 	fired = true;

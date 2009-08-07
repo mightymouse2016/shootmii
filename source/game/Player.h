@@ -74,6 +74,7 @@ public:
 	void addRecoil(int intensity);
 	void setScore(const int score);
 	void incScore();
+	void setLife(const int life);
 	void init();
 	void initPosition(float screenX);
 	void initGame();

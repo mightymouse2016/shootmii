@@ -82,6 +82,7 @@ public:
 	void incStrength();
 	void shoot();
 	void reload();
+	void loadHoming();
 	bool isLoaded() const;
 };
 

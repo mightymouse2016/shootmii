@@ -5,26 +5,46 @@
 
 namespace shootmii{
 
-const int BONUS_WIDTH(16);
-const int BONUS_HEIGHT(16);
-const int BONUS_DURATION(7);
+const int BONUS_HOMING_WIDTH(16);
+const int BONUS_HOMING_HEIGHT(16);
+const int BONUS_HOMING_DURATION(7);
+const int BONUS_HOMING_ANIMATION_SLOW(5);
+
+const int BONUS_LIFE_WIDTH(28);
+const int BONUS_LIFE_HEIGHT(24);
+const int BONUS_LIFE_DURATION(9);
+const int BONUS_LIFE_ANIMATION_SLOW(5);
+
 const int BONUS_SPEED(30);
-const int BONUS_ANIMATION_SLOW(5);
 const int BONUS_OSCILLATIONS_RANGE(100);
 const int BONUS_OSCILLATIONS_CENTER(100);
 
+const int BONUS_PROBABILITY (60*60); // apparition toutes les 60*60frames = 1 minute en moyenne
+
 enum BonusType{
 	HOMING,
-	LIFE_RECOVERY
+	LIFE_RECOVERY,
+	NUMBER_OF_BONUS
 };
 
 class Bonus : public Animation{
 private:
 	BonusType type;
+	bool finished;
 public:
-	Bonus();
-	void compute();
+	Bonus(
+		BonusType type,
+		GRRLIB_texImg* image,
+		const int width,
+		const int height,
+		const int duration,
+		const int slow);
+	BonusType getType() const;
+	void finish();
+	bool isFinished() const;
 };
+
+Bonus* randomBonus();
 
 }
 

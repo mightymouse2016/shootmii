@@ -30,7 +30,7 @@ public:
 		float step = DEFAULT_TIME_STEP);
 	~Animation();
 	void compute();
-	bool isFinished();
+	virtual bool isFinished();
 };
 
 }
