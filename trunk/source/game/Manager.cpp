@@ -9,7 +9,8 @@ Manager::Manager(App* _app) :
 	player2(new Player(world->getTerrain(),world->getWind(),2,-PI/2,0,-PI/4,ROTATION_STEP,100,false,this)),
 	ammosToDraw(new list<Ammo*>),
 	bonusToDraw(new list<Bonus*>),
-	animationsToDraw(new list<Animation*>)
+	smokletsToDraw(new list<Animation*>),
+	explosionsToDraw(new list<Animation*>)
 {
 	player1->setOpponent(player2);
 	player2->setOpponent(player1);
@@ -18,13 +19,15 @@ Manager::Manager(App* _app) :
 Manager::~Manager() {
 	ammosToDraw->clear();
 	bonusToDraw->clear();
-	animationsToDraw->clear();
-	delete ammosToDraw;
-	delete bonusToDraw;
-	delete animationsToDraw;
+	smokletsToDraw->clear();
+	explosionsToDraw->clear();
 	delete player1;
 	delete player2;
 	delete world;
+	delete ammosToDraw;
+	delete bonusToDraw;
+	delete smokletsToDraw;
+	delete explosionsToDraw;
 }
 
 Player* Manager::getPlayer1() const {
@@ -47,8 +50,12 @@ void Manager::addBonusToDraw(Bonus* bonus) const {
 	bonusToDraw->push_back(bonus);
 }
 
-void Manager::addAnimationsToDraw(Animation* animation) const {
-	animationsToDraw->push_back(animation);
+void Manager::addSmokletsToDraw(Animation* animation) const {
+	smokletsToDraw->push_back(animation);
+}
+
+void Manager::addExplosionsToDraw(Animation* animation) const {
+	explosionsToDraw->push_back(animation);
 }
 
 void Manager::initPlayers() const {
@@ -61,7 +68,8 @@ void Manager::initPlayers() const {
 void Manager::init() const {
 	ammosToDraw->clear();
 	bonusToDraw->clear();
-	animationsToDraw->clear();
+	smokletsToDraw->clear();
+	explosionsToDraw->clear();
 	world->init();
 	player1->init();
 	player2->init();
@@ -107,8 +115,10 @@ void Manager::dealEvent(const u32* player1Events, const u32* player2Events) {
 }
 
 void Manager::computeAnimations() {
+	// TODO Faire un gestionnaire d'affichage à 10 couches !
+	// On peux faire une liste de pair<int,Polygon*> trié sur le type int (ou un map)
 	list<Animation*>* newAnimationsToDraw = new list<Animation*>;
-	for (list<Animation*>::iterator i=animationsToDraw->begin();i!=animationsToDraw->end();i++){
+	for (list<Animation*>::iterator i=smokletsToDraw->begin();i!=smokletsToDraw->end();i++){
 		if ((*i)->isFinished()){
 			//App::console->addDebug("animation finie"); // Un peu lourd
 			delete *i;
@@ -118,8 +128,21 @@ void Manager::computeAnimations() {
 			newAnimationsToDraw->push_back(*i);
 		}
 	}
-	delete animationsToDraw;
-	animationsToDraw = newAnimationsToDraw;
+	delete smokletsToDraw;
+	smokletsToDraw = newAnimationsToDraw;
+	newAnimationsToDraw = new list<Animation*>;
+	for (list<Animation*>::iterator i=explosionsToDraw->begin();i!=explosionsToDraw->end();i++){
+		if ((*i)->isFinished()){
+			//App::console->addDebug("animation finie"); // Un peu lourd
+			delete *i;
+		}
+		else {
+			(*i)->compute();
+			newAnimationsToDraw->push_back(*i);
+		}
+	}
+	delete explosionsToDraw;
+	explosionsToDraw = newAnimationsToDraw;
 }
 
 void Manager::computeVictory() {
@@ -136,7 +159,7 @@ void Manager::computeVictory() {
 		}
 		bonusToDraw->clear();
 		ammosToDraw->clear();
-		animationsToDraw->clear();
+		smokletsToDraw->clear();
 		world->init();
 		initPlayers();
 	}
@@ -164,7 +187,7 @@ void Manager::computeAmmos() {
 		// Le missile vient de rencontrer un autre missile qui a déjà géré la collision
 		if ((*i)->isDestroyed()) {
 			App::console->addDebug("collision : missile 2/2");
-			addAnimationsToDraw((*i)->destruction(HIT_ANOTHER_AMMO));
+			addExplosionsToDraw((*i)->destruction(HIT_ANOTHER_AMMO));
 			delete *i;
 		}
 		// Le missile est trop bas
@@ -183,7 +206,7 @@ void Manager::computeAmmos() {
 			App::console->addDebug("collision : sol");
 			player1->computeDamage(*i);
 			player2->computeDamage(*i);
-			addAnimationsToDraw((*i)->destruction(HIT_THE_GROUND));
+			addExplosionsToDraw((*i)->destruction(HIT_THE_GROUND));
 			delete *i;
 		}
 		// Collision inter-missile
@@ -191,7 +214,7 @@ void Manager::computeAmmos() {
 			App::console->addDebug("collision : missile 1/2");
 			player1->computeDamage(*i);
 			player2->computeDamage(*i);
-			addAnimationsToDraw((*i)->destruction(HIT_ANOTHER_AMMO));
+			addExplosionsToDraw((*i)->destruction(HIT_ANOTHER_AMMO));
 			delete *i;
 			inFrontAmmo->destroy();
 		}
@@ -201,7 +224,7 @@ void Manager::computeAmmos() {
 			player1->computeDamage(*i);
 			player2->computeDamage(*i);
 			playerHit->looseLife(HIT_DAMAGE_BONUS); // Un petit bonus pour le touché
-			addAnimationsToDraw((*i)->destruction(HIT_A_PLAYER,playerHit));
+			addExplosionsToDraw((*i)->destruction(HIT_A_PLAYER,playerHit));
 			delete *i;
 		}
 		// Collision avec un bonus
@@ -251,9 +274,15 @@ void Manager::compute() {
 	computeVictory();
 }
 
-void Manager::drawAnimations() const {
-  for (list<Animation*>::iterator i=animationsToDraw->begin();i!=animationsToDraw->end();i++){
-    (*i)->draw();
+void Manager::drawExplosions() const {
+  for (list<Animation*>::iterator i=explosionsToDraw->begin();i!=explosionsToDraw->end();i++){
+    if (!(*i)->isFinished()) (*i)->draw();
+  }
+}
+
+void Manager::drawSmoklets() const {
+  for (list<Animation*>::iterator i=smokletsToDraw->begin();i!=smokletsToDraw->end();i++){
+    if (!(*i)->isFinished()) (*i)->draw();
   }
 }
 
@@ -271,11 +300,13 @@ void Manager::drawAmmos() const {
 
 void Manager::draw() const {
 	world->drawBackground();
+	drawSmoklets();
+	world->drawMiddleground();
+	drawAmmos();
 	player1->draw();
 	player2->draw();
-	drawAnimations();
+	drawExplosions();
 	drawBonus();
-	drawAmmos();
 	world->drawForeground();
 }
 

@@ -32,6 +32,7 @@ void ImageBank::init() {
 	allTextures[TXT_BG_CLOUD] = GRRLIB_LoadTexture(background_cloud);
 	allTextures[TXT_FG_CLOUD] = GRRLIB_LoadTexture(foreground_cloud);
 	allTextures[TXT_STRENGTH_JAUGE] = GRRLIB_LoadTexture(strength_jauge);
+	allTextures[TXT_HOMING_SMOKE] = GRRLIB_LoadTexture(homing_smoke_sprites);
 	allTextures[TXT_STRENGTH_SPRITES] = GRRLIB_LoadTexture(strength_sprites);
 	allTextures[TXT_CANNONBALL_AIR_EXPLOSION] = GRRLIB_LoadTexture(cannonball_air_explosion);
 	allTextures[TXT_CANNONBALL_HIT_EXPLOSION] = GRRLIB_LoadTexture(cannonball_hit_explosion);
