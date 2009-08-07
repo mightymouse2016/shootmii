@@ -20,7 +20,14 @@ const int HOMING_HIT_EXPLOSION_HEIGHT(64);
 const int HOMING_HIT_EXPLOSION_DEPTH(0);
 const int HOMING_HIT_EXPLOSION_DURATION(16);
 
+const float HOMING_SPEED(10);
+const float HOMING_SPIN_ANGLE(PI/16);
+const float HOMING_REACTIVITY(.1);
+const float HOMING_ACTIVATION_DELAY(30*DEFAULT_TIME_STEP); // 1/2 seconde
+
 class HomingMissile : public Ammo {
+private:
+	Player* target;
 public:
 	HomingMissile(
 		const float angle,
