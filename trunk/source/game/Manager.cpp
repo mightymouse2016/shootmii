@@ -160,6 +160,7 @@ void Manager::computeVictory() {
 		bonusToDraw->clear();
 		ammosToDraw->clear();
 		smokletsToDraw->clear();
+		explosionsToDraw->clear();
 		world->init();
 		initPlayers();
 	}
