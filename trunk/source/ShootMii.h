@@ -103,15 +103,15 @@ class App;
 
 
 // Math
-#include "tools/Timer.h"
-#include "tools/Coordinates.h"
-#include "tools/Function.h"
-#include "tools/Affine.h"
-#include "tools/Sinus.h"
-#include "tools/Cosinus.h"
-#include "tools/PolyDeg2.h"
-#include "tools/Polygon.h"
-#include "tools/Rectangle.h"
+#include "math/Timer.h"
+#include "math/Coordinates.h"
+#include "math/Function.h"
+#include "math/Affine.h"
+#include "math/Sinus.h"
+#include "math/Cosinus.h"
+#include "math/PolyDeg2.h"
+#include "math/Polygon.h"
+#include "math/Rectangle.h"
 
 // Tools
 #include "tools/Colors.h"
@@ -121,12 +121,12 @@ class App;
 #include "tools/Animation.h"
 
 // World
-#include "terrain/World.h"
-#include "terrain/TerrainCell.h"
-#include "terrain/Wind.h"
-#include "terrain/Cloud.h"
-#include "terrain/Terrain.h"
-#include "terrain/Sun.h"
+#include "world/World.h"
+#include "world/TerrainCell.h"
+#include "world/Wind.h"
+#include "world/Cloud.h"
+#include "world/Terrain.h"
+#include "world/Sun.h"
 
 // Game
 #include "game/Bonus.h"
