@@ -18,7 +18,7 @@ include $(DEVKITPPC)/wii_rules
 GRRLIB		:=	../GRRLib4.0.0/GRRLIB
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	source source/gfx source/game source/screens source/terrain source/tools $(GRRLIB)/GRRLIB $(GRRLIB)/lib/libpng/pngu 
+SOURCES		:=	source source/gfx source/game source/screens source/world source/math source/tools $(GRRLIB)/GRRLIB $(GRRLIB)/lib/libpng/pngu 
 DATA		:=	data  
 INCLUDES	:=  
 
