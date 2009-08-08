@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<app version="0.7">
+<app version="$version">
   <name>ShootMii</name>
   <coder>ShootMii Team</coder>
-  <version>0.7 svn r118</version>
-  <release_date>20090807222000</release_date>
+  <version>$version svn $revision</version>
+  <release_date>$timestamp</release_date>
   <short_description>Wii Shooting Tank Game</short_description>
   <long_description>cuicui666 &amp; Altarfinch presents ShootMii.</long_description>
 </app>

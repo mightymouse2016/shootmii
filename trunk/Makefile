@@ -22,7 +22,6 @@ SOURCES		:=	source source/gfx source/game source/screens source/world source/mat
 DATA		:=	data  
 INCLUDES	:=  
 PROJECT		:=	ShootMii
-VERSION		:=	0.8
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -110,40 +109,11 @@ clean:
 release:
 	@echo [INFO] --------------------------------
 	@echo [INFO] Release for project $(TARGET)...
+
+	@make clean
+	@make
 	
-	@rm -rf $(PROJECT)
-	
-	#@make clean
-	#@make
-	
-	@echo [INFO] Generating meta.xml
-	# TODO
-	#	<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-	#	<app version="$(VERSION)">
-	# 		<name>ShootMii</name>
-	# 		<coder>ShootMii Team</coder>
-	# 		<version>$(VERSION) svn r118</version>
-	# 		<release_date>20090807222000</release_date>
-	# 		<short_description>Wii Shooting Tank Game</short_description>
-	# 		<long_description>cuicui666 &amp; Altarfinch presents ShootMii.</long_description>
-	#	</app>
-	
-	@echo [INFO] Grouping files
-	@mkdir $(PROJECT)
-	@cp $(PROJECT).dol $(PROJECT)/boot.dol
-	@cp icon.png $(PROJECT)/icon.png
-	@cp meta.xml $(PROJECT)/meta.xml
-	
-	@echo [INFO] Packing release
-	@rar a -r releases/$(PROJECT)_v$(VERSION).rar $(PROJECT)
-	
-	@echo [INFO] Deleting temporary files
-	@rm -rf $(PROJECT)
-	
-	@echo [INFO] Uploading release
-	# TODO
-	
-	
+	@ant release
 	
 	@echo [INFO] Release done.
 #---------------------------------------------------------------------------------
