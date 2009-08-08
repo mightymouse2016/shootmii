@@ -80,33 +80,6 @@ Animation* HomingMissile::destruction(explosionType _type, Player* _playerHit) {
 }
 
 void HomingMissile::compute(){
-	// Comportement normal
-	/*
-	if (fired) {
-		float _t = getT();
-		Timer::compute();
-		originX = (*calcX)(_t);
-		originY = (*calcY)(_t);
-		angle = atan2((*calcY)[_t],(*calcX)[_t]);
-		manager->addSmokletsToDraw(
-			new Animation(
-				App::imageBank->get(TXT_HOMING_SMOKE),
-				originX+HOMING_SMOKE_OVERTAKE*cos(angle),
-				originY+HOMING_SMOKE_OVERTAKE*sin(angle),
-				0,
-				0,
-				0,
-				NULL,
-				HOMING_SMOKE_WIDTH,
-				HOMING_SMOKE_HEIGHT,
-				HOMING_SMOKE_DURATION,
-				HOMING_SMOKE_SLOW,
-				1,
-				new PolyDeg2(manager->getWind()->getWindSpeed()*WIND_INFLUENCE_ON_SMOKE/(2*100* SMOKE_WEIGHT),0,originX+HOMING_SMOKE_OVERTAKE*cos(angle)),
-				new PolyDeg2(-G*SMOKE_AIR_RESISTANCE/2,0,originY+HOMING_SMOKE_OVERTAKE*sin(angle))));
-	}
-	if (!isOutOfCannon()) if (!intersect(owner)) out();
-	*/
 	if (fired) {
 		float _t = getT();
 		Timer::compute();
@@ -124,8 +97,10 @@ void HomingMissile::compute(){
 			// Après activation son angle est asservi, de manière a ce que l'angle entre la munition et l'adversaire soit nul
 			originX += HOMING_SPEED*cos(angle);
 			originY += HOMING_SPEED*sin(angle);
-			float erreur = -angle+atan2(target->getAbsoluteY()-getAbsoluteY(),target->getAbsoluteX()-getAbsoluteX());
+			float erreur = atan2(target->getAbsoluteY()-getAbsoluteY(),target->getAbsoluteX()-getAbsoluteX())-angle;
+			if (erreur > PI) erreur -= 2*PI;
 			angle += erreur*HOMING_REACTIVITY;
+
 			// Smoklets
 			manager->addSmokletsToDraw(
 				new Animation(
