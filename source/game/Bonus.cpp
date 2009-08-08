@@ -2,13 +2,16 @@
 
 namespace shootmii {
 
+int Bonus::numberOfBonus = 0;
+
 Bonus::Bonus(
 		BonusType _type,
 		GRRLIB_texImg* _image,
 		const int _width,
 		const int _height,
 		const int _duration,
-		const int _slow) :
+		const int _slow,
+		Function* _calcX) :
 			Animation(
 				_image,0,0,0,0,0,NULL,
 				_width,
@@ -16,13 +19,13 @@ Bonus::Bonus(
 				_duration,
 				_slow,
 				-1,
-				new Affine(BONUS_SPEED),
+				_calcX,
 				new Cosinus(BONUS_OSCILLATIONS_RANGE/2,1,BONUS_OSCILLATIONS_CENTER),
 				.01),
 				type(_type),
 				finished(false)
 {
-	// NOTHING TO DO
+	numberOfBonus++;
 }
 
 BonusType Bonus::getType() const{
@@ -34,11 +37,14 @@ void Bonus::finish(){
 }
 
 bool Bonus::isFinished() const{
-	return (finished || (originX - getWidth()/2 > SCREEN_WIDTH));
+	return (finished || (originX - getWidth()/2 > SCREEN_WIDTH) || (originX + getWidth()/2 < 0));
 }
 
 Bonus* randomBonus(){
 	int _type = rand()%NUMBER_OF_BONUS;
+	Function* calcX;
+	if (Bonus::numberOfBonus%2) calcX = new Affine(BONUS_SPEED,-BONUS_HOMING_WIDTH/2);
+	else calcX = new Affine(-BONUS_SPEED,SCREEN_WIDTH+BONUS_HOMING_WIDTH/2);
 	switch(_type){
 		case HOMING:
 			return new Bonus(
@@ -47,7 +53,8 @@ Bonus* randomBonus(){
 				BONUS_HOMING_WIDTH,
 				BONUS_HOMING_HEIGHT,
 				BONUS_HOMING_DURATION,
-				BONUS_HOMING_ANIMATION_SLOW);
+				BONUS_HOMING_ANIMATION_SLOW,
+				calcX);
 		case LIFE_RECOVERY:
 			return new Bonus(
 				static_cast<BonusType>(_type),
@@ -55,7 +62,8 @@ Bonus* randomBonus(){
 				BONUS_LIFE_WIDTH,
 				BONUS_LIFE_HEIGHT,
 				BONUS_LIFE_DURATION,
-				BONUS_LIFE_ANIMATION_SLOW);
+				BONUS_LIFE_ANIMATION_SLOW,
+				calcX);
 		default:
 			return NULL;
 	}

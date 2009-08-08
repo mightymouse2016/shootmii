@@ -19,7 +19,7 @@ const int BONUS_SPEED(30);
 const int BONUS_OSCILLATIONS_RANGE(100);
 const int BONUS_OSCILLATIONS_CENTER(100);
 
-const int BONUS_PROBABILITY (60*60); // apparition toutes les 60*60frames = 1 minute en moyenne
+const int BONUS_PROBABILITY (60); // apparition toutes les 30*60frames = 30 secondes en moyenne
 
 enum BonusType{
 	HOMING,
@@ -32,13 +32,15 @@ private:
 	BonusType type;
 	bool finished;
 public:
+	static int numberOfBonus;
 	Bonus(
 		BonusType type,
 		GRRLIB_texImg* image,
 		const int width,
 		const int height,
 		const int duration,
-		const int slow);
+		const int slow,
+		Function* calcX);
 	BonusType getType() const;
 	void finish();
 	bool isFinished() const;
