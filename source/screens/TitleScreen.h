@@ -8,10 +8,9 @@ namespace shootmii {
 class TitleScreen : public Screen {
 private:
 	GRRLIB_texImg* tex_title_screen;
-	GRRLIB_texImg tex_font;
+	GRRLIB_texImg* tex_font;
 public:
 	TitleScreen(App*);
-	virtual ~TitleScreen();
 	void draw();
 	void dealEvent(const u32*, const u32*);
 };

@@ -7,10 +7,6 @@ Console::Console() :
 	debug(false),
 	console_font(loadFont(font_console, 8, 0))
 {
-
-}
-
-Console::~Console() {
 	// NOTHING TO DO
 }
 

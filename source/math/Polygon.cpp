@@ -10,6 +10,7 @@ bool segmentIntersect(const float Ax, const float Ay, const float Bx, const floa
 }
 
 Polygon::Polygon(
+	const LayerPriority _layer,
 	const float _originX,
 	const float _originY,
 	const float _radial,
@@ -23,6 +24,7 @@ Polygon::Polygon(
 	const int _spriteWidth,
 	const int _spriteHeight,
 	const bool _hidden) :
+		layer(_layer),
 		originX(_originX),
 		originY(_originY),
 		radial(_radial),
@@ -37,9 +39,17 @@ Polygon::Polygon(
 		spriteHeight(_spriteHeight),
 		hidden(_hidden)
 {
+	// Pour la compatibilité avec la nouvelle version de GRRLib
 	if (spriteWidth && spriteHeight) { // Si c'est un sprite et non une image
+
 		GRRLIB_InitTileSet(image, spriteWidth, spriteHeight, 0);
+		image->handlex = 0;
+				image->handley = 0;
+	} else {
+		image->handlex = _spriteWidth/2;
+		image->handley = _spriteHeight/2;
 	}
+
 }
 
 Polygon::~Polygon(){
@@ -201,6 +211,10 @@ void Polygon::grow(const float k){
 	for(int i=0;i<size;i++) vertices[i].grow(k);
 }
 
+void Polygon::draw(Manager* manager){
+	manager->addDraw(this);
+}
+
 void Polygon::draw() const{
 	// Les enfants d'abords (pour qu'ils soient à l'arrière plan)
 	for(int i=0,size=children.size();i<size;i++){
@@ -245,21 +259,23 @@ void Polygon::draw() const{
 			getAbsoluteY()-ORIGIN_CROSS_HEIGHT,
 			getAbsoluteX()-ORIGIN_CROSS_WIDTH,
 			getAbsoluteY()+ORIGIN_CROSS_HEIGHT,BLACK);
-	} else {
+	} //else {
 		if (image == NULL) return;
 		// L'objet en lui même (image)
 		if (spriteWidth && spriteHeight) { // Si c'est un sprite et non une image
 			GRRLIB_DrawTile(
 				getAbsoluteX()+getDrawOrigin().getX(),
 				getAbsoluteY()+getDrawOrigin().getY(),
-				*image, getAbsolutePolygonAngle()*spin*180/PI, 1, 1, WHITE, spriteIndex);
+				image,
+				getAbsolutePolygonAngle()*spin*180/PI, 1, 1, WHITE, spriteIndex);
 		} else {
 			GRRLIB_DrawImg(
 				getAbsoluteX()+getDrawOrigin().getX(),
 				getAbsoluteY()+getDrawOrigin().getY(),
-				*image, getAbsolutePolygonAngle()*spin*180/PI, 1, 1, WHITE);
+				image,
+				getAbsolutePolygonAngle()*spin*180/PI, 1, 1, WHITE);
 		}
-	}
+	//}
 }
 
 void Polygon::hide(){
@@ -280,15 +296,8 @@ bool Polygon::intersect(Polygon* polygon) const{
 		for (int j=0,k2,size2=v2.size();j<size2;j++){
 			if (j == size2-1) k2 = 0;
 			else k2 = j+1;
-			if (segmentIntersect(
-					v1[i].getX() + x,
-					v1[i].getY() + y,
-					v1[k1].getX() + x,
-					v1[k1].getY() + y,
-					v2[j].getX() + xp,
-					v2[j].getY() + yp,
-					v2[k2].getX() + xp,
-					v2[k2].getY() + yp)) return true;
+			if (segmentIntersect(v1[i].getX()+x,v1[i].getY()+y,v1[k1].getX()+x,v1[k1].getY()+y,
+				v2[j].getX()+xp,v2[j].getY()+yp,v2[k2].getX()+xp,v2[k2].getY()+yp)) return true;
 		}
 	}
 	return false;

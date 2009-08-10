@@ -13,20 +13,22 @@ private:
 	World* world;
 	Player* player1;
 	Player* player2;
-	list<Ammo*>* ammosToDraw;
-	list<Bonus*>* bonusToDraw;
-	list<Animation*>* smokletsToDraw;
-	list<Animation*>* explosionsToDraw;
+	list<Polygon*>* draws;
+	list<Ammo*>* ammos;
+	list<Bonus*>* bonuses;
+	list<Animation*>* smoklets;
+	list<Animation*>* explosions;
 public:
 	Manager(App*);
 	~Manager();
 	Player* getPlayer1() const;
 	Player* getPlayer2() const;
 	Wind* getWind() const;
-	void addAmmosToDraw(Ammo*) const;
-	void addBonusToDraw(Bonus* bonus) const;
-	void addSmokletsToDraw(Animation*) const;
-	void addExplosionsToDraw(Animation*) const;
+	void addAmmo(Ammo* ammo) const;
+	void addBonus(Bonus* bonus) const;
+	void addDraw(Polygon* polygon) const;
+	void addSmoklet(Animation* animation) const;
+	void addExplosion(Animation* animation) const;
 	void initPlayers() const;
 	void init() const;
 	void dealEvent(const u32*, const u32*);
@@ -35,6 +37,7 @@ public:
 	void computeBonus();
 	void computeAmmos();
 	void compute();
+
 	void drawExplosions() const;
 	void drawSmoklets() const;
 	void drawBonus() const;

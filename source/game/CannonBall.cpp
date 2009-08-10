@@ -34,6 +34,7 @@ Animation* CannonBall::destruction(explosionType _type, Player* _playerHit) {
     switch (_type){
     case HIT_ANOTHER_AMMO:
         return new Animation(
+        	EXPLOSION_LAYER,
 			App::imageBank->get(TXT_CANNONBALL_AIR_EXPLOSION),
 			originX,
 			originY,
@@ -46,6 +47,7 @@ Animation* CannonBall::destruction(explosionType _type, Player* _playerHit) {
 			CANNONBALL_AIR_EXPLOSION_DURATION);
     case HIT_A_PLAYER:
         return new Animation(
+            EXPLOSION_LAYER,
 			App::imageBank->get(TXT_CANNONBALL_HIT_EXPLOSION),
 			0,
 			0,
@@ -58,6 +60,7 @@ Animation* CannonBall::destruction(explosionType _type, Player* _playerHit) {
 			CANNONBALL_HIT_EXPLOSION_DURATION);
     case HIT_THE_GROUND:
         return new Animation(
+            EXPLOSION_LAYER,
 			App::imageBank->get(TXT_CANNONBALL_GROUND_EXPLOSION),
 			originX,
 			terrain->getHeight(originX),

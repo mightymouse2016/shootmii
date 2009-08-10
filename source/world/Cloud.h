@@ -21,7 +21,12 @@ private:
 	int t;
 	int slow;
 public:
-	Cloud(Wind* wind, GRRLIB_texImg* image, const int width, const int height);
+	Cloud(
+		const LayerPriority layer,
+		Wind* wind,
+		GRRLIB_texImg* image,
+		const int width,
+		const int height);
 	void updateT();
 	void updateX();
 	void randomX();

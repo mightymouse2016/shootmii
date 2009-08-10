@@ -13,7 +13,7 @@ Player::Player(
 	const int _life,
 	const bool _fury,
 	Manager* _manager) :
-		Rectangle(TANK_HEIGHT,TANK_WIDTH,0,0,TANK_HEIGHT/2,-PI/2,0,1,App::imageBank->get(TXT_TANK)),
+		Rectangle(TANK_LAYER,TANK_HEIGHT,TANK_WIDTH,0,0,TANK_HEIGHT/2,-PI/2,0,1,App::imageBank->get(TXT_TANK)),
 		playerNumber(_playerNumber),
 		recoil(0),
 		score(0),

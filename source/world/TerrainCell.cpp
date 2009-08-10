@@ -6,7 +6,7 @@ TerrainCell::TerrainCell(
 	GRRLIB_texImg* _tileSet,
 	const int _width,
 	const int _height) :
-		Polygon(0,0,sqrt((_width/2)*(_width/2)+(_height/2)*(_height/2)),PI/4,0,0,NULL,Coordinates(-_width/2,-_height/2),_tileSet,EMPTY,_width,_height)
+		Polygon(TERRAIN_LAYER,0,0,sqrt((_width/2)*(_width/2)+(_height/2)*(_height/2)),PI/4,0,0,NULL,Coordinates(-_width/2,-_height/2),_tileSet,EMPTY,_width,_height)
 {
 	vertices.reserve(4);
 	vertices.push_back(Coordinates(-_width/2,-_height/2));

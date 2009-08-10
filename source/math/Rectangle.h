@@ -8,6 +8,7 @@ namespace shootmii{
 class Rectangle : public Polygon{
 public:
 	Rectangle(
+		const LayerPriority layer,
 		const float width,
 		const float height,
 		const float originX,

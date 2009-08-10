@@ -7,7 +7,7 @@ ImageBank::ImageBank() {
 }
 
 ImageBank::~ImageBank() {
-	for(int i=0;i<NUMBER_OF_TEXTURES;i++) free(allTextures[i].data);
+	for(int i=0;i<NUMBER_OF_TEXTURES;i++) GRRLIB_FreeTexture(allTextures[i]);
 }
 
 void ImageBank::init() {
@@ -40,7 +40,7 @@ void ImageBank::init() {
 }
 
 GRRLIB_texImg* ImageBank::get(ImageTexture textureName) {
-	return &allTextures[textureName];
+	return allTextures[textureName];
 }
 
 }

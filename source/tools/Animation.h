@@ -13,6 +13,7 @@ private:
 	Function* calcY;
 public:
 	Animation(
+		const LayerPriority layer,
 		GRRLIB_texImg* tiles,
 		const float originX,
 		const float originY,

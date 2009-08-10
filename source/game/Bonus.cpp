@@ -13,6 +13,7 @@ Bonus::Bonus(
 		const int _slow,
 		Function* _calcX) :
 			Animation(
+				BONUS_LAYER,
 				_image,0,0,0,0,0,NULL,
 				_width,
 				_height,

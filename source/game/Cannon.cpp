@@ -11,7 +11,7 @@ Cannon::Cannon(
 		Player* _owner,
 		int _playerNumber,
 		Manager* _manager) :
-	Rectangle(CANNON_WIDTH,CANNON_HEIGHT,TANK_HEIGHT/4,0,_angle,0,0,1,App::imageBank->get(TXT_CANNON),_owner),
+	Rectangle(CANNON_LAYER,CANNON_WIDTH,CANNON_HEIGHT,TANK_HEIGHT/4,0,_angle,0,0,1,App::imageBank->get(TXT_CANNON),_owner),
 	angleMin(_angleMin),
 	angleMax(_angleMax),
 	rotationStep(_rotationStep),
@@ -40,11 +40,12 @@ Cannon::Cannon(
 		break;
 	}
 	vertices.reserve(2);
-	addChild(new Rectangle(CROSSHAIR_WIDTH, CROSSHAIR_HEIGHT, 0, 0, CROSSHAIR_OVERTAKE, angle, 0, 1, crossHair_image, _owner));
+	addChild(new Rectangle(CROSSHAIR_LAYER, CROSSHAIR_WIDTH, CROSSHAIR_HEIGHT, 0, 0, CROSSHAIR_OVERTAKE, angle, 0, 1, crossHair_image, _owner));
 	addChild(new CannonBall(angle,wind,ammo_Image,_owner,_owner->getTerrain(), manager));
 	for (int i=0;i<STRENGTH_JAUGE_STATES;i++){
 		addChild(
 			new Rectangle(
+					STRENGTH_JAUGE_LAYER,
 					STRENGHT_JAUGE_SPRITE_WIDTH,
 					STRENGHT_JAUGE_SPRITE_HEIGHT,
 					CANNON_WIDTH/2,
@@ -195,7 +196,7 @@ void Cannon::shoot() {
 	getAmmo()->fire();
 	getAmmo()->setRadial(0);
 	getAmmo()->compute(); // On initialise la position, car dans le canon elle est relative !
-	manager->addAmmosToDraw(getAmmo());
+	manager->addAmmo(getAmmo());
 	setAmmo(NULL);
 	strength = 0;
 	// On cache la jauge de puissance

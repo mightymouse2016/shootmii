@@ -2,19 +2,19 @@
 
 namespace shootmii {
 
-  ScoreManager::ScoreManager(App* _app, Manager* _manager) :
-    app(_app), manager(_manager)
-    {
-    tex_font = loadFont(font_score, 48, 48);// 48 c pas la height, c l'indice dans la table ascii
-    tex_score_panel = App::imageBank->get(TXT_SCORE_PANEL);
-    tex_jauge_life = App::imageBank->get(TXT_LIFE_JAUGE);
-    tex_jauge_strength = App::imageBank->get(TXT_STRENGTH_JAUGE);
-    tex_jauge_heat = App::imageBank->get(TXT_HEAT_JAUGE);
-  }
-
-  ScoreManager::~ScoreManager() {
-    // NOTHING TO DO
-  }
+ScoreManager::ScoreManager(
+		App* _app,
+		Manager* _manager) :
+	app(_app),
+	manager(_manager),
+	tex_score_panel(App::imageBank->get(TXT_SCORE_PANEL)),
+    tex_font(loadFont(font_score, 48, 48)), // 48 c'est pas la height, c'est l'indice dans la table ascii
+    tex_jauge_life(App::imageBank->get(TXT_LIFE_JAUGE)),
+    tex_jauge_strength(App::imageBank->get(TXT_STRENGTH_JAUGE)),
+    tex_jauge_heat(App::imageBank->get(TXT_HEAT_JAUGE))
+{
+	// NOTHING TO DO
+}
 
   void ScoreManager::draw() const {
     drawBackGround();
@@ -25,10 +25,10 @@ namespace shootmii {
 
   void ScoreManager::drawJauge(const int screenX, const int screenY,
     const int width, const int height, const int percentage,
-    const GRRLIB_texImg* image) const {
+    GRRLIB_texImg* image) const {
 
     // On affiche la jauge entière
-    GRRLIB_DrawImg(screenX, screenY, *image, 0, 1, 1, WHITE);
+    GRRLIB_DrawImg(screenX, screenY, image, 0, 1, 1, WHITE);
 
     // On affiche un cache noir
     GRRLIB_Rectangle(
@@ -43,7 +43,7 @@ namespace shootmii {
   }
 
   void ScoreManager::drawBackGround() const {
-    GRRLIB_DrawImg(0, SCREEN_HEIGHT-SCORE_PANEL_HEIGHT, *tex_score_panel, 0, 1, 1, WHITE);
+    GRRLIB_DrawImg(0, SCREEN_HEIGHT-SCORE_PANEL_HEIGHT, tex_score_panel, 0, 1, 1, WHITE);
   }
 
   void ScoreManager::drawScore() const {
