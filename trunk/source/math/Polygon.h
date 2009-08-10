@@ -27,7 +27,7 @@ bool segmentIntersect(const float Ax, const float Ay, const float Bx, const floa
 
 class Polygon{
 protected:
-	//int layer; // La couche d'affichage
+	LayerPriority layer; // La couche d'affichage
 	float originX; // L'origine relative
 	float originY;
 	float radial;
@@ -45,6 +45,7 @@ protected:
 	bool hidden;
 public:
 	Polygon(
+		const LayerPriority layer,
 		const float originX = 0,
 		const float originY = 0,
 		const float radial = 0,
@@ -97,7 +98,8 @@ public:
 	void translate(const float deltaX,const float deltaY);
 	void grow(const float k);
 
-	void draw() const;
+	void draw(Manager* manager);
+	void draw() const;// utiliser draw(Manager*) qui prendras en compte le layer
 	void hide();
 	void show();
 

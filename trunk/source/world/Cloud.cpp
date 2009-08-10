@@ -3,11 +3,12 @@
 namespace shootmii {
 
 Cloud::Cloud(
+		const LayerPriority _layer,
 		Wind* _wind,
 		GRRLIB_texImg* _image,
 		const int _width,
 		const int _height) :
-	Rectangle(_width, _height, 0, 0, 0, 0, 0, 0, _image),
+	Rectangle(_layer, _width, _height, 0, 0, 0, 0, 0, 0, _image),
 	wind(_wind),
 	t(0)
 {

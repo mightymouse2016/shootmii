@@ -15,7 +15,7 @@ include $(DEVKITPPC)/wii_rules
 # SOURCES is a list of directories containing source code
 # INCLUDES is a list of directories containing extra header files
 #---------------------------------------------------------------------------------
-GRRLIB		:=	../GRRLib4.0.0/GRRLIB
+GRRLIB		:=	../grrlib/GRRLIB
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
 SOURCES		:=	source source/gfx source/game source/screens source/world source/math source/tools $(GRRLIB)/GRRLIB $(GRRLIB)/lib/libpng/pngu 

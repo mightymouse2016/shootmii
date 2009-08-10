@@ -3,6 +3,7 @@
 namespace shootmii {
 
 Rectangle::Rectangle(
+		const LayerPriority _layer,
 		const float _width,
 		const float _height,
 		const float _originX,
@@ -17,7 +18,7 @@ Rectangle::Rectangle(
 		const int _spriteWidth,
 		const int _spriteHeight,
 		const bool _hidden) :
-	Polygon(_originX,_originY,_radial,_angle,_polygonAngle,_spin,_father,Coordinates(-_width/2,-_height/2),_image,_spriteIndex,_spriteWidth,_spriteHeight,_hidden)
+	Polygon(_layer,_originX,_originY,_radial,_angle,_polygonAngle,_spin,_father,Coordinates(-_width/2,-_height/2),_image,_spriteIndex,_spriteWidth,_spriteHeight,_hidden)
 {
 	vertices.reserve(4);
 	vertices.push_back(Coordinates(-_width/2,-_height/2));

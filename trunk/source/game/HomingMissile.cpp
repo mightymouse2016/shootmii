@@ -22,6 +22,7 @@ HomingMissile::HomingMissile(
     		_terrain,
     		_manager)
 {
+	// On séléctionne la cible
 	if (owner == manager->getPlayer1()) target = manager->getPlayer2();
 	else target = manager->getPlayer1();
 
@@ -41,6 +42,7 @@ Animation* HomingMissile::destruction(explosionType _type, Player* _playerHit) {
     switch (_type){
     case HIT_ANOTHER_AMMO:
         return new Animation(
+            EXPLOSION_LAYER,
 			App::imageBank->get(TXT_CANNONBALL_AIR_EXPLOSION), // TODO
 			originX,
 			originY,
@@ -53,6 +55,7 @@ Animation* HomingMissile::destruction(explosionType _type, Player* _playerHit) {
 			HOMING_AIR_EXPLOSION_DURATION);
     case HIT_A_PLAYER:
         return new Animation(
+            EXPLOSION_LAYER,
 			App::imageBank->get(TXT_CANNONBALL_HIT_EXPLOSION), // TODO
 			0,
 			0,
@@ -65,7 +68,8 @@ Animation* HomingMissile::destruction(explosionType _type, Player* _playerHit) {
 			HOMING_HIT_EXPLOSION_DURATION);
     case HIT_THE_GROUND:
         return new Animation(
-			App::imageBank->get(TXT_CANNONBALL_GROUND_EXPLOSION),
+            EXPLOSION_LAYER,
+			App::imageBank->get(TXT_CANNONBALL_GROUND_EXPLOSION), // TODO
 			originX,
 			terrain->getHeight(originX),
 			HOMING_GROUND_EXPLOSION_HEIGHT/2 - HOMING_GROUND_EXPLOSION_DEPTH,
@@ -81,8 +85,8 @@ Animation* HomingMissile::destruction(explosionType _type, Player* _playerHit) {
 
 void HomingMissile::compute(){
 	if (fired) {
-		float _t = getT();
 		Timer::compute();
+		float _t = getT();
 		// Avant d'être activée la munition tourne sur elle même et a une trajectoire parabolique
 		if (_t < HOMING_ACTIVATION_DELAY){
 			originX = (*calcX)(_t);
@@ -102,8 +106,9 @@ void HomingMissile::compute(){
 			angle += erreur*HOMING_REACTIVITY;
 
 			// Smoklets
-			manager->addSmokletsToDraw(
+			manager->addSmoklet(
 				new Animation(
+			        SMOKLET_LAYER,
 					App::imageBank->get(TXT_HOMING_SMOKE),
 					originX+HOMING_SMOKE_OVERTAKE*cos(angle),
 					originY+HOMING_SMOKE_OVERTAKE*sin(angle),
@@ -120,7 +125,7 @@ void HomingMissile::compute(){
 					new PolyDeg2(-G*SMOKE_AIR_RESISTANCE/2,0,originY+HOMING_SMOKE_OVERTAKE*sin(angle))));
 		}
 	}
-	if (!isOutOfCannon()) if (!intersect(owner)) out();
+	if (!isOutOfCannon() && !intersect(owner)) out();
 }
 
 }

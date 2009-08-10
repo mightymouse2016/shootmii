@@ -42,7 +42,7 @@ public:
 	GRRLIB_texImg* get(ImageTexture textureName);
 	void init();
 private:
-	vector<GRRLIB_texImg> allTextures;
+	vector<GRRLIB_texImg*> allTextures;
 };
 
 }

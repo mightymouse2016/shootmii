@@ -5,6 +5,22 @@ using namespace std;
 
 namespace shootmii {
 
+enum LayerPriority{
+	FRONT_CLOUDS_LAYER,
+	EXPLOSION_LAYER,
+	BONUS_LAYER,
+	TANK_LAYER,
+	CANNON_LAYER,
+	CROSSHAIR_LAYER,
+	STRENGTH_JAUGE_LAYER,
+	BACK_CLOUD_LAYER,
+	AMMO_LAYER,
+	TERRAIN_LAYER,
+	SMOKLET_LAYER,
+	SUN_LAYER,
+	SKY_LAYER // OK
+};
+
 // Math
 class Timer;
 class Coordinates;
@@ -49,18 +65,17 @@ class App;
 
 }
 
-// GRRLib
-#include "../../../GRRLib4.0.0/GRRLIB/GRRLIB/GRRLIB.h"
+#include "../../../grrlib/GRRLIB/GRRLIB/GRRLIB.h"
 #include <wiiuse/wpad.h>
 #include <ogc/lwp_watchdog.h>
 
 // Bibliothèques standard
-#include <pair>
 #include <list>
 #include <ctime>
 #include <cmath>
 #include <string>
 #include <vector>
+#include <utility> // Pour utiliser des pair
 #include <cstdlib>
 
 // Images

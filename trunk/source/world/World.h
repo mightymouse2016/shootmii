@@ -14,7 +14,7 @@ const int N_COLS(SCREEN_WIDTH/TERRAIN_CELL_WIDTH);
 const int N_BACKGROUND_CLOUDS(6);
 const int N_FOREGROUND_CLOUDS(10);
 
-class World {
+class World{
 private:
 	Wind* wind;
 	Terrain* terrain;

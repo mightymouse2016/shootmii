@@ -9,12 +9,12 @@ World::World() :
 	cloudsBackToDraw(new list<Cloud*>),
 	cloudsFrontToDraw(new list<Cloud*>)
 {
-  backgroundCloud = App::imageBank->get(TXT_BG_CLOUD);
-  foregroundCloud = App::imageBank->get(TXT_FG_CLOUD);
+	backgroundCloud = App::imageBank->get(TXT_BG_CLOUD);
+	foregroundCloud = App::imageBank->get(TXT_FG_CLOUD);
 	for (int i = 0; i < N_BACKGROUND_CLOUDS; i++)
-		cloudsBackToDraw->push_back(new Cloud(wind, backgroundCloud,BACK_CLOUD_WIDTH, BACK_CLOUD_HEIGHT));
+		cloudsBackToDraw->push_back(new Cloud(BACK_CLOUD_LAYER, wind, backgroundCloud,BACK_CLOUD_WIDTH, BACK_CLOUD_HEIGHT));
 	for (int i = 0; i < N_FOREGROUND_CLOUDS; i++)
-		cloudsFrontToDraw->push_back(new Cloud(wind, foregroundCloud,FRONT_CLOUD_WIDTH, FRONT_CLOUD_HEIGHT));
+		cloudsFrontToDraw->push_back(new Cloud(FRONT_CLOUDS_LAYER, wind, foregroundCloud,FRONT_CLOUD_WIDTH, FRONT_CLOUD_HEIGHT));
 }
 
 World::~World() {

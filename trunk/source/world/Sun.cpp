@@ -4,6 +4,7 @@ namespace shootmii{
 
 Sun::Sun(float _a, float _b) :
 	Rectangle(
+		SUN_LAYER,
 		SUN_WIDTH,
 		SUN_HEIGHT,
 		SCREEN_WIDTH/2,

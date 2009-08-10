@@ -15,22 +15,22 @@ static const u8 CONSOLE_FPS_BG_WIDTH = 75;
 static const u8 CONSOLE_TIME_BG_WIDTH = 150;
 
 class Console {
+private:
+	u8 screenY;
+	u8 fps;
+	bool debug;
+	GRRLIB_texImg* console_font;
+	vector<string> history;
+	void drawFPS();
+	void drawTime();
 public:
 	Console();
-	~Console();
 	void draw();
 	void addDebug(string txt);
 	bool isDebug() const;
 	void toggleDebug();
 	void setFPS(u8);
-private:
-	u8 screenY;
-	u8 fps;
-	bool debug;
-	GRRLIB_texImg console_font;
-	vector<string> history;
-	void drawFPS();
-	void drawTime();
+
 };
 
 }
