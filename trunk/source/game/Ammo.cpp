@@ -20,7 +20,8 @@ Ammo::Ammo(
 		explosionFinished(false),
 		terrain(_terrain),
 		owner(_owner),
-		manager(_manager)
+		manager(_manager),
+		toDelete(false)
 {
 	// NOTHING TO DO
 }
@@ -85,6 +86,14 @@ void Ammo::destroy() {
 
 void Ammo::out(){
 	outOfCannon = true;
+}
+
+void Ammo::deleteMe(){
+	toDelete = true;
+}
+
+bool Ammo::isToDelete(){
+	return toDelete;
 }
 
 bool Ammo::isOutOfCannon() const{

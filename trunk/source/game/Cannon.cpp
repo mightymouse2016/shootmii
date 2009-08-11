@@ -237,7 +237,7 @@ void Cannon::reload() {
 
 void Cannon::loadHoming(){
 	// Le homing se met à la place de l'autre munition si il y en a une
-	if (isLoaded()) delete getAmmo();
+	if (isLoaded()) delete children[CHILD_AMMO];
 	Player* owner = static_cast<Player*>(getFather());
 	GRRLIB_texImg* ammoImage = NULL;
 	switch(owner->getPlayerNumber()){

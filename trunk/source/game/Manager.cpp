@@ -106,20 +106,7 @@ void Manager::dealEvent(const u32* player1Events, const u32* player2Events) {
 	}
 }
 
-void Manager::computeAnimations() {
-	list<Animation*>* newAnimations = new list<Animation*>;
-	for (list<Animation*>::iterator i=animations->begin();i!=animations->end();i++){
-		if ((*i)->isFinished()){
-			delete *i;
-		}
-		else {
-			(*i)->compute();
-			newAnimations->push_back(*i);
-		}
-	}
-	delete animations;
-	animations = newAnimations;
-}
+
 
 void Manager::computeVictory() {
 	Player* winner = NULL;
@@ -137,6 +124,21 @@ void Manager::computeVictory() {
 		world->init();
 		initPlayers();
 	}
+}
+
+void Manager::computeAnimations() {
+	list<Animation*>* newAnimations = new list<Animation*>;
+	for (list<Animation*>::iterator i=animations->begin();i!=animations->end();i++){
+		if ((*i)->isFinished()){
+			delete *i;
+		}
+		else {
+			(*i)->compute();
+			newAnimations->push_back(*i);
+		}
+	}
+	delete animations;
+	animations = newAnimations;
 }
 
 void Manager::computeBonuses() {
@@ -157,41 +159,48 @@ void Manager::computeBonuses() {
 void Manager::computeAmmos() {
 	list<Ammo*>* newAmmos = new list<Ammo*> ;
 	for (list<Ammo*>::iterator i=ammos->begin();i!=ammos->end();i++) {
+
 		// Mise à jour de la position de l'ammo
 		(*i)->compute();
+
 		// Le missile vient de rencontrer un autre missile qui a déjà géré la collision
 		if ((*i)->isDestroyed()) {
 			App::console->addDebug("collision : missile 2/2");
 			addAnimation((*i)->destruction(HIT_ANOTHER_AMMO));
-			delete *i;
+			(*i)->deleteMe();
 		}
+
 		// Le missile est trop bas
 		else if ((*i)->isTooLow()) {
 			App::console->addDebug("missile trop bas -> suppression");
-			delete *i;
+			(*i)->deleteMe();
 		}
+
 		// Missile en dehors de l'ecran
-		else if (!world->getTerrain()->contains((*i)->getAbsoluteOriginX(),(*i)->getAbsoluteOriginY())) {
-			//App::console->addDebug("missile en dehors de l'ecran");
-			newAmmos->push_back(*i);
+		else if (!(world->getTerrain()->contains((*i)->getAbsoluteOriginX(),(*i)->getAbsoluteOriginY())))
+		{
+			// NOTHING TO DO
 		}
+
 		// Le missile touche le sol : explosion
 		else if ((*i)->hitTheGround(world->getTerrain())){
 			App::console->addDebug("collision : sol");
 			player1->computeDamage(*i);
 			player2->computeDamage(*i);
 			addAnimation((*i)->destruction(HIT_THE_GROUND));
-			delete *i;
+			(*i)->deleteMe();
 		}
+
 		// Collision inter-missile
 		else if (Ammo * inFrontAmmo = (*i)->hitAnotherAmmo(ammos)) {
 			App::console->addDebug("collision : missile 1/2");
 			player1->computeDamage(*i);
 			player2->computeDamage(*i);
 			addAnimation((*i)->destruction(HIT_ANOTHER_AMMO));
-			delete *i;
+			(*i)->deleteMe();
 			inFrontAmmo->destroy();
 		}
+
 		// Collision avec un player
 		else if (Player * playerHit = (*i)->hitAPlayer(player1,player2)) {
 			App::console->addDebug("collision : player");
@@ -199,12 +208,12 @@ void Manager::computeAmmos() {
 			player2->computeDamage(*i);
 			playerHit->looseLife(HIT_DAMAGE_BONUS); // Un petit bonus pour le touché
 			addAnimation((*i)->destruction(HIT_A_PLAYER,playerHit));
-			delete *i;
+			(*i)->deleteMe();
 		}
+
 		// Collision avec un bonus
 		else if (pair<Player*,Bonus*>* result = (*i)->hitABonus(bonuses)) {
 			App::console->addDebug("collision : bonus");
-
 			// Gestion du type de bonus
 			switch (result->second->getType()){
 			case HOMING:
@@ -219,16 +228,18 @@ void Manager::computeAmmos() {
 				App::console->addDebug("bonus : type inconnu");
 				break;
 			}
-
-			//delete result; // On ne peux libérer la mémoire qu'ici ...
-			newAmmos->push_back(*i);
+			delete result; // On ne peux libérer la mémoire qu'ici ...
 		}
-		// Il ne se passe encore rien
+	}
+
+	//Boucle de suppression
+	for (list<Ammo*>::iterator i=ammos->begin();i!=ammos->end();i++) {
+		if ((*i)->isToDelete()) delete *i;
 		else newAmmos->push_back(*i);
 	}
+
 	delete ammos;
 	ammos = newAmmos;
-
 }
 
 void Manager::compute() {

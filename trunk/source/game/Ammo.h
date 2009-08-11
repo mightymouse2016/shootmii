@@ -39,6 +39,7 @@ protected:
 	Terrain* terrain;
 	Player* owner;
 	Manager* manager;
+	bool toDelete;
 public:
 	Ammo(
 		const float angle,
@@ -58,6 +59,12 @@ public:
 	void destroy();
 	virtual Animation* destruction(explosionType _type, Player* _playerHit = NULL)=0;
 	void out();
+	/*
+	 * Cette méthode set toDelete à true pour que le gestionnaire de collision la supprime
+	 * après seulement avoir geré toutes les collisions entre ammos, sinon crash !
+	 */
+	void deleteMe();
+	bool isToDelete();
 	bool isOutOfCannon() const;
 	bool isOffScreen() const;
 	bool isTooLow() const;

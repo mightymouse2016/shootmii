@@ -39,11 +39,9 @@ void Animation::compute(){
 	if (timeIsOver() && loops) {
 		spriteIndex++;
 	}
-	if (spriteIndex == duration) {
+	if (spriteIndex == duration-1) {
 		loops--;
-		if (loops) {
-			spriteIndex = 0;
-		}
+		if (loops) spriteIndex = 0;
 	}
 	if (calcX) originX = (*calcX)(getT());
 	if (calcY) originY = (*calcY)(getT());
