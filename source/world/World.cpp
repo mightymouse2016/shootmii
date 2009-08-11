@@ -63,8 +63,7 @@ void World::compute() {
 
 void World::computeClouds() {
 	for (list<Cloud*>::iterator i=clouds->begin();i!=clouds->end();i++) {
-		(*i)->updateT();
-		(*i)->updateX();
+		(*i)->compute();
 	}
 }
 

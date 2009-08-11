@@ -2,18 +2,29 @@
 
 namespace shootmii {
 
-int Wind::getWindSpeed() const{
-	return windSpeed*(windDirection*2-1);
+float* Wind::getPWindSpeedLeft(){
+	return &windSpeedLeft;
 }
 
-bool Wind::getWindDirection() const{
-	return windDirection;
+float* Wind::getPWindSpeedRight(){
+	return &windSpeedRight;
+}
+
+float Wind::getWindSpeed() const{
+	if (windSpeedLeft) return -windSpeedLeft;
+	return windSpeedRight;
 }
 
 void Wind::init(){
-	windSpeed = rand()%100+1;
-	if (rand()%1000 < 500) windDirection = false;
-	else windDirection = true;
+	int windSpeed = rand()%100;
+	if (rand()%100 < 50) {
+		windSpeedLeft = windSpeed;
+		windSpeedRight = 0;
+	}
+	else {
+		windSpeedLeft = 0;
+		windSpeedRight = windSpeed;
+	}
 }
 
 }

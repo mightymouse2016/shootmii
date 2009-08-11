@@ -18,8 +18,6 @@ const int BACK_CLOUD_WIDTH(64);
 class Cloud : public Rectangle{
 private:
 	Wind* wind;
-	int t;
-	int slow;
 public:
 	Cloud(
 		const LayerPriority layer,
@@ -27,8 +25,7 @@ public:
 		GRRLIB_texImg* image,
 		const int width,
 		const int height);
-	void updateT();
-	void updateX();
+	void compute();
 	void randomX();
 	void randomY();
 	void init();

@@ -5,13 +5,6 @@
 
 namespace shootmii{
 
-/* TODO
-const int FURY_JAUGE_WIDTH(68);
-const int FURY_JAUGE_HEIGHT(8);
-const int WIND_JAUGE_WIDTH(68);
-const int WIND_JAUGE_HEIGHT(8);
-*/
-
 const int STRENGTH_JAUGE_WIDTH(68);
 const int STRENGTH_JAUGE_HEIGHT(8);
 const int STRENGTH_JAUGE_X(218);
@@ -27,7 +20,15 @@ const int LIFE_JAUGE_HEIGHT(8);
 const int LIFE_JAUGE_X(218);
 const int LIFE_JAUGE_Y(7);
 
+const int FURY_JAUGE_WIDTH(200);
+const int FURY_JAUGE_HEIGHT(24);
+const int FURY_JAUGE_X(213);
+const int FURY_JAUGE_Y(15);
 
+const int WIND_JAUGE_WIDTH(80);
+const int WIND_JAUGE_HEIGHT(8);
+const int WIND_JAUGE_X(42);
+const int WIND_JAUGE_Y(-23);
 
 class Jauge : public Rectangle{
 private:

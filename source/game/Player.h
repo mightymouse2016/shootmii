@@ -49,7 +49,7 @@ public:
 		const float angle,
 		const float rotationStep = ROTATION_STEP,
 		const float life = 100,
-		const float fury = 0,
+		const float fury = 100,
 		Manager* manager = NULL);
 	int getPlayerNumber() const;
 	int getCol() const;
