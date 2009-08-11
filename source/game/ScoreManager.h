@@ -25,12 +25,12 @@ class ScoreManager : public Rectangle {
 private:
 	App* app;
 	Manager* manager;
-	//GRRLIB_texImg* tex_font;
-
+	GRRLIB_texImg* tex_font;
 public:
 	ScoreManager(App*, Manager*);
 	void compute();
-	//void drawScore() const;
+	void draw() const;
+	void drawScore() const;
 };
 
 }

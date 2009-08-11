@@ -14,8 +14,8 @@ ScoreManager::ScoreManager(
 		0,0,0,0,
 		App::imageBank->get(TXT_SCORE_PANEL)),
 	app(_app),
-	manager(_manager)
-    //tex_font(loadFont(font_score, 48, 48)), // 48 c'est pas la height, c'est l'indice dans la table ascii
+	manager(_manager),
+    tex_font(loadFont(font_score, 32, 48)) // 48 c'est pas la height, c'est l'indice dans la table ascii
 {
 	children.reserve(SCOREMANAGER_CHILDREN_NUMBER);
 	addChild(new Jauge(
@@ -108,15 +108,17 @@ void ScoreManager::compute(){
 	}
 }
 
- /*
-  void ScoreManager::drawScore() const {
+void ScoreManager::draw() const{
+	Polygon::draw();
+	drawScore();
+}
+
+
+void ScoreManager::drawScore() const {
     // Player 1
-    char score[1];
-    sprintf(score,"%d",manager->getPlayer1()->getScore());
-    GRRLIB_Printf(SCREEN_WIDTH/2 - 70, SCREEN_HEIGHT - 55, tex_font, WHITE, 1, score);
+    GRRLIB_Printf(SCREEN_WIDTH/2 - 56, SCREEN_HEIGHT - 42, tex_font, WHITE, 1, "%d", manager->getPlayer1()->getScore());
     // Player 2
-    sprintf(score,"%d",manager->getPlayer2()->getScore());
-    GRRLIB_Printf(SCREEN_WIDTH/2 + 18, SCREEN_HEIGHT - 55, tex_font, WHITE, 1, score);
-  }
- */
+    GRRLIB_Printf(SCREEN_WIDTH/2 + 24, SCREEN_HEIGHT - 42, tex_font, WHITE, 1, "%d", manager->getPlayer2()->getScore());
+}
+
 }
