@@ -24,7 +24,7 @@ const int BONUS_PROBABILITY (60); // apparition toutes les 30*60frames = 30 seco
 enum BonusType{
 	HOMING,
 	LIFE_RECOVERY,
-	NUMBER_OF_BONUS
+	NUMBER_OF_BONUSES
 };
 
 class Bonus : public Animation{

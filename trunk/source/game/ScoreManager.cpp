@@ -5,23 +5,82 @@ namespace shootmii {
 ScoreManager::ScoreManager(
 		App* _app,
 		Manager* _manager) :
+	Rectangle(
+		STATUS_BAR_LAYER,
+		SCREEN_WIDTH,
+		SCORE_PANEL_HEIGHT,
+		SCREEN_WIDTH/2,
+		SCREEN_HEIGHT-SCORE_PANEL_HEIGHT/2,
+		0,0,0,0,
+		App::imageBank->get(TXT_SCORE_PANEL)),
 	app(_app),
-	manager(_manager),
-	tex_score_panel(App::imageBank->get(TXT_SCORE_PANEL)),
-    tex_font(loadFont(font_score, 48, 48)), // 48 c'est pas la height, c'est l'indice dans la table ascii
-    tex_jauge_life(App::imageBank->get(TXT_LIFE_JAUGE)),
-    tex_jauge_strength(App::imageBank->get(TXT_STRENGTH_JAUGE)),
-    tex_jauge_heat(App::imageBank->get(TXT_HEAT_JAUGE))
+	manager(_manager)
+    //tex_font(loadFont(font_score, 48, 48)), // 48 c'est pas la height, c'est l'indice dans la table ascii
 {
-	// NOTHING TO DO
+	children.reserve(SCOREMANAGER_CHILDREN_NUMBER);
+	addChild(new Jauge(
+				JAUGE_LAYER,
+				manager->getPlayer1()->getCannon()->getPStrength(),
+				STRENGTH_JAUGE_WIDTH,
+				STRENGTH_JAUGE_HEIGHT,
+				-STRENGTH_JAUGE_X,
+				STRENGTH_JAUGE_Y,
+				App::imageBank->get(TXT_STRENGTH_JAUGE)));
+	addChild(new Jauge(
+				JAUGE_LAYER,
+				manager->getPlayer2()->getCannon()->getPStrength(),
+				STRENGTH_JAUGE_WIDTH,
+				STRENGTH_JAUGE_HEIGHT,
+				STRENGTH_JAUGE_X,
+				STRENGTH_JAUGE_Y,
+				App::imageBank->get(TXT_STRENGTH_JAUGE)));
+	addChild(new Jauge(
+				JAUGE_LAYER,
+				manager->getPlayer1()->getCannon()->getPHeat(),
+				HEAT_JAUGE_WIDTH,
+				HEAT_JAUGE_HEIGHT,
+				-HEAT_JAUGE_X,
+				HEAT_JAUGE_Y,
+				App::imageBank->get(TXT_HEAT_JAUGE)));
+	addChild(new Jauge(
+				JAUGE_LAYER,
+				manager->getPlayer2()->getCannon()->getPHeat(),
+				HEAT_JAUGE_WIDTH,
+				HEAT_JAUGE_HEIGHT,
+				HEAT_JAUGE_X,
+				HEAT_JAUGE_Y,
+				App::imageBank->get(TXT_HEAT_JAUGE)));
+	addChild(new Jauge(
+				JAUGE_LAYER,
+				manager->getPlayer1()->getPLife(),
+				LIFE_JAUGE_WIDTH,
+				LIFE_JAUGE_HEIGHT,
+				-LIFE_JAUGE_X,
+				LIFE_JAUGE_Y,
+				App::imageBank->get(TXT_LIFE_JAUGE)));
+	addChild(new Jauge(
+				JAUGE_LAYER,
+				manager->getPlayer2()->getPLife(),
+				LIFE_JAUGE_WIDTH,
+				LIFE_JAUGE_HEIGHT,
+				LIFE_JAUGE_X,
+				LIFE_JAUGE_Y,
+				App::imageBank->get(TXT_LIFE_JAUGE)));
 }
 
-  void ScoreManager::draw() const {
+void ScoreManager::compute(){
+	for(int i=0;i<SCOREMANAGER_CHILDREN_NUMBER;i++){
+		static_cast<Jauge*>(children[i])->compute();
+	}
+}
+
+ /*
+void ScoreManager::draw() const {
     drawBackGround();
     drawScore();
     drawPlayer(manager->getPlayer1());
     drawPlayer(manager->getPlayer2());
-  }
+}
 
   void ScoreManager::drawJauge(const int screenX, const int screenY,
     const int width, const int height, const int percentage,
@@ -40,10 +99,6 @@ ScoreManager::ScoreManager(
         1
     );
 
-  }
-
-  void ScoreManager::drawBackGround() const {
-    GRRLIB_DrawImg(0, SCREEN_HEIGHT-SCORE_PANEL_HEIGHT, tex_score_panel, 0, 1, 1, WHITE);
   }
 
   void ScoreManager::drawScore() const {
@@ -72,4 +127,5 @@ ScoreManager::ScoreManager(
       GRRLIB_Rectangle(screenX,480-42,68,8,RED,1);
 
   }
+  */
 }

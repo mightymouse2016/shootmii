@@ -42,7 +42,7 @@ bool Bonus::isFinished() const{
 }
 
 Bonus* randomBonus(){
-	int _type = rand()%NUMBER_OF_BONUS;
+	int _type = rand()%NUMBER_OF_BONUSES;
 	Function* calcX;
 	if (Bonus::numberOfBonus%2) calcX = new Affine(BONUS_SPEED,-BONUS_HOMING_WIDTH/2);
 	else calcX = new Affine(-BONUS_SPEED,SCREEN_WIDTH+BONUS_HOMING_WIDTH/2);
@@ -66,7 +66,14 @@ Bonus* randomBonus(){
 				BONUS_LIFE_ANIMATION_SLOW,
 				calcX);
 		default:
-			return NULL;
+			return new Bonus(
+				static_cast<BonusType>(_type),
+				App::imageBank->get(TXT_BONUS_LIFE),
+				BONUS_LIFE_WIDTH,
+				BONUS_LIFE_HEIGHT,
+				BONUS_LIFE_DURATION,
+				BONUS_LIFE_ANIMATION_SLOW,
+				calcX);
 	}
 }
 

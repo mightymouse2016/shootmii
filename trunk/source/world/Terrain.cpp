@@ -62,7 +62,7 @@ float Terrain::getAngle(const float screenX) const{
 	return (alpha2-alpha1)*(screenX-x1)/cellWidth + alpha1;
 }
 
-TerrainCell Terrain::getGround(const int colIndex) const {
+const TerrainCell& Terrain::getGround(const int colIndex) const {
   int rowIndex;
   for(rowIndex = 0; getType(colIndex, rowIndex) == EMPTY; rowIndex++);
   return grille[rowIndex][colIndex];
@@ -76,10 +76,10 @@ const vector<vector<TerrainCell> > & Terrain::getGrille() const {
 	return grille;
 }
 
-void Terrain::draw() const {
+void Terrain::addToDrawManager(){
 	for (int i = 0; i < rows; i++)
 		for (int j = 0; j < cols; j++)
-			grille[i][j].draw();
+			grille[i][j].addToDrawManager();
 }
 
 void Terrain::generate() {

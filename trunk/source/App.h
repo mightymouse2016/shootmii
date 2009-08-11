@@ -26,6 +26,7 @@ private:
 public:
 	static Console* console;
 	static ImageBank* imageBank;
+	static DrawManager* drawManager;
 	App();
 	virtual ~App();
 	u8 getFPS() const;

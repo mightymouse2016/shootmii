@@ -7,11 +7,9 @@ Manager::Manager(App* _app) :
 	world(new World),
 	player1(new Player(world->getTerrain(),world->getWind(),1,0,PI/2,PI/4,ROTATION_STEP,100,false,this)),
 	player2(new Player(world->getTerrain(),world->getWind(),2,-PI/2,0,-PI/4,ROTATION_STEP,100,false,this)),
-	draws(new list<Polygon*>),
 	ammos(new list<Ammo*>),
 	bonuses(new list<Bonus*>),
-	smoklets(new list<Animation*>),
-	explosions(new list<Animation*>)
+	animations(new list<Animation*>)
 {
 	player1->setOpponent(player2);
 	player2->setOpponent(player1);
@@ -20,15 +18,13 @@ Manager::Manager(App* _app) :
 Manager::~Manager() {
 	ammos->clear();
 	bonuses->clear();
-	smoklets->clear();
-	explosions->clear();
+	animations->clear();
+	delete ammos;
+	delete bonuses;
+	delete animations;
 	delete player1;
 	delete player2;
 	delete world;
-	delete ammos;
-	delete bonuses;
-	delete smoklets;
-	delete explosions;
 }
 
 Player* Manager::getPlayer1() const {
@@ -51,16 +47,8 @@ void Manager::addBonus(Bonus* bonus) const {
 	bonuses->push_back(bonus);
 }
 
-void Manager::addDraw(Polygon* polygon) const {
-	draws->push_back(polygon);
-}
-
-void Manager::addSmoklet(Animation* animation) const {
-	smoklets->push_back(animation);
-}
-
-void Manager::addExplosion(Animation* animation) const {
-	explosions->push_back(animation);
+void Manager::addAnimation(Animation* animation) const {
+	animations->push_back(animation);
 }
 
 void Manager::initPlayers() const {
@@ -73,8 +61,7 @@ void Manager::initPlayers() const {
 void Manager::init() const {
 	ammos->clear();
 	bonuses->clear();
-	smoklets->clear();
-	explosions->clear();
+	animations->clear();
 	world->init();
 	player1->init();
 	player2->init();
@@ -120,9 +107,8 @@ void Manager::dealEvent(const u32* player1Events, const u32* player2Events) {
 }
 
 void Manager::computeAnimations() {
-	// On peux faire une liste de pair<int,Polygon*> trié sur le type int (ou un map)
 	list<Animation*>* newAnimations = new list<Animation*>;
-	for (list<Animation*>::iterator i=smoklets->begin();i!=smoklets->end();i++){
+	for (list<Animation*>::iterator i=animations->begin();i!=animations->end();i++){
 		if ((*i)->isFinished()){
 			delete *i;
 		}
@@ -131,20 +117,8 @@ void Manager::computeAnimations() {
 			newAnimations->push_back(*i);
 		}
 	}
-	delete smoklets;
-	smoklets = newAnimations;
-	newAnimations = new list<Animation*>;
-	for (list<Animation*>::iterator i=explosions->begin();i!=explosions->end();i++){
-		if ((*i)->isFinished()){
-			delete *i;
-		}
-		else {
-			(*i)->compute();
-			newAnimations->push_back(*i);
-		}
-	}
-	delete explosions;
-	explosions = newAnimations;
+	delete animations;
+	animations = newAnimations;
 }
 
 void Manager::computeVictory() {
@@ -159,14 +133,13 @@ void Manager::computeVictory() {
 		}
 		bonuses->clear();
 		ammos->clear();
-		smoklets->clear();
-		explosions->clear();
+		animations->clear();
 		world->init();
 		initPlayers();
 	}
 }
 
-void Manager::computeBonus() {
+void Manager::computeBonuses() {
 	list<Bonus*>* newBonuses = new list<Bonus*>;
 	for (list<Bonus*>::iterator i=bonuses->begin();i!=bonuses->end();i++){
 		if ((*i)->isFinished()){
@@ -189,7 +162,7 @@ void Manager::computeAmmos() {
 		// Le missile vient de rencontrer un autre missile qui a déjà géré la collision
 		if ((*i)->isDestroyed()) {
 			App::console->addDebug("collision : missile 2/2");
-			addExplosion((*i)->destruction(HIT_ANOTHER_AMMO));
+			addAnimation((*i)->destruction(HIT_ANOTHER_AMMO));
 			delete *i;
 		}
 		// Le missile est trop bas
@@ -207,7 +180,7 @@ void Manager::computeAmmos() {
 			App::console->addDebug("collision : sol");
 			player1->computeDamage(*i);
 			player2->computeDamage(*i);
-			addExplosion((*i)->destruction(HIT_THE_GROUND));
+			addAnimation((*i)->destruction(HIT_THE_GROUND));
 			delete *i;
 		}
 		// Collision inter-missile
@@ -215,7 +188,7 @@ void Manager::computeAmmos() {
 			App::console->addDebug("collision : missile 1/2");
 			player1->computeDamage(*i);
 			player2->computeDamage(*i);
-			addExplosion((*i)->destruction(HIT_ANOTHER_AMMO));
+			addAnimation((*i)->destruction(HIT_ANOTHER_AMMO));
 			delete *i;
 			inFrontAmmo->destroy();
 		}
@@ -225,7 +198,7 @@ void Manager::computeAmmos() {
 			player1->computeDamage(*i);
 			player2->computeDamage(*i);
 			playerHit->looseLife(HIT_DAMAGE_BONUS); // Un petit bonus pour le touché
-			addExplosion((*i)->destruction(HIT_A_PLAYER,playerHit));
+			addAnimation((*i)->destruction(HIT_A_PLAYER,playerHit));
 			delete *i;
 		}
 		// Collision avec un bonus
@@ -247,13 +220,11 @@ void Manager::computeAmmos() {
 				break;
 			}
 
-			delete result; // On ne peux libérer la mémoire qu'ici ...
+			//delete result; // On ne peux libérer la mémoire qu'ici ...
 			newAmmos->push_back(*i);
 		}
 		// Il ne se passe encore rien
-		else {
-			newAmmos->push_back(*i);
-		}
+		else newAmmos->push_back(*i);
 	}
 	delete ammos;
 	ammos = newAmmos;
@@ -268,46 +239,18 @@ void Manager::compute() {
 	player1->computeRecoil();
 	player2->computeRecoil();
 	computeAmmos();
-	computeBonus();
+	computeBonuses();
 	computeAnimations();
 	computeVictory();
 }
 
-void Manager::drawExplosions() const {
-  for (list<Animation*>::iterator i=explosions->begin();i!=explosions->end();i++){
-    if (!(*i)->isFinished()) (*i)->draw();
-  }
-}
-
-void Manager::drawSmoklets() const {
-  for (list<Animation*>::iterator i=smoklets->begin();i!=smoklets->end();i++){
-    if (!(*i)->isFinished()) (*i)->draw();
-  }
-}
-
-void Manager::drawBonus() const {
-	for (list<Bonus*>::iterator i=bonuses->begin();i!=bonuses->end();i++){
-	  (*i)->draw();
-	}
-}
-
-void Manager::drawAmmos() const {
-	for (list<Ammo*>::iterator i=ammos->begin();i!=ammos->end();i++){
-	  (*i)->draw();
-	}
-}
-
-void Manager::draw() const {
-	for (list<Polygon*>::iterator i=draws->begin();i!=draws->end();i++) (*i)->draw();
-	world->drawBackground();
-	drawSmoklets();
-	world->drawMiddleground();
-	drawAmmos();
-	player1->draw();
-	player2->draw();
-	drawExplosions();
-	drawBonus();
-	world->drawForeground();
+void Manager::addToDrawManager() const {
+	world->addToDrawManager();
+	player1->addToDrawManager();
+	player2->addToDrawManager();
+	App::drawManager->addToDraw(ammos);
+	App::drawManager->addToDraw(bonuses);
+	App::drawManager->addToDraw(animations);
 }
 
 }

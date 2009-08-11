@@ -53,7 +53,7 @@ void Ammo::compute() {
 		originY = (*calcY)(_t);
 		angle = atan2((*calcY)[_t],(*calcX)[_t]);
 		if (!(static_cast<int>(_t/TIME_STEP)%TIME_BETWEEN_TWO_SMOKLET)){
-			manager->addSmoklet(
+			manager->addAnimation(
 				new Animation(
 					SMOKLET_LAYER,
 					App::imageBank->get(TXT_SMOKE),

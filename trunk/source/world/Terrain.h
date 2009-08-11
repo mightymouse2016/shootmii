@@ -25,12 +25,12 @@ public:
 	int getCellHeight() const;
 	const vector<vector<TerrainCell> > & getGrille() const;
 	CellType getType(const int colIndex, const int rowIndex) const;
-	void draw() const;
+	void addToDrawManager();
 	void generate();
 	bool contains(float screenX, float screenY) const;
 	float getHeight(const int screenX) const;
 	float getAngle(const float screenX) const;
-	TerrainCell getGround(const int colIndex) const;
+	const TerrainCell& getGround(const int colIndex) const;
 };
 
 }

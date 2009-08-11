@@ -43,7 +43,7 @@ Animation* HomingMissile::destruction(explosionType _type, Player* _playerHit) {
     case HIT_ANOTHER_AMMO:
         return new Animation(
             EXPLOSION_LAYER,
-			App::imageBank->get(TXT_CANNONBALL_AIR_EXPLOSION), // TODO
+			App::imageBank->get(TXT_CANNONBALL_AIR_EXPLOSION), // TODO trouver mieux
 			originX,
 			originY,
 			0,
@@ -56,7 +56,7 @@ Animation* HomingMissile::destruction(explosionType _type, Player* _playerHit) {
     case HIT_A_PLAYER:
         return new Animation(
             EXPLOSION_LAYER,
-			App::imageBank->get(TXT_CANNONBALL_HIT_EXPLOSION), // TODO
+			App::imageBank->get(TXT_CANNONBALL_HIT_EXPLOSION), // TODO trouver mieux
 			0,
 			0,
 			0,
@@ -69,7 +69,7 @@ Animation* HomingMissile::destruction(explosionType _type, Player* _playerHit) {
     case HIT_THE_GROUND:
         return new Animation(
             EXPLOSION_LAYER,
-			App::imageBank->get(TXT_CANNONBALL_GROUND_EXPLOSION), // TODO
+			App::imageBank->get(TXT_CANNONBALL_GROUND_EXPLOSION), // TODO trouver mieux
 			originX,
 			terrain->getHeight(originX),
 			HOMING_GROUND_EXPLOSION_HEIGHT/2 - HOMING_GROUND_EXPLOSION_DEPTH,
@@ -101,12 +101,11 @@ void HomingMissile::compute(){
 			// Après activation son angle est asservi, de manière a ce que l'angle entre la munition et l'adversaire soit nul
 			originX += HOMING_SPEED*cos(angle);
 			originY += HOMING_SPEED*sin(angle);
-			float erreur = atan2(target->getAbsoluteY()-getAbsoluteY(),target->getAbsoluteX()-getAbsoluteX())-angle;
+			float erreur = atan2(target->getAbsoluteY()-getAbsoluteY(),target->getAbsoluteX()-getAbsoluteX())-getAngle();
 			if (erreur > PI) erreur -= 2*PI;
 			angle += erreur*HOMING_REACTIVITY;
-
 			// Smoklets
-			manager->addSmoklet(
+			manager->addAnimation(
 				new Animation(
 			        SMOKLET_LAYER,
 					App::imageBank->get(TXT_HOMING_SMOKE),

@@ -2,7 +2,7 @@
 
 namespace shootmii {
 
-  GameScreen::GameScreen(App* _app) :
+GameScreen::GameScreen(App* _app) :
     Screen(_app),
     manager(new Manager(_app)),
     score_manager(new ScoreManager(_app,manager))
@@ -17,11 +17,12 @@ GameScreen::~GameScreen() {
 
 void GameScreen::compute(){
 	manager->compute();
+	score_manager->compute();
 }
 
-void GameScreen::draw() {
-	manager->draw();
-	score_manager->draw();
+void GameScreen::addToDrawManager(){
+	manager->addToDrawManager();
+	score_manager->addToDrawManager();
 }
 
 void GameScreen::init() {

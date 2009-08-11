@@ -23,6 +23,7 @@ private:
 	vector<string> history;
 	void drawFPS();
 	void drawTime();
+	void drawPolygonsInstances();
 public:
 	Console();
 	void draw();

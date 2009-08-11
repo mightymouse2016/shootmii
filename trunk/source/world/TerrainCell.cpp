@@ -50,6 +50,8 @@ void TerrainCell::setType(CellType _type) {
 	case SLOPE_DOWN_05_2 : setYs(0,spriteHeight/2);break;
 	default : setYs(-spriteHeight/2,-spriteHeight/2);break;
 	}
+	if (_type == EMPTY) hide();
+	else show();
 }
 
 float TerrainCell::getAbsoluteHeight(const float x) const {

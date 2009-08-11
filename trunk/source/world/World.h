@@ -14,15 +14,12 @@ const int N_COLS(SCREEN_WIDTH/TERRAIN_CELL_WIDTH);
 const int N_BACKGROUND_CLOUDS(6);
 const int N_FOREGROUND_CLOUDS(10);
 
-class World{
+class World : public Polygon{
 private:
 	Wind* wind;
 	Terrain* terrain;
 	Sun* sun;
-	GRRLIB_texImg* backgroundCloud;
-	GRRLIB_texImg* foregroundCloud;
-	list<Cloud*>* cloudsBackToDraw;
-	list<Cloud*>* cloudsFrontToDraw;
+	list<Cloud*>* clouds;
 public:
 	World();
 	virtual ~World();
@@ -31,9 +28,8 @@ public:
 	void init();
 	void compute();
 	void computeClouds();
-	void drawBackground() const;
-	void drawMiddleground() const;
-	void drawForeground() const;
+	void addToDrawManager();
+	void draw() const;
 };
 
 }

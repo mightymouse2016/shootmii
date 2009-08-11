@@ -19,13 +19,12 @@ enum Corner{
 	DOWN_LEFT
 };
 
-const int ORIGIN_CROSS_WIDTH(2);
-const int ORIGIN_CROSS_HEIGHT(2);
-
-bool segmentIntersect(const float Ax, const float Ay, const float Bx, const float By,
-		const float Cx, const float Cy, const float Dx, const float Dy);
+const int ORIGIN_CROSS_WIDTH(3);
+const int ORIGIN_CROSS_HEIGHT(3);
 
 class Polygon{
+private:
+	static int numberOfPolygonsInstances;
 protected:
 	LayerPriority layer; // La couche d'affichage
 	float originX; // L'origine relative
@@ -65,6 +64,8 @@ public:
 	vector<Coordinates> getRotatedVertices() const;
 	const Coordinates& getDrawOrigin() const;
 	const Coordinates getRotatedDrawOrigin() const;
+	static int getNumberOfPolygonsInstances();
+	LayerPriority getLayer() const;
 	float getOriginX() const;
 	float getOriginY() const;
 	float getAbsoluteOriginX() const;
@@ -98,13 +99,13 @@ public:
 	void translate(const float deltaX,const float deltaY);
 	void grow(const float k);
 
-	void draw(Manager* manager);
-	void draw() const;// utiliser draw(Manager*) qui prendras en compte le layer
+	virtual void addToDrawManager();
+	virtual void draw() const;// utiliser addToDrawManager() qui prendras en compte le layer et appelera draw() au bon moment
+	virtual void drawDebug() const;
 	void hide();
 	void show();
 
 	bool intersect(Polygon* polygon) const;
-
 };
 
 }

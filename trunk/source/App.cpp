@@ -4,6 +4,7 @@ namespace shootmii {
 
 Console* App::console = new Console;
 ImageBank* App::imageBank = new ImageBank;
+DrawManager* App::drawManager = new DrawManager;
 
 App::App():
 	fps(0),
@@ -103,17 +104,18 @@ void App::computeFrameRate() {
 
 void App::compute(){
 	switch (screen) {
-	case TITLE_SCREEN: titleScreen->draw();break;
-	case GAME_SCREEN: gameScreen->draw();break;
+	case TITLE_SCREEN:break;
+	case GAME_SCREEN:gameScreen->compute();break;
 	}
 	computeFrameRate();
 }
 
 void App::draw() const{
 	switch (screen) {
-	case TITLE_SCREEN:break;
-	case GAME_SCREEN:gameScreen->compute();break;
+	case TITLE_SCREEN:titleScreen->draw();break;
+	case GAME_SCREEN:gameScreen->addToDrawManager();break;
 	}
+	drawManager->draw();
 	console->draw();
 	GRRLIB_Render();
 

@@ -13,11 +13,9 @@ private:
 	World* world;
 	Player* player1;
 	Player* player2;
-	list<Polygon*>* draws;
 	list<Ammo*>* ammos;
 	list<Bonus*>* bonuses;
-	list<Animation*>* smoklets;
-	list<Animation*>* explosions;
+	list<Animation*>* animations;
 public:
 	Manager(App*);
 	~Manager();
@@ -26,23 +24,17 @@ public:
 	Wind* getWind() const;
 	void addAmmo(Ammo* ammo) const;
 	void addBonus(Bonus* bonus) const;
-	void addDraw(Polygon* polygon) const;
-	void addSmoklet(Animation* animation) const;
-	void addExplosion(Animation* animation) const;
+	void addAnimation(Animation* animation) const;
 	void initPlayers() const;
 	void init() const;
 	void dealEvent(const u32*, const u32*);
 	void computeAnimations();
 	void computeVictory();
-	void computeBonus();
+	void computeBonuses();
 	void computeAmmos();
 	void compute();
 
-	void drawExplosions() const;
-	void drawSmoklets() const;
-	void drawBonus() const;
-	void drawAmmos() const;
-	void draw() const;
+	void addToDrawManager() const;
 };
 
 }

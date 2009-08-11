@@ -15,7 +15,7 @@ public:
 	void init();
 	void dealEvent(const u32*, const u32*);
 	void compute();
-	void draw();
+	void addToDrawManager();
 };
 
 }

@@ -2,12 +2,7 @@
 
 namespace shootmii {
 
-bool segmentIntersect(const float Ax, const float Ay, const float Bx, const float By, const float Cx, const float Cy, const float Dx, const float Dy){
-	float r = ((Ay-Cy)*(Dx-Cx)-(Ax-Cx)*(Dy-Cy))/((Bx-Ax)*(Dy-Cy)-(By-Ay)*(Dx-Cx));
-	float s = ((Ay-Cy)*(Bx-Ax)-(Ax-Cx)*(By-Ay))/((Bx-Ax)*(Dy-Cy)-(By-Ay)*(Dx-Cx));
-	if (0 <= r && r <= 1 && 0 <= s && s <= 1) return true;
-	return false;
-}
+int Polygon::numberOfPolygonsInstances = 0;
 
 Polygon::Polygon(
 	const LayerPriority _layer,
@@ -39,20 +34,21 @@ Polygon::Polygon(
 		spriteHeight(_spriteHeight),
 		hidden(_hidden)
 {
-	// Pour la compatibilité avec la nouvelle version de GRRLib
-	if (spriteWidth && spriteHeight) { // Si c'est un sprite et non une image
-
-		GRRLIB_InitTileSet(image, spriteWidth, spriteHeight, 0);
-		image->handlex = 0;
-				image->handley = 0;
-	} else {
-		image->handlex = _spriteWidth/2;
-		image->handley = _spriteHeight/2;
+	numberOfPolygonsInstances++;
+	if (image){
+		if (spriteWidth && spriteHeight) { // Si c'est un sprite et non une image
+			GRRLIB_InitTileSet(image, spriteWidth, spriteHeight, 0);
+			image->handlex = 0; // Pour la compatibilité avec la nouvelle version de GRRLib
+			image->handley = 0;
+		} else {
+			image->handlex = _spriteWidth/2;
+			image->handley = _spriteHeight/2;
+		}
 	}
-
 }
 
 Polygon::~Polygon(){
+	numberOfPolygonsInstances--;
 	children.clear();
 }
 
@@ -83,6 +79,14 @@ const Coordinates Polygon::getRotatedDrawOrigin() const{
 	float drawOriginAngle = drawOrigin.getAngle();
 	float drawOriginRadial = drawOrigin.getRadial();
 	return Coordinates(drawOriginRadial*cos(angle*spin+polygonAngle+drawOriginAngle),drawOriginRadial*sin(angle*spin+polygonAngle+drawOriginAngle));
+}
+
+int Polygon::getNumberOfPolygonsInstances(){
+	return numberOfPolygonsInstances;
+}
+
+LayerPriority Polygon::getLayer() const{
+	return layer;
 }
 
 float Polygon::getOriginX() const{
@@ -211,71 +215,66 @@ void Polygon::grow(const float k){
 	for(int i=0;i<size;i++) vertices[i].grow(k);
 }
 
-void Polygon::draw(Manager* manager){
-	manager->addDraw(this);
+void Polygon::addToDrawManager(){
+	if (!hidden) App::drawManager->addToDraw(this);
+	for (int i=0,size=children.size();i<size;i++){
+		if (children[i]) children[i]->addToDrawManager();
+	}
 }
 
 void Polygon::draw() const{
-	// Les enfants d'abords (pour qu'ils soient à l'arrière plan)
-	for(int i=0,size=children.size();i<size;i++){
-		if (children[i]) children[i]->draw();
+	if (hidden || spriteIndex < 0 || !image) return;
+	if (spriteWidth && spriteHeight) { // Si c'est un sprite et non une image
+		GRRLIB_DrawTile(
+			getAbsoluteX()+getDrawOrigin().getX(),
+			getAbsoluteY()+getDrawOrigin().getY(),
+			image,
+			getAbsolutePolygonAngle()*spin*180/PI,
+			1,
+			1,
+			WHITE,
+			spriteIndex);
 	}
-	if (hidden) return;
-	if(App::console->isDebug()){
-		if (spriteIndex == -1) return;
-		// Le mode debug (squelette)
-		vector<Coordinates> rotatedVertices = getRotatedVertices();
-		int size = rotatedVertices.size();
-		for(int i=0,j;i<size;i++){
-			if (i+1 == size) j = 0;
-			else j = i+1;
-			GRRLIB_Line(
-				rotatedVertices[i].getX()+getAbsoluteX(),
-				rotatedVertices[i].getY()+getAbsoluteY(),
-				rotatedVertices[j].getX()+getAbsoluteX(),
-				rotatedVertices[j].getY()+getAbsoluteY(),RED);
-		}
-		// Le rayon
-		GRRLIB_Line(getAbsoluteOriginX(),getAbsoluteOriginY(),getAbsoluteX(),getAbsoluteY(),RED);
-		// L'origine
-		GRRLIB_Line(
-			getAbsoluteOriginX()-ORIGIN_CROSS_WIDTH,
-			getAbsoluteOriginY()-ORIGIN_CROSS_HEIGHT,
-			getAbsoluteOriginX()+ORIGIN_CROSS_WIDTH,
-			getAbsoluteOriginY()+ORIGIN_CROSS_HEIGHT,BLACK);
-		GRRLIB_Line(
-			getAbsoluteOriginX()+ORIGIN_CROSS_WIDTH,
-			getAbsoluteOriginY()-ORIGIN_CROSS_HEIGHT,
-			getAbsoluteOriginX()-ORIGIN_CROSS_WIDTH,
-			getAbsoluteOriginY()+ORIGIN_CROSS_HEIGHT,BLACK);
-		// La nouvelle origine
-		GRRLIB_Line(
-			getAbsoluteX()-ORIGIN_CROSS_WIDTH,
-			getAbsoluteY()-ORIGIN_CROSS_HEIGHT,
-			getAbsoluteX()+ORIGIN_CROSS_WIDTH,
-			getAbsoluteY()+ORIGIN_CROSS_HEIGHT,BLACK);
-		GRRLIB_Line(
-			getAbsoluteX()+ORIGIN_CROSS_WIDTH,
-			getAbsoluteY()-ORIGIN_CROSS_HEIGHT,
-			getAbsoluteX()-ORIGIN_CROSS_WIDTH,
-			getAbsoluteY()+ORIGIN_CROSS_HEIGHT,BLACK);
-	} //else {
-		if (image == NULL) return;
-		// L'objet en lui même (image)
-		if (spriteWidth && spriteHeight) { // Si c'est un sprite et non une image
-			GRRLIB_DrawTile(
-				getAbsoluteX()+getDrawOrigin().getX(),
-				getAbsoluteY()+getDrawOrigin().getY(),
-				image,
-				getAbsolutePolygonAngle()*spin*180/PI, 1, 1, WHITE, spriteIndex);
-		} else {
-			GRRLIB_DrawImg(
-				getAbsoluteX()+getDrawOrigin().getX(),
-				getAbsoluteY()+getDrawOrigin().getY(),
-				image,
-				getAbsolutePolygonAngle()*spin*180/PI, 1, 1, WHITE);
-		}
-	//}
+	else {
+		GRRLIB_DrawImg(
+			getAbsoluteX()+getDrawOrigin().getX(),
+			getAbsoluteY()+getDrawOrigin().getY(),
+			image,
+			getAbsolutePolygonAngle()*spin*180/PI,
+			1,
+			1,
+			WHITE);
+	}
+}
+
+void Polygon::drawDebug() const{
+	vector<Coordinates> rV = getRotatedVertices();
+	float oX = getAbsoluteOriginX();
+	float oY = getAbsoluteOriginY();
+	float h = ORIGIN_CROSS_HEIGHT;
+	float w = ORIGIN_CROSS_WIDTH;
+	float a = getAbsoluteAngle();
+	float x = oX + radial*cos(a);
+	float y = oY + radial*sin(a);
+
+	// Le squelette
+
+	for(int i=0, j, size=rV.size();i<size;i++){
+		j = i+1;
+		if (j == size) j = 0;
+		GRRLIB_Line(rV[i].getX()+x,rV[i].getY()+y,rV[j].getX()+x,rV[j].getY()+y,RED);
+	}
+
+	// Le rayon
+	GRRLIB_Line(oX,oY,x,y,RED);
+
+	// L'origine
+	GRRLIB_Line(oX-w,oY-h,oX+w,oY+h,WHITE);
+	GRRLIB_Line(oX+w,oY-h,oX-w,oY+h,WHITE);
+
+	// La nouvelle origine
+	GRRLIB_Line(x-w,y-h,x+w,y+h,WHITE);
+	GRRLIB_Line(x+w,y-h,x-w,y+h,WHITE);
 }
 
 void Polygon::hide(){
