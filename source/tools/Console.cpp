@@ -32,6 +32,7 @@ void Console::draw() {
 	if (debug) {
 		drawFPS();
 		drawTime();
+		drawPolygonsInstances();
 		// Affichage du BACKGROUND
 		GRRLIB_Rectangle(CONSOLE_X_OFFSET, CONSOLE_Y_OFFSET, SCREEN_WIDTH - 2*CONSOLE_X_OFFSET , CONSOLE_HEIGHT, CONSOLE_COLOR, true);
 		// Affichage des debug
@@ -45,6 +46,13 @@ void Console::drawFPS() {
 	GRRLIB_Rectangle(CONSOLE_X_OFFSET, CONSOLE_X_OFFSET, CONSOLE_FPS_BG_WIDTH,25, CONSOLE_COLOR, true);
 	// Affichage des FPS
 	GRRLIB_Printf(CONSOLE_X_OFFSET + 10, CONSOLE_X_OFFSET + 10, console_font,WHITE, 1, "FPS: %d", fps);
+}
+
+void Console::drawPolygonsInstances(){
+	// Affichage du BACKGROUND
+	GRRLIB_Rectangle(CONSOLE_X_OFFSET + 140, CONSOLE_X_OFFSET, 150 ,25, CONSOLE_COLOR, true);
+	// Affichage des FPS
+	GRRLIB_Printf(CONSOLE_X_OFFSET + 150, CONSOLE_X_OFFSET + 10, console_font,WHITE, 1, "Polygons : %d", Polygon::getNumberOfPolygonsInstances());
 }
 
 void Console::setFPS(u8 fps) {

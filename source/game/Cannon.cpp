@@ -87,12 +87,20 @@ void Cannon::init() {
 	getAmmo()->setAngle(angle);
 }
 
-int Cannon::getStrength() const {
+float Cannon::getStrength() const {
 	return strength;
 }
 
-int Cannon::getHeat() const {
+float Cannon::getHeat() const {
 	return heat;
+}
+
+float* Cannon::getPStrength(){
+	return &strength;
+}
+
+float* Cannon::getPHeat(){
+	return &heat;
 }
 
 int Cannon::getBlockedTime() const {

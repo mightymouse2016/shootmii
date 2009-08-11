@@ -10,8 +10,8 @@ Player::Player(
 	const float _angleMax,
 	const float _angle,
 	const float _rotationStep,
-	const int _life,
-	const bool _fury,
+	const float _life,
+	const float _fury,
 	Manager* _manager) :
 		Rectangle(TANK_LAYER,TANK_HEIGHT,TANK_WIDTH,0,0,TANK_HEIGHT/2,-PI/2,0,1,App::imageBank->get(TXT_TANK)),
 		playerNumber(_playerNumber),
@@ -38,16 +38,24 @@ int Player::getRow() const{
 	return originY/terrain->getCellHeight();
 }
 
-int Player::getLife() const {
+float Player::getLife() const {
 	return life;
+}
+
+float Player::getFury() const{
+	return fury;
+}
+
+float* Player::getPLife(){
+	return &life;
+}
+
+float* Player::getPFury(){
+	return &fury;
 }
 
 int Player::getScore() const {
 	return score;
-}
-
-int Player::getFury() const{
-	return fury;
 }
 
 int Player::getNbGamesWon() const{

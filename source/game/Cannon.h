@@ -5,7 +5,7 @@
 
 namespace shootmii {
 
-const float PI(3.14159265358979323846264338327950288419716939937510);
+
 
 const int CANNON_WIDTH(16);
 const int CANNON_HEIGHT(16);
@@ -58,7 +58,7 @@ private:
 	float rotationStep;
 	Wind* wind;
 	float strength; // 0 -> 100
-	int heat; // 0 -> 100
+	float heat; // 0 -> 100
 	u32 blockedTime;
 	u8 heatCool;
 	u8 reloadTime;
@@ -76,8 +76,10 @@ public:
 		Manager* manager);
 	~Cannon();
 	void init();
-	int getStrength() const;
-	int getHeat() const;
+	float getStrength() const;
+	float getHeat() const;
+	float* getPStrength();
+	float* getPHeat();
 	int getBlockedTime() const;
 	Ammo* getAmmo();
 	Ammo* getAmmo() const;

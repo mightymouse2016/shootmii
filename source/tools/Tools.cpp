@@ -2,6 +2,13 @@
 
 namespace shootmii {
 
+bool segmentIntersect(const float Ax, const float Ay, const float Bx, const float By, const float Cx, const float Cy, const float Dx, const float Dy){
+	float r = ((Ay-Cy)*(Dx-Cx)-(Ax-Cx)*(Dy-Cy))/((Bx-Ax)*(Dy-Cy)-(By-Ay)*(Dx-Cx));
+	float s = ((Ay-Cy)*(Bx-Ax)-(Ax-Cx)*(By-Ay))/((Bx-Ax)*(Dy-Cy)-(By-Ay)*(Dx-Cx));
+	if (0 <= r && r <= 1 && 0 <= s && s <= 1) return true;
+	return false;
+}
+
 GRRLIB_texImg* loadFont(const unsigned char font[], unsigned int size,unsigned int tilestart) {
 	GRRLIB_texImg* texture_font = GRRLIB_LoadTexture(font);
 	GRRLIB_InitTileSet(texture_font, size, size, tilestart);

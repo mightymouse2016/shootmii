@@ -5,20 +5,26 @@ using namespace std;
 
 namespace shootmii {
 
+const float PI(3.14159265358979323846264338327950288419716939937510);
+
 enum LayerPriority{
-	FRONT_CLOUDS_LAYER,
-	EXPLOSION_LAYER,
-	BONUS_LAYER,
-	TANK_LAYER,
-	CANNON_LAYER,
-	CROSSHAIR_LAYER,
-	STRENGTH_JAUGE_LAYER,
-	BACK_CLOUD_LAYER,
-	AMMO_LAYER,
-	TERRAIN_LAYER,
-	SMOKLET_LAYER,
+	// Manager
+	SKY_LAYER,
 	SUN_LAYER,
-	SKY_LAYER // OK
+	SMOKLET_LAYER,
+	TERRAIN_LAYER,
+	AMMO_LAYER,
+	BACK_CLOUD_LAYER,
+	STRENGTH_JAUGE_LAYER,
+	CROSSHAIR_LAYER,
+	CANNON_LAYER,
+	TANK_LAYER,
+	BONUS_LAYER,
+	EXPLOSION_LAYER,
+	FRONT_CLOUD_LAYER,
+	// ScoreManager
+	STATUS_BAR_LAYER,
+	JAUGE_LAYER
 };
 
 // Math
@@ -51,9 +57,12 @@ class Cannon;
 class Ammo;
 class CannonBall;
 class HomingMissile;
+class Jauge;
 class Player;
 class Manager;
+class DrawManager;
 class ScoreManager;
+
 
 // Screens
 class Screen;
@@ -70,6 +79,7 @@ class App;
 #include <ogc/lwp_watchdog.h>
 
 // Bibliothèques standard
+#include <set>
 #include <list>
 #include <ctime>
 #include <cmath>
@@ -105,7 +115,6 @@ class App;
 #include "gfx/cannonball_air_explosion.h"
 #include "gfx/cannonball_ground_explosion.h"
 
-
 // Fonts
 #include "gfx/font1.h"
 #include "gfx/font2.h"
@@ -115,7 +124,6 @@ class App;
 #include "gfx/font_score.h"
 #include "gfx/font_console.h"
 #include "gfx/font_military.h"
-
 
 // Math
 #include "math/Timer.h"
@@ -151,6 +159,8 @@ class App;
 #include "game/HomingMissile.h"
 #include "game/Player.h"
 #include "game/Manager.h"
+#include "game/Jauge.h"
+#include "game/DrawManager.h"
 #include "game/ScoreManager.h"
 
 // Screens

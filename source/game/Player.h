@@ -35,8 +35,8 @@ private:
 	int playerNumber;
 	int recoil; // Le recul : >0 recul vers la gauche <0 recul vers la gauche
 	int score;
-	int life;	// 0->100
-	bool fury;	// 0->100
+	float life;	// 0->100
+	float fury;	// 0->100
 	int nbGamesWon;
 	Terrain* terrain;
 public:
@@ -48,15 +48,17 @@ public:
 		const float angleMax,
 		const float angle,
 		const float rotationStep = ROTATION_STEP,
-		const int life = 100,
-		const bool fury = false,
+		const float life = 100,
+		const float fury = 0,
 		Manager* manager = NULL);
 	int getPlayerNumber() const;
 	int getCol() const;
 	int getRow() const;
 	int getScore() const;
-	int getLife() const;
-	int getFury() const;
+	float getLife() const;
+	float getFury() const;
+	float* getPLife();
+	float* getPFury();
 	int getNbGamesWon() const;
 	Terrain* getTerrain();
 	Terrain* getTerrain() const;

@@ -7,23 +7,30 @@ namespace shootmii {
 
 const int MANCHE(3);
 
-class ScoreManager {
+enum ScoreManagerChild{
+	CHILD_STRENGTH_JAUGE_1,
+	CHILD_STRENGTH_JAUGE_2,
+	CHILD_HEAT_JAUGE_1,
+	CHILD_HEAT_JAUGE_2,
+	CHILD_LIFE_JAUGE_1,
+	CHILD_LIFE_JAUGE_2,
+	//CHILD_WIND_JAUGE,
+	SCOREMANAGER_CHILDREN_NUMBER
+};
+
+class ScoreManager : public Rectangle {
 private:
 	App* app;
 	Manager* manager;
-	GRRLIB_texImg* tex_score_panel;
-	GRRLIB_texImg* tex_font;
-	GRRLIB_texImg* tex_jauge_life;
-	GRRLIB_texImg* tex_jauge_strength;
-	GRRLIB_texImg* tex_jauge_heat;
+	//GRRLIB_texImg* tex_font;
+
 public:
 	ScoreManager(App*, Manager*);
-	void draw() const;
-	void drawBackGround() const;
+	void compute();
+	/*
 	void drawScore() const;
 	void drawPlayer(const Player* player) const;
-	void drawJauge(const int screenX, const int screenY, const int width,
-	const int height, const int percentage, GRRLIB_texImg* image) const;
+	*/
 };
 
 }
