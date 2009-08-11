@@ -290,11 +290,11 @@ bool Polygon::intersect(Polygon* polygon) const{
 	vector<Coordinates> v2 = polygon->getRotatedVertices();
 	float x = getAbsoluteX(),y = getAbsoluteY(),xp = polygon->getAbsoluteX(),yp = polygon->getAbsoluteY();
 	for (int i=0,k1,size=v1.size();i<size;i++){
-		if (i == size-1) k1 = 0;
-		else k1 = i+1;
+		k1 = i+1;
+		if (k1 == size) k1 = 0;
 		for (int j=0,k2,size2=v2.size();j<size2;j++){
-			if (j == size2-1) k2 = 0;
-			else k2 = j+1;
+			k2 = j+1;
+			if (k2 == size2) k2 = 0;
 			if (segmentIntersect(v1[i].getX()+x,v1[i].getY()+y,v1[k1].getX()+x,v1[k1].getY()+y,
 				v2[j].getX()+xp,v2[j].getY()+yp,v2[k2].getX()+xp,v2[k2].getY()+yp)) return true;
 		}

@@ -33,7 +33,6 @@ public:
 	void computeBonuses();
 	void computeAmmos();
 	void compute();
-
 	void addToDrawManager() const;
 };
 
