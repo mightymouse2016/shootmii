@@ -66,6 +66,40 @@ ScoreManager::ScoreManager(
 				LIFE_JAUGE_X,
 				LIFE_JAUGE_Y,
 				App::imageBank->get(TXT_LIFE_JAUGE)));
+	addChild(new Jauge(
+				JAUGE_LAYER,
+				manager->getPlayer1()->getPFury(),
+				FURY_JAUGE_WIDTH,
+				FURY_JAUGE_HEIGHT,
+				-FURY_JAUGE_X,
+				FURY_JAUGE_Y-1,
+				App::imageBank->get(TXT_FURY_JAUGE1),
+				PI));
+	addChild(new Jauge(
+				JAUGE_LAYER,
+				manager->getPlayer2()->getPFury(),
+				FURY_JAUGE_WIDTH,
+				FURY_JAUGE_HEIGHT,
+				FURY_JAUGE_X,
+				FURY_JAUGE_Y,
+				App::imageBank->get(TXT_FURY_JAUGE2)));
+	addChild(new Jauge(
+				JAUGE_LAYER,
+				manager->getWind()->getPWindSpeedLeft(),
+				WIND_JAUGE_WIDTH,
+				WIND_JAUGE_HEIGHT,
+				-WIND_JAUGE_X,
+				WIND_JAUGE_Y,
+				App::imageBank->get(TXT_WIND_JAUGE),
+				PI));
+	addChild(new Jauge(
+				JAUGE_LAYER,
+				manager->getWind()->getPWindSpeedRight(),
+				WIND_JAUGE_WIDTH,
+				WIND_JAUGE_HEIGHT,
+				WIND_JAUGE_X,
+				WIND_JAUGE_Y,
+				App::imageBank->get(TXT_WIND_JAUGE)));
 }
 
 void ScoreManager::compute(){
@@ -75,32 +109,6 @@ void ScoreManager::compute(){
 }
 
  /*
-void ScoreManager::draw() const {
-    drawBackGround();
-    drawScore();
-    drawPlayer(manager->getPlayer1());
-    drawPlayer(manager->getPlayer2());
-}
-
-  void ScoreManager::drawJauge(const int screenX, const int screenY,
-    const int width, const int height, const int percentage,
-    GRRLIB_texImg* image) const {
-
-    // On affiche la jauge entière
-    GRRLIB_DrawImg(screenX, screenY, image, 0, 1, 1, WHITE);
-
-    // On affiche un cache noir
-    GRRLIB_Rectangle(
-        screenX + (width*percentage)/100,
-        screenY,
-        (width*(100 - percentage))/100,
-        height,
-        BLACK,
-        1
-    );
-
-  }
-
   void ScoreManager::drawScore() const {
     // Player 1
     char score[1];
@@ -110,22 +118,5 @@ void ScoreManager::draw() const {
     sprintf(score,"%d",manager->getPlayer2()->getScore());
     GRRLIB_Printf(SCREEN_WIDTH/2 + 18, SCREEN_HEIGHT - 55, tex_font, WHITE, 1, score);
   }
-
-  void ScoreManager::drawPlayer(const Player* player) const {
-    Cannon* cannon = player->getCannon();
-
-    int screenX;
-    if (player == manager->getPlayer1()) screenX = 68;
-    else screenX = 504;
-
-    // On dessine les jauges
-    drawJauge(screenX, 480-29-13*2, 68, 8, player->getCannon()->getStrength(), tex_jauge_strength);
-    drawJauge(screenX, 480-29-13, 68, 8, player->getCannon()->getHeat(), tex_jauge_heat);
-    drawJauge(screenX, 480-29, 68, 8, player->getLife(), tex_jauge_life);
-    // en cas de surchauffe, rectangle rouge clignotant
-    if (cannon->getHeat() == 100 && ticks_to_millisecs(gettime())%FLICKERING_TIME < FLICKERING_TIME/2)
-      GRRLIB_Rectangle(screenX,480-42,68,8,RED,1);
-
-  }
-  */
+ */
 }

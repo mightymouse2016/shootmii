@@ -14,7 +14,10 @@ enum ScoreManagerChild{
 	CHILD_HEAT_JAUGE_2,
 	CHILD_LIFE_JAUGE_1,
 	CHILD_LIFE_JAUGE_2,
-	//CHILD_WIND_JAUGE,
+	CHILD_FURY_JAUGE_1,
+	CHILD_FURY_JAUGE_2,
+	CHILD_WIND_JAUGE_LEFT,
+	CHILD_WIND_JAUGE_RIGHT,
 	SCOREMANAGER_CHILDREN_NUMBER
 };
 
@@ -27,10 +30,7 @@ private:
 public:
 	ScoreManager(App*, Manager*);
 	void compute();
-	/*
-	void drawScore() const;
-	void drawPlayer(const Player* player) const;
-	*/
+	//void drawScore() const;
 };
 
 }

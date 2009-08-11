@@ -32,7 +32,8 @@ Polygon::Polygon(
 		spriteIndex(_spriteIndex),
 		spriteWidth(_spriteWidth),
 		spriteHeight(_spriteHeight),
-		hidden(_hidden)
+		hidden(_hidden),
+		recursive(true)
 {
 	numberOfPolygonsInstances++;
 	if (image){
@@ -217,8 +218,10 @@ void Polygon::grow(const float k){
 
 void Polygon::addToDrawManager(){
 	if (!hidden) App::drawManager->addToDraw(this);
-	for (int i=0,size=children.size();i<size;i++){
-		if (children[i]) children[i]->addToDrawManager();
+	if (recursive){
+		for (int i=0,size=children.size();i<size;i++){
+			if (children[i]) children[i]->addToDrawManager();
+		}
 	}
 }
 

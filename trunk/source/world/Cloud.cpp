@@ -9,32 +9,20 @@ Cloud::Cloud(
 		const int _width,
 		const int _height) :
 	Rectangle(_layer, _width, _height, 0, 0, 0, 0, 0, 0, _image),
-	wind(_wind),
-	t(0)
+	wind(_wind)
 {
 	randomX();
 	randomY();
 }
 
-void Cloud::updateT() {
-	if (t > slow) t = 0;
-	else t++;
-}
-
-void Cloud::updateX() {
-	if (!t){
-		if (wind->getWindDirection()){
-			if (originX - getWidth()/2 > SCREEN_WIDTH) {
-				originX = - getWidth()/2;
-				randomY();
-			} else originX++;
-		}
-		else {
-			if (originX < - getWidth()/2){
-				originX = SCREEN_WIDTH + getWidth()/2;
-				randomY();
-			} else originX--;
-		}
+void Cloud::compute() {
+	if (originX - getWidth()/2 > SCREEN_WIDTH) originX = - getWidth()/2;
+	else if (originX + getWidth()/2 < 0) originX = SCREEN_WIDTH + getWidth()/2;
+	if (getLayer() == BACK_CLOUD_LAYER){
+		originX += wind->getWindSpeed()*WIND_INFLUENCE_ON_BACK_CLOUDS/100;
+	}
+	else{
+		originX += wind->getWindSpeed()*WIND_INFLUENCE_ON_FRONT_CLOUDS/100;
 	}
 }
 
@@ -47,7 +35,6 @@ void Cloud::randomY() {
 }
 
 void Cloud::init() {
-	slow = (MAX_WIND_SPEED-wind->getWindSpeed())*WIND_INFLUENCE_ON_CLOUDS/100;
 	randomX();
 	randomY();
 }

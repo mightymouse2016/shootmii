@@ -42,6 +42,7 @@ protected:
 	int spriteWidth;
 	int spriteHeight;
 	bool hidden;
+	bool recursive;
 public:
 	Polygon(
 		const LayerPriority layer,

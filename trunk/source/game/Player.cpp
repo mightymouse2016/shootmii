@@ -135,7 +135,7 @@ void Player::initPosition(float _originX){
 void Player::initGame() {
 	recoil = 0;
 	life = 100;
-	fury = false;
+	fury = 100;
 	getCannon()->init();
 }
 
