@@ -22,7 +22,8 @@ public:
 		const int spriteIndex = 0,
 		const int spriteWidth = 0,
 		const int spriteHeight = 0,
-		const bool hidden = false);
+		const bool hidden = false,
+		const bool debugHidden = false);
 	float getWidth() const;
 	float getHeight() const;
 };
