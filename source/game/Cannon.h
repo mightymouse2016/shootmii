@@ -64,6 +64,7 @@ private:
 	u8 reloadTime;
 	bool stillHeld;
 	Manager* manager;
+	GuidedMissile* guidedMissile; // Si le joueur possède un missile auto-guidé, c'est le lien qui permet de le contrôler
 public:
 	Cannon(
 		const float angleMin,
@@ -75,6 +76,8 @@ public:
 		int playerNumber,
 		Manager* manager);
 	~Cannon();
+	void destroyGuidedMissile();
+	void looseInfluenceOnMissile();
 	void init();
 	float getStrength() const;
 	float getHeat() const;
@@ -83,6 +86,8 @@ public:
 	int getBlockedTime() const;
 	Ammo* getAmmo();
 	Ammo* getAmmo() const;
+	GuidedMissile* getGuidedMissile();
+	GuidedMissile* getGuidedMissile() const;
 	void setAmmo(Ammo* ammo);
 	void up();
 	void decHeat();
@@ -93,7 +98,9 @@ public:
 	void shoot();
 	void reload();
 	void loadHoming();
+	void loadGuided();
 	bool isLoaded() const;
+	bool isGuidingMissile() const;
 };
 
 }

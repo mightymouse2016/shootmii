@@ -57,6 +57,7 @@ class Cannon;
 class Ammo;
 class CannonBall;
 class HomingMissile;
+class GuidedMissile;
 class Jauge;
 class Player;
 class Manager;
@@ -94,6 +95,8 @@ class App;
 #include "gfx/cannon.h"
 #include "gfx/ammo_1.h"
 #include "gfx/ammo_2.h"
+#include "gfx/guided_1.h"
+#include "gfx/guided_2.h"
 #include "gfx/homing_1.h"
 #include "gfx/homing_2.h"
 #include "gfx/tile_set.h"
@@ -108,6 +111,8 @@ class App;
 #include "gfx/fury_jauge_2.h"
 #include "gfx/title_screen.h"
 #include "gfx/bonus_homing.h"
+#include "gfx/bonus_guided.h"
+#include "gfx/bonus_poison.h"
 #include "gfx/smoke_sprites.h"
 #include "gfx/strength_jauge.h"
 #include "gfx/strength_sprites.h"
@@ -160,6 +165,7 @@ class App;
 #include "game/Ammo.h"
 #include "game/CannonBall.h"
 #include "game/HomingMissile.h"
+#include "game/GuidedMissile.h"
 #include "game/Player.h"
 #include "game/Manager.h"
 #include "game/Jauge.h"
