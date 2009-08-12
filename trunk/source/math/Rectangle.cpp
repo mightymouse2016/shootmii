@@ -17,8 +17,9 @@ Rectangle::Rectangle(
 		const int _spriteIndex,
 		const int _spriteWidth,
 		const int _spriteHeight,
-		const bool _hidden) :
-	Polygon(_layer,_originX,_originY,_radial,_angle,_polygonAngle,_spin,_father,Coordinates(-_width/2,-_height/2),_image,_spriteIndex,_spriteWidth,_spriteHeight,_hidden)
+		const bool _hidden,
+		const bool _debugHidden) :
+	Polygon(_layer,_originX,_originY,_radial,_angle,_polygonAngle,_spin,_father,Coordinates(-_width/2,-_height/2),_image,_spriteIndex,_spriteWidth,_spriteHeight,_hidden,_debugHidden)
 {
 	vertices.reserve(4);
 	vertices.push_back(Coordinates(-_width/2,-_height/2));

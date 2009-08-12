@@ -17,7 +17,7 @@ Jauge::Jauge(
 {
 	//recursive = false;
 	for(int i=0;i<width;i++){
-		addChild(new Rectangle(JAUGE_LAYER,1,height,-width/2+i+1,0,0,0,0,1,image,this,i,1,height));
+		addChild(new Rectangle(JAUGE_LAYER,1,height,-width/2+i+1,0,0,0,0,1,image,this,i,1,height,false,true));
 	}
 }
 

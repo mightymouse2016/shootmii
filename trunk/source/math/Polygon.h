@@ -42,6 +42,7 @@ protected:
 	int spriteWidth;
 	int spriteHeight;
 	bool hidden;
+	bool debugHidden;
 	bool recursive;
 public:
 	Polygon(
@@ -58,7 +59,8 @@ public:
 		const int spriteIndex = 0,
 		const int spriteWidth = 0,
 		const int spriteHeight = 0,
-		const bool hidden = false);
+		const bool hidden = false,
+		const bool debugHidden = false);
 	~Polygon();
 
 	const vector<Coordinates>& getVertices() const;

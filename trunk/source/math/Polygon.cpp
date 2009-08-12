@@ -18,7 +18,8 @@ Polygon::Polygon(
 	const int _spriteIndex,
 	const int _spriteWidth,
 	const int _spriteHeight,
-	const bool _hidden) :
+	const bool _hidden,
+	const bool _debugHidden) :
 		layer(_layer),
 		originX(_originX),
 		originY(_originY),
@@ -33,6 +34,7 @@ Polygon::Polygon(
 		spriteWidth(_spriteWidth),
 		spriteHeight(_spriteHeight),
 		hidden(_hidden),
+		debugHidden(_debugHidden),
 		recursive(true)
 {
 	numberOfPolygonsInstances++;
@@ -251,6 +253,7 @@ void Polygon::draw() const{
 }
 
 void Polygon::drawDebug() const{
+	if (debugHidden) return;
 	vector<Coordinates> rV = getRotatedVertices();
 	float oX = getAbsoluteOriginX();
 	float oY = getAbsoluteOriginY();
