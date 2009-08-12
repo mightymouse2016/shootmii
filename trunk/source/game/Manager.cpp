@@ -73,36 +73,60 @@ void Manager::dealEvent(const u32* player1Events, const u32* player2Events) {
 	const u32 pad1Down = player1Events[DOWN], pad2Down = player2Events[DOWN];
 	const u32 pad1Up = player1Events[UP], pad2Up = player2Events[UP];
 
-	if (pad1Held & WPAD_BUTTON_LEFT) player1->moveLeft();
-	if (pad1Held & WPAD_BUTTON_RIGHT) player1->moveRight();
+	// Haut, bas, gauche, droite pour le joueur 1
+	if (pad1Held & WPAD_BUTTON_LEFT) {
+		if (player1->getCannon()->isGuidingMissile()) player1->getCannon()->getGuidedMissile()->rotateLeft();
+		else player1->moveLeft();
+	}
+	if (pad1Held & WPAD_BUTTON_RIGHT) {
+		if (player1->getCannon()->isGuidingMissile()) player1->getCannon()->getGuidedMissile()->rotateRight();
+		else player1->moveRight();
+	}
 	if (pad1Held & WPAD_BUTTON_UP) player1->getCannon()->rotateLeft();
 	if (pad1Held & WPAD_BUTTON_DOWN) player1->getCannon()->rotateRight();
 
-	if (pad2Held & WPAD_BUTTON_LEFT) player2->moveLeft();
-	if (pad2Held & WPAD_BUTTON_RIGHT) player2->moveRight();
+	// Haut, bas, gauche, droite pour le joueur 2
+	if (pad2Held & WPAD_BUTTON_LEFT) {
+		if (player2->getCannon()->isGuidingMissile()) player2->getCannon()->getGuidedMissile()->rotateLeft();
+		else player2->moveLeft();
+	}
+	if (pad2Held & WPAD_BUTTON_RIGHT) {
+		if (player2->getCannon()->isGuidingMissile()) player2->getCannon()->getGuidedMissile()->rotateRight();
+		else player2->moveRight();
+	}
 	if (pad2Held & WPAD_BUTTON_UP) player2->getCannon()->rotateRight();
 	if (pad2Held & WPAD_BUTTON_DOWN) player2->getCannon()->rotateLeft();
 
-	if (pad1Down & WPAD_BUTTON_A) WPAD_Rumble(WPAD_CHAN_0, 1);
+	// A pressé, relaché, maintenu pour le joueur 1
+	if (pad1Down & WPAD_BUTTON_A) {
+		if (player1->getCannon()->isGuidingMissile()) player1->getCannon()->destroyGuidedMissile();
+		//WPAD_Rumble(WPAD_CHAN_0, 1);
+	}
 	if (pad1Held & WPAD_BUTTON_A) {
 		player1->getCannon()->incStrength();
-		if (!player1->getCannon()->isLoaded()) WPAD_Rumble(WPAD_CHAN_0, 0);
+		// TODO VibrationManager
+		// Pour l'instant ca vide un peu trop les batteries ...
+		//if (!player1->getCannon()->isLoaded()) WPAD_Rumble(WPAD_CHAN_0, 0);
 	}
 	if (pad1Up & WPAD_BUTTON_A) {
 		player1->getCannon()->up();
 		player1->getCannon()->shoot();
-		WPAD_Rumble(WPAD_CHAN_0, 0);
+		//WPAD_Rumble(WPAD_CHAN_0, 0);
 	}
 
-	if (pad2Down & WPAD_BUTTON_A) WPAD_Rumble(WPAD_CHAN_1, 1);
+	// A pressé, relaché, maintenu pour le joueur 2
+	if (pad2Down & WPAD_BUTTON_A) {
+		if (player2->getCannon()->isGuidingMissile()) player2->getCannon()->destroyGuidedMissile();
+		//WPAD_Rumble(WPAD_CHAN_1, 1)
+	}
 	if (pad2Held & WPAD_BUTTON_A) {
 		player2->getCannon()->incStrength();
-		if (!player2->getCannon()->isLoaded()) WPAD_Rumble(WPAD_CHAN_1, 0);
+		//if (!player2->getCannon()->isLoaded()) WPAD_Rumble(WPAD_CHAN_1, 0);
 	}
 	if (pad2Up & WPAD_BUTTON_A) {
 		player2->getCannon()->up();
 		player2->getCannon()->shoot();
-		WPAD_Rumble(WPAD_CHAN_1, 0);
+		//WPAD_Rumble(WPAD_CHAN_1, 0);
 	}
 }
 
@@ -216,17 +240,26 @@ void Manager::computeAmmos() {
 			App::console->addDebug("collision : bonus");
 			// Gestion du type de bonus
 			switch (result->second->getType()){
+
 			case HOMING:
-				App::console->addDebug("bonus : homing missile");
 				result->first->getCannon()->loadHoming();
-				break;
+				App::console->addDebug("bonus : homing missile");break;
+
 			case LIFE_RECOVERY:
-				App::console->addDebug("bonus : life recovery");
-				result->first->setLife(100);
-				break;
+				result->first->winLife(50);
+				App::console->addDebug("bonus : life recovery");break;
+
+			case GUIDED:
+				result->first->getCannon()->loadGuided();
+				App::console->addDebug("bonus : guided missile");break;
+
+			case POISON:
+				result->first->looseLife(50);
+				App::console->addDebug("bonus : life loss");break;
+
 			default:
-				App::console->addDebug("bonus : type inconnu");
-				break;
+				App::console->addDebug("bonus : type inconnu");break;
+
 			}
 			delete result; // On ne peux libérer la mémoire qu'ici ...
 		}

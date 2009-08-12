@@ -65,6 +65,24 @@ Bonus* randomBonus(){
 				BONUS_LIFE_DURATION,
 				BONUS_LIFE_ANIMATION_SLOW,
 				calcX);
+		case GUIDED:
+			return new Bonus(
+				static_cast<BonusType>(_type),
+				App::imageBank->get(TXT_BONUS_GUIDED),
+				BONUS_GUIDED_WIDTH,
+				BONUS_GUIDED_HEIGHT,
+				BONUS_GUIDED_DURATION,
+				BONUS_GUIDED_ANIMATION_SLOW,
+				calcX);
+		case POISON:
+			return new Bonus(
+				static_cast<BonusType>(_type),
+				App::imageBank->get(TXT_BONUS_POISON),
+				BONUS_POISON_WIDTH,
+				BONUS_POISON_HEIGHT,
+				BONUS_POISON_DURATION,
+				BONUS_POISON_ANIMATION_SLOW,
+				calcX);
 		default:
 			return new Bonus(
 				static_cast<BonusType>(_type),

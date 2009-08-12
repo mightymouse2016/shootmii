@@ -22,7 +22,8 @@ Cannon::Cannon(
 	heatCool(0),
 	reloadTime(0),
 	stillHeld(false),
-	manager(_manager)
+	manager(_manager),
+	guidedMissile(NULL)
 {
 	GRRLIB_texImg *crossHair_image, *ammo_Image;
 	switch (_playerNumber){
@@ -64,6 +65,16 @@ Cannon::Cannon(
 
 Cannon::~Cannon() {
 	if (isLoaded()) delete getAmmo();
+	if (isGuidingMissile()) delete guidedMissile;
+}
+
+void Cannon::destroyGuidedMissile(){
+	guidedMissile->destroy(); // Le gestionnaire de collision se charge du reste
+	guidedMissile = NULL;
+}
+
+void Cannon::looseInfluenceOnMissile(){
+	guidedMissile = NULL;
 }
 
 void Cannon::init() {
@@ -76,6 +87,10 @@ void Cannon::init() {
 	heatCool = 0;
 	reloadTime = 0;
 	if (isLoaded()) delete getAmmo();
+	if (isGuidingMissile()){
+		delete guidedMissile;
+		guidedMissile = NULL;
+	}
 	Player* owner = static_cast<Player*>(getFather());
 	GRRLIB_texImg* ammo_Image;
 	switch (owner->getPlayerNumber()){
@@ -113,6 +128,14 @@ Ammo* Cannon::getAmmo(){
 
 Ammo* Cannon::getAmmo() const{
 	return static_cast<Ammo*>(children[CHILD_AMMO]);
+}
+
+GuidedMissile* Cannon::getGuidedMissile(){
+	return guidedMissile;
+}
+
+GuidedMissile* Cannon::getGuidedMissile() const{
+	return guidedMissile;
 }
 
 void Cannon::setAmmo(Ammo* _ammo){
@@ -205,6 +228,14 @@ void Cannon::shoot() {
 	getAmmo()->setRadial(0);
 	getAmmo()->compute(); // On initialise la position, car dans le canon elle est relative !
 	manager->addAmmo(getAmmo());
+
+	// DIFFERNCE PAR RAPPORT AU HOMING
+
+	// dynamic_cast, car renvoie NULL si downcasting impossible
+	guidedMissile = dynamic_cast<GuidedMissile*>(getAmmo());
+
+	// -------------------------------
+
 	setAmmo(NULL);
 	strength = 0;
 	// On cache la jauge de puissance
@@ -220,7 +251,7 @@ void Cannon::shoot() {
 void Cannon::reload() {
 	Player* owner = static_cast<Player*>(getFather());
 	GRRLIB_texImg* ammoImage = NULL;
-	if (!isLoaded()) {
+	if (!isLoaded() && !isGuidingMissile()) {
 		switch(owner->getPlayerNumber()){
 			case 1: ammoImage = App::imageBank->get(TXT_AMMO1);break;
 			case 2: ammoImage = App::imageBank->get(TXT_AMMO2);break;
@@ -249,8 +280,27 @@ void Cannon::loadHoming(){
 	reloadTime = 0;
 }
 
+void Cannon::loadGuided(){
+	// Le guided se met à la place de l'autre munition si il y en a une
+	if (isLoaded()) delete children[CHILD_AMMO];
+	Player* owner = static_cast<Player*>(getFather());
+	GRRLIB_texImg* ammoImage = NULL;
+	switch(owner->getPlayerNumber()){
+		case 1: ammoImage = App::imageBank->get(TXT_GUIDED1);break;
+		case 2: ammoImage = App::imageBank->get(TXT_GUIDED2);break;
+		default: ammoImage = App::imageBank->get(TXT_GUIDED1);break;
+	}
+	setAmmo(new GuidedMissile(angle, wind, ammoImage, owner, owner->getTerrain(), manager));
+	reloadTime = 0;
+}
+
 bool Cannon::isLoaded() const{
 	if (getAmmo()) return true;
+	return false;
+}
+
+bool Cannon::isGuidingMissile() const{
+	if (guidedMissile) return true;
 	return false;
 }
 

@@ -151,10 +151,14 @@ void Player::setLife(const int _life){
 	life = _life;
 }
 
-void Player::looseLife(u8 lifeAmount) {
-	if (life == 0) return;
-	if (lifeAmount >= life) life = 0;
-	else life -= lifeAmount;
+void Player::winLife(float lifeAmount){
+	life += lifeAmount;
+	if (life > 100) life = 100;
+}
+
+void Player::looseLife(float lifeAmount) {
+	life -= lifeAmount;
+	if (life < 0) life = 0;
 }
 
 void Player::computeDamage(Ammo* ammo){

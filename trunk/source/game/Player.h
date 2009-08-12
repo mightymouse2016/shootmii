@@ -70,7 +70,8 @@ public:
 	void setOpponent(Player* _opponent);
 	void moveLeft(float speed = 1);
 	void moveRight(float speed = 1);
-	void looseLife(u8 lifeAmount);
+	void winLife(float lifeAmount);
+	void looseLife(float lifeAmount);
 	void computeDamage(Ammo* ammo);
 	void computeRecoil();
 	void addRecoil(int intensity);

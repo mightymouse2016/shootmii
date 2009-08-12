@@ -19,6 +19,8 @@ void ImageBank::init() {
 	allTextures[TXT_CANNON] = GRRLIB_LoadTexture(cannon);
 	allTextures[TXT_HOMING1] = GRRLIB_LoadTexture(homing_1);
 	allTextures[TXT_HOMING2] = GRRLIB_LoadTexture(homing_2);
+	allTextures[TXT_GUIDED1] = GRRLIB_LoadTexture(guided_1);
+	allTextures[TXT_GUIDED2] = GRRLIB_LoadTexture(guided_2);
 	allTextures[TXT_TERRAIN] = GRRLIB_LoadTexture(tile_set);
 	allTextures[TXT_SMOKE] = GRRLIB_LoadTexture(smoke_sprites);
 	allTextures[TXT_BONUS_LIFE] = GRRLIB_LoadTexture(bonus_life);
@@ -31,6 +33,8 @@ void ImageBank::init() {
 	allTextures[TXT_FURY_JAUGE2] = GRRLIB_LoadTexture(fury_jauge_2);
 	allTextures[TXT_SCORE_PANEL] = GRRLIB_LoadTexture(score_panel);
 	allTextures[TXT_BONUS_HOMING] = GRRLIB_LoadTexture(bonus_homing);
+	allTextures[TXT_BONUS_POISON] = GRRLIB_LoadTexture(bonus_poison);
+	allTextures[TXT_BONUS_GUIDED] = GRRLIB_LoadTexture(bonus_guided);
 	allTextures[TXT_TITLE_SCREEN] = GRRLIB_LoadTexture(title_screen);
 	allTextures[TXT_BG_CLOUD] = GRRLIB_LoadTexture(background_cloud);
 	allTextures[TXT_FG_CLOUD] = GRRLIB_LoadTexture(foreground_cloud);

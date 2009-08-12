@@ -63,7 +63,7 @@ public:
 	 * Cette méthode set toDelete à true pour que le gestionnaire de collision la supprime
 	 * après seulement avoir geré toutes les collisions entre ammos, sinon crash !
 	 */
-	void deleteMe();
+	virtual void deleteMe();
 	bool isToDelete();
 	bool isOutOfCannon() const;
 	bool isOffScreen() const;
