@@ -35,6 +35,7 @@ void ImageBank::init() {
 	allTextures[TXT_BONUS_HOMING] = GRRLIB_LoadTexture(bonus_homing);
 	allTextures[TXT_BONUS_POISON] = GRRLIB_LoadTexture(bonus_poison);
 	allTextures[TXT_BONUS_GUIDED] = GRRLIB_LoadTexture(bonus_guided);
+	allTextures[TXT_BONUS_POTION] = GRRLIB_LoadTexture(bonus_potion);
 	allTextures[TXT_TITLE_SCREEN] = GRRLIB_LoadTexture(title_screen);
 	allTextures[TXT_BG_CLOUD] = GRRLIB_LoadTexture(background_cloud);
 	allTextures[TXT_FG_CLOUD] = GRRLIB_LoadTexture(foreground_cloud);

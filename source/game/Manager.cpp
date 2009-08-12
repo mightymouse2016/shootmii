@@ -189,7 +189,7 @@ void Manager::computeAmmos() {
 
 		// Le missile vient de rencontrer un autre missile qui a déjà géré la collision
 		if ((*i)->isDestroyed()) {
-			App::console->addDebug("collision : missile 2/2");
+			App::console->addDebug("collision : destruction programmee");
 			addAnimation((*i)->destruction(HIT_ANOTHER_AMMO));
 			(*i)->deleteMe();
 		}
@@ -217,7 +217,7 @@ void Manager::computeAmmos() {
 
 		// Collision inter-missile
 		else if (Ammo * inFrontAmmo = (*i)->hitAnotherAmmo(ammos)) {
-			App::console->addDebug("collision : missile 1/2");
+			App::console->addDebug("collision : missile");
 			player1->computeDamage(*i);
 			player2->computeDamage(*i);
 			addAnimation((*i)->destruction(HIT_ANOTHER_AMMO));
@@ -230,7 +230,9 @@ void Manager::computeAmmos() {
 			App::console->addDebug("collision : player");
 			player1->computeDamage(*i);
 			player2->computeDamage(*i);
-			playerHit->looseLife(HIT_DAMAGE_BONUS); // Un petit bonus pour le touché
+			playerHit->loseLife(HIT_DAMAGE_BONUS); // Un petit bonus pour le touché
+			if (playerHit == player1) player2->winFury(10); //Un petit bonus de fury celui qui a réussi ce coup
+			else player1->winFury(10);
 			addAnimation((*i)->destruction(HIT_A_PLAYER,playerHit));
 			(*i)->deleteMe();
 		}
@@ -246,7 +248,7 @@ void Manager::computeAmmos() {
 				App::console->addDebug("bonus : homing missile");break;
 
 			case LIFE_RECOVERY:
-				result->first->winLife(50);
+				result->first->winLife(35);
 				App::console->addDebug("bonus : life recovery");break;
 
 			case GUIDED:
@@ -254,8 +256,12 @@ void Manager::computeAmmos() {
 				App::console->addDebug("bonus : guided missile");break;
 
 			case POISON:
-				result->first->looseLife(50);
+				result->first->loseLife(35);
 				App::console->addDebug("bonus : life loss");break;
+
+			case POTION:
+				result->first->winFury(25);
+				App::console->addDebug("bonus : fury potion");break;
 
 			default:
 				App::console->addDebug("bonus : type inconnu");break;

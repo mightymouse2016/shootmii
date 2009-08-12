@@ -49,7 +49,7 @@ public:
 		const float angle,
 		const float rotationStep = ROTATION_STEP,
 		const float life = 100,
-		const float fury = 100,
+		const float fury = 0,
 		Manager* manager = NULL);
 	int getPlayerNumber() const;
 	int getCol() const;
@@ -71,7 +71,9 @@ public:
 	void moveLeft(float speed = 1);
 	void moveRight(float speed = 1);
 	void winLife(float lifeAmount);
-	void looseLife(float lifeAmount);
+	void loseLife(float lifeAmount);
+	void winFury(float lifeAmount);
+	void loseFury(float lifeAmount);
 	void computeDamage(Ammo* ammo);
 	void computeRecoil();
 	void addRecoil(int intensity);

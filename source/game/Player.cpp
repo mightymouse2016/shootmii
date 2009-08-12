@@ -135,7 +135,6 @@ void Player::initPosition(float _originX){
 void Player::initGame() {
 	recoil = 0;
 	life = 100;
-	fury = 100;
 	getCannon()->init();
 }
 
@@ -156,9 +155,19 @@ void Player::winLife(float lifeAmount){
 	if (life > 100) life = 100;
 }
 
-void Player::looseLife(float lifeAmount) {
+void Player::loseLife(float lifeAmount) {
 	life -= lifeAmount;
 	if (life < 0) life = 0;
+}
+
+void Player::winFury(float furyAmount){
+	fury += furyAmount;
+	if (fury > 100) fury = 100;
+}
+
+void Player::loseFury(float furyAmount){
+	fury -= furyAmount;
+	if (fury < 0) fury = 0;
 }
 
 void Player::computeDamage(Ammo* ammo){
@@ -174,7 +183,7 @@ void Player::computeDamage(Ammo* ammo){
     sprintf(buffer, "Distance = %d; Degat = %d;", distance, degat);
     App::console->addDebug(buffer);
 
-    looseLife(degat);
+    loseLife(degat);
     if (x < 0) addRecoil(-intensity);
     else addRecoil(intensity);
 }
