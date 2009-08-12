@@ -113,6 +113,7 @@ class App;
 #include "gfx/bonus_homing.h"
 #include "gfx/bonus_guided.h"
 #include "gfx/bonus_poison.h"
+#include "gfx/bonus_potion.h"
 #include "gfx/smoke_sprites.h"
 #include "gfx/strength_jauge.h"
 #include "gfx/strength_sprites.h"

@@ -83,6 +83,15 @@ Bonus* randomBonus(){
 				BONUS_POISON_DURATION,
 				BONUS_POISON_ANIMATION_SLOW,
 				calcX);
+		case POTION:
+			return new Bonus(
+				static_cast<BonusType>(_type),
+				App::imageBank->get(TXT_BONUS_POTION),
+				BONUS_POTION_WIDTH,
+				BONUS_POTION_HEIGHT,
+				BONUS_POTION_DURATION,
+				BONUS_POTION_ANIMATION_SLOW,
+				calcX);
 		default:
 			return new Bonus(
 				static_cast<BonusType>(_type),
