@@ -28,6 +28,7 @@ const float HOMING_ACTIVATION_DELAY(30*DEFAULT_TIME_STEP); // 1/2 seconde
 class HomingMissile : public Ammo {
 private:
 	Player* target;
+	bool active;
 public:
 	HomingMissile(
 		const float angle,

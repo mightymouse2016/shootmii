@@ -12,8 +12,8 @@ const int BONUS_HOMING_ANIMATION_SLOW(5);
 
 const int BONUS_LIFE_WIDTH(28);
 const int BONUS_LIFE_HEIGHT(24);
-const int BONUS_LIFE_DURATION(9);
-const int BONUS_LIFE_ANIMATION_SLOW(5);
+const int BONUS_LIFE_DURATION(8);
+const int BONUS_LIFE_ANIMATION_SLOW(7);
 
 const int BONUS_GUIDED_WIDTH(16);
 const int BONUS_GUIDED_HEIGHT(16);
@@ -22,8 +22,8 @@ const int BONUS_GUIDED_ANIMATION_SLOW(5);
 
 const int BONUS_POISON_WIDTH(28);
 const int BONUS_POISON_HEIGHT(24);
-const int BONUS_POISON_DURATION(9);
-const int BONUS_POISON_ANIMATION_SLOW(5);
+const int BONUS_POISON_DURATION(18);
+const int BONUS_POISON_ANIMATION_SLOW(7);
 
 const int BONUS_POTION_WIDTH(16);
 const int BONUS_POTION_HEIGHT(24);
@@ -34,7 +34,7 @@ const int BONUS_SPEED(30);
 const int BONUS_OSCILLATIONS_RANGE(100);
 const int BONUS_OSCILLATIONS_CENTER(100);
 
-const int BONUS_PROBABILITY (1*60); // apparition toutes les 15*60frames = 15 secondes en moyenne
+const int BONUS_PROBABILITY (3*60); // apparition toutes les 15*60frames = 15 secondes en moyenne
 
 enum BonusType{
 	HOMING,

@@ -38,6 +38,10 @@ int Player::getRow() const{
 	return originY/terrain->getCellHeight();
 }
 
+int Player::getScore() const {
+	return score;
+}
+
 float Player::getLife() const {
 	return life;
 }
@@ -52,10 +56,6 @@ float* Player::getPLife(){
 
 float* Player::getPFury(){
 	return &fury;
-}
-
-int Player::getScore() const {
-	return score;
 }
 
 int Player::getNbGamesWon() const{
@@ -106,6 +106,14 @@ void Player::setOpponent(Player* _opponent){
 	children[CHILD_OPPONENT] = _opponent;
 }
 
+void Player::setScore(const int _score) {
+	score = _score;
+}
+
+void Player::incScore() {
+	score++;
+}
+
 void Player::moveLeft(float speed){
 	float oldOriginX = originX;
 	float newOriginX = originX - speed*getSpeed(terrain->getGround(originX/terrain->getCellWidth()).getType(), LEFT);
@@ -122,52 +130,28 @@ void Player::moveRight(float speed){
 	if (intersect(getOpponent())) initPosition(oldOriginX);
 }
 
-void Player::init() {
-	nbGamesWon = 0;
-	initGame();
+void Player::setLife(const float lifeAmount){
+	life = lifeAmount;
 }
 
-void Player::initPosition(float _originX){
-	originY = terrain->getHeight(originX = _originX);
-	angle = terrain->getAngle(originX) - PI/2; // -PI/2 pour l'othogonalité au terrain
+void Player::winLife(const float lifeAmount){
+	App::jaugeManager->addIncrease(&life,lifeAmount);
 }
 
-void Player::initGame() {
-	recoil = 0;
-	life = 100;
-	getCannon()->init();
+void Player::loseLife(const float lifeAmount) {
+	App::jaugeManager->addDecrease(&life,lifeAmount);
 }
 
-void Player::setScore(const int _score) {
-	score = _score;
+void Player::setFury(const float furyAmount){
+	fury = furyAmount;
 }
 
-void Player::incScore() {
-	score++;
+void Player::winFury(const float furyAmount){
+	App::jaugeManager->addIncrease(&fury,furyAmount);
 }
 
-void Player::setLife(const int _life){
-	life = _life;
-}
-
-void Player::winLife(float lifeAmount){
-	life += lifeAmount;
-	if (life > 100) life = 100;
-}
-
-void Player::loseLife(float lifeAmount) {
-	life -= lifeAmount;
-	if (life < 0) life = 0;
-}
-
-void Player::winFury(float furyAmount){
-	fury += furyAmount;
-	if (fury > 100) fury = 100;
-}
-
-void Player::loseFury(float furyAmount){
-	fury -= furyAmount;
-	if (fury < 0) fury = 0;
+void Player::loseFury(const float furyAmount){
+	App::jaugeManager->addDecrease(&fury,furyAmount);
 }
 
 void Player::computeDamage(Ammo* ammo){
@@ -179,9 +163,7 @@ void Player::computeDamage(Ammo* ammo){
     int intensity = (MINIMUM_LENGTH_FOR_DAMAGE - distance)*RECOIL_COEF;
 
     //Debug
-    char buffer[100];
-    sprintf(buffer, "Distance = %d; Degat = %d;", distance, degat);
-    App::console->addDebug(buffer);
+    App::console->addDebug("Distance = %d; Degat = %d;", distance, degat);
 
     loseLife(degat);
     if (x < 0) addRecoil(-intensity);
@@ -203,6 +185,22 @@ void Player::computeRecoil(){
 
 void Player::addRecoil(int intensity){
 	recoil += intensity;
+}
+
+void Player::init() {
+	nbGamesWon = 0;
+	initGame();
+}
+
+void Player::initGame() {
+	recoil = 0;
+	life = 100;
+	getCannon()->init();
+}
+
+void Player::initPosition(float _originX){
+	originY = terrain->getHeight(originX = _originX);
+	angle = terrain->getAngle(originX) - PI/2; // -PI/2 pour l'othogonalité au terrain
 }
 
 }

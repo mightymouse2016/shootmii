@@ -10,10 +10,15 @@ Console::Console() :
 	// NOTHING TO DO
 }
 
-void Console::addDebug(string txt) {
+void Console::addDebug(const char* txt, ...) {
 	if (debug) {
 		if (history.size() == MAX_HISTORY) history.erase(history.begin());
-		history.push_back(txt);
+		char buf[1024];
+		va_list argp;
+		va_start(argp, txt);
+		vsprintf(buf, txt, argp);
+		va_end(argp);
+		history.push_back(buf);
 	}
 }
 

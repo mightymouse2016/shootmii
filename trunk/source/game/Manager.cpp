@@ -59,6 +59,7 @@ void Manager::initPlayers() const {
 }
 
 void Manager::init() const {
+	App::jaugeManager->clear();
 	ammos->clear();
 	bonuses->clear();
 	animations->clear();
@@ -141,10 +142,13 @@ void Manager::computeVictory() {
 		if (winner->getScore() >= MANCHE) {
 			player1->setScore(0);
 			player2->setScore(0);
+			player1->setFury(0);
+			player2->setFury(0);
 		}
+		App::jaugeManager->clear();
+		animations->clear();
 		bonuses->clear();
 		ammos->clear();
-		animations->clear();
 		world->init();
 		initPlayers();
 	}
@@ -283,6 +287,7 @@ void Manager::computeAmmos() {
 
 void Manager::compute() {
 	if (!(rand()%BONUS_PROBABILITY)) addBonus(randomBonus());
+	App::jaugeManager->compute();
 	world->compute();
 	player1->getCannon()->decHeat();
 	player2->getCannon()->decHeat();
