@@ -5,6 +5,7 @@ namespace shootmii {
 Console* App::console = new Console;
 ImageBank* App::imageBank = new ImageBank;
 DrawManager* App::drawManager = new DrawManager;
+JaugeManager* App::jaugeManager = new JaugeManager;
 
 App::App():
 	fps(0),
@@ -27,6 +28,8 @@ App::~App() {
 	delete gameScreen;
 	delete console;
 	delete imageBank;
+	delete drawManager;
+	delete jaugeManager;
 	GRRLIB_Exit();
 }
 

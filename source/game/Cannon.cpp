@@ -242,9 +242,7 @@ void Cannon::shoot() {
 	for (int i=0;i<STRENGTH_JAUGE_STATES;i++){
 		children[CHILDREN_STRENGTH+i]->hide();
 	}
-	char buffer[100];
-	sprintf(buffer,"recul = %d",int(SHOT_RECOIL*sin(angle)));
-	App::console->addDebug(buffer);
+	App::console->addDebug("recul = %d",int(SHOT_RECOIL*sin(angle)));
 	static_cast<Player*>(getFather())->addRecoil(SHOT_RECOIL*sin(angle));
 }
 

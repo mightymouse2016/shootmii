@@ -20,7 +20,8 @@ GuidedMissile::GuidedMissile(
     		new PolyDeg2(-G/(2*AMMO_WEIGHT),-vY,y),
     		_owner,
     		_terrain,
-    		_manager)
+    		_manager),
+    	active(false)
 {
 	// La silhouette du homing (pour des intersections plus fines)
     vertices.reserve(8);
@@ -104,8 +105,9 @@ void GuidedMissile::compute(){
 		}
 		else {
 			// A l'activation, elle se positionne sur la trajectoire du lancé
-			if (_t == GUIDED_ACTIVATION_DELAY){
+			if (!active){
 				angle = atan2((*calcY)[_t],(*calcX)[_t]);
+				active = true;
 			}
 			// Après activation son angle est asservi, de manière a ce que l'angle entre la munition et l'adversaire soit nul
 			originX += GUIDED_SPEED*cos(angle);

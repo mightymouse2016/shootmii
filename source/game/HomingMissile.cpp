@@ -20,7 +20,8 @@ HomingMissile::HomingMissile(
     		new PolyDeg2(-G/(2*AMMO_WEIGHT),-vY,y),
     		_owner,
     		_terrain,
-    		_manager)
+    		_manager),
+    		active(false)
 {
 	// On séléctionne la cible
 	if (owner == manager->getPlayer1()) target = manager->getPlayer2();
@@ -95,8 +96,9 @@ void HomingMissile::compute(){
 		}
 		else {
 			// A l'activation, elle se positionne sur la trajectoire du lancé
-			if (_t == HOMING_ACTIVATION_DELAY){
+			if (!active){
 				angle = atan2((*calcY)[_t],(*calcX)[_t]);
+				active = true;
 			}
 			// Après activation son angle est asservi, de manière a ce que l'angle entre la munition et l'adversaire soit nul
 			originX += HOMING_SPEED*cos(angle);

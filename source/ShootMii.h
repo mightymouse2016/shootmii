@@ -86,7 +86,7 @@ class App;
 #include <cmath>
 #include <string>
 #include <vector>
-#include <utility> // Pour utiliser des pair
+#include <utility> // Pour utiliser des pair<T1,T2>
 #include <cstdlib>
 
 // Images
@@ -168,10 +168,11 @@ class App;
 #include "game/HomingMissile.h"
 #include "game/GuidedMissile.h"
 #include "game/Player.h"
-#include "game/Manager.h"
 #include "game/Jauge.h"
+#include "game/Manager.h"
 #include "game/DrawManager.h"
 #include "game/ScoreManager.h"
+#include "game/JaugeManager.h"
 
 // Screens
 #include "screens/Screen.h"

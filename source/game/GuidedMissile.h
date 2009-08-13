@@ -20,12 +20,14 @@ const int GUIDED_HIT_EXPLOSION_HEIGHT(64);
 const int GUIDED_HIT_EXPLOSION_DEPTH(0);
 const int GUIDED_HIT_EXPLOSION_DURATION(16);
 
-const float GUIDED_SPEED(5);
+const float GUIDED_SPEED(7);
 const float GUIDED_SPIN_ANGLE(PI/16);
-const float GUIDED_ROTATION_STEP(PI/16);
+const float GUIDED_ROTATION_STEP(PI/32);
 const float GUIDED_ACTIVATION_DELAY(30*DEFAULT_TIME_STEP); // 1/2 seconde
 
 class GuidedMissile : public Ammo {
+private:
+	bool active;
 public:
 	GuidedMissile(
 		const float angle,

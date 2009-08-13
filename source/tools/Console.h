@@ -27,7 +27,7 @@ private:
 public:
 	Console();
 	void draw();
-	void addDebug(string txt);
+	void addDebug(const char* txt, ...);
 	bool isDebug() const;
 	void toggleDebug();
 	void setFPS(u8);

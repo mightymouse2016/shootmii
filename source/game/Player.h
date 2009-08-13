@@ -51,6 +51,7 @@ public:
 		const float life = 100,
 		const float fury = 0,
 		Manager* manager = NULL);
+
 	int getPlayerNumber() const;
 	int getCol() const;
 	int getRow() const;
@@ -67,22 +68,28 @@ public:
 	Player* getOpponent();
 	Player* getOpponent() const;
 	float getSpeed(const CellType type, const Direction dir) const;
+
 	void setOpponent(Player* _opponent);
-	void moveLeft(float speed = 1);
-	void moveRight(float speed = 1);
-	void winLife(float lifeAmount);
-	void loseLife(float lifeAmount);
-	void winFury(float lifeAmount);
-	void loseFury(float lifeAmount);
-	void computeDamage(Ammo* ammo);
-	void computeRecoil();
-	void addRecoil(int intensity);
 	void setScore(const int score);
 	void incScore();
-	void setLife(const int life);
+	void moveLeft(const float speed = 1);
+	void moveRight(const float speed = 1);
+	void setLife(const float lifeAmount);
+	void winLife(const float lifeAmount);
+	void loseLife(const float lifeAmount);
+	void setFury(const float furyAmount);
+	void winFury(const float furyAmount);
+	void loseFury(const float furyAmount);
+
+	void computeDamage(Ammo* ammo);
+	void computeRecoil();
+
+	void addRecoil(int intensity);
+
 	void init();
-	void initPosition(float screenX);
 	void initGame();
+	void initPosition(float screenX);
+
 };
 
 }
