@@ -12,37 +12,28 @@ Cannon::Cannon(
 		int _playerNumber,
 		Manager* _manager) :
 	Rectangle(CANNON_LAYER,CANNON_WIDTH,CANNON_HEIGHT,TANK_HEIGHT/4,0,_angle,0,0,1,App::imageBank->get(TXT_CANNON),_owner),
+	wind(_wind),
+	heat(0),
+	strength(0),
 	angleMin(_angleMin),
 	angleMax(_angleMax),
 	rotationStep(_rotationStep),
-	wind(_wind),
-	strength(0),
-	heat(0),
-	blockedTime(0),
-	heatCool(0),
-	reloadTime(0),
 	stillHeld(false),
+	reloadTime(Timer(RELOAD_TIME)),
+	blockedCannon(Timer(BLOCKING_TIME)),
+	furyReloadTime(Timer(FURY_RELOAD_TIME)),
 	manager(_manager),
 	guidedMissile(NULL)
 {
-	GRRLIB_texImg *crossHair_image, *ammo_Image;
+	GRRLIB_texImg *crossHair_image;
 	switch (_playerNumber){
-	case 1:
-		ammo_Image = App::imageBank->get(TXT_AMMO1);
-		crossHair_image = App::imageBank->get(TXT_CROSSHAIR1);
-		break;
-	case 2:
-		ammo_Image = App::imageBank->get(TXT_AMMO2);
-		crossHair_image = App::imageBank->get(TXT_CROSSHAIR2);
-		break;
-	default:
-		ammo_Image = App::imageBank->get(TXT_AMMO1);
-		crossHair_image = App::imageBank->get(TXT_CROSSHAIR1);
-		break;
+	case 1: crossHair_image = App::imageBank->get(TXT_CROSSHAIR1);break;
+	case 2: crossHair_image = App::imageBank->get(TXT_CROSSHAIR2);break;
+	default:crossHair_image = App::imageBank->get(TXT_CROSSHAIR1);break;
 	}
-	vertices.reserve(2);
+	vertices.reserve(CHILDREN_STRENGTH + STRENGTH_JAUGE_STATES);
 	addChild(new Rectangle(CROSSHAIR_LAYER, CROSSHAIR_WIDTH, CROSSHAIR_HEIGHT, 0, 0, CROSSHAIR_OVERTAKE, angle, 0, 1, crossHair_image, _owner));
-	addChild(new CannonBall(angle,wind,ammo_Image,_owner,_owner->getTerrain(), manager));
+	addChild(NULL);		//< Un emplacement pour la munition
 	for (int i=0;i<STRENGTH_JAUGE_STATES;i++){
 		addChild(
 			new Rectangle(
@@ -59,13 +50,13 @@ Cannon::Cannon(
 					STRENGHT_JAUGE_SPRITE_WIDTH,
 					STRENGHT_JAUGE_SPRITE_HEIGHT,
 					true));
-
 	}
 }
 
 Cannon::~Cannon() {
-	if (isLoaded()) delete getAmmo();
-	if (isGuidingMissile()) delete guidedMissile;
+	// NOTHING TO DO
+	// guidedMissile destroyed by Manager
+	// ammo and strength jauge destroyed by the Polygon class
 }
 
 void Cannon::destroyGuidedMissile(){
@@ -78,28 +69,17 @@ void Cannon::looseInfluenceOnMissile(){
 }
 
 void Cannon::init() {
-	strength = 0;
-	for (int i=0;i<STRENGTH_JAUGE_STATES;i++){
-		children[CHILDREN_STRENGTH+i]->hide();
-	}
 	heat = 0;
-	blockedTime = 0;
-	heatCool = 0;
-	reloadTime = 0;
-	if (isLoaded()) delete getAmmo();
-	if (isGuidingMissile()){
-		delete guidedMissile;
-		guidedMissile = NULL;
+	strength = 0;
+	reloadTime.init();
+	blockedCannon.init();
+	furyReloadTime.init();
+	if (isLoaded()) {
+		delete getAmmo();
+		setAmmo(NULL);
 	}
-	Player* owner = static_cast<Player*>(getFather());
-	GRRLIB_texImg* ammo_Image;
-	switch (owner->getPlayerNumber()){
-	case 1: ammo_Image = App::imageBank->get(TXT_AMMO1);break;
-	case 2: ammo_Image = App::imageBank->get(TXT_AMMO2);break;
-	default: ammo_Image = App::imageBank->get(TXT_AMMO1);break;
-	}
-	setAmmo(new CannonBall(angle, wind, ammo_Image, owner, owner->getTerrain(), manager));
-	getAmmo()->setAngle(angle);
+	if (isGuidingMissile()) guidedMissile = NULL;		//< le Manager s'occupe déjà de la suppression
+
 }
 
 float Cannon::getStrength() const {
@@ -118,10 +98,6 @@ float* Cannon::getPHeat(){
 	return &heat;
 }
 
-int Cannon::getBlockedTime() const {
-	return blockedTime;
-}
-
 Ammo* Cannon::getAmmo(){
 	return static_cast<Ammo*>(children[CHILD_AMMO]);
 }
@@ -138,32 +114,26 @@ GuidedMissile* Cannon::getGuidedMissile() const{
 	return guidedMissile;
 }
 
+Player* Cannon::getOwner(){
+	return static_cast<Player*>(getFather());
+}
+
+Player* Cannon::getOwner() const{
+	return static_cast<Player*>(getFather());
+}
+
 void Cannon::setAmmo(Ammo* _ammo){
 	children[CHILD_AMMO] = _ammo;
 }
 
-void Cannon::decHeat() {
-	heatCool++;
-	if (heatCool > 10)
-		heatCool = 0;
-	u32 currentTime = ticks_to_millisecs(gettime());
-
-	// Mode bloqué quand on a harcelé le canon
+void Cannon::computeHeat() {
 	if (heat == 100) {
-		if (currentTime - blockedTime > BLOCKING_TIME) heat -= 1;
+		if (blockedCannon.timeIsOver()) heat -= HEAT_COOL_SLOW_STEP;
+		else blockedCannon.compute();
 	}
-
-	// Mode lent quand le canon est chaud
-	else if (heat > 50) {
-		if (!(heatCool % HEAT_COOL_SLOW)) heat -= 1;
-	}
-
-	// Mode normal 50 premiers % de la jauge
-	else if (heat > 0) {
-		if (!(heatCool % HEAT_COOL_FAST)) heat -= 1;
-	}
-
-	reload();
+	else if (heat > 50) heat -= HEAT_COOL_SLOW_STEP;			//< Mode lent quand le canon est chaud
+	else if (heat > 0) heat -= HEAT_COOL_FAST_STEP;					//< Mode normal 50 premiers % de la jauge
+	if (heat < 0) heat = 0;
 }
 
 void Cannon::up(){
@@ -171,103 +141,85 @@ void Cannon::up(){
 }
 
 void Cannon::rotateLeft() {
-	if (angle - rotationStep > angleMin) angle -= rotationStep;
-	else angle = angleMin;
+	angle -= rotationStep;
+	if (angle < angleMin) angle = angleMin;
 	if (isLoaded()) getAmmo()->setAngle(angle);
 }
 
 void Cannon::rotateRight() {
-	if (angle + rotationStep < angleMax) angle += rotationStep;
-	else angle = angleMax;
+	angle += rotationStep;
+	if (angle > angleMax) angle = angleMax;
 	if (isLoaded()) getAmmo()->setAngle(angle);
 }
 
 void Cannon::incStrength(){
-	// Si il n'y a pas de munition dans le canon
-	if (!isLoaded()) return;
+	if (!isLoaded()) return;	//< Si il n'y a pas de munition dans le canon
+	if (heat == 100) return;
+	strength+=STRENGTHEN_STEP;
 	if (strength >= 100) {
+		strength = 100;
 		shoot();
-		for (int i=0;i<STRENGTH_JAUGE_STATES;i++){
-			children[CHILDREN_STRENGTH+i]->hide();
-		}
 		stillHeld = true;
 	}
-	else {
-		strength+=STRENGTHEN_STEP;
-		children[CHILDREN_STRENGTH+strength*STRENGTH_JAUGE_STATES/100-1]->show();
+}
+
+void Cannon::incHeat(){
+	heat += HEAT_INC_STEP;
+	if (heat > 100) {				// Le timer était bloqué sur un multiple du temps de blocage
+		heat = 100;					// ici, on le déphase un peu, ainsi computeHeat() va rééquillibrer
+		strength = 0;				// le Timer avant de faire baisser la jauge de heat.
+		blockedCannon.init();		// Le init, sert à pénaliser le joueur si il essaie de tirer
+		blockedCannon.compute();	// alors que l'attente n'est pas terminée.
 	}
+}
+
+void Cannon::compute(){
+	computeStrengthJauge();
+	computeReload();
+	computeHeat();
+}
+
+void Cannon::computeStrengthJauge(){
+	int showLimit = strength*STRENGTH_JAUGE_STATES/100;
+	for (int i=0;i<showLimit;i++) children[CHILDREN_STRENGTH+i]->show();
+	for (int i=showLimit;i<STRENGTH_JAUGE_STATES;i++) children[CHILDREN_STRENGTH+i]->hide();
 }
 
 void Cannon::shoot() {
-	float cosinus = cos(getAbsolutePolygonAngle());
-	float sinus = sin(getAbsolutePolygonAngle());
-	// Si il n'y a pas de munition dans le canon
-	if (!isLoaded()) return;
-	// Saturation du canon
-	if (heat + HEAT_STEP >= 100) {
-		heat = 100;
-		strength = 0;
-		for (int i=0;i<STRENGTH_JAUGE_STATES;i++){
-			children[CHILDREN_STRENGTH+i]->hide();
-		}
-		blockedTime = ticks_to_millisecs(gettime());
-	}
-	else heat += HEAT_STEP;
-	// Si le canon est trop chaud, on ne peux pas tirer
-	if (heat == 100) return;
-	// A partir de ce point, le lancé est autorisé et a lieu !
-	// Mise à jour des coefficients qui définissent l'inclinaison de la courbe (si on a bougé le cannon)
-	getAmmo()->getCalcX()->setC(getAmmo()->getAbsoluteOriginX() + CANNON_LENGTH * cosinus); // X
-	getAmmo()->getCalcY()->setC(getAmmo()->getAbsoluteOriginY() + CANNON_LENGTH * sinus); // Y
-	getAmmo()->getCalcX()->setB(strength * cosinus); // X
-	getAmmo()->getCalcY()->setB(strength * sinus); // Y
-	// On libère la munition de l'emprise du cannon
-	getAmmo()->setFather(NULL);
-	// On confie la munition au manager
-	getAmmo()->fire();
-	getAmmo()->setRadial(0);
-	getAmmo()->compute(); // On initialise la position, car dans le canon elle est relative !
-	manager->addAmmo(getAmmo());
-
-	// DIFFERNCE PAR RAPPORT AU HOMING
-
-	// dynamic_cast, car renvoie NULL si downcasting impossible
-	guidedMissile = dynamic_cast<GuidedMissile*>(getAmmo());
-
-	// -------------------------------
-
+	if (!isLoaded()) return;	//< Si il n'y a pas de munition dans le canon
+	incHeat();
+	if (heat == 100) return;	//< Si le canon est trop chaud, on ne peux pas tirer
+	getAmmo()->init(strength);
+	guidedMissile = dynamic_cast<GuidedMissile*>(getAmmo());	//< Cas ou l'on a un missile télé-guidé
 	setAmmo(NULL);
 	strength = 0;
-	// On cache la jauge de puissance
-	for (int i=0;i<STRENGTH_JAUGE_STATES;i++){
-		children[CHILDREN_STRENGTH+i]->hide();
-	}
+
 	App::console->addDebug("recul = %d",int(SHOT_RECOIL*sin(angle)));
-	static_cast<Player*>(getFather())->addRecoil(SHOT_RECOIL*sin(angle));
+	getOwner()->addRecoil(SHOT_RECOIL*sin(angle));
 }
 
-void Cannon::reload() {
-	Player* owner = static_cast<Player*>(getFather());
+void Cannon::computeReload() {
+	if (isLoaded()) return;
+	else reloadTime.compute();
+	if (reloadTime.timeIsOver() && !stillHeld) loadCannon();
+}
+
+void Cannon::loadCannon(){
+	if (isLoaded() || isGuidingMissile()) return;
+	Player* owner = getOwner();
 	GRRLIB_texImg* ammoImage = NULL;
-	if (!isLoaded() && !isGuidingMissile()) {
-		switch(owner->getPlayerNumber()){
-			case 1: ammoImage = App::imageBank->get(TXT_AMMO1);break;
-			case 2: ammoImage = App::imageBank->get(TXT_AMMO2);break;
-			default: ammoImage = App::imageBank->get(TXT_AMMO1);break;
-		}
-		if (reloadTime > RELOAD_TIME) {
-			setAmmo(new CannonBall(angle, wind, ammoImage, owner, owner->getTerrain(), manager));
-			reloadTime = 0;
-		} else if(!stillHeld){
-			reloadTime++;
-		}
+	switch(owner->getPlayerNumber()){
+		case 1: ammoImage = App::imageBank->get(TXT_AMMO1);break;
+		case 2: ammoImage = App::imageBank->get(TXT_AMMO2);break;
+		default: ammoImage = App::imageBank->get(TXT_AMMO1);break;
 	}
+	setAmmo(new CannonBall(angle, wind, ammoImage, owner, owner->getTerrain(), manager));
 }
 
 void Cannon::loadHoming(){
 	// Le homing se met à la place de l'autre munition si il y en a une
 	if (isLoaded()) delete children[CHILD_AMMO];
-	Player* owner = static_cast<Player*>(getFather());
+	Player* owner = getOwner();
 	GRRLIB_texImg* ammoImage = NULL;
 	switch(owner->getPlayerNumber()){
 		case 1: ammoImage = App::imageBank->get(TXT_HOMING1);break;
@@ -275,13 +227,12 @@ void Cannon::loadHoming(){
 		default: ammoImage = App::imageBank->get(TXT_HOMING1);break;
 	}
 	setAmmo(new HomingMissile(angle, wind, ammoImage, owner, owner->getTerrain(), manager));
-	reloadTime = 0;
 }
 
 void Cannon::loadGuided(){
 	// Le guided se met à la place de l'autre munition si il y en a une
 	if (isLoaded()) delete children[CHILD_AMMO];
-	Player* owner = static_cast<Player*>(getFather());
+	Player* owner = getOwner();
 	GRRLIB_texImg* ammoImage = NULL;
 	switch(owner->getPlayerNumber()){
 		case 1: ammoImage = App::imageBank->get(TXT_GUIDED1);break;
@@ -289,17 +240,14 @@ void Cannon::loadGuided(){
 		default: ammoImage = App::imageBank->get(TXT_GUIDED1);break;
 	}
 	setAmmo(new GuidedMissile(angle, wind, ammoImage, owner, owner->getTerrain(), manager));
-	reloadTime = 0;
 }
 
 bool Cannon::isLoaded() const{
-	if (getAmmo()) return true;
-	return false;
+	return (getAmmo() != NULL);
 }
 
 bool Cannon::isGuidingMissile() const{
-	if (guidedMissile) return true;
-	return false;
+	return (guidedMissile != NULL);
 }
 
 

@@ -17,6 +17,7 @@ public:
 	void compute();
 	float getT() const;
 	bool timeIsOver() const;
+	void init();
 };
 
 }

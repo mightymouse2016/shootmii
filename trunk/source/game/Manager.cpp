@@ -289,14 +289,13 @@ void Manager::compute() {
 	if (!(rand()%BONUS_PROBABILITY)) addBonus(randomBonus());
 	App::jaugeManager->compute();
 	world->compute();
-	player1->getCannon()->decHeat();
-	player2->getCannon()->decHeat();
-	player1->computeRecoil();
-	player2->computeRecoil();
+	player1->compute();
+	player2->compute();
 	computeAmmos();
 	computeBonuses();
-	computeAnimations();
 	computeVictory();
+	computeAnimations();
+
 }
 
 void Manager::addToDrawManager() const {

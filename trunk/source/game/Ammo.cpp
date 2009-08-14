@@ -70,7 +70,7 @@ void Ammo::compute() {
 					SMOKE_SLOW,
 					1,
 					new PolyDeg2(manager->getWind()->getWindSpeed()*WIND_INFLUENCE_ON_SMOKE/(2*100* SMOKE_WEIGHT),0,originX),
-					new PolyDeg2(-G*SMOKE_AIR_RESISTANCE/2,0,originY)));
+					new PolyDeg2(-GRAVITY*SMOKE_AIR_RESISTANCE/2,0,originY)));
 		}
 	}
 	if (!isOutOfCannon()) if (!intersect(owner)) out();
@@ -148,7 +148,20 @@ Player* Ammo::hitAPlayer(Player* player1, Player* player2) const{
 	return NULL;
 }
 
-
+void Ammo::init(float strength){
+	// Mise à jour des coefficients qui définissent l'inclinaison de la courbe
+	float angle = getAbsolutePolygonAngle(), cosinus = cos(angle), sinus = sin(angle);
+	calcX->setC(getAbsoluteOriginX() + CANNON_LENGTH * cosinus); // X
+	calcY->setC(getAbsoluteOriginY() + CANNON_LENGTH * sinus); // Y
+	calcX->setB(strength * cosinus); // X
+	calcY->setB(strength * sinus); // Y
+	// On libère la munition de l'emprise du cannon
+	setFather(NULL);	//< On libère la munition de l'emprise de son père (comme c'est beau)
+	fire();
+	setRadial(0);		//< On réaligne le centre de gravité (décalé pour dépasser du canon)
+	compute();			//< On initialise la position, car dans le canon elle est relative !
+	manager->addAmmo(this);
+}
 
 void Ammo::fire(){
 	fired = true;

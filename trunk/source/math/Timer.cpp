@@ -16,4 +16,8 @@ float Timer::getT() const{
 	return t*step;
 }
 
+void Timer::init(){
+	t=0;
+}
+
 }

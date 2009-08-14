@@ -90,6 +90,7 @@ public:
 	void initGame();
 	void initPosition(float screenX);
 
+	void compute();
 };
 
 }

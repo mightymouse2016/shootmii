@@ -15,7 +15,7 @@ const int MINIMUM_LENGTH_FOR_DAMAGE(TERRAIN_CELL_WIDTH*3);
 const float DAMAGE_COEF(.5);
 const int HIT_DAMAGE_BONUS(20);
 
-const float G(-9.81);
+const float GRAVITY(-9.81);
 const float TIME_STEP(.1);
 const int AMMO_WEIGHT(1);
 const int AMMO_WIDTH(16);
@@ -73,6 +73,8 @@ public:
 	pair<Player*,Bonus*>* hitABonus(list<Bonus*>* bonusList) const;
 	Ammo* hitAnotherAmmo(list<Ammo*>* ammoList) const;
 	Player* hitAPlayer(Player* player1, Player* player2) const;
+
+	void init(float strength);
 
 	void fire();
 };
