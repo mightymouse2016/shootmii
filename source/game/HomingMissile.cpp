@@ -17,7 +17,7 @@ HomingMissile::HomingMissile(
     		_angle,
     		_ammoLook,
     		new PolyDeg2(wind->getWindSpeed()*WIND_INFLUENCE_ON_AMMO/(2*100*AMMO_WEIGHT),vX,x),
-    		new PolyDeg2(-G/(2*AMMO_WEIGHT),-vY,y),
+    		new PolyDeg2(-GRAVITY/(2*AMMO_WEIGHT),-vY,y),
     		_owner,
     		_terrain,
     		_manager),
@@ -123,7 +123,7 @@ void HomingMissile::compute(){
 					HOMING_SMOKE_SLOW,
 					1,
 					new PolyDeg2(manager->getWind()->getWindSpeed()*WIND_INFLUENCE_ON_SMOKE/(2*100* SMOKE_WEIGHT),0,originX+HOMING_SMOKE_OVERTAKE*cos(angle)),
-					new PolyDeg2(-G*SMOKE_AIR_RESISTANCE/2,0,originY+HOMING_SMOKE_OVERTAKE*sin(angle))));
+					new PolyDeg2(-GRAVITY*SMOKE_AIR_RESISTANCE/2,0,originY+HOMING_SMOKE_OVERTAKE*sin(angle))));
 		}
 	}
 	if (!isOutOfCannon() && !intersect(owner)) out();

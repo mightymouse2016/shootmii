@@ -37,13 +37,15 @@ const float ROTATION_STEP(.01);
 
 const float STRENGTHEN_STEP(1.5);
 
-const int HEAT_STEP(25);
-const u8 HEAT_COOL_FAST(4);
-const u8 HEAT_COOL_SLOW(10);
-const u32 CLOCK_RANGE(5000);
-const u32 BLOCKING_TIME(2000);
-const u32 FLICKERING_TIME(500);
-const u8 RELOAD_TIME(60);
+const float HEAT_INC_STEP(25);
+const float HEAT_COOL_FAST_STEP(.2);
+const float HEAT_COOL_SLOW_STEP(.1);
+const int CLOCK_RANGE(5000);
+const int FLICKERING_TIME(500);
+
+const int BLOCKING_TIME(3*60); // 3 secondes
+const int RELOAD_TIME(60);
+const int FURY_RELOAD_TIME(30);
 
 enum CannonChild{
 	CHILD_CROSSHAIR,
@@ -53,16 +55,16 @@ enum CannonChild{
 
 class Cannon : public Rectangle{
 private:
+	Wind* wind;
+	float heat; 		//< 0 -> 100
+	float strength; 	//< 0 -> 100
 	float angleMin;
 	float angleMax;
 	float rotationStep;
-	Wind* wind;
-	float strength; // 0 -> 100
-	float heat; // 0 -> 100
-	u32 blockedTime;
-	u8 heatCool;
-	u8 reloadTime;
 	bool stillHeld;
+	Timer reloadTime;
+	Timer blockedCannon;
+	Timer furyReloadTime;
 	Manager* manager;
 	GuidedMissile* guidedMissile; // Si le joueur possède un missile auto-guidé, c'est le lien qui permet de le contrôler
 public:
@@ -88,6 +90,8 @@ public:
 	Ammo* getAmmo() const;
 	GuidedMissile* getGuidedMissile();
 	GuidedMissile* getGuidedMissile() const;
+	Player* getOwner();
+	Player* getOwner() const;
 	void setAmmo(Ammo* ammo);
 	void up();
 	void decHeat();
@@ -95,8 +99,13 @@ public:
 	void rotateLeft();
 	void rotateRight();
 	void incStrength();
+	void incHeat();
+	void compute();
+	void computeHeat();
+	void computeStrengthJauge();
 	void shoot();
-	void reload();
+	void computeReload();
+	void loadCannon();
 	void loadHoming();
 	void loadGuided();
 	bool isLoaded() const;

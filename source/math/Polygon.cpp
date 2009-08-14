@@ -189,7 +189,7 @@ void Polygon::setImage(GRRLIB_texImg* _image){
 
 void Polygon::addChild(Polygon * child){
 	children.push_back(child);
-	child->setFather(this);
+	if (child) child->setFather(this);
 }
 
 void Polygon::rotate(const float deltaAngle){

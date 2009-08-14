@@ -183,6 +183,11 @@ void Player::computeRecoil(){
 	}
 }
 
+void Player::compute(){
+	getCannon()->compute();
+	computeRecoil();
+}
+
 void Player::addRecoil(int intensity){
 	recoil += intensity;
 }

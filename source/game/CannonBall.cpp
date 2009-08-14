@@ -17,7 +17,7 @@ CannonBall::CannonBall(
     		_angle,
     		_ammoLook,
     		new PolyDeg2(wind->getWindSpeed()*WIND_INFLUENCE_ON_AMMO/(2*100*AMMO_WEIGHT),vX,x),
-    		new PolyDeg2(-G/(2*AMMO_WEIGHT),-vY,y),
+    		new PolyDeg2(-GRAVITY/(2*AMMO_WEIGHT),-vY,y),
     		_owner,
     		_terrain,
     		_manager)
