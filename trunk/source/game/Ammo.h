@@ -54,6 +54,8 @@ public:
 	Function* getCalcY();
 	int getCol() const;
 	int getRow() const;
+	Player* getOwner();
+	Player* getOwner() const;
 	virtual void compute();
 	void setAngle(const float _angle);
 	void destroy();

@@ -64,7 +64,7 @@ void Cannon::destroyGuidedMissile(){
 	guidedMissile = NULL;
 }
 
-void Cannon::looseInfluenceOnMissile(){
+void Cannon::loseInfluenceOnMissile(){
 	guidedMissile = NULL;
 }
 
@@ -127,7 +127,10 @@ void Cannon::setAmmo(Ammo* _ammo){
 }
 
 void Cannon::computeHeat() {
-	if (heat == 100) {
+	if (getOwner()->isInFuryMode()){
+		heat -= HEAT_COOL_FAST_STEP;
+	}
+	else if (heat == 100) {
 		if (blockedCannon.timeIsOver()) heat -= HEAT_COOL_SLOW_STEP;
 		else blockedCannon.compute();
 	}
@@ -153,6 +156,7 @@ void Cannon::rotateRight() {
 }
 
 void Cannon::incStrength(){
+	if (getOwner()->isInFuryMode()) return;
 	if (!isLoaded()) return;	//< Si il n'y a pas de munition dans le canon
 	if (heat == 100) return;
 	strength+=STRENGTHEN_STEP;
@@ -164,6 +168,11 @@ void Cannon::incStrength(){
 }
 
 void Cannon::incHeat(){
+	if (getOwner()->isInFuryMode()){
+		heat += HEAT_INC_STEP;
+		if (heat > 100) heat = 100;
+		return;
+	}
 	heat += HEAT_INC_STEP;
 	if (heat > 100) {				// Le timer était bloqué sur un multiple du temps de blocage
 		heat = 100;					// ici, on le déphase un peu, ainsi computeHeat() va rééquillibrer
@@ -180,6 +189,7 @@ void Cannon::compute(){
 }
 
 void Cannon::computeStrengthJauge(){
+	if (getOwner()->isInFuryMode()) return;
 	int showLimit = strength*STRENGTH_JAUGE_STATES/100;
 	for (int i=0;i<showLimit;i++) children[CHILDREN_STRENGTH+i]->show();
 	for (int i=showLimit;i<STRENGTH_JAUGE_STATES;i++) children[CHILDREN_STRENGTH+i]->hide();
@@ -188,7 +198,8 @@ void Cannon::computeStrengthJauge(){
 void Cannon::shoot() {
 	if (!isLoaded()) return;	//< Si il n'y a pas de munition dans le canon
 	incHeat();
-	if (heat == 100) return;	//< Si le canon est trop chaud, on ne peux pas tirer
+	if (getOwner()->isInFuryMode()) strength = 100;
+	else if (heat == 100) return;	//< Si le canon est trop chaud, on ne peux pas tirer
 	getAmmo()->init(strength);
 	guidedMissile = dynamic_cast<GuidedMissile*>(getAmmo());	//< Cas ou l'on a un missile télé-guidé
 	setAmmo(NULL);
@@ -200,8 +211,17 @@ void Cannon::shoot() {
 
 void Cannon::computeReload() {
 	if (isLoaded()) return;
-	else reloadTime.compute();
-	if (reloadTime.timeIsOver() && !stillHeld) loadCannon();
+	if (getOwner()->isInFuryMode()){
+		furyReloadTime.compute();
+		if (furyReloadTime.timeIsOver()) {
+			if (rand()%FURY_HOMING_PROBABILITY) loadCannon();
+			else loadHoming();
+		}
+	}
+	else{
+		reloadTime.compute();
+		if (reloadTime.timeIsOver() && !stillHeld) loadCannon();
+	}
 }
 
 void Cannon::loadCannon(){
@@ -230,6 +250,7 @@ void Cannon::loadHoming(){
 }
 
 void Cannon::loadGuided(){
+	if (getOwner()->isInFuryMode()) return;
 	// Le guided se met à la place de l'autre munition si il y en a une
 	if (isLoaded()) delete children[CHILD_AMMO];
 	Player* owner = getOwner();

@@ -46,6 +46,14 @@ int Ammo::getRow() const{
 	return originY/terrain->getCellHeight();
 }
 
+Player* Ammo::getOwner(){
+	return owner;
+}
+
+Player* Ammo::getOwner() const{
+	return owner;
+}
+
 void Ammo::compute() {
 	if (fired) {
 		float _t = getT();

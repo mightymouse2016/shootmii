@@ -20,6 +20,7 @@ Player::Player(
 		life(_life),
 		fury(_fury),
 		nbGamesWon(0),
+		furyMode(false),
 		terrain(_terrain)
 {
 	children.reserve(2);
@@ -102,6 +103,10 @@ float Player::getSpeed(const CellType type, const Direction dir) const {
   return SPEED_VERY_SLOW;
 }
 
+bool Player::isInFuryMode() const{
+	return furyMode;
+}
+
 void Player::setOpponent(Player* _opponent){
 	children[CHILD_OPPONENT] = _opponent;
 }
@@ -154,6 +159,50 @@ void Player::loseFury(const float furyAmount){
 	App::jaugeManager->addDecrease(&fury,furyAmount);
 }
 
+void Player::beginFuryMode(){
+	furyMode = true;
+}
+
+void Player::stopFuryMode(){
+	furyMode = false;
+}
+
+void Player::addRecoil(int intensity){
+	recoil += intensity;
+}
+
+void Player::init() {
+	nbGamesWon = 0;
+	initGame();
+}
+
+void Player::initGame() {
+	if (isInFuryMode()) {	//< Si le joueur était en mode fury, on lui enlève toute sa fury
+		fury = 0;
+		stopFuryMode();
+	}
+	recoil = 0;
+	life = 100;
+	getCannon()->init();
+}
+
+void Player::initPosition(float _originX){
+	originY = terrain->getHeight(originX = _originX);
+	angle = terrain->getAngle(originX) - PI/2; // -PI/2 pour l'othogonalité au terrain
+}
+
+void Player::computeFuryMode(){
+	if (fury == 100) beginFuryMode();
+	if (isInFuryMode()) {
+		fury -= FURY_DEC_STEP;
+		getCannon()->shoot();
+	}
+	if (fury < 0) {
+		fury = 0;
+		stopFuryMode();
+	}
+}
+
 void Player::computeDamage(Ammo* ammo){
     float x = ammo->getAbsoluteX() - getAbsoluteX();
     float y = ammo->getAbsoluteY() - getAbsoluteY();
@@ -186,26 +235,7 @@ void Player::computeRecoil(){
 void Player::compute(){
 	getCannon()->compute();
 	computeRecoil();
-}
-
-void Player::addRecoil(int intensity){
-	recoil += intensity;
-}
-
-void Player::init() {
-	nbGamesWon = 0;
-	initGame();
-}
-
-void Player::initGame() {
-	recoil = 0;
-	life = 100;
-	getCannon()->init();
-}
-
-void Player::initPosition(float _originX){
-	originY = terrain->getHeight(originX = _originX);
-	angle = terrain->getAngle(originX) - PI/2; // -PI/2 pour l'othogonalité au terrain
+	computeFuryMode();
 }
 
 }

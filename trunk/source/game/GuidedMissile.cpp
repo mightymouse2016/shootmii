@@ -82,7 +82,7 @@ Animation* GuidedMissile::destruction(explosionType _type, Player* _playerHit) {
 
 void GuidedMissile::deleteMe(){
 	Ammo::deleteMe();
-	owner->getCannon()->looseInfluenceOnMissile();
+	owner->getCannon()->loseInfluenceOnMissile();
 }
 
 void GuidedMissile::rotateRight(){
