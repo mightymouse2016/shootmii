@@ -5,8 +5,6 @@
 
 namespace shootmii {
 
-
-
 const int CANNON_WIDTH(16);
 const int CANNON_HEIGHT(16);
 
@@ -45,7 +43,8 @@ const int FLICKERING_TIME(500);
 
 const int BLOCKING_TIME(3*60); // 3 secondes
 const int RELOAD_TIME(60);
-const int FURY_RELOAD_TIME(30);
+const int FURY_RELOAD_TIME(20);
+const int FURY_HOMING_PROBABILITY(10);
 
 enum CannonChild{
 	CHILD_CROSSHAIR,
@@ -79,7 +78,7 @@ public:
 		Manager* manager);
 	~Cannon();
 	void destroyGuidedMissile();
-	void looseInfluenceOnMissile();
+	void loseInfluenceOnMissile();
 	void init();
 	float getStrength() const;
 	float getHeat() const;

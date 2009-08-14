@@ -20,6 +20,8 @@ const float SPEED_NORMAL(1);
 const float SPEED_SLOW(0.5);
 const float SPEED_VERY_SLOW(0.25);
 
+const float FURY_DEC_STEP(.15);
+
 enum Direction {
   LEFT,
   RIGHT
@@ -38,6 +40,7 @@ private:
 	float life;	// 0->100
 	float fury;	// 0->100
 	int nbGamesWon;
+	bool furyMode;
 	Terrain* terrain;
 public:
 	Player(
@@ -68,6 +71,7 @@ public:
 	Player* getOpponent();
 	Player* getOpponent() const;
 	float getSpeed(const CellType type, const Direction dir) const;
+	bool isInFuryMode() const;
 
 	void setOpponent(Player* _opponent);
 	void setScore(const int score);
@@ -80,9 +84,8 @@ public:
 	void setFury(const float furyAmount);
 	void winFury(const float furyAmount);
 	void loseFury(const float furyAmount);
-
-	void computeDamage(Ammo* ammo);
-	void computeRecoil();
+	void beginFuryMode();
+	void stopFuryMode();
 
 	void addRecoil(int intensity);
 
@@ -90,6 +93,9 @@ public:
 	void initGame();
 	void initPosition(float screenX);
 
+	void computeFuryMode();
+	void computeDamage(Ammo* ammo);
+	void computeRecoil();
 	void compute();
 };
 

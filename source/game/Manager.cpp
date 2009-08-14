@@ -235,8 +235,8 @@ void Manager::computeAmmos() {
 			player1->computeDamage(*i);
 			player2->computeDamage(*i);
 			playerHit->loseLife(HIT_DAMAGE_BONUS); // Un petit bonus pour le touché
-			if (playerHit == player1) player2->winFury(10); //Un petit bonus de fury celui qui a réussi ce coup
-			else player1->winFury(10);
+			if (playerHit == player1 && (*i)->getOwner() == player2) player2->winFury(10); //Un petit bonus de fury celui qui a réussi ce coup
+			else if (playerHit == player2 && (*i)->getOwner() == player1) player1->winFury(10);
 			addAnimation((*i)->destruction(HIT_A_PLAYER,playerHit));
 			(*i)->deleteMe();
 		}
