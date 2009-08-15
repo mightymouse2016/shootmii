@@ -17,6 +17,8 @@ App::App():
 {
 	GRRLIB_Init();
 	WPAD_Init();
+	ASND_Init();
+	MP3Player_Init();
 	App::imageBank->init();
 	srand(time(NULL));
 	titleScreen = new TitleScreen(this);

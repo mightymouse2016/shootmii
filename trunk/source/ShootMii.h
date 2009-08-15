@@ -87,6 +87,8 @@ class App;
 #include <vector>
 #include <utility> // Pour utiliser des pair<T1,T2>
 #include <cstdlib>
+#include <mp3player.h>
+#include "asndlib.h"
 
 // Images
 #include "gfx/sun.h"
@@ -122,6 +124,9 @@ class App;
 #include "gfx/cannonball_hit_explosion.h"
 #include "gfx/cannonball_air_explosion.h"
 #include "gfx/cannonball_ground_explosion.h"
+
+// Sons
+#include "gfx/Artillaryexp.h"
 
 // Fonts
 #include "gfx/font1.h"
