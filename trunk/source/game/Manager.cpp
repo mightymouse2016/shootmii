@@ -52,20 +52,20 @@ void Manager::addAnimation(Animation* animation) const {
 }
 
 void Manager::initPlayers() const {
-	player1->initPosition(PLAYER_OFFSET);
-	player2->initPosition(world->getTerrain()->getCols()*world->getTerrain()->getCellWidth() - PLAYER_OFFSET);
+	player1->init();
+	player2->init();
 	player1->initGame();
 	player2->initGame();
+	player1->initPosition(PLAYER_OFFSET);
+	player2->initPosition(world->getTerrain()->getCols()*world->getTerrain()->getCellWidth() - PLAYER_OFFSET);
 }
 
 void Manager::init() const {
-	App::jaugeManager->clear();
+	world->init();
 	ammos->clear();
 	bonuses->clear();
 	animations->clear();
-	world->init();
-	player1->init();
-	player2->init();
+	App::jaugeManager->clear();
 	initPlayers();
 }
 
@@ -112,6 +112,9 @@ void Manager::dealEvent(const u32* player1Events, const u32* player2Events) {
 	if (pad1Up & WPAD_BUTTON_A) {
 		player1->getCannon()->up();
 		player1->getCannon()->shoot();
+		
+		//MP3Player_PlayBuffer(Artillaryexp, Artillaryexp_size, NULL);
+		ASND_SetVoice(0, VOICE_STEREO_16BIT, 22050, 0, (void*)Artillaryexp, Artillaryexp_size, MAX_VOLUME, MAX_VOLUME, NULL);
 		//WPAD_Rumble(WPAD_CHAN_0, 0);
 	}
 
