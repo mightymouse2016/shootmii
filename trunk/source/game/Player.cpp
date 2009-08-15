@@ -21,10 +21,15 @@ Player::Player(
 		fury(_fury),
 		nbGamesWon(0),
 		furyMode(false),
-		terrain(_terrain)
+		terrain(_terrain),
+		bonus(NULL)
 {
 	children.reserve(2);
 	addChild(new Cannon(_angleMin, _angleMax, _angle, _rotationStep,_wind, this, _playerNumber, _manager));
+}
+
+Player::~Player(){
+	// On ne libère pas le bonus, le manager s'en charge
 }
 
 int Player::getPlayerNumber() const{
@@ -103,6 +108,10 @@ float Player::getSpeed(const CellType type, const Direction dir) const {
   return SPEED_VERY_SLOW;
 }
 
+Bonus** Player::getPBonus(){
+	return &bonus;
+}
+
 bool Player::isInFuryMode() const{
 	return furyMode;
 }
@@ -171,8 +180,23 @@ void Player::addRecoil(int intensity){
 	recoil += intensity;
 }
 
+void Player::addBonus(Bonus* _bonus){
+	if (bonus) { 			//< si le joueur a déjà un bonus (surtout pas de
+		_bonus->finish();	//< delete de _bonus car le Manager s'en occupe !)
+	}
+	else {
+		App::console->addDebug("Joueur %d : Bonus ajoute",getPlayerNumber());
+		bonus = _bonus;
+		bonus->possess();
+		if (getPlayerNumber() == 1) bonus->setOriginX(SCREEN_WIDTH/2-BONUS_X);
+		else bonus->setOriginX(SCREEN_WIDTH/2+BONUS_X);
+		bonus->setOriginY(BONUS_Y);
+	}
+}
+
 void Player::init() {
 	nbGamesWon = 0;
+	bonus = NULL;	//< Le manager fait déjà la destruction
 	initGame();
 }
 
@@ -203,6 +227,31 @@ void Player::computeFuryMode(){
 	}
 }
 
+void Player::useBonus(){
+	if (bonus == NULL) return;
+	switch (bonus->getType()){
+	case HOMING:
+		getCannon()->loadHoming();
+		App::console->addDebug("bonus : homing missile");break;
+	case LIFE_RECOVERY:
+		winLife(35);
+		App::console->addDebug("bonus : life recovery");break;
+	case GUIDED:
+		getCannon()->loadGuided();
+		App::console->addDebug("bonus : guided missile");break;
+	case POISON:
+		loseLife(35);
+		App::console->addDebug("bonus : life loss");break;
+	case POTION:
+		winFury(25);
+		App::console->addDebug("bonus : fury potion");break;
+	default:
+		App::console->addDebug("bonus : type inconnu");break;
+	}
+	bonus->finish();
+	bonus = NULL;
+}
+
 void Player::computeDamage(Ammo* ammo){
     float x = ammo->getAbsoluteX() - getAbsoluteX();
     float y = ammo->getAbsoluteY() - getAbsoluteY();
@@ -210,10 +259,7 @@ void Player::computeDamage(Ammo* ammo){
     if (distance > MINIMUM_LENGTH_FOR_DAMAGE) return;
     int degat = (MINIMUM_LENGTH_FOR_DAMAGE - distance)*DAMAGE_COEF;
     int intensity = (MINIMUM_LENGTH_FOR_DAMAGE - distance)*RECOIL_COEF;
-
-    //Debug
-    App::console->addDebug("Distance = %d; Degat = %d;", distance, degat);
-
+    App::console->addDebug("Distance = %d; Degat = %d;", distance, degat);	//< Debug
     loseLife(degat);
     if (x < 0) addRecoil(-intensity);
     else addRecoil(intensity);

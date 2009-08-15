@@ -6,7 +6,7 @@
 namespace shootmii{
 
 class Animation : public Rectangle, public Timer{
-private:
+protected:
 	int loops; // <0 = infinite
 	int duration;
 	Function* calcX;
@@ -30,7 +30,7 @@ public:
 		Function* calcY = NULL,
 		float step = DEFAULT_TIME_STEP);
 	~Animation();
-	void compute();
+	virtual void compute();
 	virtual bool isFinished();
 };
 

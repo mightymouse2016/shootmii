@@ -35,7 +35,7 @@ Player* Manager::getPlayer2() const {
 	return player2;
 }
 
-Wind* Manager::getWind() const{
+Wind* Manager::getWind() const {
 	return world->getWind();
 }
 
@@ -129,6 +129,16 @@ void Manager::dealEvent(const u32* player1Events, const u32* player2Events) {
 		player2->getCannon()->shoot();
 		//WPAD_Rumble(WPAD_CHAN_1, 0);
 	}
+
+
+	// B j1
+	if (pad1Down & WPAD_BUTTON_B) {
+		player1->useBonus();
+	}
+	// B j2
+	if (pad2Down & WPAD_BUTTON_B) {
+		player2->useBonus();
+	}
 }
 
 
@@ -172,9 +182,7 @@ void Manager::computeAnimations() {
 void Manager::computeBonuses() {
 	list<Bonus*>* newBonuses = new list<Bonus*>;
 	for (list<Bonus*>::iterator i=bonuses->begin();i!=bonuses->end();i++){
-		if ((*i)->isFinished()){
-			delete *i;
-		}
+		if ((*i)->isFinished()) delete *i;
 		else {
 			(*i)->compute();
 			newBonuses->push_back(*i);
@@ -244,34 +252,13 @@ void Manager::computeAmmos() {
 		// Collision avec un bonus
 		else if (pair<Player*,Bonus*>* result = (*i)->hitABonus(bonuses)) {
 			App::console->addDebug("collision : bonus");
-			// Gestion du type de bonus
-			switch (result->second->getType()){
+			// Ici on fait attention à gérer le cas improbable ou 2 munitions toucheraient le bonus à la même frame
+			if (!result->second->isPossessed()) result->first->addBonus(result->second);
 
-			case HOMING:
-				result->first->getCannon()->loadHoming();
-				App::console->addDebug("bonus : homing missile");break;
+			// TODO enlever ca
+			result->second = NULL;
 
-			case LIFE_RECOVERY:
-				result->first->winLife(35);
-				App::console->addDebug("bonus : life recovery");break;
-
-			case GUIDED:
-				result->first->getCannon()->loadGuided();
-				App::console->addDebug("bonus : guided missile");break;
-
-			case POISON:
-				result->first->loseLife(35);
-				App::console->addDebug("bonus : life loss");break;
-
-			case POTION:
-				result->first->winFury(25);
-				App::console->addDebug("bonus : fury potion");break;
-
-			default:
-				App::console->addDebug("bonus : type inconnu");break;
-
-			}
-			delete result; // On ne peux libérer la mémoire qu'ici ...
+			delete result;
 		}
 	}
 

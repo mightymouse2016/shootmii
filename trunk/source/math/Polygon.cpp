@@ -159,11 +159,11 @@ Polygon* Polygon::getFather() const{
 	return father;
 }
 
-void Polygon::setOriginX(const int _originX){
+void Polygon::setOriginX(const float _originX){
 	originX = _originX;
 }
 
-void Polygon::setOriginY(const int _originY){
+void Polygon::setOriginY(const float _originY){
 	originY = _originY;
 }
 

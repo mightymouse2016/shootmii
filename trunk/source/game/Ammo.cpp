@@ -124,7 +124,6 @@ bool Ammo::isDestroyed() const{
 }
 
 bool Ammo::hitTheGround(Terrain* terrain) const{
-	//if (isOffScreen()) return false;
 	vector<Coordinates> v = getRotatedVertices();
 	for (int i=0,size=v.size();i<size;i++){
 		if (v[i].getY()+getAbsoluteY() >= terrain->getHeight(v[i].getX()+getAbsoluteX())) return true;
@@ -136,7 +135,6 @@ pair<Player*,Bonus*>* Ammo::hitABonus(list<Bonus*>* bonusList) const{
 	list<Bonus*>::iterator it;
 	for (it = bonusList->begin();it!=bonusList->end();it++)
 		if (intersect(*it)) {
-			(*it)->finish();
 			return new pair<Player*,Bonus*>(owner,*it);
 		}
 	return NULL;
@@ -163,7 +161,6 @@ void Ammo::init(float strength){
 	calcY->setC(getAbsoluteOriginY() + CANNON_LENGTH * sinus); // Y
 	calcX->setB(strength * cosinus); // X
 	calcY->setB(strength * sinus); // Y
-	// On libère la munition de l'emprise du cannon
 	setFather(NULL);	//< On libère la munition de l'emprise de son père (comme c'est beau)
 	fire();
 	setRadial(0);		//< On réaligne le centre de gravité (décalé pour dépasser du canon)

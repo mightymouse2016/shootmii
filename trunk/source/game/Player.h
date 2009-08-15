@@ -35,13 +35,14 @@ enum PlayerChild{
 class Player: public Rectangle {
 private:
 	int playerNumber;
-	int recoil; // Le recul : >0 recul vers la gauche <0 recul vers la gauche
+	int recoil; 		//< Le recul : >0 vers la droite <0 vers la gauche
 	int score;
-	float life;	// 0->100
-	float fury;	// 0->100
+	float life;			//<  0->100
+	float fury;			//<  0->100
 	int nbGamesWon;
 	bool furyMode;
 	Terrain* terrain;
+	Bonus* bonus;
 public:
 	Player(
 		Terrain* terrain,
@@ -54,6 +55,7 @@ public:
 		const float life = 100,
 		const float fury = 0,
 		Manager* manager = NULL);
+	~Player();
 
 	int getPlayerNumber() const;
 	int getCol() const;
@@ -71,6 +73,7 @@ public:
 	Player* getOpponent();
 	Player* getOpponent() const;
 	float getSpeed(const CellType type, const Direction dir) const;
+	Bonus** getPBonus();
 	bool isInFuryMode() const;
 
 	void setOpponent(Player* _opponent);
@@ -88,10 +91,13 @@ public:
 	void stopFuryMode();
 
 	void addRecoil(int intensity);
+	void addBonus(Bonus* bonus);
 
 	void init();
 	void initGame();
 	void initPosition(float screenX);
+
+	void useBonus();	//< en pressant A
 
 	void computeFuryMode();
 	void computeDamage(Ammo* ammo);

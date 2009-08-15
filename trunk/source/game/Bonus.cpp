@@ -23,8 +23,9 @@ Bonus::Bonus(
 				_calcX,
 				new Cosinus(BONUS_OSCILLATIONS_RANGE/2,1,BONUS_OSCILLATIONS_CENTER),
 				.01),
-				type(_type),
-				finished(false)
+			type(_type),
+			finished(false),
+			possessed(false)
 {
 	numberOfBonus++;
 }
@@ -37,8 +38,32 @@ void Bonus::finish(){
 	finished = true;
 }
 
+void Bonus::possess(){
+	possessed = true;
+}
+
 bool Bonus::isFinished() const{
+	if (possessed) return finished;
 	return (finished || (originX - getWidth()/2 > SCREEN_WIDTH) || (originX + getWidth()/2 < 0));
+}
+
+bool Bonus::isPossessed() const{
+	return possessed;
+}
+
+void Bonus::compute(){
+	if (isPossessed()){						//< Si un joueur possède le bonus
+		Timer::compute();					//< On joue seulement l'animation
+		if (timeIsOver()) {					//< sans le déplacement
+			spriteIndex++;
+			if (spriteIndex == duration){
+				spriteIndex = 0;
+			}
+		}
+	}
+	else {
+		Animation::compute();
+	}
 }
 
 Bonus* randomBonus(){
