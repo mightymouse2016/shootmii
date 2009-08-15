@@ -85,8 +85,8 @@ public:
 	float getAbsolutePolygonAngle() const;
 	Polygon* getFather() const;
 
-	void setOriginX(const int originX);
-	void setOriginY(const int originY);
+	void setOriginX(const float originX);
+	void setOriginY(const float originY);
 	void setRadial(const float radial);
 	void setSpin(const float spin);
 	void setAngle(const float angle);

@@ -36,6 +36,9 @@ const int BONUS_OSCILLATIONS_CENTER(100);
 
 const int BONUS_PROBABILITY (3*60); // apparition toutes les 15*60frames = 15 secondes en moyenne
 
+const int BONUS_X(302);
+const int BONUS_Y(SCREEN_HEIGHT-SCORE_PANEL_HEIGHT/2-15);
+
 enum BonusType{
 	HOMING,
 	LIFE_RECOVERY,
@@ -50,6 +53,7 @@ class Bonus : public Animation{
 private:
 	BonusType type;
 	bool finished;
+	bool possessed;
 public:
 	static int numberOfBonus;
 	Bonus(
@@ -61,8 +65,11 @@ public:
 		const int slow,
 		Function* calcX);
 	BonusType getType() const;
+	void compute();
 	void finish();
+	void possess();
 	bool isFinished() const;
+	bool isPossessed() const;
 };
 
 Bonus* randomBonus();
