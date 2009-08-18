@@ -101,6 +101,8 @@ class App;
 #include "gfx/strength_sprites.h"
 #include "gfx/background_cloud.h"
 #include "gfx/foreground_cloud.h"
+#include "gfx/alpha_fury_jauge_1.h"
+#include "gfx/alpha_fury_jauge_2.h"
 #include "gfx/homing_smoke_sprites.h"
 #include "gfx/cannonball_hit_explosion.h"
 #include "gfx/cannonball_air_explosion.h"

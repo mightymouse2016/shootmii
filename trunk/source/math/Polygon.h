@@ -63,6 +63,7 @@ protected:
 	bool hidden;
 	bool debugHidden;
 	bool recursive;
+	u32 colorFilter;
 public:
 	Polygon(
 		const LayerPriority layer,
@@ -103,6 +104,7 @@ public:
 	float getPolygonAngle() const;
 	float getAbsolutePolygonAngle() const;
 	Polygon* getFather() const;
+	u32 getColorFilter() const;
 
 	void setOriginX(const float originX);
 	void setOriginY(const float originY);
@@ -111,6 +113,7 @@ public:
 	void setAngle(const float angle);
 	void setFather(Polygon* father);
 	void setImage(GRRLIB_texImg* image);
+	void setColorFilter(const u32 colorFilter);
 
 	void addChild(Polygon * child);
 

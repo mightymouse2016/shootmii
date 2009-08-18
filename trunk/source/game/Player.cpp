@@ -64,6 +64,10 @@ float* Player::getPFury(){
 	return &fury;
 }
 
+bool* Player::getPFuryMode(){
+	return &furyMode;
+}
+
 Terrain* Player::getTerrain(){
 	return terrain;
 }
@@ -94,9 +98,9 @@ float Player::getSpeed(const CellType type, const Direction dir) const {
       case GRASS_MID:
       case GRASS_RIGHT:		return SPEED_NORMAL;
       case SLOPE_UP_05_1:
-      case SLOPE_UP_05_2: 	if(dir == LEFT) return SPEED_FAST; else return SPEED_SLOW;
+      case SLOPE_UP_05_2: 	if(dir == LEFT) return SPEED_FAST; 		else return SPEED_SLOW;
       case SLOPE_DOWN_05_1:
-      case SLOPE_DOWN_05_2: if(dir == LEFT) return SPEED_SLOW; else return SPEED_FAST;
+      case SLOPE_DOWN_05_2: if(dir == LEFT) return SPEED_SLOW; 		else return SPEED_FAST;
       case SLOPE_UP_1: 		if(dir == LEFT) return SPEED_VERY_FAST; else return SPEED_VERY_SLOW;
       case SLOPE_DOWN_1: 	if(dir == LEFT) return SPEED_VERY_SLOW; else return SPEED_VERY_FAST;
       default: 				return SPEED_VERY_SLOW;
@@ -222,18 +226,6 @@ void Player::initPosition(float _originX){
 	angle = terrain->getAngle(originX) - PI/2; // -PI/2 pour l'othogonalité au terrain
 }
 
-void Player::computeFuryMode(){
-	if (fury == 100) beginFuryMode();
-	if (isInFuryMode()) {
-		fury -= FURY_DEC_STEP;
-		getCannon()->shoot();
-	}
-	if (fury < 0) {
-		fury = 0;
-		stopFuryMode();
-	}
-}
-
 void Player::useBonus(Bonus* _bonus){
 	if (_bonus == NULL) return;
 	switch (_bonus->getType()){
@@ -254,6 +246,18 @@ void Player::useBonus(Bonus* _bonus){
 		App::console->addDebug("bonus used : fury potion");break;
 	default:
 		App::console->addDebug("bonus used : unknown type");break;
+	}
+}
+
+void Player::computeFuryMode(){
+	if (fury == 100) beginFuryMode();
+	if (isInFuryMode()) {
+		fury -= FURY_DEC_STEP;
+		getCannon()->shoot();
+	}
+	if (fury < 0) {
+		fury = 0;
+		stopFuryMode();
 	}
 }
 

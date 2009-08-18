@@ -20,6 +20,8 @@ ScoreManager::ScoreManager(
     bonusPlayer2(manager->getPlayer2()->getPBonus())
 {
 	children.reserve(SCOREMANAGER_CHILDREN_NUMBER);
+
+	//	Jauge de puissance du canon
 	addChild(new Jauge(
 				JAUGE_LAYER,
 				manager->getPlayer1()->getCannon()->getPStrength(),
@@ -36,6 +38,8 @@ ScoreManager::ScoreManager(
 				STRENGTH_JAUGE_X,
 				STRENGTH_JAUGE_Y,
 				App::imageBank->get(TXT_STRENGTH_JAUGE)));
+
+	// Jauge d'échauffement du canon
 	addChild(new Jauge(
 				JAUGE_LAYER,
 				manager->getPlayer1()->getCannon()->getPHeat(),
@@ -52,6 +56,8 @@ ScoreManager::ScoreManager(
 				HEAT_JAUGE_X,
 				HEAT_JAUGE_Y,
 				App::imageBank->get(TXT_HEAT_JAUGE)));
+
+	// Jauge Vie
 	addChild(new Jauge(
 				JAUGE_LAYER,
 				manager->getPlayer1()->getPLife(),
@@ -68,6 +74,8 @@ ScoreManager::ScoreManager(
 				LIFE_JAUGE_X,
 				LIFE_JAUGE_Y,
 				App::imageBank->get(TXT_LIFE_JAUGE)));
+
+	// Jauge de fury
 	addChild(new Jauge(
 				JAUGE_LAYER,
 				manager->getPlayer1()->getPFury(),
@@ -76,6 +84,7 @@ ScoreManager::ScoreManager(
 				-FURY_JAUGE_X,
 				FURY_JAUGE_Y-1,
 				App::imageBank->get(TXT_FURY_JAUGE1),
+				NULL,
 				PI));
 	addChild(new Jauge(
 				JAUGE_LAYER,
@@ -85,6 +94,28 @@ ScoreManager::ScoreManager(
 				FURY_JAUGE_X,
 				FURY_JAUGE_Y,
 				App::imageBank->get(TXT_FURY_JAUGE2)));
+	// Couche alpha (pour le scintillement lors du mode fury)
+	addChild(new Jauge(
+				JAUGE_LAYER,
+				manager->getPlayer1()->getPFury(),
+				FURY_JAUGE_WIDTH,
+				FURY_JAUGE_HEIGHT,
+				-FURY_JAUGE_X,
+				FURY_JAUGE_Y-1,
+				App::imageBank->get(TXT_ALPHA_FURY_JAUGE1),
+				manager->getPlayer1()->getPFuryMode(),
+				PI));
+		addChild(new Jauge(
+				JAUGE_LAYER,
+				manager->getPlayer2()->getPFury(),
+				FURY_JAUGE_WIDTH,
+				FURY_JAUGE_HEIGHT,
+				FURY_JAUGE_X,
+				FURY_JAUGE_Y,
+				App::imageBank->get(TXT_ALPHA_FURY_JAUGE2),
+				manager->getPlayer2()->getPFuryMode()));
+
+	// Jauge de vent
 	addChild(new Jauge(
 				JAUGE_LAYER,
 				manager->getWind()->getPWindSpeedLeft(),
@@ -93,6 +124,7 @@ ScoreManager::ScoreManager(
 				-WIND_JAUGE_X,
 				WIND_JAUGE_Y,
 				App::imageBank->get(TXT_WIND_JAUGE),
+				NULL,
 				PI));
 	addChild(new Jauge(
 				JAUGE_LAYER,

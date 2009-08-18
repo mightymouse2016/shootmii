@@ -20,7 +20,7 @@ const float SPEED_NORMAL(1);
 const float SPEED_SLOW(0.5);
 const float SPEED_VERY_SLOW(0.25);
 
-const float FURY_DEC_STEP(.15);
+const float FURY_DEC_STEP(.4);
 
 enum Direction {
   LEFT,
@@ -64,6 +64,7 @@ public:
 	float getFury() const;
 	float* getPLife();
 	float* getPFury();
+	bool* getPFuryMode();
 	Terrain* getTerrain();
 	Terrain* getTerrain() const;
 	Cannon* getCannon();
