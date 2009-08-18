@@ -35,7 +35,8 @@ Polygon::Polygon(
 		spriteHeight(_spriteHeight),
 		hidden(_hidden),
 		debugHidden(_debugHidden),
-		recursive(true)
+		recursive(true),
+		colorFilter(WHITE)
 {
 	numberOfPolygonsInstances++;
 	if (image){
@@ -159,6 +160,10 @@ Polygon* Polygon::getFather() const{
 	return father;
 }
 
+u32 Polygon::getColorFilter() const{
+	return colorFilter;
+}
+
 void Polygon::setOriginX(const float _originX){
 	originX = _originX;
 }
@@ -185,6 +190,10 @@ void Polygon::setFather(Polygon* _father){
 
 void Polygon::setImage(GRRLIB_texImg* _image){
 	image = _image;
+}
+
+void Polygon::setColorFilter(const u32 _colorFilter){
+	colorFilter = _colorFilter;
 }
 
 void Polygon::addChild(Polygon * child){
@@ -237,7 +246,7 @@ void Polygon::draw() const{
 			getAbsolutePolygonAngle()*spin*180/PI,
 			1,
 			1,
-			WHITE,
+			colorFilter,
 			spriteIndex);
 	}
 	else {
@@ -248,7 +257,7 @@ void Polygon::draw() const{
 			getAbsolutePolygonAngle()*spin*180/PI,
 			1,
 			1,
-			WHITE);
+			colorFilter);
 	}
 }
 
@@ -264,7 +273,6 @@ void Polygon::drawDebug() const{
 	float y = oY + radial*sin(a);
 
 	// Le squelette
-
 	for(int i=0, j, size=rV.size();i<size;i++){
 		j = i+1;
 		if (j == size) j = 0;

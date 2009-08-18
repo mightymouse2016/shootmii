@@ -30,9 +30,16 @@ const int WIND_JAUGE_HEIGHT(8);
 const int WIND_JAUGE_X(42);
 const int WIND_JAUGE_Y(-23);
 
+const float FLICKERING_SPEED(.01);
+const float FLICKERING_MIN(0);
+const float FLICKERING_MAX(.5);
+
 class Jauge : public Rectangle{
 private:
-	float* percentage; // Un pointeur vers la valeur (sur 100)
+	float* percentage;			//< Un pointeur vers la valeur (sur 100)
+	bool* flickering;			//< Un pointeur vers un état spécial (entraine le scintillement)
+	float flickeringState;		//< Ou en est le scintillement (0->1)
+	bool flickeringDirection; 	//< Le scintillement augmente ou diminue ?
 public:
 	Jauge(
 		const LayerPriority layer,
@@ -42,6 +49,7 @@ public:
 		const float originX,
 		const float originY,
 		GRRLIB_texImg* image,
+		bool* flickering = NULL,
 		const float angle = 0,
 		Polygon* father = NULL);
 	// Surcharge pour gérer l'affichage variable de la jauge
