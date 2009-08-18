@@ -52,12 +52,14 @@ enum BonusType{
 class Bonus : public Animation{
 private:
 	BonusType type;
+	bool immediate;
 	bool finished;
 	bool possessed;
 public:
 	static int numberOfBonus;
 	Bonus(
 		BonusType type,
+		bool immediate,
 		GRRLIB_texImg* image,
 		const int width,
 		const int height,
@@ -65,11 +67,15 @@ public:
 		const int slow,
 		Function* calcX);
 	BonusType getType() const;
-	void compute();
-	void finish();
-	void possess();
+
 	bool isFinished() const;
 	bool isPossessed() const;
+	bool isImmediate() const;
+
+	void finish();
+	void possess();
+
+	void compute();
 };
 
 Bonus* randomBonus();

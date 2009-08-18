@@ -6,6 +6,10 @@ namespace shootmii {
 static const f32 SCREEN_WIDTH(640);
 static const f32 SCREEN_HEIGHT(480);
 
+enum EventType {
+	DOWN, UP, HELD
+};
+
 bool segmentIntersect(
 	const float Ax, const float Ay, const float Bx, const float By,
 	const float Cx, const float Cy, const float Dx, const float Dy);

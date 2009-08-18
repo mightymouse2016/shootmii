@@ -19,7 +19,6 @@ Player::Player(
 		score(0),
 		life(_life),
 		fury(_fury),
-		nbGamesWon(0),
 		furyMode(false),
 		terrain(_terrain),
 		bonus(NULL)
@@ -29,7 +28,8 @@ Player::Player(
 }
 
 Player::~Player(){
-	// On ne libère pas le bonus, le manager s'en charge
+	// On libère le bonus car on est le Manager ne s'en occupe plus
+	delete bonus;
 }
 
 int Player::getPlayerNumber() const{
@@ -62,10 +62,6 @@ float* Player::getPLife(){
 
 float* Player::getPFury(){
 	return &fury;
-}
-
-int Player::getNbGamesWon() const{
-	return nbGamesWon;
 }
 
 Terrain* Player::getTerrain(){
@@ -106,6 +102,10 @@ float Player::getSpeed(const CellType type, const Direction dir) const {
       default: 				return SPEED_VERY_SLOW;
     }
   return SPEED_VERY_SLOW;
+}
+
+Bonus* Player::getBonus(){
+	return bonus;
 }
 
 Bonus** Player::getPBonus(){
@@ -149,11 +149,11 @@ void Player::setLife(const float lifeAmount){
 }
 
 void Player::winLife(const float lifeAmount){
-	App::jaugeManager->addIncrease(&life,lifeAmount);
+	Manager::jaugeManager->addIncrease(&life,lifeAmount);
 }
 
 void Player::loseLife(const float lifeAmount) {
-	App::jaugeManager->addDecrease(&life,lifeAmount);
+	Manager::jaugeManager->addDecrease(&life,lifeAmount);
 }
 
 void Player::setFury(const float furyAmount){
@@ -161,11 +161,11 @@ void Player::setFury(const float furyAmount){
 }
 
 void Player::winFury(const float furyAmount){
-	App::jaugeManager->addIncrease(&fury,furyAmount);
+	Manager::jaugeManager->addIncrease(&fury,furyAmount);
 }
 
 void Player::loseFury(const float furyAmount){
-	App::jaugeManager->addDecrease(&fury,furyAmount);
+	Manager::jaugeManager->addDecrease(&fury,furyAmount);
 }
 
 void Player::beginFuryMode(){
@@ -181,11 +181,15 @@ void Player::addRecoil(int intensity){
 }
 
 void Player::addBonus(Bonus* _bonus){
-	if (bonus) { 			//< si le joueur a déjà un bonus (surtout pas de
-		_bonus->finish();	//< delete de _bonus car le Manager s'en occupe !)
+	if (_bonus->isImmediate()){		//< Si immediat : consommation
+		useBonus(_bonus);
+		_bonus->finish();
 	}
-	else {
-		App::console->addDebug("Joueur %d : Bonus ajoute",getPlayerNumber());
+	else if (bonus) { 		//< si le joueur a déjà un bonus (surtout pas de delete de
+		_bonus->finish();	//< _bonus car le Manager s'en occupe !) dans le cas
+	}						//< contraire, crash possible (car le gestionnaire de collision
+	else {					//< boucle sur la liste de bonus pour chaque munition)
+		App::console->addDebug("Player %d : Bonus added",getPlayerNumber());
 		bonus = _bonus;
 		bonus->possess();
 		if (getPlayerNumber() == 1) bonus->setOriginX(SCREEN_WIDTH/2-BONUS_X);
@@ -195,12 +199,15 @@ void Player::addBonus(Bonus* _bonus){
 }
 
 void Player::init() {
-	nbGamesWon = 0;
-	bonus = NULL;	//< Le manager fait déjà la destruction
+	score = 0;
+	fury = 0;
+	if (bonus) delete bonus;
+	bonus = NULL;
 	initGame();
 }
 
 void Player::initGame() {
+	// on conserve son bonus d'une manche à l'autre
 	if (isInFuryMode()) {	//< Si le joueur était en mode fury, on lui enlève toute sa fury
 		fury = 0;
 		stopFuryMode();
@@ -227,29 +234,27 @@ void Player::computeFuryMode(){
 	}
 }
 
-void Player::useBonus(){
-	if (bonus == NULL) return;
-	switch (bonus->getType()){
+void Player::useBonus(Bonus* _bonus){
+	if (_bonus == NULL) return;
+	switch (_bonus->getType()){
 	case HOMING:
 		getCannon()->loadHoming();
-		App::console->addDebug("bonus : homing missile");break;
+		App::console->addDebug("bonus used : homing missile");break;
 	case LIFE_RECOVERY:
 		winLife(35);
-		App::console->addDebug("bonus : life recovery");break;
+		App::console->addDebug("bonus used : life recovery");break;
 	case GUIDED:
 		getCannon()->loadGuided();
-		App::console->addDebug("bonus : guided missile");break;
+		App::console->addDebug("bonus used : guided missile");break;
 	case POISON:
 		loseLife(35);
-		App::console->addDebug("bonus : life loss");break;
+		App::console->addDebug("bonus used : life loss");break;
 	case POTION:
 		winFury(25);
-		App::console->addDebug("bonus : fury potion");break;
+		App::console->addDebug("bonus used : fury potion");break;
 	default:
-		App::console->addDebug("bonus : type inconnu");break;
+		App::console->addDebug("bonus used : unknown type");break;
 	}
-	bonus->finish();
-	bonus = NULL;
 }
 
 void Player::computeDamage(Ammo* ammo){
@@ -259,22 +264,22 @@ void Player::computeDamage(Ammo* ammo){
     if (distance > MINIMUM_LENGTH_FOR_DAMAGE) return;
     int degat = (MINIMUM_LENGTH_FOR_DAMAGE - distance)*DAMAGE_COEF;
     int intensity = (MINIMUM_LENGTH_FOR_DAMAGE - distance)*RECOIL_COEF;
-    App::console->addDebug("Distance = %d; Degat = %d;", distance, degat);	//< Debug
     loseLife(degat);
     if (x < 0) addRecoil(-intensity);
     else addRecoil(intensity);
+    App::console->addDebug("Distance = %d; Damage = %d;", distance, degat);
 }
 
 void Player::computeRecoil(){
 	if (recoil > 0) {
-		App::console->addDebug("<-- Recoil");
 		moveLeft(recoil);
 		recoil--;
+		App::console->addDebug("<-- Recoil");
 	}
 	if (recoil < 0) {
-		App::console->addDebug("Recoil -->");
 		moveRight(-recoil);
 		recoil++;
+		App::console->addDebug("Recoil -->");
 	}
 }
 
@@ -283,5 +288,112 @@ void Player::compute(){
 	computeRecoil();
 	computeFuryMode();
 }
+
+void Player::dealEvent(const u32* playerEvents){
+	const u32 padHeld = playerEvents[HELD];
+	const u32 padDown = playerEvents[DOWN];
+	const u32 padUp = playerEvents[UP];
+
+	if (padHeld & WPAD_BUTTON_UP) 		KeyUp(HELD);
+	if (padHeld & WPAD_BUTTON_DOWN) 	KeyDown(HELD);
+	if (padHeld & WPAD_BUTTON_LEFT) 	KeyLeft(HELD);
+	if (padHeld & WPAD_BUTTON_RIGHT) 	KeyRight(HELD);
+	if (padHeld & WPAD_BUTTON_A) 		KeyA(HELD);
+	if (padDown & WPAD_BUTTON_A) 		KeyA(DOWN);
+	if (padUp & WPAD_BUTTON_A) 			KeyA(UP);
+	if (padDown & WPAD_BUTTON_B) 		KeyB(DOWN);
+}
+
+void Player::KeyUp(EventType type){
+	switch (type){
+	case HELD:
+		if (playerNumber == 1) getCannon()->rotateLeft();
+		else getCannon()->rotateRight();
+		break;
+	case DOWN:break;
+	case UP:break;
+	}
+}
+
+void Player::KeyDown(EventType type){
+	switch (type){
+	case HELD:
+		if (playerNumber == 1) getCannon()->rotateRight();
+		else getCannon()->rotateLeft();
+		break;
+	case DOWN:break;
+	case UP:break;
+	}
+}
+
+void Player::KeyLeft(EventType type){
+	switch (type){
+		case HELD:
+			if (getCannon()->isGuidingMissile()) getCannon()->getGuidedMissile()->rotateLeft();
+			else moveLeft();
+			break;
+		case DOWN:break;
+		case UP:break;
+	}
+}
+
+void Player::KeyRight(EventType type){
+	switch (type){
+	case HELD:
+		if (getCannon()->isGuidingMissile()) getCannon()->getGuidedMissile()->rotateRight();
+		else moveRight();
+		break;
+	case DOWN:break;
+	case UP:break;
+	}
+}
+
+void Player::KeyA(EventType type){
+	switch (type){
+	case HELD:
+		getCannon()->incStrength();
+		break;
+	case DOWN:
+		if (getCannon()->isGuidingMissile()) getCannon()->destroyGuidedMissile();
+		//WPAD_Rumble(WPAD_CHAN_0, 1);
+		break;
+	case UP:
+		getCannon()->up();
+		getCannon()->shoot();
+		//	//MP3Player_PlayBuffer(Artillaryexp, Artillaryexp_size, NULL);
+		//ASND_SetVoice(0, VOICE_STEREO_16BIT, 22050, 0, (void*)Artillaryexp, Artillaryexp_size, MAX_VOLUME, MAX_VOLUME, NULL);
+		//WPAD_Rumble(WPAD_CHAN_0, 0);
+		break;
+	}
+}
+
+void Player::KeyB(EventType type){
+	switch (type){
+	case HELD:break;
+	case DOWN:
+		useBonus(bonus);
+		if (bonus) delete bonus;
+		bonus = NULL;
+		break;
+	case UP:break;
+	}
+}
+
+void Player::KeyMinus(EventType type){
+	switch (type){
+	case HELD:break;
+	case DOWN:break;
+	case UP:break;
+	}
+}
+
+void Player::KeyPlus(EventType type){
+	switch (type){
+	case HELD:break;
+	case DOWN:break;
+	case UP:break;
+	}
+}
+
 
 }

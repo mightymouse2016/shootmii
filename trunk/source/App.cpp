@@ -5,7 +5,6 @@ namespace shootmii {
 Console* App::console = new Console;
 ImageBank* App::imageBank = new ImageBank;
 DrawManager* App::drawManager = new DrawManager;
-JaugeManager* App::jaugeManager = new JaugeManager;
 
 App::App():
 	fps(0),
@@ -31,7 +30,6 @@ App::~App() {
 	delete console;
 	delete imageBank;
 	delete drawManager;
-	delete jaugeManager;
 	GRRLIB_Exit();
 }
 
@@ -70,6 +68,7 @@ void App::dealEvent() {
 		return;
 	}
 
+	// Passage moche mais qui marche (passage d'un screen à un autre)
 	switch (screen) {
 	case TITLE_SCREEN:
 		if ((player1Events[DOWN] | player2Events[DOWN]) & WPAD_BUTTON_HOME) {

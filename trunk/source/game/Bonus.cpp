@@ -6,6 +6,7 @@ int Bonus::numberOfBonus = 0;
 
 Bonus::Bonus(
 		BonusType _type,
+		bool _immediate,
 		GRRLIB_texImg* _image,
 		const int _width,
 		const int _height,
@@ -24,6 +25,7 @@ Bonus::Bonus(
 				new Cosinus(BONUS_OSCILLATIONS_RANGE/2,1,BONUS_OSCILLATIONS_CENTER),
 				.01),
 			type(_type),
+			immediate(_immediate),
 			finished(false),
 			possessed(false)
 {
@@ -32,14 +34,6 @@ Bonus::Bonus(
 
 BonusType Bonus::getType() const{
 	return type;
-}
-
-void Bonus::finish(){
-	finished = true;
-}
-
-void Bonus::possess(){
-	possessed = true;
 }
 
 bool Bonus::isFinished() const{
@@ -51,19 +45,24 @@ bool Bonus::isPossessed() const{
 	return possessed;
 }
 
+bool Bonus::isImmediate() const{
+	return immediate;
+}
+
+void Bonus::finish(){
+	finished = true;
+}
+
+void Bonus::possess(){
+	possessed = true;
+	delete calcX;
+	delete calcY;
+	calcX = NULL;	// NULL : originX inchangé
+	calcY = NULL;	// NULL : originY inchangé
+}
+
 void Bonus::compute(){
-	if (isPossessed()){						//< Si un joueur possède le bonus
-		Timer::compute();					//< On joue seulement l'animation
-		if (timeIsOver()) {					//< sans le déplacement
-			spriteIndex++;
-			if (spriteIndex == duration){
-				spriteIndex = 0;
-			}
-		}
-	}
-	else {
-		Animation::compute();
-	}
+	Animation::compute();
 }
 
 Bonus* randomBonus(){
@@ -75,6 +74,7 @@ Bonus* randomBonus(){
 		case HOMING:
 			return new Bonus(
 				static_cast<BonusType>(_type),
+				false,
 				App::imageBank->get(TXT_BONUS_HOMING),
 				BONUS_HOMING_WIDTH,
 				BONUS_HOMING_HEIGHT,
@@ -84,6 +84,7 @@ Bonus* randomBonus(){
 		case LIFE_RECOVERY:
 			return new Bonus(
 				static_cast<BonusType>(_type),
+				true,
 				App::imageBank->get(TXT_BONUS_LIFE),
 				BONUS_LIFE_WIDTH,
 				BONUS_LIFE_HEIGHT,
@@ -93,6 +94,7 @@ Bonus* randomBonus(){
 		case GUIDED:
 			return new Bonus(
 				static_cast<BonusType>(_type),
+				false,
 				App::imageBank->get(TXT_BONUS_GUIDED),
 				BONUS_GUIDED_WIDTH,
 				BONUS_GUIDED_HEIGHT,
@@ -102,6 +104,7 @@ Bonus* randomBonus(){
 		case POISON:
 			return new Bonus(
 				static_cast<BonusType>(_type),
+				true,
 				App::imageBank->get(TXT_BONUS_POISON),
 				BONUS_POISON_WIDTH,
 				BONUS_POISON_HEIGHT,
@@ -111,6 +114,7 @@ Bonus* randomBonus(){
 		case POTION:
 			return new Bonus(
 				static_cast<BonusType>(_type),
+				true,
 				App::imageBank->get(TXT_BONUS_POTION),
 				BONUS_POTION_WIDTH,
 				BONUS_POTION_HEIGHT,
@@ -120,6 +124,7 @@ Bonus* randomBonus(){
 		default:
 			return new Bonus(
 				static_cast<BonusType>(_type),
+				true,
 				App::imageBank->get(TXT_BONUS_LIFE),
 				BONUS_LIFE_WIDTH,
 				BONUS_LIFE_HEIGHT,

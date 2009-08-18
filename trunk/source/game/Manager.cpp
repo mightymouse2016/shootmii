@@ -2,6 +2,8 @@
 
 namespace shootmii {
 
+JaugeManager* Manager::jaugeManager = new JaugeManager;
+
 Manager::Manager(App* _app) :
 	app(_app),
 	world(new World),
@@ -25,6 +27,7 @@ Manager::~Manager() {
 	delete player1;
 	delete player2;
 	delete world;
+	delete jaugeManager;
 }
 
 Player* Manager::getPlayer1() const {
@@ -52,8 +55,6 @@ void Manager::addAnimation(Animation* animation) const {
 }
 
 void Manager::initPlayers() const {
-	player1->init();
-	player2->init();
 	player1->initGame();
 	player2->initGame();
 	player1->initPosition(PLAYER_OFFSET);
@@ -65,86 +66,14 @@ void Manager::init() const {
 	ammos->clear();
 	bonuses->clear();
 	animations->clear();
-	App::jaugeManager->clear();
+	jaugeManager->clear();
 	initPlayers();
 }
 
 void Manager::dealEvent(const u32* player1Events, const u32* player2Events) {
-	const u32 pad1Held = player1Events[HELD], pad2Held = player2Events[HELD];
-	const u32 pad1Down = player1Events[DOWN], pad2Down = player2Events[DOWN];
-	const u32 pad1Up = player1Events[UP], pad2Up = player2Events[UP];
-
-	// Haut, bas, gauche, droite pour le joueur 1
-	if (pad1Held & WPAD_BUTTON_LEFT) {
-		if (player1->getCannon()->isGuidingMissile()) player1->getCannon()->getGuidedMissile()->rotateLeft();
-		else player1->moveLeft();
-	}
-	if (pad1Held & WPAD_BUTTON_RIGHT) {
-		if (player1->getCannon()->isGuidingMissile()) player1->getCannon()->getGuidedMissile()->rotateRight();
-		else player1->moveRight();
-	}
-	if (pad1Held & WPAD_BUTTON_UP) player1->getCannon()->rotateLeft();
-	if (pad1Held & WPAD_BUTTON_DOWN) player1->getCannon()->rotateRight();
-
-	// Haut, bas, gauche, droite pour le joueur 2
-	if (pad2Held & WPAD_BUTTON_LEFT) {
-		if (player2->getCannon()->isGuidingMissile()) player2->getCannon()->getGuidedMissile()->rotateLeft();
-		else player2->moveLeft();
-	}
-	if (pad2Held & WPAD_BUTTON_RIGHT) {
-		if (player2->getCannon()->isGuidingMissile()) player2->getCannon()->getGuidedMissile()->rotateRight();
-		else player2->moveRight();
-	}
-	if (pad2Held & WPAD_BUTTON_UP) player2->getCannon()->rotateRight();
-	if (pad2Held & WPAD_BUTTON_DOWN) player2->getCannon()->rotateLeft();
-
-	// A pressé, relaché, maintenu pour le joueur 1
-	if (pad1Down & WPAD_BUTTON_A) {
-		if (player1->getCannon()->isGuidingMissile()) player1->getCannon()->destroyGuidedMissile();
-		//WPAD_Rumble(WPAD_CHAN_0, 1);
-	}
-	if (pad1Held & WPAD_BUTTON_A) {
-		player1->getCannon()->incStrength();
-		// TODO VibrationManager
-		// Pour l'instant ca vide un peu trop les batteries ...
-		//if (!player1->getCannon()->isLoaded()) WPAD_Rumble(WPAD_CHAN_0, 0);
-	}
-	if (pad1Up & WPAD_BUTTON_A) {
-		player1->getCannon()->up();
-		player1->getCannon()->shoot();
-		
-		//MP3Player_PlayBuffer(Artillaryexp, Artillaryexp_size, NULL);
-		ASND_SetVoice(0, VOICE_STEREO_16BIT, 22050, 0, (void*)Artillaryexp, Artillaryexp_size, MAX_VOLUME, MAX_VOLUME, NULL);
-		//WPAD_Rumble(WPAD_CHAN_0, 0);
-	}
-
-	// A pressé, relaché, maintenu pour le joueur 2
-	if (pad2Down & WPAD_BUTTON_A) {
-		if (player2->getCannon()->isGuidingMissile()) player2->getCannon()->destroyGuidedMissile();
-		//WPAD_Rumble(WPAD_CHAN_1, 1)
-	}
-	if (pad2Held & WPAD_BUTTON_A) {
-		player2->getCannon()->incStrength();
-		//if (!player2->getCannon()->isLoaded()) WPAD_Rumble(WPAD_CHAN_1, 0);
-	}
-	if (pad2Up & WPAD_BUTTON_A) {
-		player2->getCannon()->up();
-		player2->getCannon()->shoot();
-		//WPAD_Rumble(WPAD_CHAN_1, 0);
-	}
-
-
-	// B j1
-	if (pad1Down & WPAD_BUTTON_B) {
-		player1->useBonus();
-	}
-	// B j2
-	if (pad2Down & WPAD_BUTTON_B) {
-		player2->useBonus();
-	}
+	player1->dealEvent(player1Events);
+	player2->dealEvent(player2Events);
 }
-
-
 
 void Manager::computeVictory() {
 	Player* winner = NULL;
@@ -153,26 +82,17 @@ void Manager::computeVictory() {
 	if (winner) {
 		winner->incScore();
 		if (winner->getScore() >= MANCHE) {
-			player1->setScore(0);
-			player2->setScore(0);
-			player1->setFury(0);
-			player2->setFury(0);
+			player1->init();
+			player2->init();
 		}
-		App::jaugeManager->clear();
-		animations->clear();
-		bonuses->clear();
-		ammos->clear();
-		world->init();
-		initPlayers();
+		init();
 	}
 }
 
 void Manager::computeAnimations() {
 	list<Animation*>* newAnimations = new list<Animation*>;
 	for (list<Animation*>::iterator i=animations->begin();i!=animations->end();i++){
-		if ((*i)->isFinished()){
-			delete *i;
-		}
+		if ((*i)->isFinished()) delete *i;
 		else {
 			(*i)->compute();
 			newAnimations->push_back(*i);
@@ -185,7 +105,8 @@ void Manager::computeAnimations() {
 void Manager::computeBonuses() {
 	list<Bonus*>* newBonuses = new list<Bonus*>;
 	for (list<Bonus*>::iterator i=bonuses->begin();i!=bonuses->end();i++){
-		if ((*i)->isFinished()) delete *i;
+		if ((*i)->isPossessed());	// Instruction vide : pas de push_back, le player prends le relai
+		else if ((*i)->isFinished()) delete *i;
 		else {
 			(*i)->compute();
 			newBonuses->push_back(*i);
@@ -251,17 +172,9 @@ void Manager::computeAmmos() {
 			addAnimation((*i)->destruction(HIT_A_PLAYER,playerHit));
 			(*i)->deleteMe();
 		}
-
 		// Collision avec un bonus
-		else if (pair<Player*,Bonus*>* result = (*i)->hitABonus(bonuses)) {
+		else if ((*i)->hitABonus(bonuses)) {
 			App::console->addDebug("collision : bonus");
-			// Ici on fait attention à gérer le cas improbable ou 2 munitions toucheraient le bonus à la même frame
-			if (!result->second->isPossessed()) result->first->addBonus(result->second);
-
-			// TODO enlever ca
-			result->second = NULL;
-
-			delete result;
 		}
 	}
 
@@ -277,7 +190,7 @@ void Manager::computeAmmos() {
 
 void Manager::compute() {
 	if (!(rand()%BONUS_PROBABILITY)) addBonus(randomBonus());
-	App::jaugeManager->compute();
+	jaugeManager->compute();
 	world->compute();
 	player1->compute();
 	player2->compute();

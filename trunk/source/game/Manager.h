@@ -17,6 +17,7 @@ private:
 	list<Bonus*>* bonuses;
 	list<Animation*>* animations;
 public:
+	static JaugeManager* jaugeManager;
 	Manager(App*);
 	~Manager();
 	Player* getPlayer1() const;

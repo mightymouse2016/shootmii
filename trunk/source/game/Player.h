@@ -39,7 +39,6 @@ private:
 	int score;
 	float life;			//<  0->100
 	float fury;			//<  0->100
-	int nbGamesWon;
 	bool furyMode;
 	Terrain* terrain;
 	Bonus* bonus;
@@ -65,7 +64,6 @@ public:
 	float getFury() const;
 	float* getPLife();
 	float* getPFury();
-	int getNbGamesWon() const;
 	Terrain* getTerrain();
 	Terrain* getTerrain() const;
 	Cannon* getCannon();
@@ -73,6 +71,7 @@ public:
 	Player* getOpponent();
 	Player* getOpponent() const;
 	float getSpeed(const CellType type, const Direction dir) const;
+	Bonus* getBonus();
 	Bonus** getPBonus();
 	bool isInFuryMode() const;
 
@@ -93,16 +92,29 @@ public:
 	void addRecoil(int intensity);
 	void addBonus(Bonus* bonus);
 
-	void init();
-	void initGame();
-	void initPosition(float screenX);
+	void init();						//< Initialise une partie
+	void initGame();					//< Initialise une manche
+	void initPosition(float screenX);	//< Pose le player sur le terrain
 
-	void useBonus();	//< en pressant A
+	void useBonus(Bonus* bonus);	//< en pressant A
 
 	void computeFuryMode();
 	void computeDamage(Ammo* ammo);
 	void computeRecoil();
 	void compute();
+
+	// Binds
+	void dealEvent(const u32* playerEvents);
+
+	void KeyUp(EventType type);
+	void KeyDown(EventType type);
+	void KeyLeft(EventType type);
+	void KeyRight(EventType type);
+
+	void KeyA(EventType type);
+	void KeyB(EventType type);
+	void KeyMinus(EventType type);
+	void KeyPlus(EventType type);
 };
 
 }
