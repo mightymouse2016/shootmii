@@ -7,25 +7,6 @@ namespace shootmii {
 
 const float PI(3.14159265358979323846264338327950288419716939937510);
 
-enum LayerPriority{
-	SKY_LAYER,
-	SUN_LAYER,
-	SMOKLET_LAYER,
-	TERRAIN_LAYER,
-	AMMO_LAYER,
-	STATUS_BAR_LAYER,
-	JAUGE_LAYER,
-	BACK_CLOUD_LAYER,
-	STRENGTH_JAUGE_LAYER,
-	CROSSHAIR_LAYER,
-	CANNON_LAYER,
-	TANK_LAYER,
-	BONUS_LAYER,
-	EXPLOSION_LAYER,
-	FRONT_CLOUD_LAYER
-
-};
-
 // Math
 class Timer;
 class Coordinates;
@@ -62,7 +43,7 @@ class Player;
 class Manager;
 class DrawManager;
 class ScoreManager;
-
+class JaugeManager;
 
 // Screens
 class Screen;
@@ -126,7 +107,7 @@ class App;
 #include "gfx/cannonball_ground_explosion.h"
 
 // Sons
-#include "gfx/Artillaryexp.h"
+//#include "snd/Artillaryexp.h"
 
 // Fonts
 #include "gfx/font1.h"

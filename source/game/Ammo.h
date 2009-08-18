@@ -72,7 +72,7 @@ public:
 	bool isTooLow() const;
 	bool isDestroyed() const;
 	bool hitTheGround(Terrain* terrain) const;
-	pair<Player*,Bonus*>* hitABonus(list<Bonus*>* bonusList) const;
+	bool hitABonus(list<Bonus*>* bonusList) const;
 	Ammo* hitAnotherAmmo(list<Ammo*>* ammoList) const;
 	Player* hitAPlayer(Player* player1, Player* player2) const;
 

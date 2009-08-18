@@ -131,13 +131,18 @@ bool Ammo::hitTheGround(Terrain* terrain) const{
 	return false;
 }
 
-pair<Player*,Bonus*>* Ammo::hitABonus(list<Bonus*>* bonusList) const{
+bool Ammo::hitABonus(list<Bonus*>* bonusList) const{
 	list<Bonus*>::iterator it;
-	for (it = bonusList->begin();it!=bonusList->end();it++)
+	for (it = bonusList->begin();it!=bonusList->end();it++){
 		if (intersect(*it)) {
-			return new pair<Player*,Bonus*>(owner,*it);
+			// Ici on fait attention à gérer le cas improbable ou 2 munitions toucheraient le bonus à la même frame
+			if (!(*it)->isPossessed()) {
+				owner->addBonus(*it);
+				return true;
+			}
 		}
-	return NULL;
+	}
+	return false;
 }
 
 Ammo* Ammo::hitAnotherAmmo(list<Ammo*>* ammoList) const{

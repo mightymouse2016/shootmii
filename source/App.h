@@ -9,10 +9,6 @@ enum ScreenType {
 	TITLE_SCREEN, GAME_SCREEN
 };
 
-enum EventType {
-	DOWN, UP, HELD
-};
-
 class App {
 private:
 	u8 fps;
@@ -27,7 +23,6 @@ public:
 	static Console* console;
 	static ImageBank* imageBank;
 	static DrawManager* drawManager;
-	static JaugeManager* jaugeManager;
 	App();
 	virtual ~App();
 	u8 getFPS() const;

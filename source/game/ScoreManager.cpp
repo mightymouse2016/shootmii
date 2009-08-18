@@ -15,7 +15,9 @@ ScoreManager::ScoreManager(
 		App::imageBank->get(TXT_SCORE_PANEL)),
 	app(_app),
 	manager(_manager),
-    tex_font(loadFont(font_score, 32, 48)) // 48 c'est pas la height, c'est l'indice dans la table ascii
+    tex_font(loadFont(font_score, 32, 48)), // 48 c'est pas la height, c'est l'indice dans la table ascii
+    bonusPlayer1(manager->getPlayer1()->getPBonus()),
+    bonusPlayer2(manager->getPlayer2()->getPBonus())
 {
 	children.reserve(SCOREMANAGER_CHILDREN_NUMBER);
 	addChild(new Jauge(
@@ -106,10 +108,14 @@ void ScoreManager::compute(){
 	for(int i=0;i<SCOREMANAGER_CHILDREN_NUMBER;i++){
 		static_cast<Jauge*>(children[i])->compute();
 	}
+	if (*bonusPlayer1) (*bonusPlayer1)->compute();
+	if (*bonusPlayer2) (*bonusPlayer2)->compute();
 }
 
 void ScoreManager::draw() const{
 	Polygon::draw();
+	if (*bonusPlayer1) (*bonusPlayer1)->draw();
+	if (*bonusPlayer2) (*bonusPlayer2)->draw();
 	drawScore();
 }
 

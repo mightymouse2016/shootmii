@@ -26,6 +26,8 @@ private:
 	App* app;
 	Manager* manager;
 	GRRLIB_texImg* tex_font;
+	Bonus** bonusPlayer1;	// ptr sur le ptr de bonus du player (comme ça pas de mise à jour à faire)
+	Bonus** bonusPlayer2;
 public:
 	ScoreManager(App*, Manager*);
 	void compute();
