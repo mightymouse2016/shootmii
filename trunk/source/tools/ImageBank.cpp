@@ -17,6 +17,8 @@ void ImageBank::init() {
 	allTextures[TXT_AMMO1] = GRRLIB_LoadTexture(ammo_1);
 	allTextures[TXT_AMMO2] = GRRLIB_LoadTexture(ammo_2);
 	allTextures[TXT_CANNON] = GRRLIB_LoadTexture(cannon);
+	allTextures[TXT_GHOST1] = GRRLIB_LoadTexture(ghost_1);
+	allTextures[TXT_GHOST2] = GRRLIB_LoadTexture(ghost_2);
 	allTextures[TXT_HOMING1] = GRRLIB_LoadTexture(homing_1);
 	allTextures[TXT_HOMING2] = GRRLIB_LoadTexture(homing_2);
 	allTextures[TXT_GUIDED1] = GRRLIB_LoadTexture(guided_1);

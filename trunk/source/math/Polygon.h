@@ -106,6 +106,8 @@ public:
 	float getAbsolutePolygonAngle() const;
 	Polygon* getFather() const;
 	u32 getColorFilter() const;
+	vector<Polygon*>& getChildren();
+	const vector<Polygon*>& getChildren() const;
 
 	void setOriginX(const float originX);
 	void setOriginY(const float originY);

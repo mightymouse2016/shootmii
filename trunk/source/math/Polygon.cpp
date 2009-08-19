@@ -164,6 +164,14 @@ u32 Polygon::getColorFilter() const{
 	return colorFilter;
 }
 
+vector<Polygon*>& Polygon::getChildren(){
+	return children;
+}
+
+const vector<Polygon*>& Polygon::getChildren() const{
+	return children;
+}
+
 void Polygon::setOriginX(const float _originX){
 	originX = _originX;
 }

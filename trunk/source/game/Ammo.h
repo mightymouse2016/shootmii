@@ -22,12 +22,19 @@ const int AMMO_WIDTH(16);
 const int AMMO_HEIGHT(16);
 const int AMMO_OVERTAKE(5); // dépassement de la munition du canon
 
-const int GHOST_MARGIN(20);
+const int GHOST_WIDTH(60);
+const int GHOST_HEIGHT(52);
+const int GHOST_OFFSET_X(5);
+const int GHOST_MARGIN(GHOST_WIDTH-GHOST_HEIGHT/2);
 
 enum explosionType {
   HIT_THE_GROUND,
   HIT_ANOTHER_AMMO,
   HIT_A_PLAYER
+};
+
+enum AmmoChild{
+	CHILD_GHOST_BUBBLE
 };
 
 class Ammo: public Polygon, public Timer {
@@ -56,8 +63,10 @@ public:
 	Function* getCalcY();
 	int getCol() const;
 	int getRow() const;
-	Rectangle* getGhost();
-	Rectangle* getGhost() const;
+	Rectangle* getGhostAmmo();
+	Rectangle* getGhostAmmo() const;
+	Rectangle* getGhostBubble();
+	Rectangle* getGhostBubble() const;
 	Player* getOwner();
 	Player* getOwner() const;
 	void computeOut();
