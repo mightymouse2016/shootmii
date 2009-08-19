@@ -11,7 +11,7 @@ Ammo::Ammo(
 	Terrain* _terrain,
 	Manager* _manager):
 		Polygon(AMMO_LAYER,TANK_HEIGHT/4, 0, AMMO_OVERTAKE, _angle, 0, 1, _owner, Coordinates(-AMMO_WIDTH/2,-AMMO_HEIGHT/2), _image),
-		Timer(),
+		Timer(TIME_BETWEEN_TWO_SMOKLET),
 		calcX(_calcX),
 		calcY(_calcY),
 		destroyed(false),
@@ -23,7 +23,8 @@ Ammo::Ammo(
 		manager(_manager),
 		toDelete(false)
 {
-	// NOTHING TO DO
+	children.push_back(new Rectangle(GHOST_LAYER,AMMO_WIDTH,AMMO_HEIGHT,0,0,0,0,0,1,_image));
+	getGhost()->hide();
 }
 
 Ammo::~Ammo() {
@@ -38,50 +39,77 @@ Function* Ammo::getCalcY() {
 	return calcY;
 }
 
-int Ammo::getCol() const{
+int Ammo::getCol() const {
 	return originX/terrain->getCellWidth();
 }
 
-int Ammo::getRow() const{
+int Ammo::getRow() const {
 	return originY/terrain->getCellHeight();
+}
+
+Rectangle* Ammo::getGhost() {
+	return static_cast<Rectangle*>(children[0]);
+}
+
+Rectangle* Ammo::getGhost() const {
+	return static_cast<Rectangle*>(children[0]);
 }
 
 Player* Ammo::getOwner(){
 	return owner;
 }
 
+void Ammo::computeOut(){
+	if (!isOutOfCannon()) if (!intersect(owner)) out();
+}
+
 Player* Ammo::getOwner() const{
 	return owner;
 }
 
+void Ammo::computeGhost(){
+	getGhost()->setPolygonAngle(angle);
+	// Saturation sur X
+	if (originX < GHOST_MARGIN) getGhost()->setOriginX(GHOST_MARGIN);
+	else if (originX > SCREEN_WIDTH - GHOST_MARGIN) getGhost()->setOriginX(SCREEN_WIDTH - GHOST_MARGIN);
+	else getGhost()->setOriginX(originX);
+	// Saturation sur Y
+	if (originY < GHOST_MARGIN) getGhost()->setOriginY(GHOST_MARGIN);
+	else getGhost()->setOriginY(originY);
+}
+
+void Ammo::computeSmoklets(){
+	if (!timeIsOver()) return;
+	manager->addAnimation(
+		new Animation(
+			SMOKLET_LAYER,
+			App::imageBank->get(TXT_SMOKE),
+			originX,
+			originY,
+			0,0,0,NULL,
+			SMOKE_WIDTH,
+			SMOKE_HEIGHT,
+			SMOKE_DURATION,
+			SMOKE_SLOW,
+			1,
+			new PolyDeg2(manager->getWind()->getWindSpeed()*WIND_INFLUENCE_ON_SMOKE/(2*100* SMOKE_WEIGHT),0,originX),
+			new PolyDeg2(-GRAVITY*SMOKE_AIR_RESISTANCE/2,0,originY)));
+}
+
+void Ammo::computePosition(){
+	float _t = getT();
+	originX = (*calcX)(_t);
+	originY = (*calcY)(_t);
+	angle = atan2((*calcY)[_t],(*calcX)[_t]);
+}
+
 void Ammo::compute() {
-	if (fired) {
-		float _t = getT();
-		Timer::compute();
-		originX = (*calcX)(_t);
-		originY = (*calcY)(_t);
-		angle = atan2((*calcY)[_t],(*calcX)[_t]);
-		if (!(static_cast<int>(_t/TIME_STEP)%TIME_BETWEEN_TWO_SMOKLET)){
-			manager->addAnimation(
-				new Animation(
-					SMOKLET_LAYER,
-					App::imageBank->get(TXT_SMOKE),
-					originX,
-					originY,
-					0,
-					0,
-					0,
-					NULL,
-					SMOKE_WIDTH,
-					SMOKE_HEIGHT,
-					SMOKE_DURATION,
-					SMOKE_SLOW,
-					1,
-					new PolyDeg2(manager->getWind()->getWindSpeed()*WIND_INFLUENCE_ON_SMOKE/(2*100* SMOKE_WEIGHT),0,originX),
-					new PolyDeg2(-GRAVITY*SMOKE_AIR_RESISTANCE/2,0,originY)));
-		}
-	}
-	if (!isOutOfCannon()) if (!intersect(owner)) out();
+	if (!fired) return;
+	Timer::compute();
+	computePosition();
+	computeSmoklets();
+	computeGhost();
+	computeOut();
 }
 
 void Ammo::setAngle(const float _angle){
@@ -94,6 +122,7 @@ void Ammo::destroy() {
 
 void Ammo::out(){
 	outOfCannon = true;
+	getGhost()->show();
 }
 
 void Ammo::deleteMe(){

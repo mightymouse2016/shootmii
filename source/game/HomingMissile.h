@@ -42,7 +42,8 @@ public:
 		const float xInit = 0,
 		const float yInit = 0);
 	Animation* destruction(explosionType _type, Player* _playerHit = NULL);
-	void compute();
+	void computeSmoklets();
+	void computePosition();
 };
 
 }

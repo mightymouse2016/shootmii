@@ -22,6 +22,8 @@ const int AMMO_WIDTH(16);
 const int AMMO_HEIGHT(16);
 const int AMMO_OVERTAKE(5); // dépassement de la munition du canon
 
+const int GHOST_MARGIN(20);
+
 enum explosionType {
   HIT_THE_GROUND,
   HIT_ANOTHER_AMMO,
@@ -33,8 +35,8 @@ protected:
 	Function* calcX;
 	Function* calcY;
 	bool destroyed;
-	bool outOfCannon; // pour que le gestionnaire de collisions ignore l'auto-contact
-	bool fired; // pour savoir si on incrémente le compteur de temps ou non
+	bool outOfCannon; 		//< pour que le gestionnaire de collisions ignore l'auto-contact
+	bool fired; 			//< pour savoir si on incrémente le compteur de temps ou non
 	bool explosionFinished;
 	Terrain* terrain;
 	Player* owner;
@@ -54,9 +56,15 @@ public:
 	Function* getCalcY();
 	int getCol() const;
 	int getRow() const;
+	Rectangle* getGhost();
+	Rectangle* getGhost() const;
 	Player* getOwner();
 	Player* getOwner() const;
-	virtual void compute();
+	void computeOut();
+	void computeGhost();
+	virtual void computeSmoklets();
+	virtual void computePosition();
+	void compute();
 	void setAngle(const float _angle);
 	void destroy();
 	virtual Animation* destruction(explosionType _type, Player* _playerHit = NULL)=0;
@@ -79,6 +87,8 @@ public:
 	void init(float strength);
 
 	void fire();
+
+	void draw();
 };
 
 }

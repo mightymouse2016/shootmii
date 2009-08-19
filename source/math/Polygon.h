@@ -35,7 +35,8 @@ enum LayerPriority{
 	TANK_LAYER,
 	BONUS_LAYER,
 	EXPLOSION_LAYER,
-	FRONT_CLOUD_LAYER
+	FRONT_CLOUD_LAYER,
+	GHOST_LAYER
 };
 
 const int ORIGIN_CROSS_WIDTH(3);
@@ -111,6 +112,7 @@ public:
 	void setRadial(const float radial);
 	void setSpin(const float spin);
 	void setAngle(const float angle);
+	void setPolygonAngle(const float polygonAngle);
 	void setFather(Polygon* father);
 	void setImage(GRRLIB_texImg* image);
 	void setColorFilter(const u32 colorFilter);

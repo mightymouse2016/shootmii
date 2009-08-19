@@ -184,6 +184,10 @@ void Polygon::setAngle(const float _angle){
 	angle = _angle;
 }
 
+void Polygon::setPolygonAngle(const float _polygonAngle){
+	polygonAngle = _polygonAngle;
+}
+
 void Polygon::setFather(Polygon* _father){
 	father = _father;
 }
