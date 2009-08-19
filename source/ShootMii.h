@@ -77,6 +77,8 @@ class App;
 #include "gfx/cannon.h"
 #include "gfx/ammo_1.h"
 #include "gfx/ammo_2.h"
+#include "gfx/ghost_1.h"
+#include "gfx/ghost_2.h"
 #include "gfx/guided_1.h"
 #include "gfx/guided_2.h"
 #include "gfx/homing_1.h"

@@ -23,8 +23,15 @@ Ammo::Ammo(
 		manager(_manager),
 		toDelete(false)
 {
-	children.push_back(new Rectangle(GHOST_LAYER,AMMO_WIDTH,AMMO_HEIGHT,0,0,0,0,0,1,_image));
-	getGhost()->hide();
+	//children.push_back(new Rectangle(GHOST_LAYER,AMMO_WIDTH,AMMO_HEIGHT,0,0,0,0,0,1,_image));
+	GRRLIB_texImg* bubble;
+	if (owner->getPlayerNumber() == 1) bubble = App::imageBank->get(TXT_GHOST1);
+	else bubble = App::imageBank->get(TXT_GHOST2);
+
+	children.push_back(new Rectangle(GHOST_LAYER,GHOST_WIDTH,GHOST_HEIGHT,0,0,0,0,0,1,bubble));
+	getGhostBubble()->addChild(new Rectangle(GHOST_LAYER,AMMO_WIDTH,AMMO_HEIGHT,GHOST_OFFSET_X,0,0,0,0,1,_image));
+	getGhostBubble()->hide();
+	getGhostAmmo()->hide();
 }
 
 Ammo::~Ammo() {
@@ -47,12 +54,20 @@ int Ammo::getRow() const {
 	return originY/terrain->getCellHeight();
 }
 
-Rectangle* Ammo::getGhost() {
-	return static_cast<Rectangle*>(children[0]);
+Rectangle* Ammo::getGhostAmmo() {
+	return static_cast<Rectangle*>(getGhostBubble()->getChildren()[0]);
 }
 
-Rectangle* Ammo::getGhost() const {
-	return static_cast<Rectangle*>(children[0]);
+Rectangle* Ammo::getGhostAmmo() const {
+	return static_cast<Rectangle*>(getGhostBubble()->getChildren()[0]);
+}
+
+Rectangle* Ammo::getGhostBubble() {
+	return static_cast<Rectangle*>(children[CHILD_GHOST_BUBBLE]);
+}
+
+Rectangle* Ammo::getGhostBubble() const {
+	return static_cast<Rectangle*>(children[CHILD_GHOST_BUBBLE]);
 }
 
 Player* Ammo::getOwner(){
@@ -68,14 +83,30 @@ Player* Ammo::getOwner() const{
 }
 
 void Ammo::computeGhost(){
-	getGhost()->setPolygonAngle(angle);
+	Rectangle* ghostAmmo = getGhostAmmo();
+	Rectangle* ghostBubble = getGhostBubble();
+
+	// Visibilité
+	/*if (!isOffScreen()) {
+		ghostAmmo->hide();
+		ghostBubble->hide();
+		return;
+	}*/
+	ghostAmmo->show();
+	ghostBubble->show();
+
 	// Saturation sur X
-	if (originX < GHOST_MARGIN) getGhost()->setOriginX(GHOST_MARGIN);
-	else if (originX > SCREEN_WIDTH - GHOST_MARGIN) getGhost()->setOriginX(SCREEN_WIDTH - GHOST_MARGIN);
-	else getGhost()->setOriginX(originX);
+	if (originX < GHOST_MARGIN) ghostBubble->setOriginX(GHOST_MARGIN);
+	else if (originX > SCREEN_WIDTH - GHOST_MARGIN) ghostBubble->setOriginX(SCREEN_WIDTH - GHOST_MARGIN);
+	else ghostBubble->setOriginX(originX);
+
 	// Saturation sur Y
-	if (originY < GHOST_MARGIN) getGhost()->setOriginY(GHOST_MARGIN);
-	else getGhost()->setOriginY(originY);
+	if (originY < GHOST_MARGIN) ghostBubble->setOriginY(GHOST_MARGIN);
+	else ghostBubble->setOriginY(originY);
+
+	// Angles
+	ghostBubble->setPolygonAngle(atan2(ghostBubble->getOriginY()-getOriginY(),ghostBubble->getOriginX()-getOriginX()));
+	ghostAmmo->setPolygonAngle(angle-ghostBubble->getPolygonAngle());
 }
 
 void Ammo::computeSmoklets(){
@@ -122,7 +153,8 @@ void Ammo::destroy() {
 
 void Ammo::out(){
 	outOfCannon = true;
-	getGhost()->show();
+	getGhostAmmo()->show();
+	getGhostBubble()->show();
 }
 
 void Ammo::deleteMe(){
