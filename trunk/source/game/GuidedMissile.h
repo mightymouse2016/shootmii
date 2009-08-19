@@ -44,7 +44,8 @@ public:
 	void deleteMe();
 	void rotateRight();
 	void rotateLeft();
-	void compute();
+	void computeSmoklets();
+	void computePosition();
 };
 
 }
