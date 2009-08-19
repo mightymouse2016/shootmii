@@ -23,7 +23,6 @@ Ammo::Ammo(
 		manager(_manager),
 		toDelete(false)
 {
-	//children.push_back(new Rectangle(GHOST_LAYER,AMMO_WIDTH,AMMO_HEIGHT,0,0,0,0,0,1,_image));
 	GRRLIB_texImg* bubble;
 	if (owner->getPlayerNumber() == 1) bubble = App::imageBank->get(TXT_GHOST1);
 	else bubble = App::imageBank->get(TXT_GHOST2);
@@ -86,14 +85,34 @@ void Ammo::computeGhost(){
 	Rectangle* ghostAmmo = getGhostAmmo();
 	Rectangle* ghostBubble = getGhostBubble();
 
-	// Visibilité
-	/*if (!isOffScreen()) {
-		ghostAmmo->hide();
-		ghostBubble->hide();
-		return;
-	}*/
-	ghostAmmo->show();
-	ghostBubble->show();
+	// Transparence
+	float ratio1, ratio2;
+	if (originX < GHOST_MARGIN){										//< A gauche de l'écran
+		if (originX > - GHOST_FULL_TRANSPARENCY_DISTANCE+GHOST_MARGIN){	//< Zone de transition
+			ratio1 = (-originX+GHOST_MARGIN)/GHOST_FULL_TRANSPARENCY_DISTANCE;
+		}
+		else ratio1 = 1;
+	}
+	else if (originX > SCREEN_WIDTH - GHOST_MARGIN){										//< A droite de l'écran
+		if (originX < (SCREEN_WIDTH + GHOST_FULL_TRANSPARENCY_DISTANCE - GHOST_MARGIN)){ 	//< Zone de transition
+			ratio1 = (originX-SCREEN_WIDTH+GHOST_MARGIN)/GHOST_FULL_TRANSPARENCY_DISTANCE;
+		}
+		else ratio1 = 1;
+	}
+	else ratio1 = 0;	// Dans l'écran
+
+
+	if (originY < GHOST_MARGIN){
+		if (originY > - GHOST_FULL_TRANSPARENCY_DISTANCE + GHOST_MARGIN){
+			ratio2 = (-originY+GHOST_MARGIN)/GHOST_FULL_TRANSPARENCY_DISTANCE;
+		}
+		else ratio2 = 1;
+	}
+	else ratio2 = 0;
+
+	u32 filter = applyRatioToRGBA(WHITE,max(ratio1,ratio2),0,0,0,1);
+	ghostAmmo->setColorFilter(filter);
+	ghostBubble->setColorFilter(filter);
 
 	// Saturation sur X
 	if (originX < GHOST_MARGIN) ghostBubble->setOriginX(GHOST_MARGIN);
@@ -236,6 +255,8 @@ void Ammo::init(float strength){
 
 void Ammo::fire(){
 	fired = true;
+	getGhostAmmo()->show();
+	getGhostBubble()->show();
 }
 
 }
