@@ -82,50 +82,49 @@ Player* Ammo::getOwner() const{
 }
 
 void Ammo::computeGhost(){
+	float ratio1, ratio2;
 	Rectangle* ghostAmmo = getGhostAmmo();
 	Rectangle* ghostBubble = getGhostBubble();
 
-	// Transparence
-	float ratio1, ratio2;
-	if (originX < GHOST_MARGIN){										//< A gauche de l'écran
-		if (originX > - GHOST_FULL_TRANSPARENCY_DISTANCE+GHOST_MARGIN){	//< Zone de transition
-			ratio1 = (-originX+GHOST_MARGIN)/GHOST_FULL_TRANSPARENCY_DISTANCE;
-		}
+	/* Calcul des coordonnées (X,Y) de la bulle */
+	// A gauche de l'écran
+	if (originX < GHOST_MARGIN){
+		ghostBubble->setOriginX(GHOST_MARGIN);	// Saturation des X
+		if (originX > - GHOST_DISTANCE+GHOST_MARGIN) ratio1 = (-originX+GHOST_MARGIN)/GHOST_DISTANCE;
 		else ratio1 = 1;
 	}
-	else if (originX > SCREEN_WIDTH - GHOST_MARGIN){										//< A droite de l'écran
-		if (originX < (SCREEN_WIDTH + GHOST_FULL_TRANSPARENCY_DISTANCE - GHOST_MARGIN)){ 	//< Zone de transition
-			ratio1 = (originX-SCREEN_WIDTH+GHOST_MARGIN)/GHOST_FULL_TRANSPARENCY_DISTANCE;
-		}
+	// A droite de l'écran
+	else if (originX > SCREEN_WIDTH - GHOST_MARGIN){
+		ghostBubble->setOriginX(SCREEN_WIDTH - GHOST_MARGIN); // Saturation X
+		if (originX < (SCREEN_WIDTH + GHOST_DISTANCE - GHOST_MARGIN)) ratio1 = (originX-SCREEN_WIDTH+GHOST_MARGIN)/GHOST_DISTANCE;
 		else ratio1 = 1;
 	}
-	else ratio1 = 0;	// Dans l'écran
+	// Dans la zone visible de l'écran (en X)
+	else {
+		ghostBubble->setOriginX(originX);
+		ratio1 = 0;
+	}
 
-
+	// Au dessus de l'écran
 	if (originY < GHOST_MARGIN){
-		if (originY > - GHOST_FULL_TRANSPARENCY_DISTANCE + GHOST_MARGIN){
-			ratio2 = (-originY+GHOST_MARGIN)/GHOST_FULL_TRANSPARENCY_DISTANCE;
-		}
+		ghostBubble->setOriginY(GHOST_MARGIN);
+		if (originY > - GHOST_DISTANCE + GHOST_MARGIN) ratio2 = (-originY+GHOST_MARGIN)/GHOST_DISTANCE;
 		else ratio2 = 1;
 	}
-	else ratio2 = 0;
+	// Dans la zone visible de l'écran (en Y)
+	else {
+		ghostBubble->setOriginY(originY);
+		ratio2 = 0;
+	}
 
+	/* Calcul des angles de la bulle et de l'aperçu de la munition */
+	ghostBubble->setPolygonAngle(atan2(ghostBubble->getOriginY()-getOriginY(),ghostBubble->getOriginX()-getOriginX()));
+	ghostAmmo->setPolygonAngle(angle-ghostBubble->getPolygonAngle());
+
+	/* Calcul de la transparence de la bulle */
 	u32 filter = applyRatioToRGBA(WHITE,max(ratio1,ratio2),0,0,0,1);
 	ghostAmmo->setColorFilter(filter);
 	ghostBubble->setColorFilter(filter);
-
-	// Saturation sur X
-	if (originX < GHOST_MARGIN) ghostBubble->setOriginX(GHOST_MARGIN);
-	else if (originX > SCREEN_WIDTH - GHOST_MARGIN) ghostBubble->setOriginX(SCREEN_WIDTH - GHOST_MARGIN);
-	else ghostBubble->setOriginX(originX);
-
-	// Saturation sur Y
-	if (originY < GHOST_MARGIN) ghostBubble->setOriginY(GHOST_MARGIN);
-	else ghostBubble->setOriginY(originY);
-
-	// Angles
-	ghostBubble->setPolygonAngle(atan2(ghostBubble->getOriginY()-getOriginY(),ghostBubble->getOriginX()-getOriginX()));
-	ghostAmmo->setPolygonAngle(angle-ghostBubble->getPolygonAngle());
 }
 
 void Ammo::computeSmoklets(){

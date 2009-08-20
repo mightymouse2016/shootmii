@@ -46,6 +46,9 @@ const int RELOAD_TIME(60);
 const int FURY_RELOAD_TIME(20);
 const int FURY_HOMING_PROBABILITY(10);
 
+const int SHOT_MINIMUM_SOUND(20);
+const int SHOT_MINIMUM_STRENGTH(20);
+
 enum CannonChild{
 	CHILD_CROSSHAIR,
 	CHILD_AMMO,
