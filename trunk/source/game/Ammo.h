@@ -26,7 +26,7 @@ const int GHOST_WIDTH(60);
 const int GHOST_HEIGHT(52);
 const int GHOST_OFFSET_X(5);
 const int GHOST_MARGIN(GHOST_WIDTH-GHOST_HEIGHT/2);
-const int GHOST_FULL_TRANSPARENCY_DISTANCE(100);
+const int GHOST_DISTANCE(100);	// Distance sur laquelle le fondu en transparence s'opère
 
 enum explosionType {
   HIT_THE_GROUND,

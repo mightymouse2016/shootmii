@@ -203,8 +203,9 @@ void Cannon::shoot() {
 	getAmmo()->init(strength);
 	guidedMissile = dynamic_cast<GuidedMissile*>(getAmmo());	//< Cas ou l'on a un missile télé-guidé
 	setAmmo(NULL);
+	if (strength < SHOT_MINIMUM_STRENGTH) App::soundBank->play(AMMO_SHOT,SHOT_MINIMUM_SOUND);
+	else App::soundBank->play(AMMO_SHOT,strength);
 	strength = 0;
-
 	App::console->addDebug("recul = %d",int(SHOT_RECOIL*sin(angle)));
 	getOwner()->addRecoil(SHOT_RECOIL*sin(angle));
 }

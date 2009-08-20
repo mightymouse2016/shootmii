@@ -364,8 +364,6 @@ void Player::KeyA(EventType type){
 	case UP:
 		getCannon()->up();
 		getCannon()->shoot();
-		//	//MP3Player_PlayBuffer(Artillaryexp, Artillaryexp_size, NULL);
-		//ASND_SetVoice(0, VOICE_STEREO_16BIT, 22050, 0, (void*)Artillaryexp, Artillaryexp_size, MAX_VOLUME, MAX_VOLUME, NULL);
 		//WPAD_Rumble(WPAD_CHAN_0, 0);
 		break;
 	}

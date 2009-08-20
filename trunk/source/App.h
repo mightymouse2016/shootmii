@@ -22,6 +22,7 @@ private:
 public:
 	static Console* console;
 	static ImageBank* imageBank;
+	static SoundBank* soundBank;
 	static DrawManager* drawManager;
 	App();
 	virtual ~App();

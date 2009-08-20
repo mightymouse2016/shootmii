@@ -48,13 +48,13 @@ enum ImageTexture {
 };
 
 class ImageBank {
+private:
+	vector<GRRLIB_texImg*> allTextures;
 public:
 	ImageBank();
 	virtual ~ImageBank();
 	GRRLIB_texImg* get(ImageTexture textureName);
 	void init();
-private:
-	vector<GRRLIB_texImg*> allTextures;
 };
 
 }

@@ -21,6 +21,7 @@ class Rectangle;
 // Tools
 class Console;
 class ImageBank;
+class SoundBank;
 class Animation;
 
 // World
@@ -111,7 +112,10 @@ class App;
 #include "gfx/cannonball_ground_explosion.h"
 
 // Sons
-//#include "snd/Artillaryexp.h"
+#include "snd/big_bomb_shot.h"
+#include "snd/big_bomb_boom.h"
+#include "snd/ammo_shot.h"
+#include "snd/ammo_boom.h"
 
 // Fonts
 #include "gfx/font1.h"
@@ -139,6 +143,7 @@ class App;
 #include "tools/Tools.h"
 #include "tools/Console.h"
 #include "tools/ImageBank.h"
+#include "tools/SoundBank.h"
 #include "tools/Animation.h"
 
 // World
