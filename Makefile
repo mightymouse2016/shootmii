@@ -16,11 +16,12 @@ include $(DEVKITPPC)/wii_rules
 # INCLUDES is a list of directories containing extra header files
 #---------------------------------------------------------------------------------
 GRRLIB		:=	../grrlib/GRRLIB
+WIILIBGUI	:=	../libwiigui-1.04
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	source source/gfx source/snd source/game source/screens source/world source/math source/tools $(GRRLIB)/GRRLIB $(GRRLIB)/lib/libpng/pngu 
+SOURCES		:=	source source/gfx source/snd source/game source/screens source/world source/math source/tools source/gui $(GRRLIB)/GRRLIB $(GRRLIB)/lib/libpng/pngu
 DATA		:=	data  
-INCLUDES	:=  
+INCLUDES	:=  $(WIILIBGUI) $(WIILIBGUI)/dependencies/include $(WIILIBGUI)/dependencies/include/freetype
 PROJECT		:=	ShootMii
 
 #---------------------------------------------------------------------------------
@@ -116,14 +117,14 @@ release:
 	@ant release
 	
 	@echo [INFO] Release done.
+
 #---------------------------------------------------------------------------------
 run:
-	psoload $(TARGET).dol
+	wiiload $(OUTPUT).dol
 
 #---------------------------------------------------------------------------------
 reload:
-	psoload -r $(TARGET).dol
-
+	wiiload -r $(OUTPUT).dol
 
 #---------------------------------------------------------------------------------
 else
