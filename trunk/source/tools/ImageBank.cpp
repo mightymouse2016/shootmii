@@ -24,6 +24,7 @@ void ImageBank::init() {
 	allTextures[TXT_GUIDED1] = GRRLIB_LoadTexture(guided_1);
 	allTextures[TXT_GUIDED2] = GRRLIB_LoadTexture(guided_2);
 	allTextures[TXT_TERRAIN] = GRRLIB_LoadTexture(tile_set);
+	allTextures[TXT_BUTTON_1] = GRRLIB_LoadTexture(button_1);
 	allTextures[TXT_SMOKE] = GRRLIB_LoadTexture(smoke_sprites);
 	allTextures[TXT_BONUS_LIFE] = GRRLIB_LoadTexture(bonus_life);
 	allTextures[TXT_LIFE_JAUGE] = GRRLIB_LoadTexture(life_jauge);

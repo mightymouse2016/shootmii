@@ -2,6 +2,7 @@
 
 namespace shootmii {
 
+
 Console* App::console = new Console;
 ImageBank* App::imageBank = new ImageBank;
 SoundBank* App::soundBank = new SoundBank;
@@ -15,6 +16,7 @@ App::App():
 	nbFrame(0),
 	screen(TITLE_SCREEN)
 {
+	PAD_Init();
 	GRRLIB_Init();
 	WPAD_Init();
 	ASND_Init();

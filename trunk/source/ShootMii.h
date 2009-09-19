@@ -84,7 +84,12 @@ class App;
 #include "gfx/guided_2.h"
 #include "gfx/homing_1.h"
 #include "gfx/homing_2.h"
+#include "gfx/button_1.h"
 #include "gfx/tile_set.h"
+#include "gfx/pointer_1.h"
+#include "gfx/pointer_2.h"
+#include "gfx/pointer_3.h"
+#include "gfx/pointer_4.h"
 #include "gfx/bonus_life.h"
 #include "gfx/heat_jauge.h"
 #include "gfx/life_jauge.h"
@@ -126,6 +131,7 @@ class App;
 #include "gfx/font_score.h"
 #include "gfx/font_console.h"
 #include "gfx/font_military.h"
+#include "gfx/font.h"
 
 // Math
 #include "math/Timer.h"
@@ -168,7 +174,9 @@ class App;
 #include "game/ScoreManager.h"
 #include "game/JaugeManager.h"
 
-// Screens
+// Gui
+#include "gui/Button.h"
+#include "gui/Pointer.h"
 #include "screens/Screen.h"
 #include "screens/GameScreen.h"
 #include "screens/TitleScreen.h"
