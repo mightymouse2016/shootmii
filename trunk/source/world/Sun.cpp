@@ -21,7 +21,7 @@ Sun::Sun(float _a, float _b) :
 }
 
 void Sun::compute(){
-	radial = a/sqrt(abs(1-e*e*cos(angle+PI/2)*cos(angle+PI/2)));
+	radial = a/sqrt(fabs(1-e*e*cos(angle+PI/2)*cos(angle+PI/2)));
 	if (angle >= 0) angle = -PI;
 	else angle += SUN_SLOW;
 }
