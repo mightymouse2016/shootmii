@@ -5,12 +5,14 @@
 
 namespace shootmii {
 
-class Pointer {
+const int POINTER_WIDTH(96);
+const int POINTER_HEIGHT(96);
+
+class Pointer : public Rectangle {
 private:
 
 public:
 	Pointer(GRRLIB_texImg* image);
-	virtual ~Pointer();
 };
 
 }

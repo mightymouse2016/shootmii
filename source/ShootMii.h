@@ -131,7 +131,7 @@ class App;
 #include "gfx/font_score.h"
 #include "gfx/font_console.h"
 #include "gfx/font_military.h"
-#include "gfx/font.h"
+//#include "gfx/font.h"
 
 // Math
 #include "math/Timer.h"

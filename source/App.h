@@ -19,6 +19,8 @@ private:
 	ScreenType screen;
 	TitleScreen* titleScreen;
 	GameScreen* gameScreen;
+	Pointer* pointer_player_1;
+	Pointer* pointer_player_2;
 public:
 	static Console* console;
 	static ImageBank* imageBank;

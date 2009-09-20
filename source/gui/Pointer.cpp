@@ -2,33 +2,19 @@
 
 namespace shootmii {
 
-Pointer::Pointer(GRRLIB_texImg* image)
-	/*
-	: Rectangle(
-	POINTER_LAYER,
-	const float width,
-	const float height,
-	const float originX,
-	const float originY,
-	const float radial = 0,
-	const float angle = 0,
-	const float polygonAngle = 0,
-	const float spin = 1,
-	GRRLIB_texImg* image = NULL,
-	Polygon* father = NULL,
-	const int spriteIndex = 0,
-	const int spriteWidth = 0,
-	const int spriteHeight = 0,
-	const bool hidden = false,
-	const bool debugHidden = false)
-	*/
+Pointer::Pointer(GRRLIB_texImg* image) :
+	Rectangle(
+		POINTER_LAYER,
+		POINTER_WIDTH,
+		POINTER_HEIGHT,
+		0,0,0,0,0,1,
+		image,
+		NULL,0,
+		POINTER_WIDTH,
+		POINTER_HEIGHT,
+		true)
 {
-	// TODO Auto-generated constructor stub
-
-}
-
-Pointer::~Pointer() {
-	// TODO Auto-generated destructor stub
+	// NOTHING TO DO
 }
 
 }
