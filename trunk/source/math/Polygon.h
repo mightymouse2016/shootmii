@@ -55,6 +55,7 @@ protected:
 	float spin; //0 -> translation circulaire. 1 -> rotation synchrone. autre -> rotation asynchrone
 	float angle;
 	float polygonAngle;
+	float scale;
 	Polygon* father;
 	vector<Polygon*> children; //Pour le destructeur
 	vector<Coordinates> vertices;
@@ -117,6 +118,7 @@ public:
 	void setSpin(const float spin);
 	void setAngle(const float angle);
 	void setPolygonAngle(const float polygonAngle);
+	void setScale(const float scale);
 	void setFather(Polygon* father);
 	void setImage(GRRLIB_texImg* image);
 	void setColorFilter(const u32 colorFilter);

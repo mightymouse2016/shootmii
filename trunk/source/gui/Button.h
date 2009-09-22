@@ -5,13 +5,20 @@
 
 namespace shootmii {
 
+const float BUTTON_GROWTH(1.05); // 5% de grossissement
 const int BUTTON_1_WIDTH(196);
 const int BUTTON_1_HEIGHT(52);
-// App::imageBank->get(TXT_BUTTON_1)
+
+enum ButtonType{
+	EXIT_BUTTON,
+	START_BUTTON
+};
 
 class Button : public Rectangle{
 private:
 	string text;
+	bool pointed;
+	bool clicked;
 public:
 	Button(
 		const int originX,
@@ -21,6 +28,12 @@ public:
 		const string text,
 		GRRLIB_texImg* image
 	);
+	void click();
+	void unClick();
+	bool isClicked() const;
+	void pointOn();
+	void pointOver();
+	bool isPointed() const;
 };
 
 }

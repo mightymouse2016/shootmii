@@ -10,9 +10,17 @@ const int POINTER_HEIGHT(96);
 
 class Pointer : public Rectangle {
 private:
-
+	int playerNumber;
+	bool clicking;
+	App* app;
+	u32 channel;
+	u32 events[3];
 public:
-	Pointer(GRRLIB_texImg* image);
+	Pointer(int playerNumber, App* app);
+	~Pointer();
+	bool isCliking() const;
+	void drawDebug() const;
+	void dealEvent();
 };
 
 }

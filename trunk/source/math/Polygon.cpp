@@ -27,6 +27,7 @@ Polygon::Polygon(
 		spin(_spin),
 		angle(_angle),
 		polygonAngle(_polygonAngle),
+		scale(1),
 		father(_father),
 		drawOrigin(_drawOrigin),
 		image(_image),
@@ -40,14 +41,7 @@ Polygon::Polygon(
 {
 	numberOfPolygonsInstances++;
 	if (image){
-		if (spriteWidth && spriteHeight) { // Si c'est un sprite et non une image
-			GRRLIB_InitTileSet(image, spriteWidth, spriteHeight, 0);
-			image->handlex = 0; // Pour la compatibilité avec la nouvelle version de GRRLib
-			image->handley = 0;
-		} else {
-			image->handlex = _spriteWidth/2;
-			image->handley = _spriteHeight/2;
-		}
+		setImage(image);
 	}
 }
 
@@ -196,12 +190,24 @@ void Polygon::setPolygonAngle(const float _polygonAngle){
 	polygonAngle = _polygonAngle;
 }
 
+void Polygon::setScale(const float _scale){
+	scale = _scale;
+}
+
 void Polygon::setFather(Polygon* _father){
 	father = _father;
 }
 
 void Polygon::setImage(GRRLIB_texImg* _image){
 	image = _image;
+	if (spriteWidth && spriteHeight) { // Si c'est un sprite et non une image
+		GRRLIB_InitTileSet(image, spriteWidth, spriteHeight, 0);
+		image->handlex = 0; // Pour la compatibilité avec la nouvelle version de GRRLib
+		image->handley = 0;
+	} else {
+		image->handlex = spriteWidth/2;
+		image->handley = spriteHeight/2;
+	}
 }
 
 void Polygon::setColorFilter(const u32 _colorFilter){
@@ -235,8 +241,7 @@ void Polygon::translate(const float deltaX,const float deltaY){
 }
 
 void Polygon::grow(const float k){
-	int size = vertices.size();
-	for(int i=0;i<size;i++) vertices[i].grow(k);
+	scale*=k;
 }
 
 void Polygon::addToDrawManager(){
@@ -256,8 +261,8 @@ void Polygon::draw() const{
 			getAbsoluteY()+getDrawOrigin().getY(),
 			image,
 			getAbsolutePolygonAngle()*spin*180/PI,
-			1,
-			1,
+			scale,
+			scale,
 			colorFilter,
 			spriteIndex);
 	}
@@ -267,8 +272,8 @@ void Polygon::draw() const{
 			getAbsoluteY()+getDrawOrigin().getY(),
 			image,
 			getAbsolutePolygonAngle()*spin*180/PI,
-			1,
-			1,
+			scale,
+			scale,
 			colorFilter);
 	}
 }
