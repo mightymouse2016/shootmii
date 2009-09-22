@@ -62,6 +62,7 @@ class App;
 
 // Bibliothèques standard
 #include <set>
+#include <map>
 #include <list>
 #include <ctime>
 #include <cmath>

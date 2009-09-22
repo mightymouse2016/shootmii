@@ -9,10 +9,17 @@ class TitleScreen : public Screen {
 private:
 	GRRLIB_texImg* tex_title_screen;
 	GRRLIB_texImg* tex_font;
+	Button* button_start;
+	Pointer* pointer_player_1;
 public:
-	TitleScreen(App*);
-	void draw();
-	void dealEvent(const u32*, const u32*);
+	TitleScreen(
+			App* app,
+			Pointer** pointerPlayer,
+			u32** eventsPlayer);
+	void init();
+	void dealEvent();
+	void compute();
+	void addToDrawManager();
 };
 
 }

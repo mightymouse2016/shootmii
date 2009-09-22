@@ -4,14 +4,34 @@
 #include "../ShootMii.h"
 
 namespace shootmii {
-  class Screen {
+
+enum ScreenType{
+	TITLE_SCREEN,
+	GAME_SCREEN
+};
+
+class Screen {
     protected:
-      App* app;
+		App* app;
+		Pointer** pointerPlayer;
+		u32** eventsPlayer;
+		map<ButtonType,Button*> buttons;
     public:
-      Screen(App*);
-      virtual ~Screen();
-      virtual void dealEvent(const u32*, const u32*)=0;
-  };
+		Screen(
+			  App* app,
+			  Pointer** pointerPlayer,
+			  u32** eventsPlayer
+			 );
+		virtual ~Screen();
+		virtual void addToDrawManager();
+		virtual void init();
+		virtual void compute();
+		void computePointer(Pointer* pointer);
+		void computeButtons();
+		void addButton(const int originX, const int originY, const string text, const ButtonType type);
+		virtual void dealEvent();
+};
+
 }
 
 #endif /*SCREEN_H_*/

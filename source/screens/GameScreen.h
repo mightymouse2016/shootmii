@@ -10,10 +10,13 @@ private:
 	Manager* manager;
 	ScoreManager* score_manager;
 public:
-	GameScreen(App* _app);
+	GameScreen(
+			App* app,
+			Pointer** pointerPlayer,
+			u32** eventsPlayer);
 	virtual ~GameScreen();
 	void init();
-	void dealEvent(const u32*, const u32*);
+	void dealEvent();
 	void compute();
 	void addToDrawManager();
 };

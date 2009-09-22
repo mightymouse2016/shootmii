@@ -5,10 +5,6 @@
 
 namespace shootmii {
 
-enum ScreenType {
-	TITLE_SCREEN, GAME_SCREEN
-};
-
 class App {
 private:
 	u8 fps;
@@ -16,11 +12,10 @@ private:
 	u8 frameCount;
 	bool running;
 	int nbFrame;
-	ScreenType screen;
-	TitleScreen* titleScreen;
-	GameScreen* gameScreen;
-	Pointer* pointer_player_1;
-	Pointer* pointer_player_2;
+	Screen* currentScreen;
+	map<ScreenType,Screen*> screens;
+	u32* eventsPlayer[2];
+	Pointer* pointerPlayer[2];
 public:
 	static Console* console;
 	static ImageBank* imageBank;
@@ -30,9 +25,13 @@ public:
 	virtual ~App();
 	u8 getFPS() const;
 	u8 getFrameCount() const;
+	u32** getEventsPlayer();
 	bool isRunning() const;
+	void setScreen(ScreenType screen);
 	void run();
+	void exit();
 	void dealEvent();
+
 	void computeFrameRate();
 	void compute();
 	void draw() const;

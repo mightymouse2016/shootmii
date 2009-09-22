@@ -2,23 +2,48 @@
 
 namespace shootmii {
 
-TitleScreen::TitleScreen(App* app) :
-	Screen(app),
+TitleScreen::TitleScreen(
+		App* app,
+		Pointer** _pointerPlayer,
+		u32** _eventsPlayer) :
+	Screen(app, _pointerPlayer, _eventsPlayer),
     tex_title_screen(App::imageBank->get(TXT_TITLE_SCREEN)),
     tex_font(loadFont(font_military, 32, 32))
 {
-	// NOTHING TO DO
+	addButton(SCREEN_WIDTH/4, SCREEN_HEIGHT*3/4, "Exit", EXIT_BUTTON);
+	addButton(SCREEN_WIDTH*3/4, SCREEN_HEIGHT*3/4, "Start Game", START_BUTTON);
 }
 
-void TitleScreen::draw() {
-    GRRLIB_DrawImg(0, 0, tex_title_screen, 0, 1, 1, WHITE);
-    if (this->app->getFrameCount() > 25) {
-		printRight(440, tex_font, WHITE, 1, "press a ");
-    }
+
+
+void TitleScreen::compute(){
+	Screen::compute();
+
 }
 
-void TitleScreen::dealEvent(const u32*, const u32*){
-	// NOTHING
+void TitleScreen::addToDrawManager(){
+	Screen::addToDrawManager();
+
 }
+
+void TitleScreen::init() {
+	Screen::init();
+
+}
+
+void TitleScreen::dealEvent(){
+	Screen::dealEvent();
+
+	if (buttons[START_BUTTON]->isClicked()){
+		app->setScreen(GAME_SCREEN);
+		buttons[START_BUTTON]->unClick();
+	}
+
+	if (buttons[EXIT_BUTTON]->isClicked()){
+		app->exit();
+		buttons[EXIT_BUTTON]->unClick();
+	}
+}
+
 
 }
