@@ -1,6 +1,8 @@
 #ifndef SHOOTMII_H_
 #define SHOOTMII_H_
 
+#define LD_TCP_PORT 4299
+
 using namespace std;
 
 namespace shootmii {
@@ -59,6 +61,7 @@ class App;
 #include "../../../grrlib/GRRLIB/GRRLIB/GRRLIB.h"
 #include <wiiuse/wpad.h>
 #include <ogc/lwp_watchdog.h>
+#include "FreeTypeGX/FreeTypeGX.h"
 
 // Bibliothèques standard
 #include <set>
@@ -66,6 +69,7 @@ class App;
 #include <list>
 #include <ctime>
 #include <cmath>
+#include <cwchar>
 #include <string>
 #include <vector>
 #include <utility> // Pour utiliser des pair<T1,T2>
@@ -132,7 +136,8 @@ class App;
 #include "gfx/font_score.h"
 #include "gfx/font_console.h"
 #include "gfx/font_military.h"
-//#include "gfx/font.h"
+
+#include "fonts/gui_font.h"
 
 // Math
 #include "math/Timer.h"
