@@ -26,7 +26,7 @@ void Screen::addToDrawManager(){
 }
 
 void Screen::init(){
-
+	// NOTHING TO DO
 }
 
 void Screen::compute(){

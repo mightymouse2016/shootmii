@@ -34,6 +34,7 @@ public:
 	void pointOn();
 	void pointOver();
 	bool isPointed() const;
+	void draw() const;
 };
 
 }

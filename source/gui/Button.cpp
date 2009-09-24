@@ -13,7 +13,7 @@ Button::Button(const int originX,
 		pointed(false),
 		clicked(false)
 {
-	// NOTHING TO DO
+	App::fontManager->loadFont(gui_font, gui_font_size, 16);
 }
 
 void Button::click(){
@@ -40,5 +40,13 @@ bool Button::isPointed() const{
 	return pointed;
 }
 
+void Button::draw() const{
+	Polygon::draw();
+	char textCopy[255];
+	strcpy(textCopy,text.c_str());
+	GXColor color = {0x00, 0x00, 0x00, 0xff};
+	App::fontManager->drawText(originX, originY+16/2, FreeTypeGX::charToWideChar(textCopy),color,
+            FTGX_JUSTIFY_CENTER | FTGX_ALIGN_BOTTOM);
+}
 
 }

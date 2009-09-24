@@ -21,6 +21,7 @@ public:
 	static ImageBank* imageBank;
 	static SoundBank* soundBank;
 	static DrawManager* drawManager;
+	static FreeTypeGX* fontManager;
 	App();
 	virtual ~App();
 	u8 getFPS() const;

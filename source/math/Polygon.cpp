@@ -293,7 +293,7 @@ void Polygon::drawDebug() const{
 	for(int i=0, j, size=rV.size();i<size;i++){
 		j = i+1;
 		if (j == size) j = 0;
-		GRRLIB_Line(rV[i].getX()+x,rV[i].getY()+y,rV[j].getX()+x,rV[j].getY()+y,RED);
+		GRRLIB_Line(rV[i].getX()*scale+x,rV[i].getY()*scale+y,rV[j].getX()*scale+x,rV[j].getY()*scale+y,RED);
 	}
 
 	// Le rayon

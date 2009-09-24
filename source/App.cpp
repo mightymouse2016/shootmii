@@ -6,6 +6,7 @@ Console* App::console = new Console;
 ImageBank* App::imageBank = new ImageBank;
 SoundBank* App::soundBank = new SoundBank;
 DrawManager* App::drawManager = new DrawManager;
+FreeTypeGX* App::fontManager = new FreeTypeGX;
 
 App::App():
 	fps(0),

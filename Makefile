@@ -19,7 +19,7 @@ GRRLIB		:=	../grrlib/GRRLIB
 WIILIBGUI	:=	../libwiigui-1.04
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	source source/gfx source/snd source/game source/screens source/world source/math source/tools source/gui $(GRRLIB)/GRRLIB $(GRRLIB)/lib/libpng/pngu
+SOURCES		:=	source source/FreeTypeGX source/fonts source/gfx source/snd source/game source/screens source/world source/math source/tools source/gui $(GRRLIB)/GRRLIB $(GRRLIB)/lib/libpng/pngu
 DATA		:=	data  
 INCLUDES	:=  $(WIILIBGUI) $(WIILIBGUI)/dependencies/include $(WIILIBGUI)/dependencies/include/freetype
 PROJECT		:=	ShootMii
@@ -36,7 +36,7 @@ LDFLAGS	=	-g $(MACHDEP) -mrvl -Wl,-Map,$(notdir $@).map
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS	:=	-lmad -lasnd -lpng -ljpeg -lz -lfat -lwiiuse -lbte -logc -lm
+LIBS	:=	-lmetaphrasis -lfreetype -lmad -lasnd -lpng -ljpeg -lz -lfat -lwiiuse -lbte -logc -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -165,6 +165,16 @@ $(OUTPUT).elf: $(OFILES)
 	@echo $(notdir $<)
 	$(bin2o)
 
+-include $(DEPENDS)
+
+#---------------------------------------------------------------------------------
+# This rule links in binary data with the .ttf extension
+#---------------------------------------------------------------------------------
+%.ttf.o :	%.ttf
+#---------------------------------------------------------------------------------
+	@echo $(notdir $<)
+	$(bin2o)
+      
 -include $(DEPENDS)
 
 #---------------------------------------------------------------------------------

@@ -18,31 +18,26 @@ TitleScreen::TitleScreen(
 
 void TitleScreen::compute(){
 	Screen::compute();
-
+	// Ajouter ici tout code supplémentaire
 }
 
 void TitleScreen::addToDrawManager(){
 	Screen::addToDrawManager();
-
+	// Ajouter ici tout code supplémentaire
 }
 
 void TitleScreen::init() {
 	Screen::init();
-
+	// Ajouter ici tout code supplémentaire
 }
 
 void TitleScreen::dealEvent(){
 	Screen::dealEvent();
 
-	if (buttons[START_BUTTON]->isClicked()){
-		app->setScreen(GAME_SCREEN);
-		buttons[START_BUTTON]->unClick();
-	}
+	if (buttons[EXIT_BUTTON]->isClicked()) app->exit();
+	if (buttons[START_BUTTON]->isClicked()) app->setScreen(GAME_SCREEN);
 
-	if (buttons[EXIT_BUTTON]->isClicked()){
-		app->exit();
-		buttons[EXIT_BUTTON]->unClick();
-	}
+	for (map<ButtonType,Button*>::iterator i=buttons.begin();i!=buttons.end();i++) i->second->unClick();
 }
 
 
