@@ -48,7 +48,10 @@ class DrawManager;
 class ScoreManager;
 class JaugeManager;
 
-// Screens
+// Gui
+class Text;
+class Button;
+class Pointer;
 class Screen;
 class GameScreen;
 class TitleScreen;
@@ -138,6 +141,7 @@ class App;
 #include "gfx/font_military.h"
 
 #include "fonts/gui_font.h"
+#include "fonts/army_font.h"
 
 // Math
 #include "math/Timer.h"
@@ -181,6 +185,7 @@ class App;
 #include "game/JaugeManager.h"
 
 // Gui
+#include "gui/Text.h"
 #include "gui/Button.h"
 #include "gui/Pointer.h"
 #include "screens/Screen.h"

@@ -15,13 +15,17 @@ Screen::Screen(
 
 Screen::~Screen(){
 	buttons.clear();
+	texts.clear();
 }
 
 void Screen::addToDrawManager(){
 	pointerPlayer[0]->addToDrawManager();
 	pointerPlayer[1]->addToDrawManager();
 	for (map<ButtonType,Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
-		App::drawManager->addToDraw(i->second);
+		i->second->addToDrawManager();
+	}
+	for (list<Text*>::iterator i=texts.begin();i!=texts.end();i++){
+		(*i)->addToDrawManager();
 	}
 }
 
@@ -71,6 +75,10 @@ void Screen::dealEvent(){
 
 void Screen::addButton(const int originX, const int originY, const string text, const ButtonType type){
 	buttons[type] = new Button(originX,originY,BUTTON_1_WIDTH,BUTTON_1_HEIGHT,text,App::imageBank->get(TXT_BUTTON_1));
+}
+
+void Screen::addText(string _text, fontName _name, fontSize _size, u32 _color, const float _originX, const float _originY){
+	texts.push_back(new Text(_text,_name,_size,_color,_originX,_originY));
 }
 
 }

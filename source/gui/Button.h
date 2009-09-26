@@ -16,7 +16,6 @@ enum ButtonType{
 
 class Button : public Rectangle{
 private:
-	string text;
 	bool pointed;
 	bool clicked;
 public:
@@ -34,7 +33,8 @@ public:
 	void pointOn();
 	void pointOver();
 	bool isPointed() const;
-	void draw() const;
+	Text* getText();
+	Text* getText() const;
 };
 
 }

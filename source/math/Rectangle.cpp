@@ -36,4 +36,11 @@ float Rectangle::getHeight() const{
 	return vertices[DOWN_LEFT].getY() - vertices[UP_LEFT].getY();
 }
 
+void Rectangle::setWidthHeight(const float _width, const float _height){
+	vertices[0] = Coordinates(-_width/2,-_height/2);
+	vertices[1] = Coordinates(_width/2,-_height/2);
+	vertices[2] = Coordinates(_width/2,_height/2);
+	vertices[3] = Coordinates(-_width/2,_height/2);
+}
+
 }

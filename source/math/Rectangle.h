@@ -26,6 +26,7 @@ public:
 		const bool debugHidden = false);
 	float getWidth() const;
 	float getHeight() const;
+	void setWidthHeight(const float _width, const float _height);
 };
 
 }
