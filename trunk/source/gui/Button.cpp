@@ -9,11 +9,10 @@ Button::Button(const int originX,
 	const string _text,
 	GRRLIB_texImg* image) :
 		Rectangle(BUTTON_LAYER,width,height,originX,originY,0,0,0,1,image),
-		text(_text),
 		pointed(false),
 		clicked(false)
 {
-	App::fontManager->loadFont(gui_font, gui_font_size, 16);
+	addChild(new Text(_text,GUI_FONT,FONT_SIZE_6,BLACK));
 }
 
 void Button::click(){
@@ -40,13 +39,12 @@ bool Button::isPointed() const{
 	return pointed;
 }
 
-void Button::draw() const{
-	Polygon::draw();
-	char textCopy[255];
-	strcpy(textCopy,text.c_str());
-	GXColor color = {0x00, 0x00, 0x00, 0xff};
-	App::fontManager->drawText(originX, originY+16/2, FreeTypeGX::charToWideChar(textCopy),color,
-            FTGX_JUSTIFY_CENTER | FTGX_ALIGN_BOTTOM);
+Text* Button::getText(){
+	return static_cast<Text*>(children[0]);
+}
+
+Text* Button::getText() const{
+	return static_cast<Text*>(children[0]);
 }
 
 }

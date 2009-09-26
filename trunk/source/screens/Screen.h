@@ -16,6 +16,7 @@ class Screen {
 		Pointer** pointerPlayer;
 		u32** eventsPlayer;
 		map<ButtonType,Button*> buttons;
+		list<Text*> texts;
     public:
 		Screen(
 			  App* app,
@@ -29,6 +30,7 @@ class Screen {
 		void computePointer(Pointer* pointer);
 		void computeButtons();
 		void addButton(const int originX, const int originY, const string text, const ButtonType type);
+		void addText(string text, fontName name, fontSize size, u32 color, const float originX = 0, const float originY = 0);
 		virtual void dealEvent();
 };
 
