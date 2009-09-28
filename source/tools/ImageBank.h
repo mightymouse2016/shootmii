@@ -7,6 +7,7 @@ namespace shootmii {
 
 enum ImageTexture {
 	TXT_SUN,
+	TXT_DOCK,
 	TXT_TANK,
 	TXT_AMMO1,
 	TXT_AMMO2,

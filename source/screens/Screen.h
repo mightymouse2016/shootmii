@@ -17,20 +17,19 @@ class Screen {
 		u32** eventsPlayer;
 		map<ButtonType,Button*> buttons;
 		list<Text*> texts;
+		list<Dock*> docks;
     public:
-		Screen(
-			  App* app,
-			  Pointer** pointerPlayer,
-			  u32** eventsPlayer
-			 );
+		Screen(App* app,Pointer** pointerPlayer,u32** eventsPlayer);
 		virtual ~Screen();
 		virtual void addToDrawManager();
 		virtual void init();
 		virtual void compute();
 		void computePointer(Pointer* pointer);
 		void computeButtons();
+		void computeDocks();
 		void addButton(const int originX, const int originY, const string text, const ButtonType type);
-		void addText(string text, fontName name, fontSize size, u32 color, const float originX = 0, const float originY = 0);
+		void addText(Text* text);
+		void addDock(Dock* dock);
 		virtual void dealEvent();
 };
 

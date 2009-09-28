@@ -5,6 +5,7 @@ namespace shootmii {
 JaugeManager* Manager::jaugeManager = new JaugeManager;
 
 Manager::Manager(App* _app) :
+	pause(false),
 	app(_app),
 	world(new World),
 	player1(new Player(world->getTerrain(),world->getWind(),1,0,PI/2,PI/4,ROTATION_STEP,100,false,this)),
@@ -28,6 +29,14 @@ Manager::~Manager() {
 	delete player2;
 	delete world;
 	delete jaugeManager;
+}
+
+void Manager::togglePause(){
+	pause = !pause;
+}
+
+bool Manager::isInPause() const{
+	return pause;
 }
 
 Player* Manager::getPlayer1() const {
@@ -61,7 +70,8 @@ void Manager::initPlayers() const {
 	player2->initPosition(world->getTerrain()->getCols()*world->getTerrain()->getCellWidth() - PLAYER_OFFSET);
 }
 
-void Manager::init() const {
+void Manager::init(){
+	pause = false;
 	world->init();
 	ammos->clear();
 	bonuses->clear();
@@ -198,7 +208,6 @@ void Manager::compute() {
 	computeBonuses();
 	computeVictory();
 	computeAnimations();
-
 }
 
 void Manager::addToDrawManager() const {

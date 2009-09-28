@@ -12,10 +12,8 @@ TitleScreen::TitleScreen(
 {
 	addButton(SCREEN_WIDTH/4, SCREEN_HEIGHT*3/4, "Exit", EXIT_BUTTON);
 	addButton(SCREEN_WIDTH*3/4, SCREEN_HEIGHT*3/4, "Start Game", START_BUTTON);
-	addText("ShootMii",ARMY_FONT,FONT_SIZE_15,WHITE,SCREEN_WIDTH/2,SCREEN_HEIGHT*2/5);
+	addText(new Text("ShootMii",ARMY_FONT,FONT_SIZE_15,WHITE,SCREEN_WIDTH/2,SCREEN_HEIGHT*2/5));
 }
-
-
 
 void TitleScreen::compute(){
 	Screen::compute();
