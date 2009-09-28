@@ -50,6 +50,7 @@ class JaugeManager;
 
 // Gui
 class Text;
+class Dock;
 class Button;
 class Pointer;
 class Screen;
@@ -82,6 +83,7 @@ class App;
 
 // Images
 #include "gfx/sun.h"
+#include "gfx/dock.h"
 #include "gfx/tank.h"
 #include "gfx/cannon.h"
 #include "gfx/ammo_1.h"
@@ -186,6 +188,7 @@ class App;
 
 // Gui
 #include "gui/Text.h"
+#include "gui/Dock.h"
 #include "gui/Button.h"
 #include "gui/Pointer.h"
 #include "screens/Screen.h"

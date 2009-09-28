@@ -13,6 +13,7 @@ ImageBank::~ImageBank() {
 void ImageBank::init() {
 	allTextures.reserve(NUMBER_OF_TEXTURES);
 	allTextures[TXT_SUN] = GRRLIB_LoadTexture(sun);
+	allTextures[TXT_DOCK] = GRRLIB_LoadTexture(dock);
 	allTextures[TXT_TANK] = GRRLIB_LoadTexture(tank);
 	allTextures[TXT_AMMO1] = GRRLIB_LoadTexture(ammo_1);
 	allTextures[TXT_AMMO2] = GRRLIB_LoadTexture(ammo_2);

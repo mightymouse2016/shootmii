@@ -29,6 +29,15 @@ enum fontSize{
 	FONT_SIZE_15 = 72
 };
 
+/*
+ * Ordre d'éxécution à respecter pour éviter les bugs :
+ * setFontSize / setFontName
+ * initFont
+ * setText
+ * update
+ * setColor
+ */
+
 class Text : public Rectangle{
 private:
 	wchar_t* text;
@@ -44,6 +53,7 @@ public:
 	void setFontName(fontName name);
 	void setFontSize(fontSize size);
 	void setColor(u32 _color);
+	void update();
 	void draw() const;
 };
 

@@ -9,6 +9,7 @@ const int PLAYER_OFFSET(100);
 
 class Manager {
 private:
+	bool pause;
 	App* app;
 	World* world;
 	Player* player1;
@@ -20,6 +21,8 @@ public:
 	static JaugeManager* jaugeManager;
 	Manager(App*);
 	~Manager();
+	void togglePause();
+	bool isInPause() const;
 	Player* getPlayer1() const;
 	Player* getPlayer2() const;
 	Wind* getWind() const;
@@ -27,7 +30,7 @@ public:
 	void addBonus(Bonus* bonus) const;
 	void addAnimation(Animation* animation) const;
 	void initPlayers() const;
-	void init() const;
+	void init();
 	void dealEvent(const u32*, const u32*);
 	void computeAnimations();
 	void computeVictory();

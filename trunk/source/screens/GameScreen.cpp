@@ -10,7 +10,20 @@ GameScreen::GameScreen(
     manager(new Manager(_app)),
     score_manager(new ScoreManager(_app,manager))
 {
-    // NOTHING TO BE DONE
+	// Top dock
+	Dock* dock = new Dock(true);
+	Text * pause_text = new Text("Pause",GUI_FONT,FONT_SIZE_14,WHITE,0,0);
+	addText(pause_text);
+	dock->addText(pause_text); // "Accroche" le texte au dock
+	addDock(dock);
+
+	// Bottom dock
+	dock = new Dock(false);
+	addButton(-SCREEN_WIDTH/4, 0, "Exit", EXIT_BUTTON);
+	dock->addButton(buttons[EXIT_BUTTON]);	// "Accroche" le boutton au dock
+	addButton(SCREEN_WIDTH/4, 0, "Resume", RESUME_BUTTON);
+	dock->addButton(buttons[RESUME_BUTTON]); // "Accroche" le boutton au dock
+	addDock(dock);
 }
 
 GameScreen::~GameScreen() {
@@ -20,6 +33,7 @@ GameScreen::~GameScreen() {
 
 void GameScreen::compute(){
 	Screen::compute();
+	if (manager->isInPause()) return;
 	manager->compute();
 	score_manager->compute();
 }
@@ -37,8 +51,17 @@ void GameScreen::init() {
 
 void GameScreen::dealEvent() {
 	Screen::dealEvent();
-	manager->dealEvent(eventsPlayer[0], eventsPlayer[1]);
-	if ((eventsPlayer[0][DOWN] | eventsPlayer[1][DOWN]) & WPAD_BUTTON_HOME) app->setScreen(TITLE_SCREEN);
+	if (!manager->isInPause()) manager->dealEvent(eventsPlayer[0], eventsPlayer[1]);
+
+	if (buttons[EXIT_BUTTON]->isClicked()) app->setScreen(TITLE_SCREEN);
+	if (buttons[RESUME_BUTTON]->isClicked() || ((eventsPlayer[0][DOWN] | eventsPlayer[1][DOWN]) & WPAD_BUTTON_HOME)) {
+		for (list<Dock*>::iterator i=docks.begin();i!=docks.end();i++){
+			(*i)->toggleHideShow();
+		}
+		manager->togglePause();
+	}
+
+	for (map<ButtonType,Button*>::iterator i=buttons.begin();i!=buttons.end();i++) i->second->unClick();
 }
 
 }

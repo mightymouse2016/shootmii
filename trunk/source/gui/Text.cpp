@@ -6,11 +6,12 @@ Text::Text(string _text, fontName _name, fontSize _size, u32 _color, const float
 	Rectangle(TEXT_LAYER,0,0,_originX,_originY),
 	name(_name),
 	size(_size),
-	gxFont(new FreeTypeGX())
+	gxFont(new FreeTypeGX)
 {
 	initFont();
 	setText(_text);
 	setColor(_color);
+	update();
 }
 
 Text::~Text(){
@@ -35,18 +36,17 @@ void Text::setText(string _text){
 	char textCopy[255];
 	strcpy(textCopy,_text.c_str());
 	text = FreeTypeGX::charToWideChar(textCopy);
-	setWidthHeight(gxFont->getWidth(text),gxFont->getHeight(text));
 }
 
 void Text::setFontName(fontName _name){
 	name = _name;
-	initFont();
-	setWidthHeight(gxFont->getWidth(text),gxFont->getHeight(text));
 }
 
 void Text::setFontSize(fontSize _size){
 	size = _size;
-	initFont();
+}
+
+void Text::update(){
 	setWidthHeight(gxFont->getWidth(text),gxFont->getHeight(text));
 }
 

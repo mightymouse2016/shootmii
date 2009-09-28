@@ -16,6 +16,7 @@ Screen::Screen(
 Screen::~Screen(){
 	buttons.clear();
 	texts.clear();
+	docks.clear();
 }
 
 void Screen::addToDrawManager(){
@@ -27,42 +28,66 @@ void Screen::addToDrawManager(){
 	for (list<Text*>::iterator i=texts.begin();i!=texts.end();i++){
 		(*i)->addToDrawManager();
 	}
+	for (list<Dock*>::iterator i=docks.begin();i!=docks.end();i++){
+		(*i)->addToDrawManager();
+	}
 }
 
 void Screen::init(){
-	// NOTHING TO DO
+	for (list<Dock*>::iterator i=docks.begin();i!=docks.end();i++){
+		(*i)->init();
+	}
 }
 
 void Screen::compute(){
 	computePointer(pointerPlayer[0]);
 	computePointer(pointerPlayer[1]);
 	computeButtons();
+	computeDocks();
 }
 
 void Screen::computePointer(Pointer* pointer){
 	int x = pointer->getOriginX();
 	int y = pointer->getOriginY();
+	int bx, by, bw, bh;
+	Button* b;
+
 	for (map<ButtonType,Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
-		if (x < (i->second->getOriginX() - i->second->getWidth()/2)) continue;
-		if (x > (i->second->getOriginX() + i->second->getWidth()/2)) continue;
-		if (y < (i->second->getOriginY() - i->second->getHeight()/2)) continue;
-		if (y > (i->second->getOriginY() + i->second->getHeight()/2)) continue;
-		if (pointer->isCliking()) i->second->click();
-		i->second->pointOn();
+		b = i->second;
+		if (b->isStuck()) continue;
+		bx = b->getAbsoluteOriginX();
+		by = b->getAbsoluteOriginY();
+		bw = b->getWidth();
+		bh = b->getHeight();
+		if (x < (bx - bw/2)) continue;
+		if (x > (bx + bw/2)) continue;
+		if (y < (by - bh/2)) continue;
+		if (y > (by + bh/2)) continue;
+		if (pointer->isCliking()) b->click();
+		b->pointOn();
 	}
 }
 
 void Screen::computeButtons(){
+	Button* b;
 	for (map<ButtonType,Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
-		if (i->second->isPointed()){
-			i->second->setScale(BUTTON_GROWTH);
-			i->second->pointOver();
+		b = i->second;
+		if (b->isPointed()){
+			b->grow();			// Grossissement du bouton
+			b->pointOver();
 		}
 		else{
-			i->second->setScale(1);
+			b->shrink();		// Rétrécissement du bouton
 		}
 	}
 }
+
+void Screen::computeDocks(){
+	for (list<Dock*>::iterator i=docks.begin();i!=docks.end();i++){
+		(*i)->compute();
+	}
+}
+
 
 void Screen::dealEvent(){
 	pointerPlayer[0]->dealEvent();
@@ -77,8 +102,12 @@ void Screen::addButton(const int originX, const int originY, const string text, 
 	buttons[type] = new Button(originX,originY,BUTTON_1_WIDTH,BUTTON_1_HEIGHT,text,App::imageBank->get(TXT_BUTTON_1));
 }
 
-void Screen::addText(string _text, fontName _name, fontSize _size, u32 _color, const float _originX, const float _originY){
-	texts.push_back(new Text(_text,_name,_size,_color,_originX,_originY));
+void Screen::addText(Text* text){
+	texts.push_back(text);
+}
+
+void Screen::addDock(Dock* dock){
+	docks.push_back(dock);
 }
 
 }
