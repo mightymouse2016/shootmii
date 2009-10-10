@@ -28,7 +28,7 @@ void printRight(f32 ypos, GRRLIB_texImg* tex, u32 color, f32 zoom,const char *te
 void drawRectangle(f32 x, f32 y, f32 width, f32 height, u32 colors[4]) {
 	f32 x2 = x+width;
 	f32 y2 = y+height;
-	Vector v[] = {{x,y,0.0f}, {x2,y,0.0f}, {x2,y2,0.0f}, {x,y2,0.0f}, {x,y,0.0f}};
+	guVector v[] = {{x,y,0.0f}, {x2,y,0.0f}, {x2,y2,0.0f}, {x,y2,0.0f}, {x,y,0.0f}};
 
 	GX_Begin(GX_TRIANGLEFAN, GX_VTXFMT0, 4);
 	for(int i=0; i < 4; i++) {
