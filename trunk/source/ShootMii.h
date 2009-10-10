@@ -62,11 +62,6 @@ class App;
 
 }
 
-#include "../../../grrlib/GRRLIB/GRRLIB/GRRLIB.h"
-#include <wiiuse/wpad.h>
-#include <ogc/lwp_watchdog.h>
-#include "FreeTypeGX/FreeTypeGX.h"
-
 // Bibliothèques standard
 #include <set>
 #include <map>
@@ -80,6 +75,12 @@ class App;
 #include <cstdlib>
 #include <mp3player.h>
 #include "asndlib.h"
+
+// Bibliothèques WII
+#include "GRRLIB.h"
+#include <wiiuse/wpad.h>
+#include <ogc/lwp_watchdog.h>
+#include "FreeTypeGX/FreeTypeGX.h"
 
 // Images
 #include "gfx/sun.h"
