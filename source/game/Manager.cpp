@@ -6,6 +6,7 @@ JaugeManager* Manager::jaugeManager = new JaugeManager;
 
 Manager::Manager(App* _app) :
 	pause(false),
+	backFromPause(true),
 	app(_app),
 	world(new World),
 	player1(new Player(world->getTerrain(),world->getWind(),1,0,PI/2,PI/4,ROTATION_STEP,100,false,this)),
@@ -32,6 +33,7 @@ Manager::~Manager() {
 }
 
 void Manager::togglePause(){
+	if (pause) backFromPause = true;
 	pause = !pause;
 }
 
@@ -81,6 +83,10 @@ void Manager::init(){
 }
 
 void Manager::dealEvent(const u32* player1Events, const u32* player2Events) {
+	if (backFromPause){
+		backFromPause = false;
+		return;
+	}
 	player1->dealEvent(player1Events);
 	player2->dealEvent(player2Events);
 }

@@ -10,6 +10,7 @@ const int PLAYER_OFFSET(100);
 class Manager {
 private:
 	bool pause;
+	bool backFromPause;
 	App* app;
 	World* world;
 	Player* player1;
