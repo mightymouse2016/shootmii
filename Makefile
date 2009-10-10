@@ -10,25 +10,31 @@ endif
 include $(DEVKITPPC)/wii_rules
 
 #---------------------------------------------------------------------------------
+# Liste des librairies supplementaires utilisees par le projet Shootmii
+# GRRLIB
+# METAPHRASIS
+# FREETYPE
+# FREETYPEGX
+#---------------------------------------------------------------------------------
+
+#---------------------------------------------------------------------------------
 # TARGET is the name of the output
 # BUILD is the directory where object files & intermediate files will be placed
 # SOURCES is a list of directories containing source code
 # INCLUDES is a list of directories containing extra header files
 #---------------------------------------------------------------------------------
-GRRLIB		:=	../grrlib/GRRLIB
-WIILIBGUI	:=	../libwiigui-1.04
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	source source/FreeTypeGX source/fonts source/gfx source/snd source/game source/screens source/world source/math source/tools source/gui $(GRRLIB)/GRRLIB $(GRRLIB)/lib/libpng/pngu
+SOURCES		:=	source source/FreeTypeGX source/fonts source/gfx source/snd source/game source/screens source/world source/math source/tools source/gui 
 DATA		:=	data  
-INCLUDES	:=  $(WIILIBGUI) $(WIILIBGUI)/dependencies/include $(WIILIBGUI)/dependencies/include/freetype
+INCLUDES	:=  
 PROJECT		:=	ShootMii
 
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS	= -g -O2 -mrvl -Wall $(MACHDEP) $(INCLUDE)
+CFLAGS	= -DNOGUFIX -g -O2 -mrvl -Wall $(MACHDEP) $(INCLUDE)
 CXXFLAGS	=	$(CFLAGS)
 
 LDFLAGS	=	-g $(MACHDEP) -mrvl -Wl,-Map,$(notdir $@).map
@@ -36,13 +42,13 @@ LDFLAGS	=	-g $(MACHDEP) -mrvl -Wl,-Map,$(notdir $@).map
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS	:=	-lmetaphrasis -lfreetype -lmad -lasnd -lpng -ljpeg -lz -lfat -lwiiuse -lbte -logc -lm
+LIBS	:=	-lgrrlib -lpngu -lmetaphrasis -lfreetype -lmad -lasnd -lpng -ljpeg -lz -lfat -lwiiuse -lbte -logc -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #---------------------------------------------------------------------------------
-LIBDIRS	:= $(CURDIR)/$(GRRLIB)
+LIBDIRS	:= 
 
 #---------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add additional
