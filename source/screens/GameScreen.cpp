@@ -51,15 +51,17 @@ void GameScreen::init() {
 
 void GameScreen::dealEvent() {
 	Screen::dealEvent();
-	if (!manager->isInPause()) manager->dealEvent(eventsPlayer[0], eventsPlayer[1]);
 
 	if (buttons[EXIT_BUTTON]->isClicked()) app->setScreen(TITLE_SCREEN);
+	
 	if (buttons[RESUME_BUTTON]->isClicked() || ((eventsPlayer[0][DOWN] | eventsPlayer[1][DOWN]) & WPAD_BUTTON_HOME)) {
 		for (list<Dock*>::iterator i=docks.begin();i!=docks.end();i++){
 			(*i)->toggleHideShow();
 		}
 		manager->togglePause();
 	}
+	
+	if (!manager->isInPause()) manager->dealEvent(eventsPlayer[0], eventsPlayer[1]);
 
 	for (map<ButtonType,Button*>::iterator i=buttons.begin();i!=buttons.end();i++) i->second->unClick();
 }
