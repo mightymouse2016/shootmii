@@ -40,6 +40,7 @@ private:
 	float life;			//<  0->100
 	float fury;			//<  0->100
 	bool furyMode;
+	bool laserMode;
 	Terrain* terrain;
 	Bonus* bonus;
 public:
@@ -75,6 +76,7 @@ public:
 	Bonus* getBonus();
 	Bonus** getPBonus();
 	bool isInFuryMode() const;
+	bool isInLaserMode() const;
 
 	void setOpponent(Player* _opponent);
 	void setScore(const int score);
@@ -89,6 +91,8 @@ public:
 	void loseFury(const float furyAmount);
 	void beginFuryMode();
 	void stopFuryMode();
+	void beginLaserMode();
+	void stopLaserMode();
 
 	void addRecoil(int intensity);
 	void addBonus(Bonus* bonus);
@@ -100,6 +104,7 @@ public:
 	void useBonus(Bonus* bonus);	//< en pressant A
 
 	void computeFuryMode();
+	void computeLaserMode();
 	void computeDamage(Ammo* ammo);
 	void computeRecoil();
 	void compute();

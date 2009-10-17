@@ -117,6 +117,7 @@ class App;
 #include "gfx/bonus_potion.h"
 #include "gfx/smoke_sprites.h"
 #include "gfx/strength_jauge.h"
+#include "gfx/bonus_cross_hair.h"
 #include "gfx/strength_sprites.h"
 #include "gfx/background_cloud.h"
 #include "gfx/foreground_cloud.h"

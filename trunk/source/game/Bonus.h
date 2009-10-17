@@ -30,6 +30,11 @@ const int BONUS_POTION_HEIGHT(24);
 const int BONUS_POTION_DURATION(12);
 const int BONUS_POTION_ANIMATION_SLOW(5);
 
+const int BONUS_CROSS_HAIR_WIDTH(24);
+const int BONUS_CROSS_HAIR_HEIGHT(24);
+const int BONUS_CROSS_HAIR_DURATION(12);
+const int BONUS_CROSS_HAIR_ANIMATION_SLOW(5);
+
 const int BONUS_SPEED(30);
 const int BONUS_OSCILLATIONS_RANGE(100);
 const int BONUS_OSCILLATIONS_CENTER(100);
@@ -39,13 +44,16 @@ const int BONUS_PROBABILITY (3*60); // apparition toutes les 15*60frames = 15 se
 const int BONUS_X(302);
 const int BONUS_Y(SCREEN_HEIGHT-SCORE_PANEL_HEIGHT/2-15);
 
+const int LASER_TIME(60*15);
+
 enum BonusType{
 	HOMING,
 	LIFE_RECOVERY,
 	GUIDED,
 	POISON,
 	POTION,
-
+	CROSS_HAIR,
+	
 	NUMBER_OF_BONUSES // Pour les random
 };
 
