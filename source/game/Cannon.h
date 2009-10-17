@@ -49,6 +49,8 @@ const int FURY_HOMING_PROBABILITY(10);
 const int SHOT_MINIMUM_SOUND(20);
 const int SHOT_MINIMUM_STRENGTH(20);
 
+const float LASER_STEP(.2);
+
 enum CannonChild{
 	CHILD_CROSSHAIR,
 	CHILD_AMMO,
@@ -64,10 +66,15 @@ private:
 	float angleMax;
 	float rotationStep;
 	bool stillHeld;
+	Timer laserTime;
 	Timer reloadTime;
 	Timer blockedCannon;
 	Timer furyReloadTime;
 	Manager* manager;
+	Function* laserXMax;
+	Function* laserYMax;
+	Function* laserX;
+	Function* laserY;
 	GuidedMissile* guidedMissile; // Si le joueur possède un missile auto-guidé, c'est le lien qui permet de le contrôler
 public:
 	Cannon(
@@ -105,6 +112,7 @@ public:
 	void compute();
 	void computeHeat();
 	void computeStrengthJauge();
+	void computeLaserMode();
 	void shoot();
 	void computeReload();
 	void loadCannon();
@@ -112,6 +120,7 @@ public:
 	void loadGuided();
 	bool isLoaded() const;
 	bool isGuidingMissile() const;
+	void draw() const;
 };
 
 }

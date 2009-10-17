@@ -20,6 +20,7 @@ Player::Player(
 		life(_life),
 		fury(_fury),
 		furyMode(false),
+		laserMode(false),	// TODO mettre false
 		terrain(_terrain),
 		bonus(NULL)
 {
@@ -120,6 +121,10 @@ bool Player::isInFuryMode() const{
 	return furyMode;
 }
 
+bool Player::isInLaserMode() const{
+	return laserMode;
+}
+
 void Player::setOpponent(Player* _opponent){
 	children[CHILD_OPPONENT] = _opponent;
 }
@@ -178,6 +183,14 @@ void Player::beginFuryMode(){
 
 void Player::stopFuryMode(){
 	furyMode = false;
+}
+
+void Player::beginLaserMode(){
+	laserMode = true;
+}
+	
+void Player::stopLaserMode(){
+	laserMode = false;
 }
 
 void Player::addRecoil(int intensity){
@@ -244,6 +257,9 @@ void Player::useBonus(Bonus* _bonus){
 	case POTION:
 		winFury(25);
 		App::console->addDebug("bonus used : fury potion");break;
+	case CROSS_HAIR:
+		beginLaserMode();
+		App::console->addDebug("bonus used : cross hair");break;
 	default:
 		App::console->addDebug("bonus used : unknown type");break;
 	}
@@ -259,6 +275,10 @@ void Player::computeFuryMode(){
 		fury = 0;
 		stopFuryMode();
 	}
+}
+
+void Player::computeLaserMode(){
+	// TODO Décrémentation du temps
 }
 
 void Player::computeDamage(Ammo* ammo){
@@ -291,12 +311,14 @@ void Player::compute(){
 	getCannon()->compute();
 	computeRecoil();
 	computeFuryMode();
+	computeLaserMode();
 }
 
 void Player::dealEvent(const u32* playerEvents){
 	const u32 padHeld = playerEvents[HELD];
 	const u32 padDown = playerEvents[DOWN];
 	const u32 padUp = playerEvents[UP];
+	
 
 	if (padHeld & WPAD_BUTTON_UP) 		KeyUp(HELD);
 	if (padHeld & WPAD_BUTTON_DOWN) 	KeyDown(HELD);

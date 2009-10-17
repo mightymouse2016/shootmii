@@ -121,6 +121,16 @@ Bonus* randomBonus(){
 				BONUS_POTION_DURATION,
 				BONUS_POTION_ANIMATION_SLOW,
 				calcX);
+		case CROSS_HAIR:
+			return new Bonus(
+				static_cast<BonusType>(_type),
+				false,
+				App::imageBank->get(TXT_BONUS_CROSS_HAIR),
+				BONUS_CROSS_HAIR_WIDTH,
+				BONUS_CROSS_HAIR_HEIGHT,
+				BONUS_CROSS_HAIR_DURATION,
+				BONUS_CROSS_HAIR_ANIMATION_SLOW,
+				calcX);
 		default:
 			return new Bonus(
 				static_cast<BonusType>(_type),
