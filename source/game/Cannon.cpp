@@ -19,11 +19,11 @@ Cannon::Cannon(
 	angleMax(_angleMax),
 	rotationStep(_rotationStep),
 	stillHeld(false),
-	laserTime(Timer(LASER_TIME)),
 	reloadTime(Timer(RELOAD_TIME)),
 	blockedCannon(Timer(BLOCKING_TIME)),
 	furyReloadTime(Timer(FURY_RELOAD_TIME)),
 	manager(_manager),
+	t_laser(0),
 	guidedMissile(NULL)
 {
 	GRRLIB_texImg *crossHair_image;
@@ -72,7 +72,6 @@ void Cannon::loseInfluenceOnMissile(){
 void Cannon::init() {
 	heat = 0;
 	strength = 0;
-	laserTime.init();
 	reloadTime.init();
 	blockedCannon.init();
 	furyReloadTime.init();
@@ -203,10 +202,12 @@ void Cannon::computeLaserMode(){
 	laserYMax = NULL;
 	laserX = NULL;
 	laserY = NULL;
-	
+
 	if (!getOwner()->isInLaserMode()) return;
-	
-	laserTime.compute();
+
+	// Permet de faire défiler les pointillés
+	t_laser++;
+	if (t_laser*LASER_MOVE_STEP > 2*LASER_STEP) t_laser = 0;
 
 	float angle = getAbsolutePolygonAngle(), cosinus = cos(angle), sinus = sin(angle);
 	laserXMax = new PolyDeg2(
@@ -217,9 +218,9 @@ void Cannon::computeLaserMode(){
 			-GRAVITY/(2*AMMO_WEIGHT),
 			100 * sinus,
 			getAbsoluteOriginY() + CANNON_LENGTH * sinus);
-	
+
 	if (strength == 0) return;
-	
+
 	laserX = new PolyDeg2(
 			wind->getWindSpeed()*WIND_INFLUENCE_ON_AMMO/(2*100*AMMO_WEIGHT),
 			strength * cosinus,
@@ -228,11 +229,6 @@ void Cannon::computeLaserMode(){
 			-GRAVITY/(2*AMMO_WEIGHT),
 			strength * sinus,
 			getAbsoluteOriginY() + CANNON_LENGTH * sinus);
-	
-	if (laserTime.timeIsOver()) {
-		laserTime.init();
-		getOwner()->stopLaserMode();
-	}
 }
 
 void Cannon::shoot() {
@@ -315,21 +311,29 @@ bool Cannon::isGuidingMissile() const{
 void Cannon::draw() const{
 	Polygon::draw();
 	if (laserXMax == NULL || laserYMax == NULL) return;
-	float x = getAbsoluteOriginX();
-	float y = getAbsoluteOriginY();
+
+	float x = (*laserXMax)(-LASER_STEP + t_laser*LASER_MOVE_STEP);
+	float y = (*laserYMax)(-LASER_STEP + t_laser*LASER_MOVE_STEP);
 	float newX;
 	float newY;
+
+	// Affichage des pointillés représentant un tir à puissance maximal (en noir)
 	for(int t = 0;y<SCREEN_HEIGHT;t++){
-		newX = (*laserXMax)(t*LASER_STEP);
-		newY = (*laserYMax)(t*LASER_STEP);
-		if (t%2) GRRLIB_Line(x, y, newX, newY,BLACK);
+		newX = (*laserXMax)(t*LASER_STEP + t_laser*LASER_MOVE_STEP);
+		newY = (*laserYMax)(t*LASER_STEP + t_laser*LASER_MOVE_STEP);
+		if (!(t%2)) GRRLIB_Line(x, y, newX, newY,BLACK);
 		x = newX;
 		y = newY;
 	}
+
+
+
 	if (strength == 0 || laserX == NULL || laserY == NULL) return;
-	
+
 	x = getAbsoluteOriginX();
 	y = getAbsoluteOriginY();
+
+	// Affichage des pointillés représentant un tir à puissance actuelle (en rouge)
 	for(int t = 0;y<SCREEN_HEIGHT;t++){
 		newX = (*laserX)(t*LASER_STEP);
 		newY = (*laserY)(t*LASER_STEP);
@@ -337,7 +341,7 @@ void Cannon::draw() const{
 		x = newX;
 		y = newY;
 	}
-	
+
 }
 
 

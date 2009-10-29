@@ -20,7 +20,7 @@ Player::Player(
 		life(_life),
 		fury(_fury),
 		furyMode(false),
-		laserMode(false),	// TODO mettre false
+		laserMode(true),	// TODO mettre false
 		terrain(_terrain),
 		bonus(NULL)
 {
@@ -188,7 +188,7 @@ void Player::stopFuryMode(){
 void Player::beginLaserMode(){
 	laserMode = true;
 }
-	
+
 void Player::stopLaserMode(){
 	laserMode = false;
 }
@@ -318,7 +318,7 @@ void Player::dealEvent(const u32* playerEvents){
 	const u32 padHeld = playerEvents[HELD];
 	const u32 padDown = playerEvents[DOWN];
 	const u32 padUp = playerEvents[UP];
-	
+
 
 	if (padHeld & WPAD_BUTTON_UP) 		KeyUp(HELD);
 	if (padHeld & WPAD_BUTTON_DOWN) 	KeyDown(HELD);
