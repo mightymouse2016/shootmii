@@ -309,39 +309,36 @@ bool Cannon::isGuidingMissile() const{
 }
 
 void Cannon::draw() const{
+	float x, y, newX, newY;
+	Terrain* terrain = getOwner()->getTerrain();
+
+	// Affichage des pointillés représentant un tir à la puissance maximale (en noir)
+	if (laserXMax != NULL && laserYMax != NULL){
+		newX = x = getAbsoluteOriginX();
+		newY = y = getAbsoluteOriginY();
+		for(int t = -2;newY<terrain->getHeight(newX);t++){
+			if (t%2) GRRLIB_Line(x, y, newX, newY,BLACK);
+			x = newX;
+			y = newY;
+			newX = (*laserXMax)(t*LASER_STEP + t_laser*LASER_MOVE_STEP);
+			newY = (*laserYMax)(t*LASER_STEP + t_laser*LASER_MOVE_STEP);
+		}
+	}
+
+	// Affichage de la courbe représentant un tir à la puissance actuelle (en blanc)
+	if (strength != 0 && laserX != NULL && laserY != NULL){
+		newX = x = getAbsoluteOriginX();
+		newY = y = getAbsoluteOriginY();
+		for(int t = 0;newY<terrain->getHeight(newX);t++){
+			GRRLIB_Line(x, y, newX, newY,WHITE);
+			x = newX;
+			y = newY;
+			newX = (*laserX)(t*LASER_STEP);
+			newY = (*laserY)(t*LASER_STEP);
+		}
+	}
+
 	Polygon::draw();
-	if (laserXMax == NULL || laserYMax == NULL) return;
-
-	float x = (*laserXMax)(-LASER_STEP + t_laser*LASER_MOVE_STEP);
-	float y = (*laserYMax)(-LASER_STEP + t_laser*LASER_MOVE_STEP);
-	float newX;
-	float newY;
-
-	// Affichage des pointillés représentant un tir à puissance maximal (en noir)
-	for(int t = 0;y<SCREEN_HEIGHT;t++){
-		newX = (*laserXMax)(t*LASER_STEP + t_laser*LASER_MOVE_STEP);
-		newY = (*laserYMax)(t*LASER_STEP + t_laser*LASER_MOVE_STEP);
-		if (!(t%2)) GRRLIB_Line(x, y, newX, newY,BLACK);
-		x = newX;
-		y = newY;
-	}
-
-
-
-	if (strength == 0 || laserX == NULL || laserY == NULL) return;
-
-	x = getAbsoluteOriginX();
-	y = getAbsoluteOriginY();
-
-	// Affichage des pointillés représentant un tir à puissance actuelle (en rouge)
-	for(int t = 0;y<SCREEN_HEIGHT;t++){
-		newX = (*laserX)(t*LASER_STEP);
-		newY = (*laserY)(t*LASER_STEP);
-		if (t%2) GRRLIB_Line(x, y, newX, newY,RED);
-		x = newX;
-		y = newY;
-	}
-
 }
 
 
