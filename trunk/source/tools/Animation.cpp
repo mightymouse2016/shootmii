@@ -19,7 +19,7 @@ Animation::Animation(
 		Function* _calcX,
 		Function* _calcY,
 		float _step) :
-	Rectangle(_layer, _width,_height,_originX,_originY, _radial, _angle, _rectangleAngle, 1, _tiles, _father, 0, _width, _height),
+	Rectangle(_layer, _width,_height,_originX,_originY, _radial, _angle, _rectangleAngle, true, true, _tiles, _father, 0, _width, _height),
 	Timer(_spriteSlow,_step),
 	loops(_loops),
 	duration(_duration),

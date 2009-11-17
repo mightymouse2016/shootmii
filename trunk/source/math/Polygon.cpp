@@ -11,7 +11,8 @@ Polygon::Polygon(
 	const float _radial,
 	const float _angle,
 	const float _polygonAngle,
-	const float _spin,
+	const bool _spinFather,
+	const bool _spinPolygon,
 	Polygon* _father,
 	Coordinates _drawOrigin,
 	GRRLIB_texImg* _image,
@@ -24,7 +25,8 @@ Polygon::Polygon(
 		originX(_originX),
 		originY(_originY),
 		radial(_radial),
-		spin(_spin),
+		spinFather(_spinFather),
+		spinPolygon(_spinPolygon),
 		angle(_angle),
 		polygonAngle(_polygonAngle),
 		scale(1),
@@ -63,8 +65,8 @@ vector<Coordinates> Polygon::getRotatedVertices() const{
 		verticeAngle =  vertices[i].getAngle();
 		verticeRadial = vertices[i].getRadial();
 		rotatedVertices.push_back(
-			Coordinates(verticeRadial*cos(getAbsolutePolygonAngle()*spin+verticeAngle),
-						verticeRadial*sin(getAbsolutePolygonAngle()*spin+verticeAngle)));
+			Coordinates(verticeRadial*cos(getAbsolutePolygonAngle()+verticeAngle),
+						verticeRadial*sin(getAbsolutePolygonAngle()+verticeAngle)));
 	}
 	return rotatedVertices;
 }
@@ -76,7 +78,8 @@ const Coordinates& Polygon::getDrawOrigin() const{
 const Coordinates Polygon::getRotatedDrawOrigin() const{
 	float drawOriginAngle = drawOrigin.getAngle();
 	float drawOriginRadial = drawOrigin.getRadial();
-	return Coordinates(drawOriginRadial*cos(angle*spin+polygonAngle+drawOriginAngle),drawOriginRadial*sin(angle*spin+polygonAngle+drawOriginAngle));
+	float absolutePolygonAngle = getAbsolutePolygonAngle();
+	return Coordinates(drawOriginRadial*cos(absolutePolygonAngle+drawOriginAngle),drawOriginRadial*sin(absolutePolygonAngle+drawOriginAngle));
 }
 
 int Polygon::getNumberOfPolygonsInstances(){
@@ -87,6 +90,7 @@ LayerPriority Polygon::getLayer() const{
 	return layer;
 }
 
+/*
 float Polygon::getOriginX() const{
 	return originX;
 }
@@ -94,21 +98,34 @@ float Polygon::getOriginX() const{
 float Polygon::getOriginY() const{
 	return originY;
 }
+*/
 
 float Polygon::getAbsoluteOriginX() const{
-	if (father) return father->getAbsoluteX()
-		+ originX*cos(father->getAbsolutePolygonAngle())
-		+ originY*sin(father->getAbsolutePolygonAngle());
-	return originX;
+	// Si le polygon n'a pas de père, on s'aligne sur le coin supèrieur gauche de l'écran
+	if (!father) return originX;
+
+	// Sinon, on vérifie si le spin est activé, dans ce cas on se prend en compte l'angle du polygone père
+	if (spinFather) return father->getAbsoluteX()
+						+  originX*cos(father->getAbsolutePolygonAngle())
+						+  originY*sin(father->getAbsolutePolygonAngle());
+
+	// Sinon, on se base seulement sur  ses coordonnées
+	return father->getAbsoluteX() + originX;
 }
 
 float Polygon::getAbsoluteOriginY() const{
-	if (father) return father->getAbsoluteY()
-		+ originX*sin(father->getAbsolutePolygonAngle())
-		+ originY*cos(father->getAbsolutePolygonAngle());
-	return originY;
-}
+	// Si le polygon n'a pas de père, on s'aligne sur le coin supèrieur gauche de l'écran
+	if (!father) return originY;
 
+	// Sinon, on vérifie si le spin est activé, dans ce cas on se prend en compte l'angle du polygone père
+	if (spinFather) return father->getAbsoluteY()
+						+  originX*sin(father->getAbsolutePolygonAngle())
+						+  originY*cos(father->getAbsolutePolygonAngle());
+
+	// Sinon, on se base seulement sur  ses coordonnées
+	return father->getAbsoluteY() + originY;
+}
+/*
 float Polygon::getX() const{
 	return originX + radial*cos(getAbsoluteAngle());
 }
@@ -116,7 +133,7 @@ float Polygon::getX() const{
 float Polygon::getY() const{
 	return originY + radial*sin(getAbsoluteAngle());
 }
-
+*/
 float Polygon::getAbsoluteX() const{
 	return getAbsoluteOriginX() + radial*cos(getAbsoluteAngle());
 }
@@ -125,29 +142,14 @@ float Polygon::getAbsoluteY() const{
 	return getAbsoluteOriginY() + radial*sin(getAbsoluteAngle());
 }
 
-float Polygon::getRadial() const{
-	return radial;
-}
-
-float Polygon::getSpin() const{
-	return spin;
-}
-float Polygon::getAngle() const{
-	return angle;
-}
-
 float  Polygon::getAbsoluteAngle() const{
-	if (father) return father->getAbsolutePolygonAngle() + angle;
+	if (father && spinFather) return father->getAbsolutePolygonAngle() + angle;
 	return angle;
-}
-
-float  Polygon::getPolygonAngle() const{
-	return angle*spin + polygonAngle;
 }
 
 float  Polygon::getAbsolutePolygonAngle() const{
-	if (father) return father->getAbsolutePolygonAngle() + angle*spin + polygonAngle;
-	return angle*spin + polygonAngle;
+	if (spinPolygon) return getAbsoluteAngle() + polygonAngle;
+	else return polygonAngle;
 }
 
 Polygon* Polygon::getFather() const{
@@ -178,8 +180,12 @@ void Polygon::setRadial(const float _radial){
 	radial = _radial;
 }
 
-void Polygon::setSpin(const float _spin){
-	spin = _spin;
+void Polygon::setSpinFather(const bool _spinFather){
+	spinFather = _spinFather;
+}
+
+void Polygon::setSpinPolygon(const bool _spinPolygon){
+	spinPolygon = _spinPolygon;
 }
 
 void Polygon::setAngle(const float _angle){
@@ -260,7 +266,7 @@ void Polygon::draw() const{
 			getAbsoluteX()+getDrawOrigin().getX(),
 			getAbsoluteY()+getDrawOrigin().getY(),
 			image,
-			getAbsolutePolygonAngle()*spin*180/PI,
+			getAbsolutePolygonAngle()*180/PI,
 			scale,
 			scale,
 			colorFilter,
@@ -271,7 +277,7 @@ void Polygon::draw() const{
 			getAbsoluteX()+getDrawOrigin().getX(),
 			getAbsoluteY()+getDrawOrigin().getY(),
 			image,
-			getAbsolutePolygonAngle()*spin*180/PI,
+			getAbsolutePolygonAngle()*180/PI,
 			scale,
 			scale,
 			colorFilter);

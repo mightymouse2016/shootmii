@@ -108,6 +108,7 @@ class App;
 #include "gfx/crosshair_1.h"
 #include "gfx/crosshair_2.h"
 #include "gfx/score_panel.h"
+#include "gfx/laser_jauge.h"
 #include "gfx/fury_jauge_1.h"
 #include "gfx/fury_jauge_2.h"
 #include "gfx/title_screen.h"

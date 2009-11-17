@@ -11,7 +11,7 @@ ScoreManager::ScoreManager(
 		SCORE_PANEL_HEIGHT,
 		SCREEN_WIDTH/2,
 		SCREEN_HEIGHT-SCORE_PANEL_HEIGHT/2,
-		0,0,0,0,
+		0,0,0,false,false,
 		App::imageBank->get(TXT_SCORE_PANEL)),
 	app(_app),
 	manager(_manager),
@@ -134,6 +134,37 @@ ScoreManager::ScoreManager(
 				WIND_JAUGE_X,
 				WIND_JAUGE_Y,
 				App::imageBank->get(TXT_WIND_JAUGE)));
+
+		// Jauge de laser
+		addChild(new Jauge(
+				JAUGE_LAYER,
+				manager->getPlayer1()->getPLaserRemainingTime(),
+				LASER_JAUGE_WIDTH,
+				LASER_JAUGE_HEIGHT,
+				LASER_JAUGE_X,
+				LASER_JAUGE_Y,
+				App::imageBank->get(TXT_LASER_JAUGE),
+				NULL,
+				0,
+				manager->getPlayer1()));
+		addChild(new Jauge(
+				JAUGE_LAYER,
+				manager->getPlayer2()->getPLaserRemainingTime(),
+				LASER_JAUGE_WIDTH,
+				LASER_JAUGE_HEIGHT,
+				LASER_JAUGE_X,
+				LASER_JAUGE_Y,
+				App::imageBank->get(TXT_LASER_JAUGE),
+				NULL,
+				0,
+				manager->getPlayer2()));
+
+		// On fait le lien pour que la jauge bouge avec le player
+		children[CHILD_LASER_JAUGE_1]->setFather(manager->getPlayer1());
+		children[CHILD_LASER_JAUGE_2]->setFather(manager->getPlayer2());
+
+		children[CHILD_LASER_JAUGE_1]->setSpinFather(false);
+		children[CHILD_LASER_JAUGE_2]->setSpinFather(false);
 }
 
 void ScoreManager::compute(){

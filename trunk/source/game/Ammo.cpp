@@ -10,7 +10,7 @@ Ammo::Ammo(
 	Player* _owner,
 	Terrain* _terrain,
 	Manager* _manager):
-		Polygon(AMMO_LAYER,TANK_HEIGHT/4, 0, AMMO_OVERTAKE, _angle, 0, 1, _owner, Coordinates(-AMMO_WIDTH/2,-AMMO_HEIGHT/2), _image),
+		Polygon(AMMO_LAYER,TANK_HEIGHT/4, 0, AMMO_OVERTAKE, _angle, 0, true, true, _owner, Coordinates(-AMMO_WIDTH/2,-AMMO_HEIGHT/2), _image),
 		Timer(TIME_BETWEEN_TWO_SMOKLET),
 		calcX(_calcX),
 		calcY(_calcY),
@@ -27,8 +27,8 @@ Ammo::Ammo(
 	if (owner->getPlayerNumber() == 1) bubble = App::imageBank->get(TXT_GHOST1);
 	else bubble = App::imageBank->get(TXT_GHOST2);
 
-	children.push_back(new Rectangle(GHOST_LAYER,GHOST_WIDTH,GHOST_HEIGHT,0,0,0,0,0,1,bubble));
-	getGhostBubble()->addChild(new Rectangle(GHOST_LAYER,AMMO_WIDTH,AMMO_HEIGHT,GHOST_OFFSET_X,0,0,0,0,1,_image));
+	children.push_back(new Rectangle(GHOST_LAYER,GHOST_WIDTH,GHOST_HEIGHT,0,0,0,0,0,true,true,bubble));
+	getGhostBubble()->addChild(new Rectangle(GHOST_LAYER,AMMO_WIDTH,AMMO_HEIGHT,GHOST_OFFSET_X,0,0,0,0,true,true,_image));
 	getGhostBubble()->hide();
 	getGhostAmmo()->hide();
 }
@@ -118,8 +118,8 @@ void Ammo::computeGhost(){
 	}
 
 	/* Calcul des angles de la bulle et de l'aperçu de la munition */
-	ghostBubble->setPolygonAngle(atan2(ghostBubble->getOriginY()-getOriginY(),ghostBubble->getOriginX()-getOriginX()));
-	ghostAmmo->setPolygonAngle(angle-ghostBubble->getPolygonAngle());
+	ghostBubble->setPolygonAngle(atan2(ghostBubble->getAbsoluteOriginY()-getAbsoluteOriginY(),ghostBubble->getAbsoluteOriginX()-getAbsoluteOriginX()));
+	ghostAmmo->setPolygonAngle(angle-ghostBubble->getAbsolutePolygonAngle());
 
 	/* Calcul de la transparence de la bulle */
 	u32 filter = applyRatioToRGBA(WHITE,max(ratio1,ratio2),0,0,0,1);

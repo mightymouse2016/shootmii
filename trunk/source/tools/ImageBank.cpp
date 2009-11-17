@@ -37,9 +37,10 @@ void ImageBank::init() {
 	allTextures[TXT_WIND_JAUGE] = GRRLIB_LoadTexture(wind_jauge);
 	allTextures[TXT_CROSSHAIR1] = GRRLIB_LoadTexture(crosshair_1);
 	allTextures[TXT_CROSSHAIR2] = GRRLIB_LoadTexture(crosshair_2);
+	allTextures[TXT_SCORE_PANEL] = GRRLIB_LoadTexture(score_panel);
+	allTextures[TXT_LASER_JAUGE] = GRRLIB_LoadTexture(laser_jauge);
 	allTextures[TXT_FURY_JAUGE1] = GRRLIB_LoadTexture(fury_jauge_1);
 	allTextures[TXT_FURY_JAUGE2] = GRRLIB_LoadTexture(fury_jauge_2);
-	allTextures[TXT_SCORE_PANEL] = GRRLIB_LoadTexture(score_panel);
 	allTextures[TXT_BONUS_HOMING] = GRRLIB_LoadTexture(bonus_homing);
 	allTextures[TXT_BONUS_POISON] = GRRLIB_LoadTexture(bonus_poison);
 	allTextures[TXT_BONUS_GUIDED] = GRRLIB_LoadTexture(bonus_guided);

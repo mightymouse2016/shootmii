@@ -54,7 +54,8 @@ protected:
 	float originX; // L'origine relative
 	float originY;
 	float radial;
-	float spin; //0 -> translation circulaire. 1 -> rotation synchrone. autre -> rotation asynchrone
+	float spinFather; //0 -> translation circulaire. 1 -> rotation synchrone. autre -> rotation asynchrone
+	float spinPolygon; //0 -> translation circulaire. 1 -> rotation synchrone. autre -> rotation asynchrone
 	float angle;
 	float polygonAngle;
 	float scale;
@@ -78,7 +79,8 @@ public:
 		const float radial = 0,
 		const float angle = 0,
 		const float polygonAngle = 0,
-		const float spin = 1,
+		const bool spinFather = true,
+		const bool spinPolygon = true,
 		Polygon* father = NULL,
 		Coordinates drawOrigin = Coordinates(0,0),
 		GRRLIB_texImg* image = NULL,
@@ -95,19 +97,11 @@ public:
 	const Coordinates getRotatedDrawOrigin() const;
 	static int getNumberOfPolygonsInstances();
 	LayerPriority getLayer() const;
-	float getOriginX() const;
-	float getOriginY() const;
 	float getAbsoluteOriginX() const;
 	float getAbsoluteOriginY() const;
-	float getX() const;
-	float getY() const;
 	float getAbsoluteX() const;
 	float getAbsoluteY() const;
-	float getRadial() const;
-	float getSpin() const;
-	float getAngle() const;
 	float getAbsoluteAngle() const;
-	float getPolygonAngle() const;
 	float getAbsolutePolygonAngle() const;
 	Polygon* getFather() const;
 	u32 getColorFilter() const;
@@ -117,7 +111,8 @@ public:
 	void setOriginX(const float originX);
 	void setOriginY(const float originY);
 	void setRadial(const float radial);
-	void setSpin(const float spin);
+	void setSpinFather(const bool spinFather);
+	void setSpinPolygon(const bool spinPolygon);
 	void setAngle(const float angle);
 	void setPolygonAngle(const float polygonAngle);
 	void setScale(const float scale);

@@ -8,7 +8,7 @@ Cloud::Cloud(
 		GRRLIB_texImg* _image,
 		const int _width,
 		const int _height) :
-	Rectangle(_layer, _width, _height, 0, 0, 0, 0, 0, 0, _image),
+	Rectangle(_layer, _width, _height, 0, 0, 0, 0, 0, false, false, _image),
 	wind(_wind)
 {
 	randomX();

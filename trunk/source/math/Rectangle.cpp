@@ -11,7 +11,8 @@ Rectangle::Rectangle(
 		const float _radial,
 		const float _angle,
 		const float _polygonAngle,
-		const float _spin,
+		const bool _spinFather,
+		const bool _spinPolygon,
 		GRRLIB_texImg* _image,
 		Polygon* _father,
 		const int _spriteIndex,
@@ -19,7 +20,7 @@ Rectangle::Rectangle(
 		const int _spriteHeight,
 		const bool _hidden,
 		const bool _debugHidden) :
-	Polygon(_layer,_originX,_originY,_radial,_angle,_polygonAngle,_spin,_father,Coordinates(-_width/2,-_height/2),_image,_spriteIndex,_spriteWidth,_spriteHeight,_hidden,_debugHidden)
+	Polygon(_layer,_originX,_originY,_radial,_angle,_polygonAngle,_spinFather,_spinPolygon,_father,Coordinates(-_width/2,-_height/2),_image,_spriteIndex,_spriteWidth,_spriteHeight,_hidden,_debugHidden)
 {
 	vertices.reserve(4);
 	vertices.push_back(Coordinates(-_width/2,-_height/2));

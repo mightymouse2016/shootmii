@@ -7,7 +7,7 @@ Pointer::Pointer(int _playerNumber, App* _app) :
 		POINTER_LAYER,
 		POINTER_WIDTH,
 		POINTER_HEIGHT,
-		0,0,0,0,0,1,
+		0,0,0,0,0,true,true,
 		NULL,
 		NULL,0,
 		POINTER_WIDTH,
@@ -42,8 +42,8 @@ bool Pointer::isCliking() const{
 
 void Pointer::drawDebug() const{
 	Polygon::drawDebug();
-	int x = getOriginX();
-	int y = getOriginY();
+	int x = getAbsoluteOriginX();
+	int y = getAbsoluteOriginY();
 	int w = 10;
 	int h = 10;
 	GRRLIB_Line(x-w,y-h,x+w,y+h,BLACK);

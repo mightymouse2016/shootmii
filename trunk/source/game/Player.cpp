@@ -13,14 +13,14 @@ Player::Player(
 	const float _life,
 	const float _fury,
 	Manager* _manager) :
-		Rectangle(TANK_LAYER,TANK_HEIGHT,TANK_WIDTH,0,0,TANK_HEIGHT/2,-PI/2,0,1,App::imageBank->get(TXT_TANK)),
+		Rectangle(TANK_LAYER,TANK_HEIGHT,TANK_WIDTH,0,0,TANK_HEIGHT/2,-PI/2,0,true,true,App::imageBank->get(TXT_TANK)),
 		playerNumber(_playerNumber),
 		recoil(0),
 		score(0),
 		life(_life),
 		fury(_fury),
+		laserRemainingTime(0),
 		furyMode(false),
-		laserMode(true),	// TODO mettre false
 		terrain(_terrain),
 		bonus(NULL)
 {
@@ -67,6 +67,10 @@ float* Player::getPFury(){
 
 bool* Player::getPFuryMode(){
 	return &furyMode;
+}
+
+float* Player::getPLaserRemainingTime(){
+	return &laserRemainingTime;
 }
 
 Terrain* Player::getTerrain(){
@@ -122,7 +126,7 @@ bool Player::isInFuryMode() const{
 }
 
 bool Player::isInLaserMode() const{
-	return laserMode;
+	return laserRemainingTime > 0;
 }
 
 void Player::setOpponent(Player* _opponent){
@@ -186,11 +190,11 @@ void Player::stopFuryMode(){
 }
 
 void Player::beginLaserMode(){
-	laserMode = true;
+	laserRemainingTime = 100;
 }
 
 void Player::stopLaserMode(){
-	laserMode = false;
+	laserRemainingTime = 0;
 }
 
 void Player::addRecoil(int intensity){
@@ -218,6 +222,7 @@ void Player::addBonus(Bonus* _bonus){
 void Player::init() {
 	score = 0;
 	fury = 0;
+	laserRemainingTime = 0;
 	if (bonus) delete bonus;
 	bonus = NULL;
 	initGame();
@@ -229,6 +234,7 @@ void Player::initGame() {
 		fury = 0;
 		stopFuryMode();
 	}
+	laserRemainingTime = 0;
 	recoil = 0;
 	life = 100;
 	getCannon()->init();
@@ -278,7 +284,9 @@ void Player::computeFuryMode(){
 }
 
 void Player::computeLaserMode(){
-	// TODO Décrémentation du temps
+	if (laserRemainingTime == 0) return;
+	laserRemainingTime -= LASER_DEC_STEP;
+	if (laserRemainingTime < 0) laserRemainingTime = 0;
 }
 
 void Player::computeDamage(Ammo* ammo){
