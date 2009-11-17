@@ -120,7 +120,7 @@ void HomingMissile::computePosition() {
 		// Après activation son angle est asservi, de manière a ce que l'angle entre la munition et l'adversaire soit nul
 		originX += HOMING_SPEED*cos(angle);
 		originY += HOMING_SPEED*sin(angle);
-		float erreur = atan2(target->getAbsoluteY()-getAbsoluteY(),target->getAbsoluteX()-getAbsoluteX())-getAngle();
+		float erreur = atan2(target->getAbsoluteY()-getAbsoluteY(),target->getAbsoluteX()-getAbsoluteX())-getAbsoluteAngle();
 		if (erreur > PI) erreur -= 2*PI;
 		angle += erreur*HOMING_REACTIVITY;
 	}

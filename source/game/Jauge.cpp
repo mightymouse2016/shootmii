@@ -13,14 +13,14 @@ Jauge::Jauge(
 		bool* _flickering,
 		const float angle,
 		Polygon* father) :
-	Rectangle(JAUGE_LAYER,width,height,originX,originY,0,angle,0,1,NULL,father),
+	Rectangle(JAUGE_LAYER,width,height,originX,originY,0,angle,0,true,true,NULL,father),
 	percentage(_percentage),
 	flickering(_flickering),
 	flickeringState(0),
 	flickeringDirection(false)
 {
 	for(int i=0;i<width;i++){
-		addChild(new Rectangle(JAUGE_LAYER,1,height,-width/2+i+1,0,0,0,0,1,image,this,i,1,height,false,true));
+		addChild(new Rectangle(JAUGE_LAYER,1,height,-width/2+i+1,0,0,0,0,true,true,image,this,i,1,height,false,true));
 	}
 }
 

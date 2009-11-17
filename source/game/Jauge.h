@@ -30,6 +30,11 @@ const int WIND_JAUGE_HEIGHT(8);
 const int WIND_JAUGE_X(42);
 const int WIND_JAUGE_Y(-23);
 
+const int LASER_JAUGE_WIDTH(40);
+const int LASER_JAUGE_HEIGHT(4);
+const int LASER_JAUGE_X(0);
+const int LASER_JAUGE_Y(-30);
+
 const float FLICKERING_SPEED(.01);
 const float FLICKERING_MIN(0);
 const float FLICKERING_MAX(.5);

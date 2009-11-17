@@ -12,7 +12,8 @@ Sun::Sun(float _a, float _b) :
 		0,
 		-PI/2,
 		0,
-		0,
+		false,
+		false,
 		App::imageBank->get(TXT_SUN)),
 		a(_a),
 		e(sqrt(_b*_b-_a*_a)/_b)

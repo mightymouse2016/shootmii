@@ -11,7 +11,7 @@ Cannon::Cannon(
 		Player* _owner,
 		int _playerNumber,
 		Manager* _manager) :
-	Rectangle(CANNON_LAYER,CANNON_WIDTH,CANNON_HEIGHT,TANK_HEIGHT/4,0,_angle,0,0,1,App::imageBank->get(TXT_CANNON),_owner),
+	Rectangle(CANNON_LAYER,CANNON_WIDTH,CANNON_HEIGHT,TANK_HEIGHT/4,0,_angle,0,0,true,true,App::imageBank->get(TXT_CANNON),_owner),
 	wind(_wind),
 	heat(0),
 	strength(0),
@@ -33,7 +33,7 @@ Cannon::Cannon(
 	default:crossHair_image = App::imageBank->get(TXT_CROSSHAIR1);break;
 	}
 	vertices.reserve(CHILDREN_STRENGTH + STRENGTH_JAUGE_STATES);
-	addChild(new Rectangle(CROSSHAIR_LAYER, CROSSHAIR_WIDTH, CROSSHAIR_HEIGHT, 0, 0, CROSSHAIR_OVERTAKE, angle, 0, 1, crossHair_image, _owner));
+	addChild(new Rectangle(CROSSHAIR_LAYER, CROSSHAIR_WIDTH, CROSSHAIR_HEIGHT, 0, 0, CROSSHAIR_OVERTAKE, angle, 0, true,true, crossHair_image, _owner));
 	addChild(NULL);		//< Un emplacement pour la munition
 	for (int i=0;i<STRENGTH_JAUGE_STATES;i++){
 		addChild(
@@ -44,7 +44,7 @@ Cannon::Cannon(
 					CANNON_WIDTH/2,
 					0,
 					i*100/STRENGTH_JAUGE_STATES,
-					0,0,0,
+					0,0,true,true,
 					App::imageBank->get(TXT_STRENGTH_SPRITES),
 					this,
 					i,

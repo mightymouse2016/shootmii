@@ -21,6 +21,7 @@ const float SPEED_SLOW(0.5);
 const float SPEED_VERY_SLOW(0.25);
 
 const float FURY_DEC_STEP(.4);
+const float LASER_DEC_STEP(.1);
 
 enum Direction {
   LEFT,
@@ -39,8 +40,8 @@ private:
 	int score;
 	float life;			//<  0->100
 	float fury;			//<  0->100
+	float laserRemainingTime;
 	bool furyMode;
-	bool laserMode;
 	Terrain* terrain;
 	Bonus* bonus;
 public:
@@ -66,6 +67,7 @@ public:
 	float* getPLife();
 	float* getPFury();
 	bool* getPFuryMode();
+	float* getPLaserRemainingTime();
 	Terrain* getTerrain();
 	Terrain* getTerrain() const;
 	Cannon* getCannon();

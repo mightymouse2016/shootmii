@@ -47,8 +47,8 @@ void Screen::compute(){
 }
 
 void Screen::computePointer(Pointer* pointer){
-	int x = pointer->getOriginX();
-	int y = pointer->getOriginY();
+	int x = pointer->getAbsoluteOriginX();
+	int y = pointer->getAbsoluteOriginY();
 	int bx, by, bw, bh;
 	Button* b;
 

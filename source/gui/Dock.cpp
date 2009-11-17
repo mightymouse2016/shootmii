@@ -3,7 +3,7 @@
 namespace shootmii {
 
 Dock::Dock(bool _position) :
-	Rectangle(DOCK_LAYER,DOCK_WIDTH,DOCK_HEIGHT,DOCK_WIDTH/2,0,0,0,_position ? PI : 0,1,App::imageBank->get(TXT_DOCK)),
+	Rectangle(DOCK_LAYER,DOCK_WIDTH,DOCK_HEIGHT,DOCK_WIDTH/2,0,0,0,_position ? PI : 0,true,true,App::imageBank->get(TXT_DOCK)),
 	position(_position)
 {
 	// NOTHING TO DO

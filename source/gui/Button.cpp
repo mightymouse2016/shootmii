@@ -8,7 +8,7 @@ Button::Button(const int originX,
 	const int height,
 	const string _text,
 	GRRLIB_texImg* image) :
-		Rectangle(BUTTON_LAYER,width,height,originX,originY,0,0,0,1,image),
+		Rectangle(BUTTON_LAYER,width,height,originX,originY,0,0,0,true,true,image),
 		stuck(false),
 		pointed(false),
 		clicked(false)
