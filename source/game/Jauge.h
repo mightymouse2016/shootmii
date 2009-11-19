@@ -35,6 +35,11 @@ const int LASER_JAUGE_HEIGHT(4);
 const int LASER_JAUGE_X(0);
 const int LASER_JAUGE_Y(-30);
 
+const int SHIELD_JAUGE_WIDTH(40);
+const int SHIELD_JAUGE_HEIGHT(4);
+const int SHIELD_JAUGE_X(0);
+const int SHIELD_JAUGE_Y(-35);
+
 const float FLICKERING_SPEED(.01);
 const float FLICKERING_MIN(0);
 const float FLICKERING_MAX(.5);

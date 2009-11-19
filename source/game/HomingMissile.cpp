@@ -42,6 +42,7 @@ HomingMissile::HomingMissile(
 Animation* HomingMissile::destruction(explosionType _type, Player* _playerHit) {
 	App::soundBank->play(AMMO_BOOM);
     switch (_type){
+    case HIT_A_SHIELD:
     case HIT_ANOTHER_AMMO:
         return new Animation(
             EXPLOSION_LAYER,

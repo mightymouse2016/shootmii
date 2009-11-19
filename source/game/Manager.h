@@ -7,6 +7,11 @@ namespace shootmii {
 
 const int PLAYER_OFFSET(100);
 
+const int SHIELD_WIDTH(100);
+const int SHIELD_HEIGHT(100);
+const int SHIELD_DURATION(20);
+const int SHIELD_SLOW(1);
+
 class Manager {
 private:
 	bool pause;
@@ -29,6 +34,7 @@ public:
 	Wind* getWind() const;
 	void addAmmo(Ammo* ammo) const;
 	void addBonus(Bonus* bonus) const;
+	void addShieldEffect(Player* player) const;
 	void addAnimation(Animation* animation) const;
 	void initPlayers() const;
 	void init();

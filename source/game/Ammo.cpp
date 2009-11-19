@@ -16,6 +16,7 @@ Ammo::Ammo(
 		calcY(_calcY),
 		destroyed(false),
 		outOfCannon(false),
+		outOfShield(false),
 		fired(false),
 		explosionFinished(false),
 		terrain(_terrain),
@@ -74,7 +75,7 @@ Player* Ammo::getOwner(){
 }
 
 void Ammo::computeOut(){
-	if (!isOutOfCannon()) if (!intersect(owner)) out();
+	if (!isOutOfCannon()) if (!intersect(owner)) outCannon();
 }
 
 Player* Ammo::getOwner() const{
@@ -169,10 +170,14 @@ void Ammo::destroy() {
 	destroyed = true;
 }
 
-void Ammo::out(){
+void Ammo::outCannon(){
 	outOfCannon = true;
 	getGhostAmmo()->show();
 	getGhostBubble()->show();
+}
+
+void Ammo::outShield(){
+	outOfShield = true;
 }
 
 void Ammo::deleteMe(){
@@ -185,6 +190,10 @@ bool Ammo::isToDelete(){
 
 bool Ammo::isOutOfCannon() const{
 	return outOfCannon;
+}
+
+bool Ammo::isOutOfShield() const{
+	return outOfShield;
 }
 
 bool Ammo::isOffScreen() const{
@@ -236,6 +245,24 @@ Player* Ammo::hitAPlayer(Player* player1, Player* player2) const{
 	if (intersect(player1)) return player1;
 	if (intersect(player2)) return player2;
 	return NULL;
+}
+
+bool Ammo::hitAShield(Player* player){
+	if (!player->isInShieldMode()) return false;
+	float xDiff = player->getAbsoluteX() - getAbsoluteX();
+	float yDiff = player->getAbsoluteY() - getAbsoluteY();
+	float shieldRadius = SHIELD_WIDTH/2;
+	// Si je suis en dehors d'un bouclier, pas de collision
+	if (xDiff*xDiff + yDiff*yDiff > shieldRadius*shieldRadius) {
+		// J'autorise les collisions futures éventuelles avec un bouclier,
+		// seulement si je suis en dehors du bouclier du propriétaire
+		if (getOwner() == player && !isOutOfShield()) {
+			manager->addShieldEffect(player);
+			outShield();
+		}
+		return false;
+	}
+	return isOutOfShield();
 }
 
 void Ammo::init(float strength){

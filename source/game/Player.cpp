@@ -20,6 +20,7 @@ Player::Player(
 		life(_life),
 		fury(_fury),
 		laserRemainingTime(0),
+		shieldRemainingTime(0),
 		furyMode(false),
 		terrain(_terrain),
 		bonus(NULL)
@@ -71,6 +72,10 @@ bool* Player::getPFuryMode(){
 
 float* Player::getPLaserRemainingTime(){
 	return &laserRemainingTime;
+}
+
+float* Player::getPShieldRemainingTime(){
+	return &shieldRemainingTime;
 }
 
 Terrain* Player::getTerrain(){
@@ -127,6 +132,10 @@ bool Player::isInFuryMode() const{
 
 bool Player::isInLaserMode() const{
 	return laserRemainingTime > 0;
+}
+
+bool Player::isInShieldMode() const{
+	return shieldRemainingTime > 0;
 }
 
 void Player::setOpponent(Player* _opponent){
@@ -197,6 +206,14 @@ void Player::stopLaserMode(){
 	laserRemainingTime = 0;
 }
 
+void Player::beginShieldMode(){
+	shieldRemainingTime = 100;
+}
+
+void Player::stopShieldMode(){
+	shieldRemainingTime = 0;
+}
+
 void Player::addRecoil(int intensity){
 	recoil += intensity;
 }
@@ -223,6 +240,7 @@ void Player::init() {
 	score = 0;
 	fury = 0;
 	laserRemainingTime = 0;
+	shieldRemainingTime = 0;
 	if (bonus) delete bonus;
 	bonus = NULL;
 	initGame();
@@ -235,6 +253,7 @@ void Player::initGame() {
 		stopFuryMode();
 	}
 	laserRemainingTime = 0;
+	shieldRemainingTime = 0;
 	recoil = 0;
 	life = 100;
 	getCannon()->init();
@@ -287,6 +306,12 @@ void Player::computeLaserMode(){
 	if (laserRemainingTime == 0) return;
 	laserRemainingTime -= LASER_DEC_STEP;
 	if (laserRemainingTime < 0) laserRemainingTime = 0;
+}
+
+void Player::computeShieldMode(){
+	if (shieldRemainingTime == 0) return;
+	shieldRemainingTime -= SHIELD_DEC_STEP;
+	if (shieldRemainingTime < 0) shieldRemainingTime = 0;
 }
 
 void Player::computeDamage(Ammo* ammo){

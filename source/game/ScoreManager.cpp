@@ -165,6 +165,37 @@ ScoreManager::ScoreManager(
 
 		children[CHILD_LASER_JAUGE_1]->setSpinFather(false);
 		children[CHILD_LASER_JAUGE_2]->setSpinFather(false);
+
+		// Jauge de shield
+		addChild(new Jauge(
+				JAUGE_LAYER,
+				manager->getPlayer1()->getPShieldRemainingTime(),
+				SHIELD_JAUGE_WIDTH,
+				SHIELD_JAUGE_HEIGHT,
+				SHIELD_JAUGE_X,
+				SHIELD_JAUGE_Y,
+				App::imageBank->get(TXT_SHIELD_JAUGE),
+				NULL,
+				0,
+				manager->getPlayer1()));
+		addChild(new Jauge(
+				JAUGE_LAYER,
+				manager->getPlayer2()->getPShieldRemainingTime(),
+				SHIELD_JAUGE_WIDTH,
+				SHIELD_JAUGE_HEIGHT,
+				SHIELD_JAUGE_X,
+				SHIELD_JAUGE_Y,
+				App::imageBank->get(TXT_SHIELD_JAUGE),
+				NULL,
+				0,
+				manager->getPlayer2()));
+
+				// On fait le lien pour que la jauge bouge avec le player
+				children[CHILD_SHIELD_JAUGE_1]->setFather(manager->getPlayer1());
+				children[CHILD_SHIELD_JAUGE_2]->setFather(manager->getPlayer2());
+
+				children[CHILD_SHIELD_JAUGE_1]->setSpinFather(false);
+				children[CHILD_SHIELD_JAUGE_2]->setSpinFather(false);
 }
 
 void ScoreManager::compute(){

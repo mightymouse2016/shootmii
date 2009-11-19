@@ -22,6 +22,7 @@ const float SPEED_VERY_SLOW(0.25);
 
 const float FURY_DEC_STEP(.4);
 const float LASER_DEC_STEP(.1);
+const float SHIELD_DEC_STEP(.1);
 
 enum Direction {
   LEFT,
@@ -41,6 +42,7 @@ private:
 	float life;			//<  0->100
 	float fury;			//<  0->100
 	float laserRemainingTime;
+	float shieldRemainingTime;
 	bool furyMode;
 	Terrain* terrain;
 	Bonus* bonus;
@@ -68,6 +70,7 @@ public:
 	float* getPFury();
 	bool* getPFuryMode();
 	float* getPLaserRemainingTime();
+	float* getPShieldRemainingTime();
 	Terrain* getTerrain();
 	Terrain* getTerrain() const;
 	Cannon* getCannon();
@@ -79,6 +82,7 @@ public:
 	Bonus** getPBonus();
 	bool isInFuryMode() const;
 	bool isInLaserMode() const;
+	bool isInShieldMode() const;
 
 	void setOpponent(Player* _opponent);
 	void setScore(const int score);
@@ -95,6 +99,8 @@ public:
 	void stopFuryMode();
 	void beginLaserMode();
 	void stopLaserMode();
+	void beginShieldMode();
+	void stopShieldMode();
 
 	void addRecoil(int intensity);
 	void addBonus(Bonus* bonus);
@@ -107,6 +113,7 @@ public:
 
 	void computeFuryMode();
 	void computeLaserMode();
+	void computeShieldMode();
 	void computeDamage(Ammo* ammo);
 	void computeRecoil();
 	void compute();
