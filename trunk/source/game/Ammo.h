@@ -31,7 +31,8 @@ const int GHOST_DISTANCE(100);	// Distance sur laquelle le fondu en transparence
 enum explosionType {
   HIT_THE_GROUND,
   HIT_ANOTHER_AMMO,
-  HIT_A_PLAYER
+  HIT_A_PLAYER,
+  HIT_A_SHIELD
 };
 
 enum AmmoChild{
@@ -44,6 +45,7 @@ protected:
 	Function* calcY;
 	bool destroyed;
 	bool outOfCannon; 		//< pour que le gestionnaire de collisions ignore l'auto-contact
+	bool outOfShield; 		//< pour que le gestionnaire de collisions ignore l'auto-contact
 	bool fired; 			//< pour savoir si on incrémente le compteur de temps ou non
 	bool explosionFinished;
 	Terrain* terrain;
@@ -78,7 +80,8 @@ public:
 	void setAngle(const float _angle);
 	void destroy();
 	virtual Animation* destruction(explosionType _type, Player* _playerHit = NULL)=0;
-	void out();
+	void outCannon();
+	void outShield();
 	/*
 	 * Cette méthode set toDelete à true pour que le gestionnaire de collision la supprime
 	 * après seulement avoir geré toutes les collisions entre ammos, sinon crash !
@@ -86,6 +89,7 @@ public:
 	virtual void deleteMe();
 	bool isToDelete();
 	bool isOutOfCannon() const;
+	bool isOutOfShield() const;
 	bool isOffScreen() const;
 	bool isTooLow() const;
 	bool isDestroyed() const;
@@ -93,6 +97,7 @@ public:
 	bool hitABonus(list<Bonus*>* bonusList) const;
 	Ammo* hitAnotherAmmo(list<Ammo*>* ammoList) const;
 	Player* hitAPlayer(Player* player1, Player* player2) const;
+	bool hitAShield(Player* player);
 
 	void init(float strength);
 

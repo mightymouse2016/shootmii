@@ -61,6 +61,21 @@ void Manager::addBonus(Bonus* bonus) const {
 	bonuses->push_back(bonus);
 }
 
+void Manager::addShieldEffect(Player* player) const{
+	addAnimation(
+		new Animation(
+			SHIELD_LAYER,
+			App::imageBank->get(TXT_SHIELD),
+			0,
+			0,
+			0,0,0,player,
+			SHIELD_WIDTH,
+			SHIELD_HEIGHT,
+			SHIELD_DURATION,
+			SHIELD_SLOW,
+			1));
+}
+
 void Manager::addAnimation(Animation* animation) const {
 	animations->push_back(animation);
 }
@@ -191,6 +206,22 @@ void Manager::computeAmmos() {
 		// Collision avec un bonus
 		else if ((*i)->hitABonus(bonuses)) {
 			App::console->addDebug("collision : bonus");
+		}
+
+		// Collision avec le bouclier du player 1
+		else if ((*i)->hitAShield(player1)){
+			App::console->addDebug("collision : player1's shield");
+			addShieldEffect(player1);
+			addAnimation((*i)->destruction(HIT_A_SHIELD));
+			(*i)->deleteMe();
+		}
+
+		// Collision avec le bouclier du player 2
+		else if ((*i)->hitAShield(player2)){
+			App::console->addDebug("collision : player2's shield");
+			addShieldEffect(player2);
+			addAnimation((*i)->destruction(HIT_A_SHIELD));
+			(*i)->deleteMe();
 		}
 	}
 

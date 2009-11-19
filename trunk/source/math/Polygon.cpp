@@ -90,16 +90,6 @@ LayerPriority Polygon::getLayer() const{
 	return layer;
 }
 
-/*
-float Polygon::getOriginX() const{
-	return originX;
-}
-
-float Polygon::getOriginY() const{
-	return originY;
-}
-*/
-
 float Polygon::getAbsoluteOriginX() const{
 	// Si le polygon n'a pas de père, on s'aligne sur le coin supèrieur gauche de l'écran
 	if (!father) return originX;
@@ -125,15 +115,7 @@ float Polygon::getAbsoluteOriginY() const{
 	// Sinon, on se base seulement sur  ses coordonnées
 	return father->getAbsoluteY() + originY;
 }
-/*
-float Polygon::getX() const{
-	return originX + radial*cos(getAbsoluteAngle());
-}
 
-float Polygon::getY() const{
-	return originY + radial*sin(getAbsoluteAngle());
-}
-*/
 float Polygon::getAbsoluteX() const{
 	return getAbsoluteOriginX() + radial*cos(getAbsoluteAngle());
 }
