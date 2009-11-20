@@ -98,6 +98,7 @@ public:
 	Ammo* hitAnotherAmmo(list<Ammo*>* ammoList) const;
 	Player* hitAPlayer(Player* player1, Player* player2) const;
 	bool hitAShield(Player* player);
+	void addShieldEffect(Player* player,float angle) const;
 
 	void init(float strength);
 
