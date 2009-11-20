@@ -248,21 +248,40 @@ Player* Ammo::hitAPlayer(Player* player1, Player* player2) const{
 }
 
 bool Ammo::hitAShield(Player* player){
-	if (!player->isInShieldMode()) return false;
+	//if (!player->isInShieldMode()) return false;
 	float xDiff = player->getAbsoluteX() - getAbsoluteX();
 	float yDiff = player->getAbsoluteY() - getAbsoluteY();
+	float playerAmmoAngle =  atan2(yDiff,xDiff) - PI/2;
 	float shieldRadius = SHIELD_WIDTH/2;
 	// Si je suis en dehors d'un bouclier, pas de collision
 	if (xDiff*xDiff + yDiff*yDiff > shieldRadius*shieldRadius) {
 		// J'autorise les collisions futures éventuelles avec un bouclier,
 		// seulement si je suis en dehors du bouclier du propriétaire
 		if (getOwner() == player && !isOutOfShield()) {
-			manager->addShieldEffect(player);
+			addShieldEffect(player,playerAmmoAngle);
 			outShield();
 		}
 		return false;
 	}
-	return isOutOfShield();
+	if (!isOutOfShield()) return false;
+	addShieldEffect(player,playerAmmoAngle);
+	return true;
+}
+
+void Ammo::addShieldEffect(Player* player, float angle) const{
+	Animation* shiningShield = new Animation(
+			SHIELD_LAYER,
+			App::imageBank->get(TXT_SHIELD),
+			0,
+			0,
+			0,0,angle,player,
+			SHIELD_WIDTH,
+			SHIELD_HEIGHT,
+			SHIELD_DURATION,
+			SHIELD_SLOW,
+			1);
+	shiningShield->setSpinFather(false);
+	manager->addAnimation(shiningShield);
 }
 
 void Ammo::init(float strength){

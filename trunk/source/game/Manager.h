@@ -34,7 +34,6 @@ public:
 	Wind* getWind() const;
 	void addAmmo(Ammo* ammo) const;
 	void addBonus(Bonus* bonus) const;
-	void addShieldEffect(Player* player) const;
 	void addAnimation(Animation* animation) const;
 	void initPlayers() const;
 	void init();
