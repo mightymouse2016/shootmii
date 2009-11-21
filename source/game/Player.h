@@ -23,6 +23,7 @@ const float SPEED_VERY_SLOW(0.25);
 const float FURY_DEC_STEP(.4);
 const float LASER_DEC_STEP(.1);
 const float SHIELD_DEC_STEP(.1);
+const float SHIELD_IMPACT_DEC_STEP(2);
 
 enum Direction {
   LEFT,
@@ -110,6 +111,7 @@ public:
 	void initPosition(float screenX);	//< Pose le player sur le terrain
 
 	void useBonus(Bonus* bonus);	//< en pressant A
+	void shieldImpact();
 
 	void computeFuryMode();
 	void computeLaserMode();

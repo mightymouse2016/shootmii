@@ -34,6 +34,7 @@ void ImageBank::init() {
 	allTextures[TXT_SMOKE] = GRRLIB_LoadTexture(smoke_sprites);
 	allTextures[TXT_BONUS_LIFE] = GRRLIB_LoadTexture(bonus_life);
 	allTextures[TXT_LIFE_JAUGE] = GRRLIB_LoadTexture(life_jauge);
+	allTextures[TXT_BONUS_SHIELD] = GRRLIB_LoadTexture(bonus_shield);
 	allTextures[TXT_HEAT_JAUGE] = GRRLIB_LoadTexture(heat_jauge);
 	allTextures[TXT_WIND_JAUGE] = GRRLIB_LoadTexture(wind_jauge);
 	allTextures[TXT_CROSSHAIR1] = GRRLIB_LoadTexture(crosshair_1);

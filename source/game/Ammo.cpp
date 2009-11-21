@@ -248,7 +248,7 @@ Player* Ammo::hitAPlayer(Player* player1, Player* player2) const{
 }
 
 bool Ammo::hitAShield(Player* player){
-	//if (!player->isInShieldMode()) return false;
+	if (!player->isInShieldMode()) return false;
 	float xDiff = player->getAbsoluteX() - getAbsoluteX();
 	float yDiff = player->getAbsoluteY() - getAbsoluteY();
 	float playerAmmoAngle =  atan2(yDiff,xDiff) - PI/2;
@@ -263,7 +263,7 @@ bool Ammo::hitAShield(Player* player){
 		}
 		return false;
 	}
-	if (!isOutOfShield()) return false;
+	if (getOwner() == player && !isOutOfShield()) return false;
 	addShieldEffect(player,playerAmmoAngle);
 	return true;
 }

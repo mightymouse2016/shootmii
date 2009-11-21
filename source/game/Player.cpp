@@ -285,9 +285,17 @@ void Player::useBonus(Bonus* _bonus){
 	case CROSS_HAIR:
 		beginLaserMode();
 		App::console->addDebug("bonus used : cross hair");break;
+	case SHIELD:
+		beginShieldMode();
+		App::console->addDebug("bonus used : cross hair");break;
 	default:
 		App::console->addDebug("bonus used : unknown type");break;
 	}
+}
+
+void Player::shieldImpact(){
+	shieldRemainingTime -=SHIELD_IMPACT_DEC_STEP;
+	if (shieldRemainingTime < 0) shieldRemainingTime = 0;
 }
 
 void Player::computeFuryMode(){
@@ -309,7 +317,6 @@ void Player::computeLaserMode(){
 }
 
 void Player::computeShieldMode(){
-	if (shieldRemainingTime == 0) return;
 	shieldRemainingTime -= SHIELD_DEC_STEP;
 	if (shieldRemainingTime < 0) shieldRemainingTime = 0;
 }
@@ -345,6 +352,7 @@ void Player::compute(){
 	computeRecoil();
 	computeFuryMode();
 	computeLaserMode();
+	computeShieldMode();
 }
 
 void Player::dealEvent(const u32* playerEvents){
