@@ -31,6 +31,7 @@ public:
 		const string text,
 		GRRLIB_texImg* image
 	);
+	void init();
 	void click();
 	void unClick();
 	bool isClicked() const;
@@ -43,8 +44,11 @@ public:
 	bool isPointed() const;
 	Text* getText();
 	Text* getText() const;
+	void highLight();
+	void unHighLight();
 	void grow();
 	void shrink();
+	void draw() const;
 };
 
 }

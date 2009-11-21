@@ -16,6 +16,8 @@ class Screen {
 		Pointer** pointerPlayer;
 		u32** eventsPlayer;
 		map<ButtonType,Button*> buttons;
+		map<ButtonType,Button*>::iterator selectedButton;
+		bool selectionMode;
 		list<Text*> texts;
 		list<Dock*> docks;
     public:

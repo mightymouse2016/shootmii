@@ -202,6 +202,10 @@ void Polygon::setColorFilter(const u32 _colorFilter){
 	colorFilter = _colorFilter;
 }
 
+void Polygon::setSprite(const int _spriteIndex){
+	spriteIndex = _spriteIndex;
+}
+
 void Polygon::addChild(Polygon * child){
 	children.push_back(child);
 	if (child) child->setFather(this);

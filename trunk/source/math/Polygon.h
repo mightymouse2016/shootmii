@@ -40,6 +40,7 @@ enum LayerPriority{
 	FRONT_CLOUD_LAYER,
 	DOCK_LAYER,
 	BUTTON_LAYER,
+	HIGHLIGHT_LAYER,
 	TEXT_LAYER,
 	POINTER_LAYER
 };
@@ -120,6 +121,7 @@ public:
 	void setFather(Polygon* father);
 	void setImage(GRRLIB_texImg* image);
 	void setColorFilter(const u32 colorFilter);
+	void setSprite(const int spriteIndex);
 
 	void addChild(Polygon * child);
 

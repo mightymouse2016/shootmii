@@ -8,12 +8,16 @@ Button::Button(const int originX,
 	const int height,
 	const string _text,
 	GRRLIB_texImg* image) :
-		Rectangle(BUTTON_LAYER,width,height,originX,originY,0,0,0,true,true,image),
+		Rectangle(BUTTON_LAYER,width,height,originX,originY,0,0,0,true,true,image,NULL,0,width,height),
 		stuck(false),
 		pointed(false),
 		clicked(false)
 {
 	addChild(new Text(_text,GUI_FONT,FONT_SIZE_6,BLACK));
+}
+
+void Button::init(){
+	scale = 1;
 }
 
 void Button::click(){
@@ -57,11 +61,19 @@ bool Button::isPointed() const{
 }
 
 Text* Button::getText(){
-	return static_cast<Text*>(children[0]);
+	return static_cast<Text*>(children[1]);
 }
 
 Text* Button::getText() const{
-	return static_cast<Text*>(children[0]);
+	return static_cast<Text*>(children[1]);
+}
+
+void Button::highLight(){
+	setSprite(1);
+}
+
+void Button::unHighLight(){
+	setSprite(0);
 }
 
 void Button::grow(){
@@ -72,6 +84,10 @@ void Button::grow(){
 void Button::shrink(){
 	scale -= SHRINK_PACE;
 	if (scale < 1) scale = 1;
+}
+
+void Button::draw() const{
+	Rectangle::draw();
 }
 
 }
