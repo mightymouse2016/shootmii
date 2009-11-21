@@ -37,14 +37,14 @@ const int BONUS_CROSS_HAIR_ANIMATION_SLOW(5);
 
 const int BONUS_SHIELD_WIDTH(24);
 const int BONUS_SHIELD_HEIGHT(24);
-const int BONUS_SHIELD_DURATION(20);
+const int BONUS_SHIELD_DURATION(40);
 const int BONUS_SHIELD_ANIMATION_SLOW(1);
 
 const int BONUS_SPEED(30);
 const int BONUS_OSCILLATIONS_RANGE(100);
 const int BONUS_OSCILLATIONS_CENTER(100);
 
-const int BONUS_PROBABILITY (3*60); // apparition toutes les 15*60frames = 15 secondes en moyenne
+const int BONUS_PROBABILITY (30*60); // apparition toutes les 30*60frames = 30 secondes en moyenne
 
 const int BONUS_X(302);
 const int BONUS_Y(SCREEN_HEIGHT-SCORE_PANEL_HEIGHT/2-15);
