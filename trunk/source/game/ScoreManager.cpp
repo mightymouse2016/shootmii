@@ -206,7 +206,7 @@ void ScoreManager::compute(){
 	if (*bonusPlayer2) (*bonusPlayer2)->compute();
 }
 
-void ScoreManager::draw() const{
+void ScoreManager::draw(){
 	Polygon::draw();
 	if (*bonusPlayer1) (*bonusPlayer1)->draw();
 	if (*bonusPlayer2) (*bonusPlayer2)->draw();

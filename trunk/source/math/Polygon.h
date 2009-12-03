@@ -133,7 +133,7 @@ public:
 	void grow(const float k);
 
 	virtual void addToDrawManager();
-	virtual void draw() const;// utiliser addToDrawManager() qui prendras en compte le layer et appelera draw() au bon moment
+	virtual void draw();// utiliser addToDrawManager() qui prendras en compte le layer et appelera draw() au bon moment
 	virtual void drawDebug() const;
 	void hide();
 	void show();

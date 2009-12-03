@@ -54,7 +54,7 @@ public:
 	void setFontSize(fontSize size);
 	void setColor(u32 _color);
 	void update();
-	void draw() const;
+	void draw();
 };
 
 }

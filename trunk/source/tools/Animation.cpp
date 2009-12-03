@@ -18,11 +18,13 @@ Animation::Animation(
 		const int _loops,
 		Function* _calcX,
 		Function* _calcY,
-		float _step) :
+		const float _step,
+		const bool _fadeOut) :
 	Rectangle(_layer, _width,_height,_originX,_originY, _radial, _angle, _rectangleAngle, true, true, _tiles, _father, 0, _width, _height),
 	Timer(_spriteSlow,_step),
 	loops(_loops),
 	duration(_duration),
+	fadeOut(_fadeOut),
 	calcX(_calcX),
 	calcY(_calcY)
 {

@@ -120,6 +120,8 @@ public:
 	void computeRecoil();
 	void compute();
 
+	void draw();
+
 	// Binds
 	void dealEvent(const u32* playerEvents);
 

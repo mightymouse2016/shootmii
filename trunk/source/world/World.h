@@ -29,7 +29,7 @@ public:
 	void compute();
 	void computeClouds();
 	void addToDrawManager();
-	void draw() const;
+	void draw();
 };
 
 }

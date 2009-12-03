@@ -105,7 +105,7 @@ public:
 	void setAmmo(Ammo* ammo);
 	void up();
 	void decHeat();
-	void draw(const int screenX, const int screenY) const;
+	void draw(const int screenX, const int screenY);
 	void rotateLeft();
 	void rotateRight();
 	void incStrength();
@@ -121,7 +121,7 @@ public:
 	void loadGuided();
 	bool isLoaded() const;
 	bool isGuidingMissile() const;
-	void draw() const;
+	void draw();
 };
 
 }

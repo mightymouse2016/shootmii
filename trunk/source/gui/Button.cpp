@@ -86,7 +86,7 @@ void Button::shrink(){
 	if (scale < 1) scale = 1;
 }
 
-void Button::draw() const{
+void Button::draw(){
 	Rectangle::draw();
 }
 
