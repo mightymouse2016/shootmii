@@ -52,7 +52,6 @@ public:
 	float getAbsoluteHeight(const float x) const;
 	void setYs(const int _y1, const int _y2);
 	void setIndexCoords(const int colIndex, const int rowIndex);
-	//void draw() const;
 };
 
 }

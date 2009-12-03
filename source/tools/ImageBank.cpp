@@ -34,7 +34,6 @@ void ImageBank::init() {
 	allTextures[TXT_SMOKE] = GRRLIB_LoadTexture(smoke_sprites);
 	allTextures[TXT_BONUS_LIFE] = GRRLIB_LoadTexture(bonus_life);
 	allTextures[TXT_LIFE_JAUGE] = GRRLIB_LoadTexture(life_jauge);
-	allTextures[TXT_BONUS_SHIELD] = GRRLIB_LoadTexture(bonus_shield);
 	allTextures[TXT_HEAT_JAUGE] = GRRLIB_LoadTexture(heat_jauge);
 	allTextures[TXT_WIND_JAUGE] = GRRLIB_LoadTexture(wind_jauge);
 	allTextures[TXT_CROSSHAIR1] = GRRLIB_LoadTexture(crosshair_1);
@@ -51,6 +50,7 @@ void ImageBank::init() {
 	allTextures[TXT_TITLE_SCREEN] = GRRLIB_LoadTexture(title_screen);
 	allTextures[TXT_BG_CLOUD] = GRRLIB_LoadTexture(background_cloud);
 	allTextures[TXT_FG_CLOUD] = GRRLIB_LoadTexture(foreground_cloud);
+	allTextures[TXT_BONUS_SHIELD] = GRRLIB_LoadTexture(bonus_shield);
 	allTextures[TXT_STRENGTH_JAUGE] = GRRLIB_LoadTexture(strength_jauge);
 	allTextures[TXT_HOMING_SMOKE] = GRRLIB_LoadTexture(homing_smoke_sprites);
 	allTextures[TXT_BONUS_CROSS_HAIR] = GRRLIB_LoadTexture(bonus_cross_hair);

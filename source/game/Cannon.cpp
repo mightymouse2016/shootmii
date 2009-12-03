@@ -11,7 +11,7 @@ Cannon::Cannon(
 		Player* _owner,
 		int _playerNumber,
 		Manager* _manager) :
-	Rectangle(CANNON_LAYER,CANNON_WIDTH,CANNON_HEIGHT,TANK_HEIGHT/4,0,_angle,0,0,true,true,App::imageBank->get(TXT_CANNON),_owner),
+	Rectangle(CANNON_LAYER,CANNON_WIDTH,CANNON_HEIGHT,TANK_HEIGHT/4,0,_angle,0,0,true,true,App::imageBank->get(TXT_CANNON),_owner,0,CANNON_WIDTH,CANNON_HEIGHT),
 	wind(_wind),
 	heat(0),
 	strength(0),
@@ -308,7 +308,7 @@ bool Cannon::isGuidingMissile() const{
 	return (guidedMissile != NULL);
 }
 
-void Cannon::draw() const{
+void Cannon::draw(){
 	float x, y, newX, newY;
 	Terrain* terrain = getOwner()->getTerrain();
 
@@ -338,7 +338,12 @@ void Cannon::draw() const{
 		}
 	}
 
-	Polygon::draw();
+	setSprite(0);
+	setColorFilter(WHITE);
+	Rectangle::draw();
+	setSprite(1);
+	setColorFilter(applyRatioToRGBA(WHITE,(100-static_cast<Player*>(getFather())->getLife())/100,0,0,0,1));
+	Rectangle::draw();
 }
 
 

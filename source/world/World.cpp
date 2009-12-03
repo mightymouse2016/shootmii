@@ -74,7 +74,7 @@ void World::addToDrawManager(){
 	for (list<Cloud*>::iterator i=clouds->begin();i!=clouds->end();i++) (*i)->addToDrawManager();
 }
 
-void World::draw() const {
+void World::draw(){
 	// Ciel
 	float ratio = (1-SUN_LIGHT_INFLUENCE) - sin(sun->getAbsoluteAngle())*SUN_LIGHT_INFLUENCE;
 	u32 colorSky1 = applyRatioToRGBA(BLUE_SKY_1,ratio,0,0,0,1);

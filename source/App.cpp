@@ -98,7 +98,7 @@ void App::computeFrameRate() {
 	}
 }
 
-void App::draw() const{
+void App::draw(){
 	currentScreen->addToDrawManager();
 	drawManager->draw();
 	console->draw();

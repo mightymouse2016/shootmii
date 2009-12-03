@@ -13,7 +13,7 @@ Player::Player(
 	const float _life,
 	const float _fury,
 	Manager* _manager) :
-		Rectangle(TANK_LAYER,TANK_HEIGHT,TANK_WIDTH,0,0,TANK_HEIGHT/2,-PI/2,0,true,true,App::imageBank->get(TXT_TANK)),
+		Rectangle(TANK_LAYER,TANK_HEIGHT,TANK_WIDTH,0,0,TANK_HEIGHT/2,-PI/2,0,true,true,App::imageBank->get(TXT_TANK),NULL,0,TANK_HEIGHT,TANK_WIDTH),
 		playerNumber(_playerNumber),
 		recoil(0),
 		score(0),
@@ -353,6 +353,15 @@ void Player::compute(){
 	computeFuryMode();
 	computeLaserMode();
 	computeShieldMode();
+}
+
+void Player::draw(){
+	setSprite(0);
+	setColorFilter(WHITE);
+	Rectangle::draw();
+	setSprite(1);
+	setColorFilter(applyRatioToRGBA(WHITE,(100-getLife())/100,0,0,0,1));
+	Rectangle::draw();
 }
 
 void Player::dealEvent(const u32* playerEvents){

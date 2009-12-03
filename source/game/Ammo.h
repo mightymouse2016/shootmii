@@ -104,7 +104,6 @@ public:
 
 	void fire();
 
-	void draw();
 };
 
 }

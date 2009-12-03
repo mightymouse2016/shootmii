@@ -48,7 +48,7 @@ public:
 	void unHighLight();
 	void grow();
 	void shrink();
-	void draw() const;
+	void draw();
 };
 
 }

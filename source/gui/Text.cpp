@@ -58,7 +58,7 @@ void Text::setColor(u32 _color){
 	color = (GXColor) {r,g,b,a};
 }
 
-void Text::draw() const{
+void Text::draw(){
 	Polygon::draw();
 	float x = getAbsoluteOriginX();
 	float y = getAbsoluteOriginY()+size/2;

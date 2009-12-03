@@ -35,7 +35,7 @@ public:
 
 	void computeFrameRate();
 	void compute();
-	void draw() const;
+	void draw();
 };
 
 }

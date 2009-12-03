@@ -245,7 +245,7 @@ void Polygon::addToDrawManager(){
 	}
 }
 
-void Polygon::draw() const{
+void Polygon::draw(){
 	if (hidden || spriteIndex < 0 || !image) return;
 	if (spriteWidth && spriteHeight) { // Si c'est un sprite et non une image
 		GRRLIB_DrawTile(

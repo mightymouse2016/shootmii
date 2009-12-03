@@ -9,6 +9,7 @@ class Animation : public Rectangle, public Timer{
 protected:
 	int loops; // <0 = infinite
 	int duration;
+	bool fadeOut;
 	Function* calcX;
 	Function* calcY;
 public:
@@ -28,7 +29,8 @@ public:
 		const int loops = 1,
 		Function* calcX = NULL,
 		Function* calcY = NULL,
-		float step = DEFAULT_TIME_STEP);
+		const float step = DEFAULT_TIME_STEP,
+		const bool fadeOut = false);
 	~Animation();
 	virtual void compute();
 	virtual bool isFinished();
