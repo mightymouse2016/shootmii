@@ -25,6 +25,9 @@ const float LASER_DEC_STEP(.1);
 const float SHIELD_DEC_STEP(.1);
 const float SHIELD_IMPACT_DEC_STEP(2);
 
+const float DAMAGE_SMOKLET_INITIAL_SPEED(5);
+const float ARCHIMEDE(5);
+
 enum Direction {
   LEFT,
   RIGHT
@@ -46,6 +49,7 @@ private:
 	float shieldRemainingTime;
 	bool furyMode;
 	Terrain* terrain;
+	Manager* manager;
 	Bonus* bonus;
 public:
 	Player(
@@ -117,6 +121,7 @@ public:
 	void computeLaserMode();
 	void computeShieldMode();
 	void computeDamage(Ammo* ammo);
+	void computeDegradation();
 	void computeRecoil();
 	void compute();
 

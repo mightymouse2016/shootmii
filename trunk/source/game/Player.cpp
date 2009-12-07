@@ -23,6 +23,7 @@ Player::Player(
 		shieldRemainingTime(0),
 		furyMode(false),
 		terrain(_terrain),
+		manager(_manager),
 		bonus(NULL)
 {
 	children.reserve(2);
@@ -108,11 +109,11 @@ float Player::getSpeed(const CellType type, const Direction dir) const {
       case GRASS_MID:
       case GRASS_RIGHT:		return SPEED_NORMAL;
       case SLOPE_UP_05_1:
-      case SLOPE_UP_05_2: 	if(dir == LEFT) return SPEED_FAST; 		else return SPEED_SLOW;
+      case SLOPE_UP_05_2: 	return dir == LEFT ? SPEED_FAST : SPEED_SLOW;
       case SLOPE_DOWN_05_1:
-      case SLOPE_DOWN_05_2: if(dir == LEFT) return SPEED_SLOW; 		else return SPEED_FAST;
-      case SLOPE_UP_1: 		if(dir == LEFT) return SPEED_VERY_FAST; else return SPEED_VERY_SLOW;
-      case SLOPE_DOWN_1: 	if(dir == LEFT) return SPEED_VERY_SLOW; else return SPEED_VERY_FAST;
+      case SLOPE_DOWN_05_2: return dir == LEFT ? SPEED_SLOW : SPEED_FAST;
+      case SLOPE_UP_1: 		return dir == LEFT ? SPEED_VERY_FAST : SPEED_VERY_SLOW;
+      case SLOPE_DOWN_1: 	return dir == LEFT ? SPEED_VERY_SLOW : SPEED_VERY_FAST;
       default: 				return SPEED_VERY_SLOW;
     }
   return SPEED_VERY_SLOW;
@@ -334,6 +335,27 @@ void Player::computeDamage(Ammo* ammo){
     App::console->addDebug("Distance = %d; Damage = %d;", distance, degat);
 }
 
+void Player::computeDegradation(){
+	if (life > 50) return;
+	if (rand()%static_cast<int>(life)) return;
+	float projectionAngle = PI/4 + (rand()%1000)*PI/(2*1000);
+	manager->addAnimation(
+			new Animation(
+				SMOKLET_LAYER,
+				App::imageBank->get(TXT_HOMING_SMOKE),
+				originX+getHeight()*cos(getAbsoluteAngle())/2,
+				originY+getWidth()*sin(getAbsoluteAngle())/2,
+				0,0,0,NULL,
+				HOMING_SMOKE_WIDTH,
+				HOMING_SMOKE_HEIGHT,
+				HOMING_SMOKE_DURATION,
+				HOMING_SMOKE_SLOW,
+				1,
+				new PolyDeg2(manager->getWind()->getWindSpeed()*WIND_INFLUENCE_ON_SMOKE/(2*100* SMOKE_WEIGHT),DAMAGE_SMOKLET_INITIAL_SPEED*cos(projectionAngle),originX+getHeight()*cos(getAbsoluteAngle())/2),
+				new PolyDeg2(-(GRAVITY* SMOKE_WEIGHT*SMOKE_AIR_RESISTANCE/2-ARCHIMEDE)/GRAVITY,-DAMAGE_SMOKLET_INITIAL_SPEED*sin(projectionAngle),originY+getWidth()*sin(getAbsoluteAngle())/2)));
+
+}
+
 void Player::computeRecoil(){
 	if (recoil > 0) {
 		moveLeft(recoil);
@@ -353,6 +375,7 @@ void Player::compute(){
 	computeFuryMode();
 	computeLaserMode();
 	computeShieldMode();
+	computeDegradation();
 }
 
 void Player::draw(){
