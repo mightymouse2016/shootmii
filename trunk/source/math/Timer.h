@@ -15,6 +15,7 @@ protected:
 public:
 	Timer(int slow = 0, float step = DEFAULT_TIME_STEP);
 	void compute();
+	void setSlow(const int slow);
 	float getT() const;
 	bool timeIsOver() const;
 	void init();

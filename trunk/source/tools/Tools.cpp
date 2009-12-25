@@ -39,15 +39,11 @@ void drawRectangle(f32 x, f32 y, f32 width, f32 height, u32 colors[4]) {
 	GX_End();
 }
 
-u32 applyRatioToRGBA(const u32 color, const float ratio, bool red, bool green, bool blue, bool alpha) {
-	u32 r = (color & 0xFF000000);
-	u32 g = (color & 0x00FF0000);
-	u32 b = (color & 0x0000FF00);
-	u32 a = (color & 0x000000FF);
-	if (red) 	r *= ratio;
-	if (green) 	g *= ratio;
-	if (blue) 	b *= ratio;
-	if (alpha)	a *= ratio;
+u32 colorFadeOut(const u32 color1, const u32 color2, const float ratio) {
+	u32 r = (color1 & 0xFF000000)*ratio + (color2 & 0xFF000000)*(1-ratio);
+	u32 g =	(color1 & 0x00FF0000)*ratio + (color2 & 0x00FF0000)*(1-ratio);
+	u32 b =	(color1 & 0x0000FF00)*ratio + (color2 & 0x0000FF00)*(1-ratio);
+	u32 a =	(color1 & 0x000000FF)*ratio + (color2 & 0x000000FF)*(1-ratio);
 	return (r & 0xFF000000) | (g & 0x00FF0000) | (b & 0x0000FF00) | (a & 0x000000FF);
 }
 

@@ -77,8 +77,8 @@ void World::addToDrawManager(){
 void World::draw(){
 	// Ciel
 	float ratio = (1-SUN_LIGHT_INFLUENCE) - sin(sun->getAbsoluteAngle())*SUN_LIGHT_INFLUENCE;
-	u32 colorSky1 = applyRatioToRGBA(BLUE_SKY_1,ratio,0,0,0,1);
-	u32 colorSky2 = applyRatioToRGBA(BLUE_SKY_2,ratio,0,0,0,1);
+	u32 colorSky1 = colorFadeOut(BLUE_SKY_1, BLUE_SKY_1 & TRANSPARENT, ratio);
+	u32 colorSky2 = colorFadeOut(BLUE_SKY_2, BLUE_SKY_2 & TRANSPARENT,ratio);
 	u32 colors[] = {colorSky1, colorSky1, colorSky2, colorSky2};
 	drawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, colors);
 	Polygon::draw();

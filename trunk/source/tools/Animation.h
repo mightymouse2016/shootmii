@@ -12,6 +12,8 @@ protected:
 	bool fadeOut;
 	Function* calcX;
 	Function* calcY;
+	u32	fadeOutStartColor;
+	u32 fadeOutEndColor;
 public:
 	Animation(
 		const LayerPriority layer,
@@ -30,10 +32,13 @@ public:
 		Function* calcX = NULL,
 		Function* calcY = NULL,
 		const float step = DEFAULT_TIME_STEP,
-		const bool fadeOut = false);
+		const bool fadeOut = false,
+		const u32 fadeOutStartColor = WHITE,
+		const u32 fadeOutEndColor = TRANSPARENT);
 	~Animation();
+	float getProgress() const;
 	virtual void compute();
-	virtual bool isFinished();
+	virtual bool isFinished() const;
 };
 
 }

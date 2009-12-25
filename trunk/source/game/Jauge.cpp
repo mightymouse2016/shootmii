@@ -39,8 +39,8 @@ void Jauge::compute(){
 			flickeringDirection = !flickeringDirection;
 		}
 	}
-	if (flickering && *flickering) 	setColorFilter(applyRatioToRGBA(RED,flickeringState,0,0,0,1));
-	if (flickering && !*flickering) setColorFilter(TRANSPARENT);
+
+	if (flickering) setColorFilter(*flickering ? colorFadeOut(RED & TRANSPARENT, RED, flickeringState) : TRANSPARENT);
 
 	int width = getWidth();
 	int limit = static_cast<int>(width*(*percentage)/100);

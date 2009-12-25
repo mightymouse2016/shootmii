@@ -17,7 +17,7 @@ GRRLIB_texImg* loadFont(const unsigned char font[], unsigned int size,unsigned i
 void printXCentered(f32 ypos, GRRLIB_texImg tex, u32 color, f32 zoom,const char *text);
 void printRight(f32 ypos, GRRLIB_texImg* tex, u32 color, f32 zoom,const char *text);
 void drawRectangle(f32 x, f32 y, f32 width, f32 height, u32 colors[4]);
-u32 applyRatioToRGBA(const u32 color, const float ratio, bool red, bool green, bool blue, bool alpha);
+u32 colorFadeOut(const u32 color1, const u32 color2, const float ratio);
 
 }
 #endif

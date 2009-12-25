@@ -12,6 +12,10 @@ bool Timer::timeIsOver() const{
 	return (!(t%slow));
 }
 
+void Timer::setSlow(const int _slow){
+	slow = _slow;
+}
+
 float Timer::getT() const{
 	return t*step;
 }
