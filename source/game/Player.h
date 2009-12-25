@@ -25,6 +25,8 @@ const float LASER_DEC_STEP(.1);
 const float SHIELD_DEC_STEP(.1);
 const float SHIELD_IMPACT_DEC_STEP(2);
 
+const int DAMAGE_STATES(5);
+const int BACK_SMOKLETS_RATIO(4);
 const float DAMAGE_SMOKLET_INITIAL_SPEED(5);
 const float ARCHIMEDE(5);
 
@@ -51,6 +53,7 @@ private:
 	Terrain* terrain;
 	Manager* manager;
 	Bonus* bonus;
+	Timer* damageSmokletTimer;
 public:
 	Player(
 		Terrain* terrain,

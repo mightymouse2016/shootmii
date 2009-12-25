@@ -342,7 +342,7 @@ void Cannon::draw(){
 	setColorFilter(WHITE);
 	Rectangle::draw();
 	setSprite(1);
-	setColorFilter(applyRatioToRGBA(WHITE,(100-static_cast<Player*>(getFather())->getLife())/100,0,0,0,1));
+	setColorFilter(colorFadeOut(WHITE, TRANSPARENT, (100-getOwner()->getLife())/100));
 	Rectangle::draw();
 }
 

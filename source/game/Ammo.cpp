@@ -123,7 +123,7 @@ void Ammo::computeGhost(){
 	ghostAmmo->setPolygonAngle(angle-ghostBubble->getAbsolutePolygonAngle());
 
 	/* Calcul de la transparence de la bulle */
-	u32 filter = applyRatioToRGBA(WHITE,max(ratio1,ratio2),0,0,0,1);
+	u32 filter = colorFadeOut(WHITE, TRANSPARENT, max(ratio1,ratio2));
 	ghostAmmo->setColorFilter(filter);
 	ghostBubble->setColorFilter(filter);
 }

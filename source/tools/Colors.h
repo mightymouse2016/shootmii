@@ -3,7 +3,7 @@
 
 #include "../ShootMii.h"
 
-static const u32 TRANSPARENT	(0x00000000);
+static const u32 TRANSPARENT	(0xFFFFFF00);
 static const u32 BLACK			(0x000000FF);
 static const u32 WHITE			(0xFFFFFFFF);
 static const u32 RED			(0xFF0000FF);
