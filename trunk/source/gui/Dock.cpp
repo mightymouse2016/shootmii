@@ -1,4 +1,8 @@
-#include "../ShootMii.h"
+#include "../tools/ImageBank.h"
+#include "../App.h"
+#include "Button.h"
+#include "Text.h"
+#include "Dock.h"
 
 namespace shootmii {
 
@@ -21,7 +25,7 @@ void Dock::addText(Text* text){
 
 void Dock::toggleHideShow(){
 	hiddenOutOfScreen = !hiddenOutOfScreen;
-	for (list<Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
+	for (std::list<Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
 		(*i)->toggleStuck();
 	}
 }
@@ -29,7 +33,7 @@ void Dock::toggleHideShow(){
 void Dock::init(){
 	hiddenOutOfScreen = true;
 	originY = position ? - DOCK_HEIGHT/2 : SCREEN_HEIGHT + DOCK_HEIGHT/2;
-	for (list<Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
+	for (std::list<Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
 		(*i)->stuckIt();
 	}
 }

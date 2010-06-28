@@ -1,9 +1,13 @@
 #ifndef ANIMATION_H_
 #define ANIMATION_H_
 
-#include "../ShootMii.h"
+#include "../math/Rectangle.h"
+#include "../math/Timer.h"
+#include "../tools/Colors.h"
 
 namespace shootmii{
+
+class Function;
 
 class Animation : public Rectangle, public Timer{
 protected:

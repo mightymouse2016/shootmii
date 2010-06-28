@@ -1,9 +1,22 @@
 #ifndef AMMO_H_
 #define AMMO_H_
 
-#include "../ShootMii.h"
+#include "GRRLIB.h"
+#include <list>
+#include <vector>
+#include "../math/Polygon.h"
+#include "../math/Timer.h"
 
 namespace shootmii {
+
+class Bonus;
+class PolyDeg2;
+class Animation;
+class Terrain;
+class Player;
+class Manager;
+class Rectangle;
+class Wind;
 
 const float RECOIL_COEF(.25);
 
@@ -11,7 +24,7 @@ const float SMOKE_WEIGHT(1);
 const float WIND_INFLUENCE_ON_SMOKE(.5);
 const float SMOKE_AIR_RESISTANCE(.3);
 
-const int MINIMUM_LENGTH_FOR_DAMAGE(TERRAIN_CELL_WIDTH*3);
+const int MINIMUM_LENGTH_FOR_DAMAGE(16 * 3);
 const float DAMAGE_COEF(.5);
 const int HIT_DAMAGE_BONUS(20);
 
@@ -25,17 +38,14 @@ const int AMMO_OVERTAKE(5); // dépassement de la munition du canon
 const int GHOST_WIDTH(60);
 const int GHOST_HEIGHT(52);
 const int GHOST_OFFSET_X(5);
-const int GHOST_MARGIN(GHOST_WIDTH-GHOST_HEIGHT/2);
-const int GHOST_DISTANCE(100);	// Distance sur laquelle le fondu en transparence s'opère
+const int GHOST_MARGIN(GHOST_WIDTH - GHOST_HEIGHT / 2);
+const int GHOST_DISTANCE(100); // Distance sur laquelle le fondu en transparence s'opère
 
 enum explosionType {
-  HIT_THE_GROUND,
-  HIT_ANOTHER_AMMO,
-  HIT_A_PLAYER,
-  HIT_A_SHIELD
+	HIT_THE_GROUND, HIT_ANOTHER_AMMO, HIT_A_PLAYER, HIT_A_SHIELD
 };
 
-enum AmmoChild{
+enum AmmoChild {
 	CHILD_GHOST_BUBBLE
 };
 
@@ -44,23 +54,17 @@ protected:
 	PolyDeg2* calcX;
 	PolyDeg2* calcY;
 	bool destroyed;
-	bool outOfCannon; 		//< pour que le gestionnaire de collisions ignore l'auto-contact
-	bool outOfShield; 		//< pour que le gestionnaire de collisions ignore l'auto-contact
-	bool fired; 			//< pour savoir si on incrémente le compteur de temps ou non
+	bool outOfCannon; //< pour que le gestionnaire de collisions ignore l'auto-contact
+	bool outOfShield; //< pour que le gestionnaire de collisions ignore l'auto-contact
+	bool fired; //< pour savoir si on incrémente le compteur de temps ou non
 	bool explosionFinished;
 	Terrain* terrain;
 	Player* owner;
 	Manager* manager;
 	bool toDelete;
 public:
-	Ammo(
-		const float angle,
-		GRRLIB_texImg* image,
-		PolyDeg2* calcX,
-		PolyDeg2* calcY,
-		Player* owner,
-		Terrain* terrain,
-		Manager* manager);
+	Ammo(const float angle, GRRLIB_texImg* image, PolyDeg2* calcX,
+			PolyDeg2* calcY, Player* owner, Terrain* terrain, Manager* manager);
 	virtual ~Ammo();
 	PolyDeg2* getCalcX();
 	PolyDeg2* getCalcY();
@@ -79,7 +83,8 @@ public:
 	void compute();
 	void setAngle(const float _angle);
 	void destroy();
-	virtual Animation* destruction(explosionType _type, Player* _playerHit = NULL)=0;
+	virtual Animation* destruction(explosionType _type, Player* _playerHit =
+			NULL)=0;
 	void outCannon();
 	void outShield();
 	/*
@@ -94,17 +99,15 @@ public:
 	bool isTooLow() const;
 	bool isDestroyed() const;
 	bool hitTheGround(Terrain* terrain) const;
-	bool hitABonus(list<Bonus*>* bonusList) const;
-	Ammo* hitAnotherAmmo(list<Ammo*>* ammoList) const;
+	bool hitABonus(std::list<Bonus*>* bonusList) const;
+	Ammo* hitAnotherAmmo(std::list<Ammo*>* ammoList) const;
 	Player* hitAPlayer(Player* player1, Player* player2) const;
 	bool hitAShield(Player* player);
-	void addShieldEffect(Player* player,float angle) const;
+	void addShieldEffect(Player* player, float angle) const;
 
 	virtual void init(float strength);
 
 	void fire();
-
-
 
 };
 

@@ -1,7 +1,8 @@
 #ifndef COSINUS_H_
 #define COSINUS_H_
 
-#include "../ShootMii.h"
+#include <cmath>
+#include "Function.h"
 
 namespace shootmii{
 

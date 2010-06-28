@@ -1,7 +1,8 @@
 #ifndef AFFINESEGMENTS_H_
 #define AFFINESEGMENTS_H_
 
-#include "../ShootMii.h"
+#include "Function.h"
+#include <cmath>
 
 namespace shootmii {
 

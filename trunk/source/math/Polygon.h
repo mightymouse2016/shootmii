@@ -1,7 +1,9 @@
 #ifndef POLYGON_H_
 #define POLYGON_H_
 
-#include "../ShootMii.h"
+#include <vector>
+#include "GRRLIB.h"
+#include "Coordinates.h"
 
 namespace shootmii {
 
@@ -46,6 +48,8 @@ enum LayerPriority{
 	POINTER_LAYER
 };
 
+const float PI(3.14159265358979323846264338327950288419716939937510);
+
 const int ORIGIN_CROSS_WIDTH(3);
 const int ORIGIN_CROSS_HEIGHT(3);
 
@@ -63,8 +67,8 @@ protected:
 	float polygonAngle;
 	float scale;
 	Polygon* father;
-	vector<Polygon*> children; //Pour le destructeur
-	vector<Coordinates> vertices;
+	std::vector<Polygon*> children; //Pour le destructeur
+	std::vector<Coordinates> vertices;
 	Coordinates drawOrigin;
 	GRRLIB_texImg* image;
 	int spriteIndex;
@@ -94,8 +98,8 @@ public:
 		const bool debugHidden = false);
 	~Polygon();
 
-	const vector<Coordinates>& getVertices() const;
-	vector<Coordinates> getRotatedVertices() const;
+	const std::vector<Coordinates>& getVertices() const;
+	std::vector<Coordinates> getRotatedVertices() const;
 	const Coordinates& getDrawOrigin() const;
 	const Coordinates getRotatedDrawOrigin() const;
 	static int getNumberOfPolygonsInstances();
@@ -108,8 +112,8 @@ public:
 	float getAbsolutePolygonAngle() const;
 	Polygon* getFather() const;
 	u32 getColorFilter() const;
-	vector<Polygon*>& getChildren();
-	const vector<Polygon*>& getChildren() const;
+	std::vector<Polygon*>& getChildren();
+	const std::vector<Polygon*>& getChildren() const;
 
 	void setOriginX(const float originX);
 	void setOriginY(const float originY);

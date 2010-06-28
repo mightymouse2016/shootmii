@@ -1,4 +1,17 @@
-#include "../ShootMii.h"
+#include "Player.h"
+#include "Cannon.h"
+#include "../tools/ImageBank.h"
+#include "../App.h"
+#include "../math/Rectangle.h"
+#include "../math/PolyDeg2.h"
+#include "../world/Terrain.h"
+#include "../world/Wind.h"
+#include "../tools/Animation.h"
+#include "../tools/Tools.h"
+#include "../tools/Colors.h"
+#include "../game/Manager.h"
+#include "../game/Bonus.h"
+#include "Ammo.h"
 
 namespace shootmii {
 
@@ -125,7 +138,7 @@ void Ammo::computeGhost(){
 	ghostAmmo->setPolygonAngle(angle-ghostBubble->getAbsolutePolygonAngle());
 
 	/* Calcul de la transparence de la bulle */
-	u32 filter = colorFadeOut(WHITE, TRANSPARENT, max(ratio1,ratio2));
+	u32 filter = colorFadeOut(WHITE, TRANSPARENT, ratio1 > ratio2 ? ratio1 : ratio2);
 	ghostAmmo->setColorFilter(filter);
 	ghostBubble->setColorFilter(filter);
 }
@@ -207,15 +220,15 @@ bool Ammo::isDestroyed() const{
 }
 
 bool Ammo::hitTheGround(Terrain* terrain) const{
-	vector<Coordinates> v = getRotatedVertices();
+	std::vector<Coordinates> v = getRotatedVertices();
 	for (int i=0,size=v.size();i<size;i++){
 		if (v[i].getY()+getAbsoluteY() >= terrain->getHeight(v[i].getX()+getAbsoluteX())) return true;
 	}
 	return false;
 }
 
-bool Ammo::hitABonus(list<Bonus*>* bonusList) const{
-	list<Bonus*>::iterator it;
+bool Ammo::hitABonus(std::list<Bonus*>* bonusList) const{
+	std::list<Bonus*>::iterator it;
 	for (it = bonusList->begin();it!=bonusList->end();it++){
 		if (intersect(*it)) {
 			// Ici on fait attention à gérer le cas improbable ou 2 munitions toucheraient le bonus à la même frame
@@ -228,8 +241,8 @@ bool Ammo::hitABonus(list<Bonus*>* bonusList) const{
 	return false;
 }
 
-Ammo* Ammo::hitAnotherAmmo(list<Ammo*>* ammoList) const{
-	list<Ammo*>::iterator it;
+Ammo* Ammo::hitAnotherAmmo(std::list<Ammo*>* ammoList) const{
+	std::list<Ammo*>::iterator it;
 	for (it = ammoList->begin();it!=ammoList->end();it++)
 		if (this != *it && intersect(*it)) return *it;
 	return NULL;
@@ -299,5 +312,3 @@ void Ammo::fire(){
 }
 
 }
-
-

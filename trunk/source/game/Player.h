@@ -1,12 +1,25 @@
 #ifndef PLAYER_H_
 #define PLAYER_H_
 
-#include "../ShootMii.h"
+#include <cstdlib>
+#include <wiiuse/wpad.h>
+#include "../tools/Tools.h"
+#include "../math/Rectangle.h"
 
 namespace shootmii {
 
+class Terrain;
+class Cannon;
+class Manager;
+class Ammo;
+class Timer;
+class Pulse;
+class Wind;
+class Bonus;
+
 const int SHOT_RECOIL(5);
 
+const float ROTATION_STEP(.01);
 const int TANK_WIDTH(16);
 const int TANK_HEIGHT(32);
 const int TANK_ROTATION_AXIS_X(8);
@@ -94,7 +107,7 @@ public:
 	Cannon* getCannon() const;
 	Player* getOpponent();
 	Player* getOpponent() const;
-	float getSpeed(const CellType type, const Direction dir) const;
+	float getSpeed(const int cellYype, const Direction dir) const;
 	Bonus* getBonus();
 	Bonus** getPBonus();
 	bool isInFuryMode() const;

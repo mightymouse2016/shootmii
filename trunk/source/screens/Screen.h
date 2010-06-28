@@ -1,9 +1,17 @@
 #ifndef SCREEN_H_
 #define SCREEN_H_
 
-#include "../ShootMii.h"
+#include <map>
+#include <list>
+#include <string>
+#include "../gui/Button.h"
 
 namespace shootmii {
+
+class App;
+class Text;
+class Dock;
+class Pointer;
 
 enum ScreenType{
 	TITLE_SCREEN,
@@ -15,13 +23,13 @@ class Screen {
 		App* app;
 		Pointer** pointerPlayer;
 		u32** eventsPlayer;
-		map<ButtonType,Button*> buttons;
-		map<ButtonType,Button*>::iterator selectedButton;
+		std::map<ButtonType,Button*> buttons;
+		std::map<ButtonType,Button*>::iterator selectedButton;
 		bool selectionMode;
-		list<Text*> texts;
-		list<Dock*> docks;
+		std::list<Text*> texts;
+		std::list<Dock*> docks;
     public:
-		Screen(App* app,Pointer** pointerPlayer,u32** eventsPlayer);
+		Screen(App* app,Pointer** pointerPlayer,unsigned int** eventsPlayer);
 		virtual ~Screen();
 		virtual void addToDrawManager();
 		virtual void init();
@@ -29,7 +37,7 @@ class Screen {
 		void computePointer(Pointer* pointer);
 		void computeButtons();
 		void computeDocks();
-		void addButton(const int originX, const int originY, const string text, const ButtonType type);
+		void addButton(const int originX, const int originY, const std::string text, const ButtonType type);
 		void addText(Text* text);
 		void addDock(Dock* dock);
 		virtual void dealEvent();

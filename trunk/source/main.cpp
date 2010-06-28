@@ -1,11 +1,10 @@
-#include "ShootMii.h"
-
-using namespace shootmii;
+#include "App.h"
+#include "GRRLIB.h"
 
 Mtx GXmodelView2D;
 
 int main() {
-    App* app = new App();
+	shootmii::App* app = new shootmii::App();
     while(app->isRunning()) app->run();
     delete app;
     return 0;

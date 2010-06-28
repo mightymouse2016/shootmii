@@ -1,9 +1,12 @@
 #ifndef BUTTON_H_
 #define BUTTON_H_
 
-#include "../ShootMii.h"
+#include <string>
+#include "../math/Rectangle.h"
 
 namespace shootmii {
+
+class Text;
 
 const float BUTTON_GROWTH(1.05); // 5% de grossissement
 const float GROW_PACE(0.005);
@@ -28,7 +31,7 @@ public:
 		const int originY,
 		const int width,
 		const int height,
-		const string text,
+		const std::string text,
 		GRRLIB_texImg* image
 	);
 	void init();

@@ -1,8 +1,10 @@
-#include "../ShootMii.h"
+#include "../fonts/army_font.h"
+#include "../fonts/gui_font.h"
+#include "Text.h"
 
 namespace shootmii {
 
-Text::Text(string _text, fontName _name, fontSize _size, u32 _color, const float _originX, const float _originY) :
+Text::Text(std::string _text, fontName _name, fontSize _size, u32 _color, const float _originX, const float _originY) :
 	Rectangle(TEXT_LAYER,0,0,_originX,_originY),
 	name(_name),
 	size(_size),
@@ -32,7 +34,7 @@ void Text::initFont(){
 	}
 }
 
-void Text::setText(string _text){
+void Text::setText(std::string _text){
 	char textCopy[255];
 	strcpy(textCopy,_text.c_str());
 	text = FreeTypeGX::charToWideChar(textCopy);

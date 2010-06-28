@@ -1,8 +1,6 @@
 #ifndef FUNCTION_H_
 #define FUNCTION_H_
 
-#include "../ShootMii.h"
-
 namespace shootmii {
 
 class Function {

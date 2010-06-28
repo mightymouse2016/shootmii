@@ -1,7 +1,8 @@
 #ifndef JAUGE_H_
 #define JAUGE_H_
 
-#include "../ShootMii.h"
+#include "GRRLIB.h"
+#include "../math/Rectangle.h"
 
 namespace shootmii{
 

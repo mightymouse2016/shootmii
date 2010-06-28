@@ -1,7 +1,7 @@
 #ifndef AFFINE_H_
 #define AFFINE_H_
 
-#include "../ShootMii.h"
+#include "Function.h"
 
 namespace shootmii {
 

@@ -1,7 +1,12 @@
 #ifndef SUN_H_
 #define SUN_H_
 
-#include "../ShootMii.h"
+#include <cmath>
+#include <cstdlib>
+#include "../math/Rectangle.h"
+#include "../tools/Tools.h"
+#include "../world/Terrain.h"
+#include "../world/World.h"
 
 namespace shootmii{
 

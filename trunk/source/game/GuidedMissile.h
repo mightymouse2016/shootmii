@@ -1,9 +1,13 @@
 #ifndef GUIDEDMISSILE_H_
 #define GUIDEDMISSILE_H_
 
-#include "../ShootMii.h"
+#include "Cannon.h"
+#include "Ammo.h"
+#include "../math/Timer.h"
 
 namespace shootmii{
+
+class Wind;
 
 const int GUIDED_GROUND_EXPLOSION_WIDTH(64);
 const int GUIDED_GROUND_EXPLOSION_HEIGHT(64);

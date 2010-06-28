@@ -1,4 +1,20 @@
-#include "../ShootMii.h"
+#include "../math/Rectangle.h"
+#include "../math/PolyDeg2.h"
+#include "../math/Timer.h"
+#include "../tools/SoundBank.h"
+#include "../tools/ImageBank.h"
+#include "../tools/Console.h"
+#include "../tools/Colors.h"
+#include "../tools/Tools.h"
+#include "../world/Terrain.h"
+#include "../world/Wind.h"
+#include "../game/Ammo.h"
+#include "../game/GuidedMissile.h"
+#include "../game/CannonBall.h"
+#include "../game/HomingMissile.h"
+#include "../App.h"
+#include "Player.h"
+#include "Cannon.h"
 
 namespace shootmii {
 
@@ -19,9 +35,9 @@ Cannon::Cannon(
 	angleMax(_angleMax),
 	rotationStep(_rotationStep),
 	stillHeld(false),
-	reloadTime(Timer(RELOAD_TIME)),
-	blockedCannon(Timer(BLOCKING_TIME)),
-	furyReloadTime(Timer(FURY_RELOAD_TIME)),
+	reloadTime(new Timer(RELOAD_TIME)),
+	blockedCannon(new Timer(BLOCKING_TIME)),
+	furyReloadTime(new Timer(FURY_RELOAD_TIME)),
 	manager(_manager),
 	t_laser(0),
 	guidedMissile(NULL)
@@ -55,9 +71,11 @@ Cannon::Cannon(
 }
 
 Cannon::~Cannon() {
-	// NOTHING TO DO
 	// guidedMissile destroyed by Manager
 	// ammo and strength jauge destroyed by the Polygon class
+	delete reloadTime;
+	delete blockedCannon;
+	delete furyReloadTime;
 }
 
 void Cannon::destroyGuidedMissile(){
@@ -72,9 +90,9 @@ void Cannon::loseInfluenceOnMissile(){
 void Cannon::init() {
 	heat = 0;
 	strength = 0;
-	reloadTime.init();
-	blockedCannon.init();
-	furyReloadTime.init();
+	reloadTime->init();
+	blockedCannon->init();
+	furyReloadTime->init();
 	if (isLoaded()) {
 		delete getAmmo();
 		setAmmo(NULL);
@@ -132,8 +150,8 @@ void Cannon::computeHeat() {
 		heat -= HEAT_COOL_FAST_STEP;
 	}
 	else if (heat == 100) {
-		if (blockedCannon.timeIsOver()) heat -= HEAT_COOL_SLOW_STEP;
-		else blockedCannon.compute();
+		if (blockedCannon->timeIsOver()) heat -= HEAT_COOL_SLOW_STEP;
+		else blockedCannon->compute();
 	}
 	else if (heat > 50) heat -= HEAT_COOL_SLOW_STEP;			//< Mode lent quand le canon est chaud
 	else if (heat > 0) heat -= HEAT_COOL_FAST_STEP;					//< Mode normal 50 premiers % de la jauge
@@ -178,8 +196,8 @@ void Cannon::incHeat(){
 	if (heat > 100) {				// Le timer était bloqué sur un multiple du temps de blocage
 		heat = 100;					// ici, on le déphase un peu, ainsi computeHeat() va rééquillibrer
 		strength = 0;				// le Timer avant de faire baisser la jauge de heat.
-		blockedCannon.init();		// Le init, sert à pénaliser le joueur si il essaie de tirer
-		blockedCannon.compute();	// alors que l'attente n'est pas terminée.
+		blockedCannon->init();		// Le init, sert à pénaliser le joueur si il essaie de tirer
+		blockedCannon->compute();	// alors que l'attente n'est pas terminée.
 	}
 }
 
@@ -249,15 +267,15 @@ void Cannon::shoot() {
 void Cannon::computeReload() {
 	if (isLoaded()) return;
 	if (getOwner()->isInFuryMode()){
-		furyReloadTime.compute();
-		if (furyReloadTime.timeIsOver()) {
+		furyReloadTime->compute();
+		if (furyReloadTime->timeIsOver()) {
 			if (rand()%FURY_HOMING_PROBABILITY) loadCannon();
 			else loadHoming();
 		}
 	}
 	else{
-		reloadTime.compute();
-		if (reloadTime.timeIsOver() && !stillHeld) loadCannon();
+		reloadTime->compute();
+		if (reloadTime->timeIsOver() && !stillHeld) loadCannon();
 	}
 }
 

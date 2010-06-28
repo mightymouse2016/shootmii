@@ -1,9 +1,13 @@
 #ifndef CLOUD_H_
 #define CLOUD_H_
 
-#include "../ShootMii.h"
+#include "GRRLIB.h"
+#include <cstdlib>
+#include "../math/Rectangle.h"
 
 namespace shootmii {
+
+class Wind;
 
 const int CLOUD_SPACE(25); // 0->100
 

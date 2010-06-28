@@ -1,4 +1,12 @@
-#include "../ShootMii.h"
+#include "../tools/Tools.h"
+#include "../tools/Colors.h"
+#include "../game/Manager.h"
+#include "../game/ScoreManager.h"
+#include "../gui/Button.h"
+#include "../gui/Dock.h"
+#include "../gui/Text.h"
+#include "../App.h"
+#include "GameScreen.h"
 
 namespace shootmii {
 
@@ -55,7 +63,7 @@ void GameScreen::dealEvent() {
 	if (buttons[EXIT_BUTTON]->isClicked()) app->setScreen(TITLE_SCREEN);
 	
 	if (buttons[RESUME_BUTTON]->isClicked() || ((eventsPlayer[0][DOWN] | eventsPlayer[1][DOWN]) & WPAD_BUTTON_HOME)) {
-		for (list<Dock*>::iterator i=docks.begin();i!=docks.end();i++){
+		for (std::list<Dock*>::iterator i=docks.begin();i!=docks.end();i++){
 			(*i)->toggleHideShow();
 		}
 		manager->togglePause();
@@ -63,7 +71,9 @@ void GameScreen::dealEvent() {
 	
 	if (!manager->isInPause()) manager->dealEvent(eventsPlayer[0], eventsPlayer[1]);
 
-	for (map<ButtonType,Button*>::iterator i=buttons.begin();i!=buttons.end();i++) i->second->unClick();
+	for (std::map<ButtonType,Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
+		i->second->unClick();
+	}
 }
 
 }

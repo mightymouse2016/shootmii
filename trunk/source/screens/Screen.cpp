@@ -1,4 +1,12 @@
-#include "../ShootMii.h"
+#include "../tools/ImageBank.h"
+#include "../tools/Console.h"
+#include "../tools/Tools.h"
+#include "../gui/Button.h"
+#include "../gui/Text.h"
+#include "../gui/Dock.h"
+#include "../gui/Pointer.h"
+#include "../App.h"
+#include "Screen.h"
 
 namespace shootmii {
 
@@ -23,14 +31,14 @@ Screen::~Screen(){
 void Screen::addToDrawManager(){
 	pointerPlayer[0]->addToDrawManager();
 	pointerPlayer[1]->addToDrawManager();
-	for (map<ButtonType,Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
+	for (std::map<ButtonType,Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
 		i->second->addToDrawManager();
 		i->second->unHighLight();
 	}
-	for (list<Text*>::iterator i=texts.begin();i!=texts.end();i++){
+	for (std::list<Text*>::iterator i=texts.begin();i!=texts.end();i++){
 		(*i)->addToDrawManager();
 	}	
-	for (list<Dock*>::iterator i=docks.begin();i!=docks.end();i++){
+	for (std::list<Dock*>::iterator i=docks.begin();i!=docks.end();i++){
 		(*i)->addToDrawManager();
 	}
 	
@@ -41,11 +49,11 @@ void Screen::addToDrawManager(){
 }
 
 void Screen::init(){
-	for (list<Dock*>::iterator i=docks.begin();i!=docks.end();i++){
+	for (std::list<Dock*>::iterator i=docks.begin();i!=docks.end();i++){
 		(*i)->init();
 	}
 	
-	for (map<ButtonType,Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
+	for (std::map<ButtonType,Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
 		i->second->init();
 	}
 	
@@ -69,7 +77,7 @@ void Screen::computePointer(Pointer* pointer){
 	int bx, by, bw, bh;
 	Button* b;
 
-	for (map<ButtonType,Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
+	for (std::map<ButtonType,Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
 		b = i->second;
 		if (b->isStuck()) continue;
 		bx = b->getAbsoluteOriginX();
@@ -88,7 +96,7 @@ void Screen::computePointer(Pointer* pointer){
 
 void Screen::computeButtons(){
 	Button* b;
-	for (map<ButtonType,Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
+	for (std::map<ButtonType,Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
 		b = i->second;
 		if (b->isPointed()){
 			b->grow();			// Grossissement du bouton
@@ -101,7 +109,7 @@ void Screen::computeButtons(){
 }
 
 void Screen::computeDocks(){
-	for (list<Dock*>::iterator i=docks.begin();i!=docks.end();i++){
+	for (std::list<Dock*>::iterator i=docks.begin();i!=docks.end();i++){
 		(*i)->compute();
 	}
 }
@@ -154,7 +162,7 @@ void Screen::dealEvent(){
 	
 }
 
-void Screen::addButton(const int originX, const int originY, const string text, const ButtonType type){
+void Screen::addButton(const int originX, const int originY, const std::string text, const ButtonType type){
 	buttons[type] = new Button(originX,originY,BUTTON_1_WIDTH,BUTTON_1_HEIGHT,text,App::imageBank->get(TXT_BUTTON_1));
 	if (buttons.size() == 1) selectedButton = buttons.begin();
 }

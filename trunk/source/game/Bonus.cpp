@@ -1,4 +1,10 @@
-#include "../ShootMii.h"
+#include "../math/Affine.h"
+#include "../math/Cosinus.h"
+#include "../math/Polygon.h"
+#include "../tools/Tools.h"
+#include "../App.h"
+#include "Bonus.h"
+#include "../tools/ImageBank.h"
 
 namespace shootmii {
 

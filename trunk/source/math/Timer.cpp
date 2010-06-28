@@ -1,4 +1,4 @@
-#include "../ShootMii.h"
+#include "Timer.h"
 
 namespace shootmii{
 

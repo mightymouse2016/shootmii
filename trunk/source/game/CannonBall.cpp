@@ -1,4 +1,12 @@
-#include "../ShootMii.h"
+#include "../world/Wind.h"
+#include "../world/Terrain.h"
+#include "../tools/Animation.h"
+#include "../tools/SoundBank.h"
+#include "../tools/ImageBank.h"
+#include "../math/PolyDeg2.h"
+#include "../App.h"
+#include "CannonBall.h"
+#include "Player.h"
 
 namespace shootmii {
 

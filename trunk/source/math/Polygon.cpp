@@ -1,4 +1,8 @@
-#include "../ShootMii.h"
+#include "../game/DrawManager.h"
+#include "../tools/Colors.h"
+#include "../tools/Tools.h"
+#include "../App.h"
+#include "Polygon.h"
 
 namespace shootmii {
 
@@ -52,14 +56,14 @@ Polygon::~Polygon(){
 	children.clear();
 }
 
-const vector<Coordinates>& Polygon::getVertices() const{
+const std::vector<Coordinates>& Polygon::getVertices() const{
 	return vertices;
 }
 
-vector<Coordinates> Polygon::getRotatedVertices() const{
+std::vector<Coordinates> Polygon::getRotatedVertices() const{
 	float verticeAngle;
 	float verticeRadial;
-	vector<Coordinates> rotatedVertices;
+	std::vector<Coordinates> rotatedVertices;
 	rotatedVertices.reserve(vertices.size());
 	for(int i=0,size=vertices.size();i<size;i++){
 		verticeAngle =  vertices[i].getAngle();
@@ -142,11 +146,11 @@ u32 Polygon::getColorFilter() const{
 	return colorFilter;
 }
 
-vector<Polygon*>& Polygon::getChildren(){
+std::vector<Polygon*>& Polygon::getChildren(){
 	return children;
 }
 
-const vector<Polygon*>& Polygon::getChildren() const{
+const std::vector<Polygon*>& Polygon::getChildren() const{
 	return children;
 }
 
@@ -272,7 +276,7 @@ void Polygon::draw(){
 
 void Polygon::drawDebug() const{
 	if (debugHidden) return;
-	vector<Coordinates> rV = getRotatedVertices();
+	std::vector<Coordinates> rV = getRotatedVertices();
 	float oX = getAbsoluteOriginX();
 	float oY = getAbsoluteOriginY();
 	float h = ORIGIN_CROSS_HEIGHT;
@@ -309,8 +313,8 @@ void Polygon::show(){
 }
 
 bool Polygon::intersect(Polygon* polygon) const{
-	vector<Coordinates> v1 = getRotatedVertices();
-	vector<Coordinates> v2 = polygon->getRotatedVertices();
+	std::vector<Coordinates> v1 = getRotatedVertices();
+	std::vector<Coordinates> v2 = polygon->getRotatedVertices();
 	float x = getAbsoluteX(),y = getAbsoluteY(),xp = polygon->getAbsoluteX(),yp = polygon->getAbsoluteY();
 	for (int i=0,k1,size=v1.size();i<size;i++){
 		k1 = i+1;

@@ -1,4 +1,12 @@
-#include "ShootMii.h"
+#include "tools/Console.h"
+#include "tools/ImageBank.h"
+#include "tools/SoundBank.h"
+#include "game/DrawManager.h"
+#include "gui/Pointer.h"
+#include "screens/Screen.h"
+#include "screens/TitleScreen.h"
+#include "screens/GameScreen.h"
+#include "App.h"
 
 namespace shootmii {
 
@@ -62,8 +70,8 @@ bool App::isRunning() const {
 	return running;
 }
 
-void App::setScreen(ScreenType screen){
-	currentScreen = screens[screen];
+void App::setScreen(int screenType){
+	currentScreen = screens[screenType];
 	currentScreen->init();
 }
 
@@ -88,7 +96,7 @@ void App::compute(){
 }
 
 void App::computeFrameRate() {
-	u32 currentTime = ticks_to_millisecs(gettime());
+	unsigned int currentTime = ticks_to_millisecs(gettime());
 	frameCount++;
 	if(currentTime - lastTime > 1000) {
 		lastTime = currentTime;

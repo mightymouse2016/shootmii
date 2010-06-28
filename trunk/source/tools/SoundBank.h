@@ -1,7 +1,10 @@
 #ifndef SOUNDBANK_H_
 #define SOUNDBANK_H_
 
-#include "../ShootMii.h"
+#include <vector>
+#include <utility>
+#include <mp3player.h>
+#include "asndlib.h"
 
 namespace shootmii{
 
@@ -16,7 +19,7 @@ enum SoundEffect {
 
 class SoundBank{
 private:
-	vector<pair<void*,int> > allSounds;
+	std::vector<std::pair<void*,int> > allSounds;
 public:
 	SoundBank();
 	void play(SoundEffect soundEffectName, const float volume = 100); //1->100

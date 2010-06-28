@@ -1,4 +1,7 @@
-#include "../ShootMii.h"
+#include "../tools/Colors.h"
+#include "../tools/Tools.h"
+#include "Cloud.h"
+#include "Wind.h"
 
 namespace shootmii {
 

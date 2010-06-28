@@ -1,4 +1,6 @@
-#include "../ShootMii.h"
+#include "../tools/ImageBank.h"
+#include "../App.h"
+#include "Terrain.h"
 
 namespace shootmii {
 
@@ -12,7 +14,7 @@ Terrain::Terrain(
 		cellWidth(_cellWidth),
 		cellHeight(_cellHeight),
 	  tileSet(App::imageBank->get(TXT_TERRAIN)),
-		grille(vector<vector<TerrainCell> > (rows,vector<TerrainCell> (cols,TerrainCell(tileSet,cellWidth,cellHeight))))
+		grille(std::vector<std::vector<TerrainCell> > (rows,std::vector<TerrainCell> (cols,TerrainCell(tileSet,cellWidth,cellHeight))))
 {
 	// Initialisation des coordonnées contenues dans les Cell
 	GRRLIB_InitTileSet(tileSet, cellWidth, cellHeight, 0);
@@ -72,7 +74,7 @@ CellType Terrain::getType(const int colIndex, const int rowIndex) const {
 	return grille[rowIndex][colIndex].getType();
 }
 
-const vector<vector<TerrainCell> > & Terrain::getGrille() const {
+const std::vector<std::vector<TerrainCell> > & Terrain::getGrille() const {
 	return grille;
 }
 

@@ -1,4 +1,16 @@
-#include "../ShootMii.h"
+#include "../world/Wind.h"
+#include "../world/World.h"
+#include "../world/Terrain.h"
+#include "../tools/Animation.h"
+#include "../tools/Console.h"
+#include "../App.h"
+#include "JaugeManager.h"
+#include "ScoreManager.h"
+#include "DrawManager.h"
+#include "Player.h"
+#include "Bonus.h"
+#include "Ammo.h"
+#include "Manager.h"
 
 namespace shootmii {
 
@@ -11,9 +23,9 @@ Manager::Manager(App* _app) :
 	world(new World),
 	player1(new Player(world->getTerrain(),world->getWind(),1,0,PI/2,PI/4,ROTATION_STEP,100,false,this)),
 	player2(new Player(world->getTerrain(),world->getWind(),2,-PI/2,0,-PI/4,ROTATION_STEP,100,false,this)),
-	ammos(new list<Ammo*>),
-	bonuses(new list<Bonus*>),
-	animations(new list<Animation*>)
+	ammos(new std::list<Ammo*>),
+	bonuses(new std::list<Bonus*>),
+	animations(new std::list<Animation*>)
 {
 	player1->setOpponent(player2);
 	player2->setOpponent(player1);
@@ -106,8 +118,8 @@ void Manager::computeVictory() {
 }
 
 void Manager::computeAnimations() {
-	list<Animation*>* newAnimations = new list<Animation*>;
-	for (list<Animation*>::iterator i=animations->begin();i!=animations->end();i++){
+	std::list<Animation*>* newAnimations = new std::list<Animation*>;
+	for (std::list<Animation*>::iterator i=animations->begin();i!=animations->end();i++){
 		if ((*i)->isFinished()) delete *i;
 		else {
 			(*i)->compute();
@@ -119,8 +131,8 @@ void Manager::computeAnimations() {
 }
 
 void Manager::computeBonuses() {
-	list<Bonus*>* newBonuses = new list<Bonus*>;
-	for (list<Bonus*>::iterator i=bonuses->begin();i!=bonuses->end();i++){
+	std::list<Bonus*>* newBonuses = new std::list<Bonus*>;
+	for (std::list<Bonus*>::iterator i=bonuses->begin();i!=bonuses->end();i++){
 		if ((*i)->isPossessed());	// Instruction vide : pas de push_back, le player prends le relai
 		else if ((*i)->isFinished()) delete *i;
 		else {
@@ -133,8 +145,8 @@ void Manager::computeBonuses() {
 }
 
 void Manager::computeAmmos() {
-	list<Ammo*>* newAmmos = new list<Ammo*> ;
-	for (list<Ammo*>::iterator i=ammos->begin();i!=ammos->end();i++) {
+	std::list<Ammo*>* newAmmos = new std::list<Ammo*> ;
+	for (std::list<Ammo*>::iterator i=ammos->begin();i!=ammos->end();i++) {
 
 		// Mise à jour de la position de l'ammo
 		(*i)->compute();
@@ -209,7 +221,7 @@ void Manager::computeAmmos() {
 	}
 
 	//Boucle de suppression
-	for (list<Ammo*>::iterator i=ammos->begin();i!=ammos->end();i++) {
+	for (std::list<Ammo*>::iterator i=ammos->begin();i!=ammos->end();i++) {
 		if ((*i)->isToDelete()) delete *i;
 		else newAmmos->push_back(*i);
 	}

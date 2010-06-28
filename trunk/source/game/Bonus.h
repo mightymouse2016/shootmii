@@ -1,9 +1,14 @@
 #ifndef BONUS_H_
 #define BONUS_H_
 
-#include "../ShootMii.h"
+#include "GRRLIB.h"
+#include "../world/World.h"
+#include "../tools/Animation.h"
+#include "../tools/Tools.h"
 
 namespace shootmii{
+
+class Function;
 
 const int BONUS_HOMING_WIDTH(16);
 const int BONUS_HOMING_HEIGHT(16);

@@ -1,9 +1,13 @@
 #ifndef SCOREMANAGER_H_
 #define SCOREMANAGER_H_
 
-#include "../ShootMii.h"
+#include "../math/Rectangle.h"
 
 namespace shootmii {
+
+class Manager;
+class Bonus;
+class App;
 
 const int MANCHE(3);
 

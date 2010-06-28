@@ -1,4 +1,4 @@
-#include "../ShootMii.h"
+#include "Affine.h"
 
 namespace shootmii {
 

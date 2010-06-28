@@ -1,9 +1,13 @@
 #ifndef POINTER_H_
 #define POINTER_H_
 
-#include "../ShootMii.h"
+#include "GRRLIB.h"
+#include <wiiuse/wpad.h>
+#include "../math/Rectangle.h"
 
 namespace shootmii {
+
+class App;
 
 const int POINTER_WIDTH(96);
 const int POINTER_HEIGHT(96);

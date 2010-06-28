@@ -1,9 +1,17 @@
 #ifndef WORLD_H_
 #define WORLD_H_
 
-#include "../ShootMii.h"
+#include <list>
+#include "GRRLIB.h"
+#include "../math/Polygon.h"
+#include "../tools/Tools.h"
 
 namespace shootmii {
+
+class Sun;
+class Wind;
+class Cloud;
+class Terrain;
 
 const int MAX_WIND_SPEED(100);
 const int SCORE_PANEL_HEIGHT(64);
@@ -19,7 +27,7 @@ private:
 	Wind* wind;
 	Terrain* terrain;
 	Sun* sun;
-	list<Cloud*>* clouds;
+	std::list<Cloud*>* clouds;
 public:
 	World();
 	virtual ~World();

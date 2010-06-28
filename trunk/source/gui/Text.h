@@ -1,7 +1,9 @@
 #ifndef TEXT_H_
 #define TEXT_H_
 
-#include "../ShootMii.h"
+#include <string>
+#include "../FreeTypeGX/FreeTypeGX.h"
+#include "../math/Rectangle.h"
 
 namespace shootmii{
 
@@ -46,10 +48,10 @@ private:
 	GXColor color;
 	FreeTypeGX* gxFont;
 public:
-	Text(string text, fontName name, fontSize size, u32 color, const float originX = 0, const float originY = 0);
+	Text(std::string text, fontName name, fontSize size, u32 color, const float originX = 0, const float originY = 0);
 	~Text();
 	void initFont();
-	void setText(string text);
+	void setText(std::string text);
 	void setFontName(fontName name);
 	void setFontSize(fontSize size);
 	void setColor(u32 _color);

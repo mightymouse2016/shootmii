@@ -1,11 +1,12 @@
 #ifndef TERRAINCELL_H_
 #define TERRAINCELL_H_
 
-#include "../ShootMii.h"
-
-const int N_CELLTYPE(2); // Nombre de type de cellules, pour l'instant terre ou ciel
+#include "GRRLIB.h"
+#include "../math/Polygon.h"
 
 namespace shootmii {
+
+const int N_CELLTYPE(2); // Nombre de type de cellules, pour l'instant terre ou ciel
 
 enum CellType {
 	EMPTY = -1,

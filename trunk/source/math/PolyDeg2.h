@@ -1,7 +1,7 @@
 #ifndef POLYDEG2_H_
 #define POLYDEG2_H_
 
-#include "../ShootMii.h"
+#include "Function.h"
 
 namespace shootmii {
 

@@ -1,4 +1,13 @@
-#include "../ShootMii.h"
+#include "../world/Wind.h"
+#include "../tools/ImageBank.h"
+#include "../gfx/font_score.h"
+#include "../App.h"
+#include "Manager.h"
+#include "Player.h"
+#include "Cannon.h"
+#include "Bonus.h"
+#include "Jauge.h"
+#include "ScoreManager.h"
 
 namespace shootmii {
 

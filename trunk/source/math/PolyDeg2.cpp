@@ -1,4 +1,4 @@
-#include "../ShootMii.h"
+#include "PolyDeg2.h"
 
 namespace shootmii {
 

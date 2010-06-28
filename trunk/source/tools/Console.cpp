@@ -1,4 +1,8 @@
-#include "../ShootMii.h"
+#include "../math/Polygon.h"
+#include "../gfx/font_console.h"
+#include "Colors.h"
+#include "Tools.h"
+#include "Console.h"
 
 namespace shootmii {
 

@@ -1,9 +1,12 @@
 #ifndef HOMINGMISSILE_H_
 #define HOMINGMISSILE_H_
 
-#include "../ShootMii.h"
+#include "Ammo.h"
+#include "Cannon.h"
 
 namespace shootmii{
+
+class Animation;
 
 const int HOMING_GROUND_EXPLOSION_WIDTH(64);
 const int HOMING_GROUND_EXPLOSION_HEIGHT(64);
