@@ -26,7 +26,7 @@ const float HOMING_REACTIVITY(.1);
 const float HOMING_ACTIVATION_DELAY(30*DEFAULT_TIME_STEP); // 1/2 seconde
 
 class HomingMissile : public Ammo {
-private:
+protected:
 	Player* target;
 	bool active;
 public:

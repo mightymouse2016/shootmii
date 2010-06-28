@@ -41,8 +41,8 @@ enum AmmoChild{
 
 class Ammo: public Polygon, public Timer {
 protected:
-	Function* calcX;
-	Function* calcY;
+	PolyDeg2* calcX;
+	PolyDeg2* calcY;
 	bool destroyed;
 	bool outOfCannon; 		//< pour que le gestionnaire de collisions ignore l'auto-contact
 	bool outOfShield; 		//< pour que le gestionnaire de collisions ignore l'auto-contact
@@ -56,14 +56,14 @@ public:
 	Ammo(
 		const float angle,
 		GRRLIB_texImg* image,
-		Function* calcX,
-		Function* calcY,
+		PolyDeg2* calcX,
+		PolyDeg2* calcY,
 		Player* owner,
 		Terrain* terrain,
 		Manager* manager);
 	virtual ~Ammo();
-	Function* getCalcX();
-	Function* getCalcY();
+	PolyDeg2* getCalcX();
+	PolyDeg2* getCalcY();
 	int getCol() const;
 	int getRow() const;
 	Rectangle* getGhostAmmo();
@@ -75,7 +75,7 @@ public:
 	void computeOut();
 	void computeGhost();
 	virtual void computeSmoklets();
-	virtual void computePosition();
+	virtual void computePosition()=0;
 	void compute();
 	void setAngle(const float _angle);
 	void destroy();
@@ -100,9 +100,11 @@ public:
 	bool hitAShield(Player* player);
 	void addShieldEffect(Player* player,float angle) const;
 
-	void init(float strength);
+	virtual void init(float strength);
 
 	void fire();
+
+
 
 };
 

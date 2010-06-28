@@ -17,6 +17,7 @@ Player::Player(
 		playerNumber(_playerNumber),
 		recoil(0),
 		score(0),
+		lifeModificationFlag(false),
 		life(_life),
 		fury(_fury),
 		laserRemainingTime(0),
@@ -25,16 +26,20 @@ Player::Player(
 		terrain(_terrain),
 		manager(_manager),
 		bonus(NULL),
-		damageSmokletTimer(new Timer(DAMAGE_STATES))
+		damageSmokletTimer(new Timer(DAMAGE_SMOKLET_STATES)),
+		damagePulseTimer(new Timer),
+		damagePulse(new Pulse(DAMAGE_PULSE_R1,DAMAGE_PULSE_R2,DAMAGE_PULSE_PERIOD))
 {
 	children.reserve(2);
 	addChild(new Cannon(_angleMin, _angleMax, _angle, _rotationStep,_wind, this, _playerNumber, _manager));
 }
 
 Player::~Player(){
-	// On libère le bonus car on est le Manager ne s'en occupe plus
+	// On libère le bonus car l'App ne s'en occupe plus
 	delete bonus;
 	delete damageSmokletTimer;
+	delete damagePulseTimer;
+	delete damagePulse;
 }
 
 int Player::getPlayerNumber() const{
@@ -118,7 +123,6 @@ float Player::getSpeed(const CellType type, const Direction dir) const {
       case SLOPE_DOWN_1: 	return dir == LEFT ? SPEED_VERY_SLOW : SPEED_VERY_FAST;
       default: 				return SPEED_VERY_SLOW;
     }
-  return SPEED_VERY_SLOW;
 }
 
 Bonus* Player::getBonus(){
@@ -174,11 +178,11 @@ void Player::setLife(const float lifeAmount){
 }
 
 void Player::winLife(const float lifeAmount){
-	Manager::jaugeManager->addIncrease(&life,lifeAmount);
+	Manager::jaugeManager->addIncrease(&life,lifeAmount,&lifeModificationFlag);
 }
 
 void Player::loseLife(const float lifeAmount) {
-	Manager::jaugeManager->addDecrease(&life,lifeAmount);
+	Manager::jaugeManager->addDecrease(&life,lifeAmount,&lifeModificationFlag);
 }
 
 void Player::setFury(const float furyAmount){
@@ -338,30 +342,39 @@ void Player::computeDamage(Ammo* ammo){
 }
 
 void Player::computeDegradation(){
-	if (life >= 100*(DAMAGE_STATES-1)/DAMAGE_STATES) return;
+	if (life >= 100*(DAMAGE_SMOKLET_STATES-1)/DAMAGE_SMOKLET_STATES) return;
+
 	damageSmokletTimer->compute();
-	if (!damageSmokletTimer->timeIsOver()) return;
-	damageSmokletTimer->setSlow(life*DAMAGE_STATES/100+1);
-	float projectionAngle = PI/4 + (rand()%1000)*PI/(2*1000);
-	LayerPriority smokletLayer = (rand()%BACK_SMOKLETS_RATIO) ? SMOKLET_LAYER : FRONT_SMOKLET_LAYER;
-	manager->addAnimation(
-		new Animation(
-				smokletLayer,
-				App::imageBank->get(TXT_HOMING_SMOKE),
-				originX+getHeight()*cos(getAbsoluteAngle())/2,
-				originY+getWidth()*sin(getAbsoluteAngle())/2,
-				0,0,0,NULL,
-				HOMING_SMOKE_WIDTH,
-				HOMING_SMOKE_HEIGHT,
-				HOMING_SMOKE_DURATION,
-				HOMING_SMOKE_SLOW,
-				1,
-				new PolyDeg2(manager->getWind()->getWindSpeed()*WIND_INFLUENCE_ON_SMOKE/(2*100* SMOKE_WEIGHT),DAMAGE_SMOKLET_INITIAL_SPEED*cos(projectionAngle),originX+getHeight()*cos(getAbsoluteAngle())/2),
-				new PolyDeg2(-(GRAVITY* SMOKE_WEIGHT*SMOKE_AIR_RESISTANCE/2-ARCHIMEDE)/GRAVITY,-DAMAGE_SMOKLET_INITIAL_SPEED*sin(projectionAngle),originY+getWidth()*sin(getAbsoluteAngle())/2),
-				DEFAULT_TIME_STEP,
-				true,
-				colorFadeOut(TRANSPARENT, 0xffffff77, life/100),
-				BLACK & TRANSPARENT));
+	if (damageSmokletTimer->timeIsOver()){
+		damageSmokletTimer->setSlow(life*DAMAGE_SMOKLET_STATES/100+1);
+		float projectionAngle = PI/4 + (rand()%1000)*PI/(2*1000);
+		LayerPriority smokletLayer = (rand()%BACK_SMOKLETS_RATIO) ? SMOKLET_LAYER : FRONT_SMOKLET_LAYER;
+		manager->addAnimation(
+			new Animation(
+					smokletLayer,
+					App::imageBank->get(TXT_HOMING_SMOKE),
+					originX+getHeight()*cos(getAbsoluteAngle())/2,
+					originY+getWidth()*sin(getAbsoluteAngle())/2,
+					0,0,0,NULL,
+					HOMING_SMOKE_WIDTH,
+					HOMING_SMOKE_HEIGHT,
+					HOMING_SMOKE_DURATION,
+					HOMING_SMOKE_SLOW,
+					1,
+					new PolyDeg2(manager->getWind()->getWindSpeed()*WIND_INFLUENCE_ON_SMOKE/(2*100* SMOKE_WEIGHT),DAMAGE_SMOKLET_INITIAL_SPEED*cos(projectionAngle),originX+getHeight()*cos(getAbsoluteAngle())/2),
+					new PolyDeg2(-(GRAVITY* SMOKE_WEIGHT*SMOKE_AIR_RESISTANCE/2-ARCHIMEDE)/GRAVITY,-DAMAGE_SMOKLET_INITIAL_SPEED*sin(projectionAngle),originY+getWidth()*sin(getAbsoluteAngle())/2),
+					DEFAULT_TIME_STEP,
+					true,
+					colorFadeOut(TRANSPARENT, 0xffffff77, life/100),
+					BLACK & TRANSPARENT));
+	}
+
+	damagePulseTimer->compute();
+	if (!lifeModificationFlag){
+		damagePulse->setR2(1-life/100);
+		damagePulse->setAmplitude(1-life/100);
+		damagePulse->setPeriod(DAMAGE_PULSE_PERIOD*life/100);
+	}
 }
 
 void Player::computeRecoil(){
@@ -392,6 +405,9 @@ void Player::draw(){
 	Rectangle::draw();
 	setSprite(1);
 	setColorFilter(colorFadeOut(WHITE,TRANSPARENT,(100-getLife())/100));
+	Rectangle::draw();
+	setSprite(2);
+	setColorFilter(colorFadeOut(RED & TRANSPARENT, RED, 1-(*damagePulse)(damagePulseTimer->getT())));
 	Rectangle::draw();
 }
 
