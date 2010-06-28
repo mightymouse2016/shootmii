@@ -111,18 +111,21 @@ Player* Player::getOpponent() const{
 }
 
 float Player::getSpeed(const CellType type, const Direction dir) const {
-  switch(type) {
-      case GRASS_LEFT:
-      case GRASS_MID:
-      case GRASS_RIGHT:		return SPEED_NORMAL;
-      case SLOPE_UP_05_1:
-      case SLOPE_UP_05_2: 	return dir == LEFT ? SPEED_FAST : SPEED_SLOW;
-      case SLOPE_DOWN_05_1:
-      case SLOPE_DOWN_05_2: return dir == LEFT ? SPEED_SLOW : SPEED_FAST;
-      case SLOPE_UP_1: 		return dir == LEFT ? SPEED_VERY_FAST : SPEED_VERY_SLOW;
-      case SLOPE_DOWN_1: 	return dir == LEFT ? SPEED_VERY_SLOW : SPEED_VERY_FAST;
-      default: 				return SPEED_VERY_SLOW;
-    }
+	float speed;
+	switch(type) {
+		case GRASS_LEFT:
+		case GRASS_MID:
+		case GRASS_RIGHT:		speed = SPEED_NORMAL;break;
+		case SLOPE_UP_05_1:
+		case SLOPE_UP_05_2: 	speed = dir == LEFT ? SPEED_FAST : SPEED_SLOW;break;
+		case SLOPE_DOWN_05_1:
+		case SLOPE_DOWN_05_2:	speed = dir == LEFT ? SPEED_SLOW : SPEED_FAST;break;
+		case SLOPE_UP_1: 		speed = dir == LEFT ? SPEED_VERY_FAST : SPEED_VERY_SLOW;break;
+		case SLOPE_DOWN_1: 		speed = dir == LEFT ? SPEED_VERY_SLOW : SPEED_VERY_FAST;break;
+		default: 				speed = SPEED_VERY_SLOW;break;
+	}
+	if (life < DAMAGE_SPEED_LIFE_LIMIT) return speed*life/DAMAGE_SPEED_LIFE_LIMIT;
+	return speed;
 }
 
 Bonus* Player::getBonus(){

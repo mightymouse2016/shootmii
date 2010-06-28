@@ -10,7 +10,7 @@ const float DEC_STEP(.4);
 
 class JaugeManager{
 private:
-	class JaugeModification{
+	struct JaugeModification{
 	public:
 		float* percentage;
 		float amount;
