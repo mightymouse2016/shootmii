@@ -20,6 +20,10 @@ float Timer::getT() const{
 	return t*step;
 }
 
+void Timer::setT(const float _t){
+	t = _t;
+}
+
 void Timer::init(){
 	t=0;
 }

@@ -21,7 +21,7 @@ HomingMissile::HomingMissile(
     		_owner,
     		_terrain,
     		_manager),
-    		active(false)
+		active(false)
 {
 	// On séléctionne la cible
 	if (owner == manager->getPlayer1()) target = manager->getPlayer2();
@@ -46,7 +46,7 @@ Animation* HomingMissile::destruction(explosionType _type, Player* _playerHit) {
     case HIT_ANOTHER_AMMO:
         return new Animation(
             EXPLOSION_LAYER,
-			App::imageBank->get(TXT_CANNONBALL_AIR_EXPLOSION), // TODO trouver mieux
+			App::imageBank->get(TXT_CANNONBALL_AIR_EXPLOSION),
 			originX,
 			originY,
 			0,
@@ -59,7 +59,7 @@ Animation* HomingMissile::destruction(explosionType _type, Player* _playerHit) {
     case HIT_A_PLAYER:
         return new Animation(
             EXPLOSION_LAYER,
-			App::imageBank->get(TXT_CANNONBALL_HIT_EXPLOSION), // TODO trouver mieux
+			App::imageBank->get(TXT_CANNONBALL_HIT_EXPLOSION),
 			0,
 			0,
 			0,
@@ -72,7 +72,7 @@ Animation* HomingMissile::destruction(explosionType _type, Player* _playerHit) {
     case HIT_THE_GROUND:
         return new Animation(
             EXPLOSION_LAYER,
-			App::imageBank->get(TXT_CANNONBALL_GROUND_EXPLOSION), // TODO trouver mieux
+			App::imageBank->get(TXT_CANNONBALL_GROUND_EXPLOSION),
 			originX,
 			terrain->getHeight(originX),
 			HOMING_GROUND_EXPLOSION_HEIGHT/2 - HOMING_GROUND_EXPLOSION_DEPTH,

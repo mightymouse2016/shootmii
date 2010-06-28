@@ -25,10 +25,14 @@ const float LASER_DEC_STEP(.1);
 const float SHIELD_DEC_STEP(.1);
 const float SHIELD_IMPACT_DEC_STEP(2);
 
-const int DAMAGE_STATES(5);
+const int DAMAGE_SMOKLET_STATES(5);
 const int BACK_SMOKLETS_RATIO(4);
 const float DAMAGE_SMOKLET_INITIAL_SPEED(5);
 const float ARCHIMEDE(5);
+
+const float DAMAGE_PULSE_R1(.25);
+const float DAMAGE_PULSE_R2(.5);
+const float DAMAGE_PULSE_PERIOD(10);
 
 enum Direction {
   LEFT,
@@ -45,6 +49,7 @@ private:
 	int playerNumber;
 	int recoil; 		//< Le recul : >0 vers la droite <0 vers la gauche
 	int score;
+	bool lifeModificationFlag;
 	float life;			//<  0->100
 	float fury;			//<  0->100
 	float laserRemainingTime;
@@ -54,6 +59,8 @@ private:
 	Manager* manager;
 	Bonus* bonus;
 	Timer* damageSmokletTimer;
+	Timer* damagePulseTimer;
+	Pulse* damagePulse;
 public:
 	Player(
 		Terrain* terrain,

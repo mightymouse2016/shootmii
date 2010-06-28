@@ -44,7 +44,8 @@ const int BONUS_SPEED(30);
 const int BONUS_OSCILLATIONS_RANGE(100);
 const int BONUS_OSCILLATIONS_CENTER(100);
 
-const int BONUS_PROBABILITY (30*60); // apparition toutes les 30*60frames = 30 secondes en moyenne
+// TODO restaurer la probabilité à 30*60
+const int BONUS_PROBABILITY (1*60); // apparition toutes les 30*60frames = 30 secondes en moyenne
 
 const int BONUS_X(302);
 const int BONUS_Y(SCREEN_HEIGHT-SCORE_PANEL_HEIGHT/2-15);

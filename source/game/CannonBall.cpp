@@ -16,8 +16,8 @@ CannonBall::CannonBall(
     	Ammo(
     		_angle,
     		_ammoLook,
-    		new PolyDeg2(wind->getWindSpeed()*WIND_INFLUENCE_ON_AMMO/(2*100*AMMO_WEIGHT),vX,x),
-    		new PolyDeg2(-GRAVITY/(2*AMMO_WEIGHT),-vY,y),
+        	new PolyDeg2(wind->getWindSpeed()*WIND_INFLUENCE_ON_AMMO/(2*100*AMMO_WEIGHT),vX,x),
+        	new PolyDeg2(-GRAVITY/(2*AMMO_WEIGHT),-vY,y),
     		_owner,
     		_terrain,
     		_manager)
@@ -28,6 +28,13 @@ CannonBall::CannonBall(
     vertices.push_back(Coordinates(-8,-7));
     vertices.push_back(Coordinates(-8, 7));
     vertices.push_back(Coordinates( 2, 7));
+}
+
+void CannonBall::computePosition(){
+	float _t = getT();
+	originX = (*calcX)(_t);
+	originY = (*calcY)(_t);
+	angle = atan2((*calcY)[_t],(*calcX)[_t]);
 }
 
 Animation* CannonBall::destruction(explosionType _type, Player* _playerHit) {

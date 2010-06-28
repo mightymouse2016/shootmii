@@ -5,8 +5,8 @@ namespace shootmii {
 Ammo::Ammo(
 	const float _angle,
 	GRRLIB_texImg* _image,
-	Function* _calcX,
-	Function* _calcY,
+	PolyDeg2* _calcX,
+	PolyDeg2* _calcY,
 	Player* _owner,
 	Terrain* _terrain,
 	Manager* _manager):
@@ -34,15 +34,17 @@ Ammo::Ammo(
 	getGhostAmmo()->hide();
 }
 
-Ammo::~Ammo() {
+Ammo::~Ammo(){
 	vertices.clear();
+	delete calcX;
+	delete calcY;
 }
 
-Function* Ammo::getCalcX() {
+PolyDeg2* Ammo::getCalcX(){
 	return calcX;
 }
 
-Function* Ammo::getCalcY() {
+PolyDeg2* Ammo::getCalcY(){
 	return calcY;
 }
 
@@ -144,13 +146,6 @@ void Ammo::computeSmoklets(){
 			1,
 			new PolyDeg2(manager->getWind()->getWindSpeed()*WIND_INFLUENCE_ON_SMOKE/(2*100* SMOKE_WEIGHT),0,originX),
 			new PolyDeg2(-GRAVITY*SMOKE_AIR_RESISTANCE/2,0,originY)));
-}
-
-void Ammo::computePosition(){
-	float _t = getT();
-	originX = (*calcX)(_t);
-	originY = (*calcY)(_t);
-	angle = atan2((*calcY)[_t],(*calcX)[_t]);
 }
 
 void Ammo::compute() {
@@ -285,7 +280,6 @@ void Ammo::addShieldEffect(Player* player, float angle) const{
 }
 
 void Ammo::init(float strength){
-	// Mise à jour des coefficients qui définissent l'inclinaison de la courbe
 	float angle = getAbsolutePolygonAngle(), cosinus = cos(angle), sinus = sin(angle);
 	calcX->setC(getAbsoluteOriginX() + CANNON_LENGTH * cosinus); // X
 	calcY->setC(getAbsoluteOriginY() + CANNON_LENGTH * sinus); // Y

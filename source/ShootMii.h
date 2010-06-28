@@ -17,6 +17,7 @@ class Affine;
 class Sinus;
 class Cosinus;
 class PolyDeg2;
+class Pulse;
 class Polygon;
 class Rectangle;
 
@@ -159,6 +160,7 @@ class App;
 #include "math/Sinus.h"
 #include "math/Cosinus.h"
 #include "math/PolyDeg2.h"
+#include "math/Pulse.h"
 #include "math/Polygon.h"
 #include "math/Rectangle.h"
 

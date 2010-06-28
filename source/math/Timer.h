@@ -17,6 +17,7 @@ public:
 	void compute();
 	void setSlow(const int slow);
 	float getT() const;
+	void setT(const float t);
 	bool timeIsOver() const;
 	void init();
 };
