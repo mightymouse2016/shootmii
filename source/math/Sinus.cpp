@@ -1,4 +1,4 @@
-#include "../ShootMii.h"
+#include "Sinus.h"
 
 namespace shootmii {
 

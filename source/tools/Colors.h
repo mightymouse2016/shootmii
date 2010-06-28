@@ -1,7 +1,7 @@
 #ifndef COLORS_H_
 #define COLORS_H_
 
-#include "../ShootMii.h"
+#include "GRRLIB.h"
 
 static const u32 TRANSPARENT	(0xFFFFFF00);
 static const u32 BLACK			(0x000000FF);

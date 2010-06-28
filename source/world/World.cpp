@@ -1,4 +1,11 @@
-#include "../ShootMii.h"
+#include "../tools/ImageBank.h"
+#include "../tools/Colors.h"
+#include "../App.h"
+#include "Sun.h"
+#include "Wind.h"
+#include "Cloud.h"
+#include "Terrain.h"
+#include "World.h"
 
 namespace shootmii {
 
@@ -7,7 +14,7 @@ World::World() :
 	wind(new Wind),
 	terrain(new Terrain(N_ROWS, N_COLS, TERRAIN_CELL_WIDTH, TERRAIN_CELL_HEIGHT)),
 	sun(new Sun),
-	clouds(new list<Cloud*>)
+	clouds(new std::list<Cloud*>)
 {
 	vertices.reserve(4);
 	vertices.push_back(Coordinates(1,1));
@@ -53,7 +60,7 @@ void World::init() {
 	terrain->generate();
 	wind->init();
 	sun->init();
-	for (list<Cloud*>::iterator i=clouds->begin();i!=clouds->end();i++) (*i)->init();
+	for (std::list<Cloud*>::iterator i=clouds->begin();i!=clouds->end();i++) (*i)->init();
 }
 
 void World::compute() {
@@ -62,7 +69,7 @@ void World::compute() {
 }
 
 void World::computeClouds() {
-	for (list<Cloud*>::iterator i=clouds->begin();i!=clouds->end();i++) {
+	for (std::list<Cloud*>::iterator i=clouds->begin();i!=clouds->end();i++) {
 		(*i)->compute();
 	}
 }
@@ -71,7 +78,7 @@ void World::addToDrawManager(){
 	Polygon::addToDrawManager();
 	sun->addToDrawManager();
 	terrain->addToDrawManager();
-	for (list<Cloud*>::iterator i=clouds->begin();i!=clouds->end();i++) (*i)->addToDrawManager();
+	for (std::list<Cloud*>::iterator i=clouds->begin();i!=clouds->end();i++) (*i)->addToDrawManager();
 }
 
 void World::draw(){

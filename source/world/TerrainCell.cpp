@@ -1,4 +1,4 @@
-#include "../ShootMii.h"
+#include "TerrainCell.h"
 
 namespace shootmii {
 

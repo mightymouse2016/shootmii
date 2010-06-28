@@ -1,4 +1,4 @@
-#include "../ShootMii.h"
+#include "JaugeManager.h"
 
 namespace shootmii {
 
@@ -18,8 +18,8 @@ JaugeManager::JaugeModification::~JaugeModification(){
 }
 
 JaugeManager::JaugeManager() :
-	increases(new list<JaugeModification* >),
-	decreases(new list<JaugeModification* >)
+	increases(new std::list<JaugeModification* >),
+	decreases(new std::list<JaugeModification* >)
 {
 	// NOTHING TO DO
 }
@@ -51,8 +51,8 @@ void JaugeManager::decPercentage(JaugeModification* decrease){
 }
 
 void JaugeManager::compute(){
-	list<JaugeModification*>* newIncreases = new list<JaugeModification* >;
-	for(list<JaugeModification*>::iterator i=increases->begin();i!=increases->end();i++){
+	std::list<JaugeModification*>* newIncreases = new std::list<JaugeModification* >;
+	for(std::list<JaugeModification*>::iterator i=increases->begin();i!=increases->end();i++){
 		incPercentage(*i); 									// On incrémente le %
 		(*i)->amount -= INC_STEP; 							// On diminue la "réserve" d'autant
 		if ((*i)->amount > 0) newIncreases->push_back(*i);
@@ -61,8 +61,8 @@ void JaugeManager::compute(){
 	delete increases;
 	increases = newIncreases;
 
-	list<JaugeModification* >* newDecreases = new list<JaugeModification* >;
-	for(list<JaugeModification*>::iterator i=decreases->begin();i!=decreases->end();i++){
+	std::list<JaugeModification* >* newDecreases = new std::list<JaugeModification* >;
+	for(std::list<JaugeModification*>::iterator i=decreases->begin();i!=decreases->end();i++){
 		decPercentage(*i);
 		(*i)->amount -= DEC_STEP;
 		if ((*i)->amount > 0) newDecreases->push_back(*i);

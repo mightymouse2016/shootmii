@@ -1,4 +1,6 @@
-#include "../ShootMii.h"
+#include "Jauge.h"
+#include "../tools/Colors.h"
+#include "../tools/Tools.h"
 
 namespace shootmii {
 

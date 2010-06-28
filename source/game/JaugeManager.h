@@ -1,7 +1,7 @@
 #ifndef JAUGEMANAGER_H_
 #define JAUGEMANAGER_H_
 
-#include "../ShootMii.h"
+#include <list>
 
 namespace shootmii{
 
@@ -18,8 +18,8 @@ private:
 		JaugeModification(float* percentage, float amount, bool* modifyFlag=NULL);
 		~JaugeModification();
 	};
-	list<JaugeModification*>* increases; // Le float représente le montant à prélever dans la jauge
-	list<JaugeModification*>* decreases;
+	std::list<JaugeModification*>* increases; // Le float représente le montant à prélever dans la jauge
+	std::list<JaugeModification*>* decreases;
 public:
 	JaugeManager();
 	~JaugeManager();

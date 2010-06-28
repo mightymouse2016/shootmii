@@ -1,7 +1,7 @@
 #ifndef WIND_H_
 #define WIND_H_
 
-#include "../ShootMii.h"
+#include <cstdlib>
 
 namespace shootmii {
 

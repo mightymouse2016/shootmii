@@ -1,7 +1,8 @@
 #ifndef IMAGEBANK_H_
 #define IMAGEBANK_H_
 
-#include "../ShootMii.h"
+#include <vector>
+#include "GRRLIB.h"
 
 namespace shootmii {
 
@@ -60,7 +61,7 @@ enum ImageTexture {
 
 class ImageBank {
 private:
-	vector<GRRLIB_texImg*> allTextures;
+	std::vector<GRRLIB_texImg*> allTextures;
 public:
 	ImageBank();
 	virtual ~ImageBank();

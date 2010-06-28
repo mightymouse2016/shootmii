@@ -1,4 +1,6 @@
-#include "../ShootMii.h"
+#include "../tools/ImageBank.h"
+#include "../App.h"
+#include "Sun.h"
 
 namespace shootmii{
 

@@ -1,4 +1,9 @@
-#include "../ShootMii.h"
+#include "../tools/ImageBank.h"
+#include "../tools/Colors.h"
+#include "../tools/Tools.h"
+#include "../math/Rectangle.h"
+#include "../App.h"
+#include "Pointer.h"
 
 namespace shootmii {
 

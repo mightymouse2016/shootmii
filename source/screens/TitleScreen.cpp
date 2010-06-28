@@ -1,4 +1,10 @@
-#include "../ShootMii.h"
+#include "../tools/ImageBank.h"
+#include "../tools/Colors.h"
+#include "../tools/Tools.h"
+#include "../gfx/font_military.h"
+#include "../gui/Text.h"
+#include "../App.h"
+#include "TitleScreen.h"
 
 namespace shootmii {
 
@@ -36,7 +42,7 @@ void TitleScreen::dealEvent(){
 	if (buttons[EXIT_BUTTON]->isClicked()) app->exit();
 	if (buttons[START_BUTTON]->isClicked()) app->setScreen(GAME_SCREEN);
 
-	for (map<ButtonType,Button*>::iterator i=buttons.begin();i!=buttons.end();i++) i->second->unClick();
+	for (std::map<ButtonType,Button*>::iterator i=buttons.begin();i!=buttons.end();i++) i->second->unClick();
 }
 
 

@@ -1,19 +1,35 @@
 #ifndef __APP_H__
 #define __APP_H__
 
-#include "ShootMii.h"
+#include "FreeTypeGX/FreeTypeGX.h"
+#include <ogc/lwp_watchdog.h>
+#include <wiiuse/wpad.h>
+#include <mp3player.h>
+#include "asndlib.h"
+#include "GRRLIB.h"
+#include <ctime>
+#include <map>
 
 namespace shootmii {
 
+class Console;
+class ImageBank;
+class SoundBank;
+class DrawManager;
+class Pointer;
+class Screen;
+class TitleScreen;
+class GameScreen;
+
 class App {
 private:
-	u8 fps;
-	u32 lastTime;
-	u8 frameCount;
+	unsigned char fps;
+	unsigned int lastTime;
+	unsigned char frameCount;
 	bool running;
 	int nbFrame;
 	Screen* currentScreen;
-	map<ScreenType,Screen*> screens;
+	std::map<int,Screen*> screens;
 	u32* eventsPlayer[2];
 	Pointer* pointerPlayer[2];
 public:
@@ -28,7 +44,7 @@ public:
 	u8 getFrameCount() const;
 	u32** getEventsPlayer();
 	bool isRunning() const;
-	void setScreen(ScreenType screen);
+	void setScreen(int screenType);
 	void run();
 	void exit();
 	void dealEvent();

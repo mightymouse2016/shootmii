@@ -1,26 +1,31 @@
 #ifndef CONSOLE_H_
 #define CONSOLE_H_
 
-#include "../ShootMii.h"
+#include "GRRLIB.h"
+#include <vector>
+#include <string>
+#include <cstdarg>
+#include <ctime>
+#include <ogc/lwp_watchdog.h>
 
 namespace shootmii {
 
-static const u8 MAX_HISTORY = 15;
-static const u8 CONSOLE_HEIGHT = 180;
-static const u8 CONSOLE_X_OFFSET = 15;
-static const u8 CONSOLE_Y_OFFSET = 50;
-static const u8 CONSOLE_TEXT_X_OFFSET = 25;
-static const u8 CONSOLE_TEXT_Y_OFFSET = 10;
-static const u8 CONSOLE_FPS_BG_WIDTH = 75;
-static const u8 CONSOLE_TIME_BG_WIDTH = 150;
+static const unsigned char MAX_HISTORY = 15;
+static const unsigned char CONSOLE_HEIGHT = 180;
+static const unsigned char CONSOLE_X_OFFSET = 15;
+static const unsigned char CONSOLE_Y_OFFSET = 50;
+static const unsigned char CONSOLE_TEXT_X_OFFSET = 25;
+static const unsigned char CONSOLE_TEXT_Y_OFFSET = 10;
+static const unsigned char CONSOLE_FPS_BG_WIDTH = 75;
+static const unsigned char CONSOLE_TIME_BG_WIDTH = 150;
 
 class Console {
 private:
-	u8 screenY;
-	u8 fps;
+	unsigned char screenY;
+	unsigned char fps;
 	bool debug;
 	GRRLIB_texImg* console_font;
-	vector<string> history;
+	std::vector<std::string> history;
 	void drawFPS();
 	void drawTime();
 	void drawPolygonsInstances();
@@ -30,7 +35,7 @@ public:
 	void addDebug(const char* txt, ...);
 	bool isDebug() const;
 	void toggleDebug();
-	void setFPS(u8);
+	void setFPS(unsigned char fps);
 
 };
 

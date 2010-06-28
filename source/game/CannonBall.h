@@ -1,9 +1,15 @@
 #ifndef CANNONBALL_H_
 #define CANNONBALL_H_
 
-#include "../ShootMii.h"
+#include "Ammo.h"
+#include "Cannon.h"
 
 namespace shootmii {
+
+class Wind;
+class Player;
+class Terrain;
+class Manager;
 
 const int CANNONBALL_GROUND_EXPLOSION_WIDTH(64);
 const int CANNONBALL_GROUND_EXPLOSION_HEIGHT(64);

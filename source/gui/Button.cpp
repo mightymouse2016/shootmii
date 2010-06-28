@@ -1,4 +1,6 @@
-#include "../ShootMii.h"
+#include "../tools/Colors.h"
+#include "../gui/Text.h"
+#include "Button.h"
 
 namespace shootmii {
 
@@ -6,7 +8,7 @@ Button::Button(const int originX,
 	const int originY,
 	const int width,
 	const int height,
-	const string _text,
+	const std::string _text,
 	GRRLIB_texImg* image) :
 		Rectangle(BUTTON_LAYER,width,height,originX,originY,0,0,0,true,true,image,NULL,0,width,height),
 		stuck(false),

@@ -1,7 +1,7 @@
 #ifndef RECTANGLE_H_
 #define RECTANGLE_H_
 
-#include "../ShootMii.h"
+#include "Polygon.h"
 
 namespace shootmii{
 

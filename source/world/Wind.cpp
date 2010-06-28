@@ -1,4 +1,4 @@
-#include "../ShootMii.h"
+#include "Wind.h"
 
 namespace shootmii {
 

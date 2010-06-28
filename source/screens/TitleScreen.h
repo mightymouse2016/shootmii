@@ -1,9 +1,17 @@
 #ifndef __TITLE_SCREEN_H__
 #define __TITLE_SCREEN_H__
 
-#include "../ShootMii.h"
+#include <list>
+#include <map>
+#include <utility>
+#include "GRRLIB.h"
+#include "Screen.h"
+#include "../FreeTypeGX/FreeTypeGX.h"
 
 namespace shootmii {
+
+class App;
+class Pointer;
 
 class TitleScreen : public Screen {
 private:

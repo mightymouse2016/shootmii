@@ -1,9 +1,19 @@
 #ifndef CANNON_H_
 #define CANNON_H_
 
-#include "../ShootMii.h"
+#include "GRRLIB.h"
+#include "../math/Rectangle.h"
 
 namespace shootmii {
+
+class Rectangle;
+class Wind;
+class Player;
+class Timer;
+class Manager;
+class Function;
+class Ammo;
+class GuidedMissile;
 
 const int CANNON_WIDTH(16);
 const int CANNON_HEIGHT(16);
@@ -31,7 +41,6 @@ const int STRENGHT_JAUGE_SPRITE_HEIGHT(24);
 const float DEFAULT_POWER(75);
 const float CANNON_LENGTH(20.);
 const float INIT_ANGLE(0);
-const float ROTATION_STEP(.01);
 
 const float STRENGTHEN_STEP(1.5);
 
@@ -67,9 +76,9 @@ private:
 	float angleMax;
 	float rotationStep;
 	bool stillHeld;
-	Timer reloadTime;
-	Timer blockedCannon;
-	Timer furyReloadTime;
+	Timer* reloadTime;
+	Timer* blockedCannon;
+	Timer* furyReloadTime;
 	Manager* manager;
 	Function* laserXMax;
 	Function* laserYMax;

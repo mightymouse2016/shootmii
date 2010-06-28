@@ -1,8 +1,6 @@
 #ifndef TIMER_H_
 #define TIMER_H_
 
-#include "../ShootMii.h"
-
 namespace shootmii{
 
 const float DEFAULT_TIME_STEP(.1);

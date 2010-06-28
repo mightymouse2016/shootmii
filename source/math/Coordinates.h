@@ -1,7 +1,8 @@
 #ifndef COORDINATES_H_
 #define COORDINATES_H_
 
-#include "../ShootMii.h"
+#include <list>
+#include <cmath>
 
 namespace shootmii {
 
@@ -24,9 +25,9 @@ public:
 };
 
 // Fonction template qui prends en arguments un objet fonctionnel, un intervalle, un pas et qui retourne une liste de points
-template<class T> list<Coordinates> * ComputeDots(const T& f, const float x1,
+template<class T> std::list<Coordinates> * ComputeDots(const T& f, const float x1,
 		const float x2, const float p) {
-	list<Coordinates> * dotList = new list<Coordinates> ;
+	std::list<Coordinates> * dotList = new std::list<Coordinates> ;
 	Coordinates * c;
 	for (float x = x1; x <= x2; x += p) {
 		c = new Coordinates(x, f(x));

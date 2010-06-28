@@ -1,4 +1,6 @@
-#include "../ShootMii.h"
+#include "../tools/Tools.h"
+#include "../math/Function.h"
+#include "Animation.h"
 
 namespace shootmii {
 

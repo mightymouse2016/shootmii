@@ -1,7 +1,9 @@
 #ifndef TERRAIN_H_
 #define TERRAIN_H_
 
-#include "../ShootMii.h"
+#include "GRRLIB.h"
+#include <vector>
+#include "TerrainCell.h"
 
 namespace shootmii {
 
@@ -16,14 +18,14 @@ private:
 	int cellWidth;
 	int cellHeight;
 	GRRLIB_texImg* tileSet;
-	vector<vector<TerrainCell> > grille; // Vecteur de lignes
+	std::vector<std::vector<TerrainCell> > grille; // Vecteur de lignes
 public:
 	Terrain(const int _rows, const int _cols, const int _cellWidth, const int _cellHeight);
 	int getRows() const;
 	int getCols() const;
 	int getCellWidth() const;
 	int getCellHeight() const;
-	const vector<vector<TerrainCell> > & getGrille() const;
+	const std::vector<std::vector<TerrainCell> > & getGrille() const;
 	CellType getType(const int colIndex, const int rowIndex) const;
 	void addToDrawManager();
 	void generate();

@@ -1,4 +1,4 @@
-#include "../ShootMii.h"
+#include "Rectangle.h"
 
 namespace shootmii {
 

@@ -1,7 +1,8 @@
 #ifndef SINUS_H_
 #define SINUS_H_
 
-#include "../ShootMii.h"
+#include <cmath>
+#include "Function.h"
 
 namespace shootmii{
 

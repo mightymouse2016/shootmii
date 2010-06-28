@@ -1,9 +1,19 @@
 #ifndef MANAGER_H_
 #define MANAGER_H_
 
-#include "../ShootMii.h"
+#include <list>
+#include "GRRLIB.h"
 
 namespace shootmii {
+
+class World;
+class Ammo;
+class Bonus;
+class Player;
+class Animation;
+class Wind;
+class App;
+class JaugeManager;
 
 const int PLAYER_OFFSET(100);
 
@@ -20,12 +30,12 @@ private:
 	World* world;
 	Player* player1;
 	Player* player2;
-	list<Ammo*>* ammos;
-	list<Bonus*>* bonuses;
-	list<Animation*>* animations;
+	std::list<Ammo*>* ammos;
+	std::list<Bonus*>* bonuses;
+	std::list<Animation*>* animations;
 public:
 	static JaugeManager* jaugeManager;
-	Manager(App*);
+	Manager(App* app);
 	~Manager();
 	void togglePause();
 	bool isInPause() const;

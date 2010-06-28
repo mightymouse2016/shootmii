@@ -1,4 +1,4 @@
-#include "../ShootMii.h"
+#include "Pulse.h"
 
 namespace shootmii {
 

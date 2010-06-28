@@ -1,27 +1,31 @@
 #ifndef DRAWMANAGER_H_
 #define DRAWMANAGER_H_
 
-#include "../ShootMii.h"
+#include <list>
+#include <set>
 
 namespace shootmii{
 
+class Polygon;
+class Ammo;
+class Bonus;
+class Animation;
+
 class ComparePolygons{
 public:
-	bool operator()(Polygon* p1,Polygon* p2){
-		return (p1->getLayer() < p2->getLayer());
-	}
+	bool operator()(Polygon* p1,Polygon* p2);
 };
 
 class DrawManager {
 private:
-	multiset<Polygon*, ComparePolygons>* polygonsToDraw;
+	std::multiset<Polygon*, ComparePolygons>* polygonsToDraw;
 public:
 	DrawManager();
 	~DrawManager();
 	void addToDraw(Polygon* polygon);
-	void addToDraw(list<Ammo*>* ammosList);
-	void addToDraw(list<Bonus*>* bonusesList);
-	void addToDraw(list<Animation*>* animationsList);
+	void addToDraw(std::list<Ammo*>* ammosList);
+	void addToDraw(std::list<Bonus*>* bonusesList);
+	void addToDraw(std::list<Animation*>* animationsList);
 	void draw();
 };
 

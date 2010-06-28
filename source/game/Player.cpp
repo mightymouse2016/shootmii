@@ -1,4 +1,20 @@
-#include "../ShootMii.h"
+#include "../world/Terrain.h"
+#include "../world/Wind.h"
+#include "../tools/ImageBank.h"
+#include "../tools/Console.h"
+#include "../tools/Colors.h"
+#include "../tools/Tools.h"
+#include "../math/PolyDeg2.h"
+#include "../math/Pulse.h"
+#include "../App.h"
+#include "HomingMissile.h"
+#include "GuidedMissile.h"
+#include "JaugeManager.h"
+#include "Manager.h"
+#include "Cannon.h"
+#include "Bonus.h"
+#include "Ammo.h"
+#include "Player.h"
 
 namespace shootmii {
 
@@ -110,7 +126,7 @@ Player* Player::getOpponent() const{
 	return static_cast<Player*>(children[CHILD_OPPONENT]);
 }
 
-float Player::getSpeed(const CellType type, const Direction dir) const {
+float Player::getSpeed(const int type, const Direction dir) const {
 	float speed;
 	switch(type) {
 		case GRASS_LEFT:
