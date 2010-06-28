@@ -17,8 +17,8 @@ const int ANGLE_INIT = PI/4;
 const float SPEED_VERY_FAST(1.5);
 const float SPEED_FAST(1.25);
 const float SPEED_NORMAL(1);
-const float SPEED_SLOW(0.5);
-const float SPEED_VERY_SLOW(0.25);
+const float SPEED_SLOW(.75);
+const float SPEED_VERY_SLOW(.5);
 
 const float FURY_DEC_STEP(.4);
 const float LASER_DEC_STEP(.1);
@@ -33,6 +33,8 @@ const float ARCHIMEDE(5);
 const float DAMAGE_PULSE_R1(.25);
 const float DAMAGE_PULSE_R2(.5);
 const float DAMAGE_PULSE_PERIOD(10);
+
+const float DAMAGE_SPEED_LIFE_LIMIT(50); // 20/100
 
 enum Direction {
   LEFT,
