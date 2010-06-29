@@ -65,6 +65,7 @@ void World::init() {
 
 void World::compute() {
 	computeClouds();
+	wind->compute();
 	sun->compute();
 }
 

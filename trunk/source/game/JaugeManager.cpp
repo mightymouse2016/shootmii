@@ -26,7 +26,16 @@ JaugeManager::JaugeManager() :
 
 JaugeManager::~JaugeManager(){
 	clear();
+
+	for (std::list<JaugeModification* >::const_iterator i=increases->begin();i!=increases->end();i++){
+		delete *i;
+	}
 	delete increases;
+
+
+	for (std::list<JaugeModification* >::const_iterator i=decreases->begin();i!=decreases->end();i++){
+		delete *i;
+	}
 	delete decreases;
 }
 
