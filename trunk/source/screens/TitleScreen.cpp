@@ -13,11 +13,12 @@ TitleScreen::TitleScreen(
 		Pointer** _pointerPlayer,
 		u32** _eventsPlayer) :
 	Screen(app, _pointerPlayer, _eventsPlayer),
-    tex_title_screen(App::imageBank->get(TXT_TITLE_SCREEN)),
-    tex_font(loadFont(font_military, 32, 32))
+    tex_font(loadFont(font_military, 32, 32)),
+    exitButton(new Button(SCREEN_WIDTH/4,SCREEN_HEIGHT*3/4,BUTTON_1_WIDTH,BUTTON_1_HEIGHT,"Exit",App::imageBank->get(TXT_BUTTON_1))),
+    newGameButton(new Button(SCREEN_WIDTH*3/4,SCREEN_HEIGHT*3/4,BUTTON_1_WIDTH,BUTTON_1_HEIGHT,"New Game",App::imageBank->get(TXT_BUTTON_1)))
 {
-	addButton(SCREEN_WIDTH/4, SCREEN_HEIGHT*3/4, "Exit", EXIT_BUTTON);
-	addButton(SCREEN_WIDTH*3/4, SCREEN_HEIGHT*3/4, "Start Game", START_BUTTON);
+	addButton(exitButton);
+	addButton(newGameButton);
 	addText(new Text("ShootMii",ARMY_FONT,FONT_SIZE_15,WHITE,SCREEN_WIDTH/2,SCREEN_HEIGHT*2/5));
 }
 
@@ -39,10 +40,10 @@ void TitleScreen::init() {
 void TitleScreen::dealEvent(){
 	Screen::dealEvent();
 
-	if (buttons[EXIT_BUTTON]->isClicked()) app->exit();
-	if (buttons[START_BUTTON]->isClicked()) app->setScreen(GAME_SCREEN);
+	if (exitButton->isClicked()) app->exit();
+	if (newGameButton->isClicked()) app->setScreen(OPTION_SCREEN);
 
-	for (std::map<ButtonType,Button*>::iterator i=buttons.begin();i!=buttons.end();i++) i->second->unClick();
+	for (std::list<Button*>::iterator i=buttons.begin();i!=buttons.end();i++) (*i)->unClick();
 }
 
 

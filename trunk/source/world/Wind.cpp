@@ -52,6 +52,8 @@ void Wind::compute(){
 }
 
 void Wind::init(){
+	windModificationFlag = false;
+	turnover = false;
 	int windSpeed = rand()%100;
 	if (rand()%100 < 50) {
 		windSpeedLeft = windSpeed;

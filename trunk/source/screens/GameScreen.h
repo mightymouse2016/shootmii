@@ -2,9 +2,6 @@
 #define __GAME_SCREEN_H__
 
 #include <wiiuse/wpad.h>
-#include <list>
-#include <utility>
-#include <map>
 #include "GRRLIB.h"
 #include "Screen.h"
 
@@ -18,6 +15,8 @@ class GameScreen : public Screen {
 private:
 	Manager* manager;
 	ScoreManager* score_manager;
+	Button* exitButton;
+	Button* resumeButton;
 public:
 	GameScreen(
 			App* app,

@@ -1,6 +1,7 @@
 #include "../gfx/sun.h"
 #include "../gfx/dock.h"
 #include "../gfx/tank.h"
+#include "../gfx/popup.h"
 #include "../gfx/cannon.h"
 #include "../gfx/ammo_1.h"
 #include "../gfx/ammo_2.h"
@@ -64,6 +65,7 @@ void ImageBank::init() {
 	allTextures[TXT_SUN] = GRRLIB_LoadTexture(sun);
 	allTextures[TXT_DOCK] = GRRLIB_LoadTexture(dock);
 	allTextures[TXT_TANK] = GRRLIB_LoadTexture(tank);
+	allTextures[TXT_POPUP] = GRRLIB_LoadTexture(popup);
 	allTextures[TXT_AMMO1] = GRRLIB_LoadTexture(ammo_1);
 	allTextures[TXT_AMMO2] = GRRLIB_LoadTexture(ammo_2);
 	allTextures[TXT_SHIELD] = GRRLIB_LoadTexture(shield);

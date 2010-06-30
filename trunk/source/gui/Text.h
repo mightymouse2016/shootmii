@@ -47,8 +47,25 @@ private:
 	fontSize size;
 	GXColor color;
 	FreeTypeGX* gxFont;
+	/*
+	 * FTGX_JUSTIFY_LEFT
+	 * FTGX_JUSTIFY_CENTER
+     * FTGX_JUSTIFY_RIGHT
+     * FTGX_ALIGN_TOP
+     * FTGX_ALIGN_MIDDLE
+     * FTGX_ALIGN_BOTTOM
+     * FTGX_STYLE_UNDERLINE
+     * FTGX_STYLE_STRIKE
+	 */
+	u16 flags;
 public:
-	Text(std::string text, fontName name, fontSize size, u32 color, const float originX = 0, const float originY = 0);
+	Text(std::string text,
+			fontName name,
+			fontSize size,
+			u32 color,
+			const float originX = 0,
+			const float originY = 0,
+			const u16 flags = FTGX_JUSTIFY_CENTER | FTGX_ALIGN_MIDDLE);
 	~Text();
 	void initFont();
 	void setText(std::string text);
