@@ -4,11 +4,19 @@
 
 namespace shootmii {
 
-Text::Text(std::string _text, fontName _name, fontSize _size, u32 _color, const float _originX, const float _originY) :
+Text::Text(
+		std::string _text,
+		fontName _name,
+		fontSize _size,
+		u32 _color,
+		const float _originX,
+		const float _originY,
+		const u16 _flags) :
 	Rectangle(TEXT_LAYER,0,0,_originX,_originY),
 	name(_name),
 	size(_size),
-	gxFont(new FreeTypeGX)
+	gxFont(new FreeTypeGX),
+	flags(_flags)
 {
 	initFont();
 	setText(_text);
@@ -49,7 +57,26 @@ void Text::setFontSize(fontSize _size){
 }
 
 void Text::update(){
-	setWidthHeight(gxFont->getWidth(text),gxFont->getHeight(text));
+	const float _height = gxFont->getHeight(text);
+	const float _width = gxFont->getWidth(text);
+	if (flags & FTGX_JUSTIFY_LEFT){
+		vertices[0] = Coordinates(0,-_height/2);
+		vertices[1] = Coordinates(_width,-_height/2);
+		vertices[2] = Coordinates(_width,_height/2);
+		vertices[3] = Coordinates(0,_height/2);
+	}
+	else if (flags & FTGX_JUSTIFY_RIGHT){
+		vertices[0] = Coordinates(-_width,-_height/2);
+		vertices[1] = Coordinates(0,-_height/2);
+		vertices[2] = Coordinates(0,_height/2);
+		vertices[3] = Coordinates(-_width,_height/2);
+	}
+	else {
+		vertices[0] = Coordinates(-_width/2,-_height/2);
+		vertices[1] = Coordinates(_width/2,-_height/2);
+		vertices[2] = Coordinates(_width/2,_height/2);
+		vertices[3] = Coordinates(-_width/2,_height/2);
+	}
 }
 
 void Text::setColor(u32 _color){
@@ -62,9 +89,7 @@ void Text::setColor(u32 _color){
 
 void Text::draw(){
 	Polygon::draw();
-	float x = getAbsoluteOriginX();
-	float y = getAbsoluteOriginY()+size/2;
-	gxFont->drawText(x, y, text,color, FTGX_JUSTIFY_CENTER | FTGX_ALIGN_BOTTOM);
+	gxFont->drawText(getAbsoluteOriginX(), getAbsoluteOriginY(), text,color, flags);
 }
 
 }

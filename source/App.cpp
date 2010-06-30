@@ -5,6 +5,7 @@
 #include "gui/Pointer.h"
 #include "screens/Screen.h"
 #include "screens/TitleScreen.h"
+#include "screens/OptionScreen.h"
 #include "screens/GameScreen.h"
 #include "App.h"
 
@@ -38,6 +39,7 @@ App::App():
 	pointerPlayer[0] = new Pointer(1,this);
 	pointerPlayer[1] = new Pointer(2,this);
 	screens[TITLE_SCREEN] = new TitleScreen(this,pointerPlayer,eventsPlayer);
+	screens[OPTION_SCREEN] = new OptionScreen(this,pointerPlayer,eventsPlayer);
 	screens[GAME_SCREEN] = new GameScreen(this,pointerPlayer,eventsPlayer);
 	currentScreen = screens[TITLE_SCREEN];
 	srand(time(NULL));

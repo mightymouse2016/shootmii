@@ -1,3 +1,4 @@
+#include "../tools/ImageBank.h"
 #include "../tools/Tools.h"
 #include "../tools/Colors.h"
 #include "../game/Manager.h"
@@ -16,8 +17,13 @@ GameScreen::GameScreen(
 		u32** _eventsPlayer) :
     Screen(_app,_pointerPlayer,_eventsPlayer),
     manager(new Manager(_app)),
-    score_manager(new ScoreManager(_app,manager))
+    score_manager(new ScoreManager(_app,manager)),
+    exitButton(new Button(-SCREEN_WIDTH/4,0,BUTTON_1_WIDTH,BUTTON_1_HEIGHT,"Exit",App::imageBank->get(TXT_BUTTON_1))),
+    resumeButton(new Button(SCREEN_WIDTH/4,0,BUTTON_1_WIDTH,BUTTON_1_HEIGHT,"Resume",App::imageBank->get(TXT_BUTTON_1)))
 {
+	addButton(exitButton);
+	addButton(resumeButton);
+
 	// Top dock
 	Dock* dock = new Dock(true);
 	Text * pause_text = new Text("Pause",GUI_FONT,FONT_SIZE_14,WHITE,0,0);
@@ -27,10 +33,8 @@ GameScreen::GameScreen(
 
 	// Bottom dock
 	dock = new Dock(false);
-	addButton(-SCREEN_WIDTH/4, 0, "Exit", EXIT_BUTTON);
-	dock->addButton(buttons[EXIT_BUTTON]);	// "Accroche" le boutton au dock
-	addButton(SCREEN_WIDTH/4, 0, "Resume", RESUME_BUTTON);
-	dock->addButton(buttons[RESUME_BUTTON]); // "Accroche" le boutton au dock
+	dock->addButton(exitButton);	// "Accroche" le boutton au dock
+	dock->addButton(resumeButton); // "Accroche" le boutton au dock
 	addDock(dock);
 }
 
@@ -60,9 +64,9 @@ void GameScreen::init() {
 void GameScreen::dealEvent() {
 	Screen::dealEvent();
 
-	if (buttons[EXIT_BUTTON]->isClicked()) app->setScreen(TITLE_SCREEN);
+	if (exitButton->isClicked()) app->setScreen(TITLE_SCREEN);
 	
-	if (buttons[RESUME_BUTTON]->isClicked() || ((eventsPlayer[0][DOWN] | eventsPlayer[1][DOWN]) & WPAD_BUTTON_HOME)) {
+	if (resumeButton->isClicked() || ((eventsPlayer[0][DOWN] | eventsPlayer[1][DOWN]) & WPAD_BUTTON_HOME)) {
 		for (std::list<Dock*>::iterator i=docks.begin();i!=docks.end();i++){
 			(*i)->toggleHideShow();
 		}
@@ -71,8 +75,8 @@ void GameScreen::dealEvent() {
 	
 	if (!manager->isInPause()) manager->dealEvent(eventsPlayer[0], eventsPlayer[1]);
 
-	for (std::map<ButtonType,Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
-		i->second->unClick();
+	for (std::list<Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
+		(*i)->unClick();
 	}
 }
 

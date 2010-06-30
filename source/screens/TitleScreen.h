@@ -1,9 +1,6 @@
 #ifndef __TITLE_SCREEN_H__
 #define __TITLE_SCREEN_H__
 
-#include <list>
-#include <map>
-#include <utility>
 #include "GRRLIB.h"
 #include "Screen.h"
 #include "../FreeTypeGX/FreeTypeGX.h"
@@ -15,10 +12,9 @@ class Pointer;
 
 class TitleScreen : public Screen {
 private:
-	GRRLIB_texImg* tex_title_screen;
 	GRRLIB_texImg* tex_font;
-	Button* button_start;
-	Pointer* pointer_player_1;
+	Button* exitButton;
+	Button* newGameButton;
 public:
 	TitleScreen(
 			App* app,
