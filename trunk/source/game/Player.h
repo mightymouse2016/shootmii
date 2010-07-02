@@ -135,8 +135,8 @@ public:
 	void addRecoil(int intensity);
 	void addBonus(Bonus* bonus);
 
-	void init();						//< Initialise une partie
-	void initGame();					//< Initialise une manche
+	void initGame();						//< Initialise une partie
+	void initRound();					//< Initialise une manche
 	void initPosition(float screenX);	//< Pose le player sur le terrain
 
 	void useBonus(Bonus* bonus);	//< en pressant A

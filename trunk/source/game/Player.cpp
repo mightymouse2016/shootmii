@@ -262,17 +262,17 @@ void Player::addBonus(Bonus* _bonus){
 	}
 }
 
-void Player::init() {
+void Player::initGame() {
 	score = 0;
 	fury = 0;
 	laserRemainingTime = 0;
 	shieldRemainingTime = 0;
 	if (bonus) delete bonus;
 	bonus = NULL;
-	initGame();
+	initRound();
 }
 
-void Player::initGame() {
+void Player::initRound() {
 	// on conserve son bonus d'une manche à l'autre
 	if (isInFuryMode()) {	//< Si le joueur était en mode fury, on lui enlève toute sa fury
 		fury = 0;
@@ -282,6 +282,8 @@ void Player::initGame() {
 	shieldRemainingTime = 0;
 	recoil = 0;
 	life = 100;
+	damageSmokletTimer->init();
+	damagePulseTimer->init();
 	getCannon()->init();
 }
 
