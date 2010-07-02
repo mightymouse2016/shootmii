@@ -78,8 +78,8 @@ void Manager::addAnimation(Animation* animation) const {
 }
 
 void Manager::initPlayers() const {
-	player1->initGame();
-	player2->initGame();
+	player1->initRound();
+	player2->initRound();
 	player1->initPosition(PLAYER_OFFSET);
 	player2->initPosition(world->getTerrain()->getCols()*world->getTerrain()->getCellWidth() - PLAYER_OFFSET);
 }
@@ -110,8 +110,8 @@ void Manager::computeVictory() {
 	if (winner) {
 		winner->incScore();
 		if (winner->getScore() >= MANCHE) {
-			player1->init();
-			player2->init();
+			player1->initGame();
+			player2->initGame();
 		}
 		init();
 	}
