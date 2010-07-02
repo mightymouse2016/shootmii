@@ -1,0 +1,31 @@
+#ifndef __OPTION_SCREEN_H__
+#define __OPTION_SCREEN_H__
+
+#include "GRRLIB.h"
+#include "Screen.h"
+#include "../FreeTypeGX/FreeTypeGX.h"
+
+namespace shootmii {
+
+class App;
+class Pointer;
+
+class OptionScreen : public Screen {
+private:
+	GRRLIB_texImg* tex_font;
+	Button* backButton;
+	Button* startButton;
+public:
+	OptionScreen(
+			App* app,
+			Pointer** pointerPlayer,
+			u32** eventsPlayer);
+	void init();
+	void dealEvent();
+	void compute();
+	void addToDrawManager();
+};
+
+}
+
+#endif // __OPTION_SCREEN_H__
