@@ -58,30 +58,47 @@ void Text::setFontSize(fontSize _size){
 
 void Text::setUnderline(const bool underline){
 	if (underline) flags |= FTGX_STYLE_UNDERLINE;
-	else flags &= !FTGX_STYLE_UNDERLINE;
+	else flags &= ~FTGX_STYLE_UNDERLINE;
 }
 
 void Text::update(){
+	float x1,x2,y1,y2;
 	const float _height = gxFont->getHeight(text);
 	const float _width = gxFont->getWidth(text);
+
+	// Gauche, droite, centre
 	if (flags & FTGX_JUSTIFY_LEFT){
-		vertices[0] = Coordinates(0,-_height/2);
-		vertices[1] = Coordinates(_width,-_height/2);
-		vertices[2] = Coordinates(_width,_height/2);
-		vertices[3] = Coordinates(0,_height/2);
+		x1 = 0;
+		x2 = _width;
 	}
 	else if (flags & FTGX_JUSTIFY_RIGHT){
-		vertices[0] = Coordinates(-_width,-_height/2);
-		vertices[1] = Coordinates(0,-_height/2);
-		vertices[2] = Coordinates(0,_height/2);
-		vertices[3] = Coordinates(-_width,_height/2);
+		x1 = -_width;
+		x2 = 0;
 	}
-	else {	// FTGX_JUSTIFY_CENTER
-		vertices[0] = Coordinates(-_width/2,-_height/2);
-		vertices[1] = Coordinates(_width/2,-_height/2);
-		vertices[2] = Coordinates(_width/2,_height/2);
-		vertices[3] = Coordinates(-_width/2,_height/2);
+	else { // Par défaut FTGX_JUSTIFY_CENTER
+		x1 = -_width/2;
+		x2 = _width/2;
 	}
+
+	// Haut, bas, milieu
+
+	if (flags & FTGX_ALIGN_TOP){
+		y1 = 0;
+		y2 = _height;
+	}
+	else if (flags & FTGX_ALIGN_MIDDLE){
+		y1 = -_height/2;
+		y2 = _height/2;
+	}
+	else { // Par défaut FTGX_ALIGN_BOTTOM
+		y1 = -_height;
+		y2 = 0;
+	}
+
+	vertices[0] = Coordinates(x1,y1);
+	vertices[1] = Coordinates(x2,y1);
+	vertices[2] = Coordinates(x2,y2);
+	vertices[3] = Coordinates(x1,y2);
 }
 
 void Text::setColor(u32 _color){

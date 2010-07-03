@@ -15,6 +15,9 @@ private:
 	GRRLIB_texImg* tex_font;
 	Button* backButton;
 	Button* startButton;
+	Selector* roundSelector;
+	Selector* player1Selector;
+	Selector* player2Selector;
 public:
 	OptionScreen(
 			App* app,
