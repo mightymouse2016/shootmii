@@ -27,6 +27,7 @@ public:
 	void dealEvent();
 	void compute();
 	void addToDrawManager();
+	void setRoundCount(unsigned int roundCount);
 };
 
 }

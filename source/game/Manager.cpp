@@ -19,6 +19,7 @@ JaugeManager* Manager::jaugeManager = new JaugeManager;
 Manager::Manager(App* _app) :
 	pause(false),
 	backFromPause(true),
+	roundCount(DEFAULT_ROUND_COUNT),
 	app(_app),
 	world(new World),
 	player1(new Player(world->getTerrain(),world->getWind(),1,0,PI/2,PI/4,ROTATION_STEP,100,false,this)),
@@ -51,6 +52,14 @@ void Manager::togglePause(){
 
 bool Manager::isInPause() const{
 	return pause;
+}
+
+unsigned int Manager::getRoundCount() const{
+	return roundCount;
+}
+
+void Manager::setRoundCount(const unsigned int _roundCount){
+	roundCount = _roundCount;
 }
 
 Player* Manager::getPlayer1() const {
@@ -109,7 +118,8 @@ void Manager::computeVictory() {
 	else if (player2->getLife() == 0) winner = player1;
 	if (winner) {
 		winner->incScore();
-		if (winner->getScore() >= MANCHE) {
+		if (winner->getScore() >= roundCount) {
+			// TODO Rajouter la popup
 			player1->initGame();
 			player2->initGame();
 		}

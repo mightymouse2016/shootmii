@@ -30,11 +30,28 @@ void Selector::addOption(const std::string& _optionName){
 	screen->getClickables().push_back(_option);
 }
 
-void Selector::select(const unsigned int _index){
+unsigned int Selector::getSelectedIndex() const{
+	return selectedIndex;
+}
+
+void Selector::setSelectedIndex(const unsigned int _index){
 	selectedIndex = _index;
 	for (unsigned int i=0;i<options.size();i++){
 		options[i]->getText()->setColor(i == _index ? RED : WHITE);
 	}
+	click();
+}
+
+bool Selector::isClicked() const{
+	return clicked;
+}
+
+void Selector::click(){
+	clicked = true;
+}
+
+void Selector::unClick(){
+	clicked = false;
 }
 
 }

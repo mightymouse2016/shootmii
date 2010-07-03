@@ -18,13 +18,18 @@ private:
 	Screen* screen;
 	Text* title;
 	std::vector<SelectorOption*> options;
-	int selectedIndex;
+	unsigned int selectedIndex;
 	float startX;
+	bool clicked;
 public:
 	Selector(Screen* screen, const std::string& title, const float _originX, const float _originY);
 	~Selector();
 	void addOption(const std::string& option);
-	void select(const unsigned int index);
+	unsigned int getSelectedIndex() const;
+	void setSelectedIndex(const unsigned int index);
+	bool isClicked() const;
+	void click();
+	void unClick();
 };
 
 }

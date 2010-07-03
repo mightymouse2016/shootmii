@@ -22,10 +22,13 @@ const int SHIELD_HEIGHT(100);
 const int SHIELD_DURATION(20);
 const int SHIELD_SLOW(1);
 
+const unsigned int DEFAULT_ROUND_COUNT(3);
+
 class Manager {
 private:
 	bool pause;
 	bool backFromPause;
+	unsigned int roundCount;
 	App* app;
 	World* world;
 	Player* player1;
@@ -39,6 +42,8 @@ public:
 	~Manager();
 	void togglePause();
 	bool isInPause() const;
+	unsigned int getRoundCount() const;
+	void setRoundCount(const unsigned int roundCount);
 	Player* getPlayer1() const;
 	Player* getPlayer2() const;
 	Wind* getWind() const;

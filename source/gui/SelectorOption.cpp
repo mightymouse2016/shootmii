@@ -6,7 +6,7 @@
 namespace shootmii {
 
 SelectorOption::SelectorOption(
-		const int _index,
+		const unsigned int _index,
 		const int _originX,
 		const int _originY,
 		const std::string _text) :
@@ -30,7 +30,7 @@ SelectorOption::SelectorOption(
 
 void SelectorOption::click(){
 	Clickable::click();
-	static_cast<Selector*>(getFather())->select(index);
+	static_cast<Selector*>(getFather())->setSelectedIndex(index);
 }
 
 void SelectorOption::grow(){

@@ -61,9 +61,9 @@ enum PlayerChild{
 
 class Player: public Rectangle {
 private:
-	int playerNumber;
+	unsigned int playerNumber;
+	unsigned int score;
 	int recoil; 		//< Le recul : >0 vers la droite <0 vers la gauche
-	int score;
 	bool lifeModificationFlag;
 	float life;			//<  0->100
 	float fury;			//<  0->100
@@ -80,7 +80,7 @@ public:
 	Player(
 		Terrain* terrain,
 		Wind* wind,
-		int playerNumber,
+		const unsigned int playerNumber,
 		const float angleMin,
 		const float angleMax,
 		const float angle,
@@ -90,10 +90,10 @@ public:
 		Manager* manager = NULL);
 	~Player();
 
-	int getPlayerNumber() const;
+	unsigned int getPlayerNumber() const;
+	unsigned int getScore() const;
 	int getCol() const;
 	int getRow() const;
-	int getScore() const;
 	float getLife() const;
 	float getFury() const;
 	float* getPLife();
@@ -115,7 +115,7 @@ public:
 	bool isInShieldMode() const;
 
 	void setOpponent(Player* _opponent);
-	void setScore(const int score);
+	void setScore(const unsigned int score);
 	void incScore();
 	void moveLeft(const float speed = 1);
 	void moveRight(const float speed = 1);

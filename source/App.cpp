@@ -72,9 +72,13 @@ bool App::isRunning() const {
 	return running;
 }
 
-void App::setScreen(int screenType){
+void App::setScreen(ScreenType screenType){
 	currentScreen = screens[screenType];
 	currentScreen->init();
+}
+
+Screen* App::getScreen(ScreenType screenType){
+	return screens[screenType];
 }
 
 void App::run() {
