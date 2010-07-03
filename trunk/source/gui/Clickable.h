@@ -50,7 +50,6 @@ public:
 	virtual void compute();
 };
 
-
 }
 
 #endif /* CLICKABLE_H_ */

@@ -3,6 +3,7 @@
 #include "../tools/Colors.h"
 #include "../game/Manager.h"
 #include "../game/ScoreManager.h"
+#include "../gui/Selector.h"
 #include "../gui/Button.h"
 #include "../gui/Dock.h"
 #include "../gui/Text.h"
@@ -43,6 +44,10 @@ GameScreen::~GameScreen() {
 	delete manager;
 }
 
+Manager* GameScreen::getManager(){
+	return manager;
+}
+
 void GameScreen::compute(){
 	Screen::compute();
 	if (manager->isInPause()) return;
@@ -76,6 +81,7 @@ void GameScreen::dealEvent() {
 	if (!manager->isInPause()) manager->dealEvent(eventsPlayer[0], eventsPlayer[1]);
 
 	for (std::list<Clickable*>::iterator i=clickables.begin();i!=clickables.end();i++) (*i)->unClick();
+	for (std::list<Selector*>::iterator i=selectors.begin();i!=selectors.end();i++) (*i)->unClick();
 }
 
 }

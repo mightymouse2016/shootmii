@@ -13,12 +13,6 @@ class Dock;
 class Selector;
 class Pointer;
 
-enum ScreenType{
-	TITLE_SCREEN,
-	GAME_SCREEN,
-	OPTION_SCREEN
-};
-
 class Screen {
     protected:
 		App* app;

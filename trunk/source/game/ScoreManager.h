@@ -9,8 +9,6 @@ class Manager;
 class Bonus;
 class App;
 
-const int MANCHE(3);
-
 enum ScoreManagerChild{
 	CHILD_STRENGTH_JAUGE_1,
 	CHILD_STRENGTH_JAUGE_2,

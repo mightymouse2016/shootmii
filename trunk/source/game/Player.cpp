@@ -21,7 +21,7 @@ namespace shootmii {
 Player::Player(
 	Terrain* _terrain,
 	Wind* _wind,
-	int _playerNumber,
+	const unsigned int _playerNumber,
 	const float _angleMin,
 	const float _angleMax,
 	const float _angle,
@@ -31,8 +31,8 @@ Player::Player(
 	Manager* _manager) :
 		Rectangle(TANK_LAYER,TANK_HEIGHT,TANK_WIDTH,0,0,TANK_HEIGHT/2,-PI/2,0,true,true,App::imageBank->get(TXT_TANK),NULL,0,TANK_HEIGHT,TANK_WIDTH),
 		playerNumber(_playerNumber),
-		recoil(0),
 		score(0),
+		recoil(0),
 		lifeModificationFlag(false),
 		life(_life),
 		fury(_fury),
@@ -58,8 +58,12 @@ Player::~Player(){
 	delete damagePulse;
 }
 
-int Player::getPlayerNumber() const{
+unsigned int Player::getPlayerNumber() const{
 	return playerNumber;
+}
+
+unsigned int Player::getScore() const {
+	return score;
 }
 
 int Player::getCol() const{
@@ -68,10 +72,6 @@ int Player::getCol() const{
 
 int Player::getRow() const{
 	return originY/terrain->getCellHeight();
-}
-
-int Player::getScore() const {
-	return score;
 }
 
 float Player::getLife() const {
@@ -168,7 +168,7 @@ void Player::setOpponent(Player* _opponent){
 	children[CHILD_OPPONENT] = _opponent;
 }
 
-void Player::setScore(const int _score) {
+void Player::setScore(const unsigned int _score) {
 	score = _score;
 }
 

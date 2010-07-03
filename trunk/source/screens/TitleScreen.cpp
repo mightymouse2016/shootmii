@@ -2,6 +2,7 @@
 #include "../tools/Colors.h"
 #include "../tools/Tools.h"
 #include "../gfx/font_military.h"
+#include "../gui/Selector.h"
 #include "../gui/Text.h"
 #include "../App.h"
 #include "TitleScreen.h"
@@ -44,6 +45,7 @@ void TitleScreen::dealEvent(){
 	if (newGameButton->isClicked()) app->setScreen(OPTION_SCREEN);
 
 	for (std::list<Clickable*>::iterator i=clickables.begin();i!=clickables.end();i++) (*i)->unClick();
+	for (std::list<Selector*>::iterator i=selectors.begin();i!=selectors.end();i++) (*i)->unClick();
 }
 
 

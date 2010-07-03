@@ -21,6 +21,12 @@ class Screen;
 class TitleScreen;
 class GameScreen;
 
+enum ScreenType{
+	TITLE_SCREEN,
+	GAME_SCREEN,
+	OPTION_SCREEN
+};
+
 class App {
 private:
 	unsigned char fps;
@@ -29,7 +35,7 @@ private:
 	bool running;
 	int nbFrame;
 	Screen* currentScreen;
-	std::map<int,Screen*> screens;
+	std::map<ScreenType,Screen*> screens;
 	u32* eventsPlayer[2];
 	Pointer* pointerPlayer[2];
 public:
@@ -44,7 +50,8 @@ public:
 	u8 getFrameCount() const;
 	u32** getEventsPlayer();
 	bool isRunning() const;
-	void setScreen(int screenType);
+	void setScreen(ScreenType screenType);
+	Screen* getScreen(ScreenType screenType);
 	void run();
 	void exit();
 	void dealEvent();

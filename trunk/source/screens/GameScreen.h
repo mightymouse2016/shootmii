@@ -23,6 +23,7 @@ public:
 			Pointer** pointerPlayer,
 			u32** eventsPlayer);
 	virtual ~GameScreen();
+	Manager* getManager();
 	void init();
 	void dealEvent();
 	void compute();

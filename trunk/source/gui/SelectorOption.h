@@ -13,11 +13,11 @@ const int HIGHLIGHT_FRAME_BORDER(2);
 
 class SelectorOption : public Clickable{
 protected:
-	const int index;
+	const unsigned int index;
 	bool highLighted;
 public:
 	SelectorOption(
-		const int index,
+		const unsigned int index,
 		const int originX,
 		const int originY,
 		const std::string text

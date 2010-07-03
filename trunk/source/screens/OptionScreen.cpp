@@ -1,10 +1,12 @@
 #include "../tools/ImageBank.h"
 #include "../tools/Colors.h"
 #include "../tools/Tools.h"
+#include "../game/Manager.h"
 #include "../gfx/font_military.h"
 #include "../gui/Selector.h"
 #include "../gui/Text.h"
 #include "../App.h"
+#include "GameScreen.h"
 #include "OptionScreen.h"
 
 namespace shootmii {
@@ -28,17 +30,17 @@ OptionScreen::OptionScreen(
 	roundSelector->addOption(" 3 ");
 	roundSelector->addOption(" 4 ");
 	roundSelector->addOption(" 5 ");
-	roundSelector->select(2);
+	roundSelector->setSelectedIndex(2);
 	addSelector(roundSelector);
 
 	player1Selector->addOption(" Human ");
 	player1Selector->addOption(" Computer ");
-	player1Selector->select(0);
+	player1Selector->setSelectedIndex(0);
 	addSelector(player1Selector);
 
 	player2Selector->addOption(" Human ");
 	player2Selector->addOption(" Computer ");
-	player2Selector->select(1);
+	player2Selector->setSelectedIndex(1);
 	addSelector(player2Selector);
 
 	addButton(backButton);
@@ -65,9 +67,17 @@ void OptionScreen::dealEvent(){
 
 	if (backButton->isClicked()) app->setScreen(TITLE_SCREEN);
 	if (startButton->isClicked()) app->setScreen(GAME_SCREEN);
+	if (roundSelector->isClicked()) setRoundCount(roundSelector->getSelectedIndex()+1);
 
 	for (std::list<Clickable*>::iterator i=clickables.begin();i!=clickables.end();i++) (*i)->unClick();
+	for (std::list<Selector*>::iterator i=selectors.begin();i!=selectors.end();i++) (*i)->unClick();
 }
 
+void OptionScreen::setRoundCount(unsigned int roundCount){
+	GameScreen* gameScreen = static_cast<GameScreen*>(app->getScreen(GAME_SCREEN));
+	Manager* manager = gameScreen->getManager();
+	manager->setRoundCount(roundCount);
+}
 
 }
+
