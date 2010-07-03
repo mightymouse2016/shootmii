@@ -24,8 +24,8 @@ class Screen {
 		App* app;
 		Pointer** pointerPlayer;
 		u32** eventsPlayer;
-		std::list<Button*> buttons;
-		std::list<Button*>::iterator selectedButton;
+		std::list<Clickable*> clickables;
+		std::list<Clickable*>::iterator selectedClickable;
 		bool selectionMode;
 		std::list<Text*> texts;
 		std::list<Dock*> docks;
@@ -33,11 +33,13 @@ class Screen {
     public:
 		Screen(App* app,Pointer** pointerPlayer,unsigned int** eventsPlayer);
 		virtual ~Screen();
+		std::list<Clickable*>& getClickables();
+		const std::list<Clickable*>& getClickables() const;
 		virtual void addToDrawManager();
 		virtual void init();
 		virtual void compute();
 		void computePointer(Pointer* pointer);
-		void computeButtons();
+		void computeClickables();
 		void computeDocks();
 		void computeSelectors();
 		void addButton(Button* button);

@@ -56,6 +56,11 @@ void Text::setFontSize(fontSize _size){
 	size = _size;
 }
 
+void Text::setUnderline(const bool underline){
+	if (underline) flags |= FTGX_STYLE_UNDERLINE;
+	else flags &= !FTGX_STYLE_UNDERLINE;
+}
+
 void Text::update(){
 	const float _height = gxFont->getHeight(text);
 	const float _width = gxFont->getWidth(text);
@@ -71,7 +76,7 @@ void Text::update(){
 		vertices[2] = Coordinates(0,_height/2);
 		vertices[3] = Coordinates(-_width,_height/2);
 	}
-	else {
+	else {	// FTGX_JUSTIFY_CENTER
 		vertices[0] = Coordinates(-_width/2,-_height/2);
 		vertices[1] = Coordinates(_width/2,-_height/2);
 		vertices[2] = Coordinates(_width/2,_height/2);

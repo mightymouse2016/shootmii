@@ -23,15 +23,27 @@ Screen::Screen(
 }
 
 Screen::~Screen(){
-	buttons.clear();
+	/*
+	 * Clickables, Texts, Docks et Selectors sont ajoutés en tant que fils,
+	 * et sont donc détruits automatiquement.
+	 */
+	clickables.clear();
 	texts.clear();
 	docks.clear();
+}
+
+std::list<Clickable*>& Screen::getClickables(){
+	return clickables;
+}
+
+const std::list<Clickable*>& Screen::getClickables() const{
+	return clickables;
 }
 
 void Screen::addToDrawManager(){
 	pointerPlayer[0]->addToDrawManager();
 	pointerPlayer[1]->addToDrawManager();
-	for (std::list<Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
+	for (std::list<Clickable*>::iterator i=clickables.begin();i!=clickables.end();i++){
 		(*i)->addToDrawManager();
 		(*i)->unHighLight();
 	}
@@ -46,8 +58,8 @@ void Screen::addToDrawManager(){
 	}
 	
 	// Si il y a des boutons et qu'on est en mode séléction
-	if (buttons.size() != 0 && selectionMode){
-		(*selectedButton)->highLight();
+	if (clickables.size() != 0 && selectionMode){
+		(*selectedClickable)->highLight();
 	}
 }
 
@@ -56,12 +68,12 @@ void Screen::init(){
 		(*i)->init();
 	}
 	
-	for (std::list<Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
+	for (std::list<Clickable*>::iterator i=clickables.begin();i!=clickables.end();i++){
 		(*i)->init();
 	}
 	
-	if (buttons.size() != 0){
-		selectedButton = buttons.begin();
+	if (clickables.size() != 0){
+		selectedClickable = clickables.begin();
 	}
 	
 	selectionMode = false;
@@ -70,7 +82,7 @@ void Screen::init(){
 void Screen::compute(){
 	computePointer(pointerPlayer[0]);
 	computePointer(pointerPlayer[1]);
-	computeButtons();
+	computeClickables();
 	computeDocks();
 	computeSelectors();
 }
@@ -78,33 +90,26 @@ void Screen::compute(){
 void Screen::computePointer(Pointer* pointer){
 	int x = pointer->getAbsoluteOriginX();
 	int y = pointer->getAbsoluteOriginY();
-	int bx, by, bw, bh;
+	int x1,x2,y1,y2,ox,oy;
 
-	for (std::list<Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
+	for (std::list<Clickable*>::iterator i=clickables.begin();i!=clickables.end();i++){
 		if ((*i)->isStuck()) continue;
-		bx = (*i)->getAbsoluteOriginX();
-		by = (*i)->getAbsoluteOriginY();
-		bw = (*i)->getWidth();
-		bh = (*i)->getHeight();
-		if (x < (bx - bw/2)) continue;
-		if (x > (bx + bw/2)) continue;
-		if (y < (by - bh/2)) continue;
-		if (y > (by + bh/2)) continue;
+		ox = (*i)->getAbsoluteOriginX();
+		oy = (*i)->getAbsoluteOriginY();
+		x1 = ox + (*i)->getVertices()[0].getX();
+		x2 = ox + (*i)->getVertices()[1].getX();
+		y1 = oy + (*i)->getVertices()[1].getY();
+		y2 = oy + (*i)->getVertices()[2].getY();
+		if (x < x1 || x > x2 || y < y1 || y > y2) continue;
 		if (pointer->isCliking()) (*i)->click();
 		(*i)->pointOn();
 		selectionMode = false;
 	}
 }
 
-void Screen::computeButtons(){
-	for (std::list<Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
-		if ((*i)->isPointed()){
-			(*i)->grow();			// Grossissement du bouton
-			(*i)->pointOver();
-		}
-		else{
-			(*i)->shrink();		// Rétrécissement du bouton
-		}
+void Screen::computeClickables(){
+	for (std::list<Clickable*>::iterator i=clickables.begin();i!=clickables.end();i++){
+		(*i)->compute();
 	}
 }
 
@@ -126,19 +131,19 @@ void Screen::dealEvent(){
 		App::console->toggleDebug();
 	}
 	// Si il y a des boutons sur l'écran
-	if (buttons.size() > 0 && !(*selectedButton)->isStuck()){
+	if (clickables.size() > 0 && !(*selectedClickable)->isStuck()){
 		// haut et gauche
 		if (((eventsPlayer[0][DOWN] | eventsPlayer[1][DOWN]) & WPAD_BUTTON_UP) || 
 				((eventsPlayer[0][DOWN] | eventsPlayer[1][DOWN]) & WPAD_BUTTON_LEFT)) {
 			// Si aucun bouton n'est séléctionné on se met sur le premier
 			if (selectionMode == false){
-				selectedButton = buttons.begin();
+				selectedClickable = clickables.begin();
 				selectionMode = true;
 			}
 			// Sinon on séléctionne le prochain
 			else{
-				if (selectedButton == buttons.begin()) selectedButton = buttons.end();
-				selectedButton--;
+				if (selectedClickable == clickables.begin()) selectedClickable = clickables.end();
+				selectedClickable--;
 			}
 		}
 		// bas et droite
@@ -146,28 +151,28 @@ void Screen::dealEvent(){
 				((eventsPlayer[0][DOWN] | eventsPlayer[1][DOWN]) & WPAD_BUTTON_RIGHT)) {
 			// Si aucun bouton n'est séléctionné on se met sur le premier
 			if (selectionMode == false){
-				selectedButton = buttons.begin();
+				selectedClickable = clickables.begin();
 				selectionMode = true;
 			}
 			// Sinon on séléctionne le précédent
 			else{
-				selectedButton++;
-				if (selectedButton == buttons.end()) selectedButton = buttons.begin();
+				selectedClickable++;
+				if (selectedClickable == clickables.end()) selectedClickable = clickables.begin();
 			}
 		}
 	}
 	
 	// si on appuie sur A alors qu'un bouton séléctionné
-	if (selectionMode == true && ((eventsPlayer[0][DOWN] | eventsPlayer[1][DOWN]) & WPAD_BUTTON_A) && !(*selectedButton)->isStuck()) {
-		(*selectedButton)->click();
+	if (selectionMode == true && ((eventsPlayer[0][DOWN] | eventsPlayer[1][DOWN]) & WPAD_BUTTON_A) && !(*selectedClickable)->isStuck()) {
+		(*selectedClickable)->click();
 		selectionMode = false;
 	}
 	
 }
 
 void Screen::addButton(Button* button){
-	buttons.push_back(button);
-	if (buttons.size() == 1) selectedButton = buttons.begin();
+	clickables.push_back(button);
+	if (clickables.size() == 1) selectedClickable = clickables.begin();
 }
 
 void Screen::addText(Text* text){

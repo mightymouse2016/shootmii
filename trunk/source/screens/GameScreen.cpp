@@ -75,9 +75,7 @@ void GameScreen::dealEvent() {
 	
 	if (!manager->isInPause()) manager->dealEvent(eventsPlayer[0], eventsPlayer[1]);
 
-	for (std::list<Button*>::iterator i=buttons.begin();i!=buttons.end();i++){
-		(*i)->unClick();
-	}
+	for (std::list<Clickable*>::iterator i=clickables.begin();i!=clickables.end();i++) (*i)->unClick();
 }
 
 }
