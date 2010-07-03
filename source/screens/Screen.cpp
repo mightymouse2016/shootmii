@@ -165,7 +165,7 @@ void Screen::dealEvent(){
 	// si on appuie sur A alors qu'un bouton séléctionné
 	if (selectionMode == true && ((eventsPlayer[0][DOWN] | eventsPlayer[1][DOWN]) & WPAD_BUTTON_A) && !(*selectedClickable)->isStuck()) {
 		(*selectedClickable)->click();
-		selectionMode = false;
+		//selectionMode = false;
 	}
 	
 }

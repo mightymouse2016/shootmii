@@ -31,7 +31,7 @@ public:
 		GRRLIB_texImg* image = NULL
 	);
 	void init();
-	void click();
+	virtual void click();
 	void unClick();
 	bool isClicked() const;
 	void stuckIt();

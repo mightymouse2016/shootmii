@@ -23,7 +23,7 @@ Selector::~Selector() {
 }
 
 void Selector::addOption(const std::string& _optionName){
-	SelectorOption* _option = new SelectorOption(startX,0,_optionName);
+	SelectorOption* _option = new SelectorOption(options.size(),startX,0,_optionName);
 	startX += _option->getText()->getWidth() + SPACE_BETWEEN_OPTIONS;
 	addChild(_option);
 	options.push_back(_option);
