@@ -20,7 +20,7 @@ OptionScreen::OptionScreen(
 {
 	addText(new Text("Options",ARMY_FONT,FONT_SIZE_14,WHITE,SCREEN_WIDTH/2,SCREEN_HEIGHT/12));
 
-	Selector* roundSelector = new Selector("Round ",SCREEN_WIDTH/4,SCREEN_HEIGHT*3/12);
+	Selector* roundSelector = new Selector(this,"Round ",SCREEN_WIDTH/4,SCREEN_HEIGHT*3/12);
 	roundSelector->addOption(" 1 ");
 	roundSelector->addOption(" 2 ");
 	roundSelector->addOption(" 3 ");
@@ -29,13 +29,13 @@ OptionScreen::OptionScreen(
 	roundSelector->select(2);
 	addSelector(roundSelector);
 
-	Selector* player1Selector = new Selector("Player 1 ",SCREEN_WIDTH/4,SCREEN_HEIGHT*5/12);
+	Selector* player1Selector = new Selector(this,"Player 1 ",SCREEN_WIDTH/4,SCREEN_HEIGHT*5/12);
 	player1Selector->addOption(" Human ");
 	player1Selector->addOption(" Computer ");
 	player1Selector->select(0);
 	addSelector(player1Selector);
 
-	Selector* player2Selector = new Selector("Player 2 ",SCREEN_WIDTH/4,SCREEN_HEIGHT*7/12);
+	Selector* player2Selector = new Selector(this,"Player 2 ",SCREEN_WIDTH/4,SCREEN_HEIGHT*7/12);
 	player2Selector->addOption(" Human ");
 	player2Selector->addOption(" Computer ");
 	player2Selector->select(1);
@@ -66,7 +66,7 @@ void OptionScreen::dealEvent(){
 	if (backButton->isClicked()) app->setScreen(TITLE_SCREEN);
 	if (startButton->isClicked()) app->setScreen(GAME_SCREEN);
 
-	for (std::list<Button*>::iterator i=buttons.begin();i!=buttons.end();i++) (*i)->unClick();
+	for (std::list<Clickable*>::iterator i=clickables.begin();i!=clickables.end();i++) (*i)->unClick();
 }
 
 

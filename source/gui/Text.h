@@ -65,13 +65,14 @@ public:
 			u32 color,
 			const float originX = 0,
 			const float originY = 0,
-			const u16 flags = FTGX_JUSTIFY_CENTER | FTGX_ALIGN_MIDDLE);
+			const u16 flags = FTGX_ALIGN_MIDDLE | FTGX_JUSTIFY_CENTER);
 	~Text();
 	void initFont();
 	void setText(std::string text);
 	void setFontName(fontName name);
 	void setFontSize(fontSize size);
 	void setColor(u32 _color);
+	void setUnderline(const bool underline);
 	void update();
 	void draw();
 };

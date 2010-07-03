@@ -8,17 +8,20 @@
 namespace shootmii{
 
 class Text;
+class Screen;
+class SelectorOption;
 
 const int SPACE_BETWEEN_OPTIONS(20);
 
 class Selector : public Rectangle{
 private:
+	Screen* screen;
 	Text* title;
-	std::vector<Text*> options;
+	std::vector<SelectorOption*> options;
 	int selectedIndex;
 	float startX;
 public:
-	Selector(const std::string& title, const float _originX, const float _originY);
+	Selector(Screen* screen, const std::string& title, const float _originX, const float _originY);
 	~Selector();
 	void addOption(const std::string& option);
 	void select(const unsigned int index);
