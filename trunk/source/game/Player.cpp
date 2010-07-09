@@ -14,6 +14,7 @@
 #include "Cannon.h"
 #include "Bonus.h"
 #include "Ammo.h"
+#include "IA.h"
 #include "Player.h"
 
 namespace shootmii {
@@ -39,12 +40,14 @@ Player::Player(
 		laserRemainingTime(0),
 		shieldRemainingTime(0),
 		furyMode(false),
+		iaMode(false),
 		terrain(_terrain),
 		manager(_manager),
 		bonus(NULL),
 		damageSmokletTimer(new Timer(DAMAGE_SMOKLET_STATES)),
 		damagePulseTimer(new Timer),
-		damagePulse(new Pulse(DAMAGE_PULSE_R1,DAMAGE_PULSE_R2,DAMAGE_PULSE_PERIOD))
+		damagePulse(new Pulse(DAMAGE_PULSE_R1,DAMAGE_PULSE_R2,DAMAGE_PULSE_PERIOD)),
+		ia(new IA(this))
 {
 	children.reserve(2);
 	addChild(new Cannon(_angleMin, _angleMax, _angle, _rotationStep,_wind, this, _playerNumber, _manager));
@@ -56,6 +59,7 @@ Player::~Player(){
 	delete damageSmokletTimer;
 	delete damagePulseTimer;
 	delete damagePulse;
+	delete ia;
 }
 
 unsigned int Player::getPlayerNumber() const{
@@ -156,6 +160,10 @@ bool Player::isInFuryMode() const{
 	return furyMode;
 }
 
+bool Player::isInIAMode() const{
+	return iaMode;
+}
+
 bool Player::isInLaserMode() const{
 	return laserRemainingTime > 0;
 }
@@ -222,6 +230,10 @@ void Player::beginFuryMode(){
 
 void Player::stopFuryMode(){
 	furyMode = false;
+}
+
+void Player::setIA(const bool ia){
+	iaMode = ia;
 }
 
 void Player::beginLaserMode(){
@@ -411,6 +423,10 @@ void Player::computeRecoil(){
 	}
 }
 
+void Player::computeIA(){
+	if (isInIAMode()) ia->compute();
+}
+
 void Player::compute(){
 	getCannon()->compute();
 	computeRecoil();
@@ -418,9 +434,11 @@ void Player::compute(){
 	computeLaserMode();
 	computeShieldMode();
 	computeDegradation();
+	computeIA();
 }
 
 void Player::draw(){
+	if (isInIAMode()) ia->draw();
 	setSprite(0);
 	setColorFilter(WHITE);
 	Rectangle::draw();
@@ -437,6 +455,8 @@ void Player::dealEvent(const u32* playerEvents){
 	const u32 padDown = playerEvents[DOWN];
 	const u32 padUp = playerEvents[UP];
 
+	//if (isInIAMode()) return;
+
 	if (padHeld & WPAD_BUTTON_UP) 		KeyUp(HELD);
 	if (padHeld & WPAD_BUTTON_DOWN) 	KeyDown(HELD);
 	if (padHeld & WPAD_BUTTON_LEFT) 	KeyLeft(HELD);
@@ -445,6 +465,7 @@ void Player::dealEvent(const u32* playerEvents){
 	if (padDown & WPAD_BUTTON_A) 		KeyA(DOWN);
 	if (padUp & WPAD_BUTTON_A) 			KeyA(UP);
 	if (padDown & WPAD_BUTTON_B) 		KeyB(DOWN);
+	if (padDown & WPAD_BUTTON_PLUS) 	KeyPlus(DOWN);
 }
 
 void Player::KeyUp(EventType type){
@@ -531,7 +552,9 @@ void Player::KeyMinus(EventType type){
 void Player::KeyPlus(EventType type){
 	switch (type){
 	case HELD:break;
-	case DOWN:break;
+	case DOWN:
+		if(GRRLIB_ScrShot("Screenshot.png")) App::console->addDebug("A screenshot was taken!!!");
+		else App::console->addDebug("Screenshot did not work!!!");break;
 	case UP:break;
 	}
 }

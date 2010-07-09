@@ -2,6 +2,7 @@
 #include "../tools/Colors.h"
 #include "../tools/Tools.h"
 #include "../game/Manager.h"
+#include "../game/Player.h"
 #include "../gfx/font_military.h"
 #include "../gui/Selector.h"
 #include "../gui/Text.h"
@@ -68,6 +69,8 @@ void OptionScreen::dealEvent(){
 	if (backButton->isClicked()) app->setScreen(TITLE_SCREEN);
 	if (startButton->isClicked()) app->setScreen(GAME_SCREEN);
 	if (roundSelector->isClicked()) setRoundCount(roundSelector->getSelectedIndex()+1);
+	if (player1Selector->isClicked()) setPlayer1IA(player1Selector->getSelectedIndex() == 1);
+	if (player2Selector->isClicked()) setPlayer2IA(player2Selector->getSelectedIndex() == 1);
 
 	for (std::list<Clickable*>::iterator i=clickables.begin();i!=clickables.end();i++) (*i)->unClick();
 	for (std::list<Selector*>::iterator i=selectors.begin();i!=selectors.end();i++) (*i)->unClick();
@@ -77,6 +80,18 @@ void OptionScreen::setRoundCount(unsigned int roundCount){
 	GameScreen* gameScreen = static_cast<GameScreen*>(app->getScreen(GAME_SCREEN));
 	Manager* manager = gameScreen->getManager();
 	manager->setRoundCount(roundCount);
+}
+
+void OptionScreen::setPlayer1IA(const bool ia){
+	GameScreen* gameScreen = static_cast<GameScreen*>(app->getScreen(GAME_SCREEN));
+	Manager* manager = gameScreen->getManager();
+	manager->getPlayer1()->setIA(ia);
+}
+
+void OptionScreen::setPlayer2IA(const bool ia){
+	GameScreen* gameScreen = static_cast<GameScreen*>(app->getScreen(GAME_SCREEN));
+	Manager* manager = gameScreen->getManager();
+	manager->getPlayer2()->setIA(ia);
 }
 
 }

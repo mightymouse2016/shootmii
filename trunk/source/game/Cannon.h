@@ -100,8 +100,9 @@ public:
 	void destroyGuidedMissile();
 	void loseInfluenceOnMissile();
 	void init();
-	float getStrength() const;
+	const Wind* getWind() const;
 	float getHeat() const;
+	float getStrength() const;
 	float* getPStrength();
 	float* getPHeat();
 	int getBlockedTime() const;
@@ -118,6 +119,7 @@ public:
 	void rotateLeft();
 	void rotateRight();
 	void incStrength();
+	void setStrength(const float strength);
 	void incHeat();
 	void compute();
 	void computeHeat();

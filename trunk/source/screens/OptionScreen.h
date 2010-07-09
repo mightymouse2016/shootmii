@@ -28,6 +28,8 @@ public:
 	void compute();
 	void addToDrawManager();
 	void setRoundCount(unsigned int roundCount);
+	void setPlayer1IA(const bool ia);
+	void setPlayer2IA(const bool ia);
 };
 
 }
