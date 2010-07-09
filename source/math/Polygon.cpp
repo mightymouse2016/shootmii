@@ -94,6 +94,10 @@ LayerPriority Polygon::getLayer() const{
 	return layer;
 }
 
+Coordinates Polygon::getAbsoluteOrigin() const{
+	return Coordinates(getAbsoluteOriginX(),getAbsoluteOriginY());
+}
+
 float Polygon::getAbsoluteOriginX() const{
 	// Si le polygon n'a pas de père, on s'aligne sur le coin supèrieur gauche de l'écran
 	if (!father) return originX;
@@ -325,6 +329,18 @@ bool Polygon::intersect(Polygon* polygon) const{
 			if (segmentIntersect(v1[i].getX()+x,v1[i].getY()+y,v1[k1].getX()+x,v1[k1].getY()+y,
 				v2[j].getX()+xp,v2[j].getY()+yp,v2[k2].getX()+xp,v2[k2].getY()+yp)) return true;
 		}
+	}
+	return false;
+}
+
+bool Polygon::intersect(Coordinates a, Coordinates b) const{
+	std::vector<Coordinates> v = getRotatedVertices();
+	float x = getAbsoluteX(),y = getAbsoluteY();
+	for (int i=0,k1,size=v.size();i<size;i++){
+		k1 = i+1;
+		if (k1 == size) k1 = 0;
+		if (segmentIntersect(v[i].getX()+x,v[i].getY()+y,v[k1].getX()+x,v[k1].getY()+y,
+				a.getX(),a.getY(),b.getX(),b.getY())) return true;
 	}
 	return false;
 }

@@ -101,12 +101,16 @@ void Cannon::init() {
 
 }
 
-float Cannon::getStrength() const {
-	return strength;
+const Wind* Cannon::getWind() const{
+	return wind;
 }
 
 float Cannon::getHeat() const {
 	return heat;
+}
+
+float Cannon::getStrength() const {
+	return strength;
 }
 
 float* Cannon::getPStrength(){
@@ -184,6 +188,10 @@ void Cannon::incStrength(){
 		shoot();
 		stillHeld = true;
 	}
+}
+
+void Cannon::setStrength(const float _strength){
+	strength = _strength;
 }
 
 void Cannon::incHeat(){

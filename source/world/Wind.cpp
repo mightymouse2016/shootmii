@@ -36,7 +36,7 @@ void Wind::compute(){
 		}
 	}
 	else{
-		if (rand()%WIND_TURNOVER_PROBABILITY){
+		if (!rand()%WIND_TURNOVER_PROBABILITY){
 			turnover = windSpeedRight == 0;
 			int windSpeed = rand()%100;
 			if (turnover){

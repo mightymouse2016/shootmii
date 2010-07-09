@@ -16,6 +16,7 @@ class Timer;
 class Pulse;
 class Wind;
 class Bonus;
+class IA;
 
 const int SHOT_RECOIL(5);
 
@@ -70,12 +71,14 @@ private:
 	float laserRemainingTime;
 	float shieldRemainingTime;
 	bool furyMode;
+	bool iaMode;
 	Terrain* terrain;
 	Manager* manager;
 	Bonus* bonus;
 	Timer* damageSmokletTimer;
 	Timer* damagePulseTimer;
 	Pulse* damagePulse;
+	IA* ia;
 public:
 	Player(
 		Terrain* terrain,
@@ -111,6 +114,7 @@ public:
 	Bonus* getBonus();
 	Bonus** getPBonus();
 	bool isInFuryMode() const;
+	bool isInIAMode() const;
 	bool isInLaserMode() const;
 	bool isInShieldMode() const;
 
@@ -127,6 +131,7 @@ public:
 	void loseFury(const float furyAmount);
 	void beginFuryMode();
 	void stopFuryMode();
+	void setIA(const bool ia);
 	void beginLaserMode();
 	void stopLaserMode();
 	void beginShieldMode();
@@ -148,6 +153,7 @@ public:
 	void computeDamage(Ammo* ammo);
 	void computeDegradation();
 	void computeRecoil();
+	void computeIA();
 	void compute();
 
 	void draw();

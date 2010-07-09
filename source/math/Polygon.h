@@ -104,6 +104,7 @@ public:
 	const Coordinates getRotatedDrawOrigin() const;
 	static int getNumberOfPolygonsInstances();
 	LayerPriority getLayer() const;
+	Coordinates getAbsoluteOrigin() const;
 	float getAbsoluteOriginX() const;
 	float getAbsoluteOriginY() const;
 	float getAbsoluteX() const;
@@ -144,6 +145,7 @@ public:
 	void show();
 
 	bool intersect(Polygon* polygon) const;
+	bool intersect(Coordinates a, Coordinates b) const;
 };
 
 }
