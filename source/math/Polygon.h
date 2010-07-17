@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "GRRLIB.h"
+#include "Segment.h"
 #include "Coordinates.h"
 
 namespace shootmii {
@@ -100,6 +101,10 @@ public:
 
 	const std::vector<Coordinates>& getVertices() const;
 	std::vector<Coordinates> getRotatedVertices() const;
+	std::vector<Coordinates> getRotatedAbsoluteVertices() const;
+	std::vector<Segment> getEdges() const;
+	std::vector<Segment> getRotatedEdges() const;
+	std::vector<Segment> getRotatedAbsoluteEdges() const;
 	const Coordinates& getDrawOrigin() const;
 	const Coordinates getRotatedDrawOrigin() const;
 	static int getNumberOfPolygonsInstances();
@@ -107,6 +112,7 @@ public:
 	Coordinates getAbsoluteOrigin() const;
 	float getAbsoluteOriginX() const;
 	float getAbsoluteOriginY() const;
+	Coordinates getAbsoluteCoordinates() const;
 	float getAbsoluteX() const;
 	float getAbsoluteY() const;
 	float getAbsoluteAngle() const;
@@ -145,7 +151,7 @@ public:
 	void show();
 
 	bool intersect(Polygon* polygon) const;
-	bool intersect(Coordinates a, Coordinates b) const;
+	bool intersect(Segment s) const;
 };
 
 }

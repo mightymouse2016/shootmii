@@ -2,6 +2,7 @@
 #include "../tools/Colors.h"
 #include "../tools/Tools.h"
 #include "../App.h"
+#include "Segment.h"
 #include "Polygon.h"
 
 namespace shootmii {
@@ -75,6 +76,42 @@ std::vector<Coordinates> Polygon::getRotatedVertices() const{
 	return rotatedVertices;
 }
 
+std::vector<Coordinates> Polygon::getRotatedAbsoluteVertices() const{
+	std::vector<Coordinates> rotatedVertices = getRotatedVertices();
+	for (unsigned int i=0;i<rotatedVertices.size();i++) rotatedVertices[i]+=getAbsoluteCoordinates();
+	return rotatedVertices;
+}
+
+std::vector<Segment> Polygon::getEdges() const{
+	std::vector<Segment> edges;
+	for (int i=0,k1,size=vertices.size();i<size;i++){
+		k1 = i+1;
+		if (k1 == size) k1 = 0;
+		edges.push_back(Segment(vertices[i],vertices[k1]));
+	}
+	return edges;
+}
+
+std::vector<Segment> Polygon::getRotatedEdges() const{
+	std::vector<Coordinates> rotatedVertices = getRotatedVertices();
+	std::vector<Segment> edges;
+	for (int i=0,k1,size=rotatedVertices.size();i<size;i++){
+		k1 = i+1;
+		if (k1 == size) k1 = 0;
+		edges.push_back(Segment(rotatedVertices[i],rotatedVertices[k1]));
+	}
+	return edges;
+}
+
+std::vector<Segment> Polygon::getRotatedAbsoluteEdges() const{
+	std::vector<Segment> rotatedEdges = getRotatedEdges();
+	for (unsigned int i=0;i<rotatedEdges.size();i++) {
+		rotatedEdges[i].getA() += getAbsoluteCoordinates();
+		rotatedEdges[i].getB() += getAbsoluteCoordinates();
+	}
+	return rotatedEdges;
+}
+
 const Coordinates& Polygon::getDrawOrigin() const{
 	return drawOrigin;
 }
@@ -122,6 +159,10 @@ float Polygon::getAbsoluteOriginY() const{
 
 	// Sinon, on se base seulement sur  ses coordonnées
 	return father->getAbsoluteY() + originY;
+}
+
+Coordinates Polygon::getAbsoluteCoordinates() const{
+	return Coordinates(getAbsoluteX(),getAbsoluteY());
 }
 
 float Polygon::getAbsoluteX() const{
@@ -317,31 +358,14 @@ void Polygon::show(){
 }
 
 bool Polygon::intersect(Polygon* polygon) const{
-	std::vector<Coordinates> v1 = getRotatedVertices();
-	std::vector<Coordinates> v2 = polygon->getRotatedVertices();
-	float x = getAbsoluteX(),y = getAbsoluteY(),xp = polygon->getAbsoluteX(),yp = polygon->getAbsoluteY();
-	for (int i=0,k1,size=v1.size();i<size;i++){
-		k1 = i+1;
-		if (k1 == size) k1 = 0;
-		for (int j=0,k2,size2=v2.size();j<size2;j++){
-			k2 = j+1;
-			if (k2 == size2) k2 = 0;
-			if (segmentIntersect(v1[i].getX()+x,v1[i].getY()+y,v1[k1].getX()+x,v1[k1].getY()+y,
-				v2[j].getX()+xp,v2[j].getY()+yp,v2[k2].getX()+xp,v2[k2].getY()+yp)) return true;
-		}
-	}
+	std::vector<Segment> v = polygon->getRotatedAbsoluteEdges();
+	for (unsigned int i=0;i<v.size();i++) if (intersect(v[i])) return true;
 	return false;
 }
 
-bool Polygon::intersect(Coordinates a, Coordinates b) const{
-	std::vector<Coordinates> v = getRotatedVertices();
-	float x = getAbsoluteX(),y = getAbsoluteY();
-	for (int i=0,k1,size=v.size();i<size;i++){
-		k1 = i+1;
-		if (k1 == size) k1 = 0;
-		if (segmentIntersect(v[i].getX()+x,v[i].getY()+y,v[k1].getX()+x,v[k1].getY()+y,
-				a.getX(),a.getY(),b.getX(),b.getY())) return true;
-	}
+bool Polygon::intersect(Segment s) const{
+	std::vector<Segment> v = getRotatedAbsoluteEdges();
+	for (unsigned int i=0;i<v.size();i++) if (v[i].intersect(s)) return true;
 	return false;
 }
 

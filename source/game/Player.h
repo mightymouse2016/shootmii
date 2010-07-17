@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <wiiuse/wpad.h>
 #include "../tools/Tools.h"
+#include "../math/Interval.h"
 #include "../math/Rectangle.h"
 
 namespace shootmii {

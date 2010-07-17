@@ -22,6 +22,8 @@ public:
 	void grow(const float k);
 	void growX(const float k);
 	void growY(const float k);
+	Coordinates operator+(const Coordinates& coo) const;
+	Coordinates& operator+=(const Coordinates& coo);
 };
 
 // Fonction template qui prends en arguments un objet fonctionnel, un intervalle, un pas et qui retourne une liste de points
