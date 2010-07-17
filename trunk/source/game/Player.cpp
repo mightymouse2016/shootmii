@@ -156,6 +156,14 @@ Bonus** Player::getPBonus(){
 	return &bonus;
 }
 
+Interval Player::getAngularInterval() const{
+	float x1, x2;
+	x1 = fixAngle(getAbsoluteAngle());
+	if (playerNumber == 1) x2 = fixAngle(getAbsoluteAngle()+PI/2);
+	else x2 = fixAngle(getAbsoluteAngle()-PI/2);
+	return Interval(x1,x2);
+}
+
 bool Player::isInFuryMode() const{
 	return furyMode;
 }

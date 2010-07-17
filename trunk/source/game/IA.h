@@ -10,7 +10,7 @@ class Player;
 class IA{
 protected:
 	Player* const player;
-	std::vector<float> computedAngles;
+	Interval computedAngles;
 	bool isAStrengthSolution;
 	float computedStrength;
 	std::vector<float> computedOriginX;
@@ -19,6 +19,7 @@ public:
 	void compute();
 	void draw() const;
 protected:
+	void getCloserToTheOpponent();
 	void drawTrajectory(
 			const float strength,
 			const Coordinates& origin,
