@@ -6,16 +6,18 @@
 namespace shootmii {
 
 class Player;
+class Interval;
 
 class IA{
 protected:
 	Player* const player;
-	Interval computedAngles;
+	Interval* computedAngles;
 	bool isAStrengthSolution;
 	float computedStrength;
 	std::vector<float> computedOriginX;
 public:
 	IA(Player* const player);
+	~IA();
 	void compute();
 	void draw() const;
 protected:
@@ -26,10 +28,8 @@ protected:
 			const float angle,
 			const u32 color) const;
 	void calculateStrength();
-	void calculateStrength2();
 	void calculateAngle(const float strength);
 	void calculatePosition(const float strength);
-	bool isTargetTooHigh();
 	bool isCollidingWithOpponent(const float strength, float angle);
 };
 

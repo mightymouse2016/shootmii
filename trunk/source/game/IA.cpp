@@ -15,10 +15,15 @@ namespace shootmii{
 
 IA::IA(Player* const _player) :
 	player(_player),
+	computedAngles(NULL),
 	isAStrengthSolution(false),
 	computedStrength(0)
 {
 
+}
+
+IA::~IA(){
+	delete computedAngles;
 }
 
 void IA::getCloserToTheOpponent(){
@@ -27,7 +32,7 @@ void IA::getCloserToTheOpponent(){
 }
 
 void IA::draw() const{
-	const float originY = player->getCannon()->getAbsoluteOriginY();
+	//const float originY = player->getCannon()->getAbsoluteOriginY();
 	const Coordinates origin = player->getCannon()->getAbsoluteOrigin();
 	const float angle = player->getCannon()->getAbsoluteAngle();
 
@@ -37,10 +42,10 @@ void IA::draw() const{
 	if (isAStrengthSolution) drawTrajectory(computedStrength,origin,angle,RED);
 
 	// Angle variable
-	if (!computedAngles.isEmpty()){
-		drawTrajectory(100,origin,computedAngles.getMin()+PI/2,GREEN);
-		drawTrajectory(100,origin,computedAngles.getMax()+PI/2,GREEN);
-		drawTrajectory(100,origin,(computedAngles.getMin()+computedAngles.getMax())/2+PI/2,WHITE);
+	if (computedAngles){
+		drawTrajectory(100,origin,computedAngles->getMin()+PI/2,GREEN);
+		drawTrajectory(100,origin,computedAngles->getMax()+PI/2,GREEN);
+		drawTrajectory(100,origin,(computedAngles->getMin()+computedAngles->getMax())/2+PI/2,WHITE);
 	}
 
 	// Min/Max
@@ -88,19 +93,15 @@ void IA::compute(){
 	calculatePosition(100);
 	calculateStrength();
 
-	// Si on est à une distance permettant d'atteindre l'adversaire
-
-	if (computedAngles.isEmpty()) getCloserToTheOpponent();
+	// Si on n'est pas à une distance permettant d'atteindre l'adversaire
+	if (!computedAngles) getCloserToTheOpponent();
 	else {
-		const float idealAngle = (computedAngles.getMin()+computedAngles.getMax())/2;
-		//App::console->addDebug("angle1 = %f, angle2 = %f, ideal = %f", computedAngles[0], computedAngles[1], idealAngle);
-
 		// On se dirige vers l'angle optimal
-		if (angle < idealAngle) player->getCannon()->rotateRight();
+		if (angle < (computedAngles->getMin()+computedAngles->getMax())/2) player->getCannon()->rotateRight();
 		else player->getCannon()->rotateLeft();
 
-		// Si dans la position ou l'on est, on ne peuxatteindre l'enemi, on se rapproche de lui
-		if (!interval.intersect(computedAngles)) getCloserToTheOpponent();
+		// Si dans la position ou l'on est, on ne peux atteindre l'enemi, on se rapproche de lui
+		if (!interval.intersect(*computedAngles)) getCloserToTheOpponent();
 	}
 
 }
@@ -130,7 +131,8 @@ void IA::calculateStrength(){
 }
 
 void IA::calculateAngle(const float s){
-	computedAngles.clear();
+	delete computedAngles;
+	computedAngles = NULL;
 
 	if (s == 0) return;
 
@@ -149,7 +151,7 @@ void IA::calculateAngle(const float s){
 	const float gamma1 = (s*s+2*(a1*dx+a2*dy)-sqrt_delta)/(2*(a1*a1+a2*a2));
 	const float gamma2 = (s*s+2*(a1*dx+a2*dy)+sqrt_delta)/(2*(a1*a1+a2*a2));
 
-	computedAngles.set(fixAngle(atan2(a2*gamma1-dy,a1*gamma1-dx)-PI),fixAngle(atan2(a2*gamma2-dy,a1*gamma2-dx)-PI));
+	computedAngles = new Interval(fixAngle(atan2(a2*gamma1-dy,a1*gamma1-dx)-PI),fixAngle(atan2(a2*gamma2-dy,a1*gamma2-dx)-PI));
 }
 
 void IA::calculatePosition(const float strength){
@@ -181,15 +183,6 @@ void IA::calculatePosition(const float strength){
 	computedOriginX.push_back(xb + (b - sqrt_delta)/(2*a));
 }
 
-bool IA::isTargetTooHigh(){
-	const float angle = player->getCannon()->getAbsolutePolygonAngle();
-	const float x = player->getCannon()->getAbsoluteOriginX();
-	const float y = player->getCannon()->getAbsoluteOriginY();
-	const float xa = player->getOpponent()->getAbsoluteOriginX();
-	const float ya = player->getOpponent()->getAbsoluteOriginY();
-	return angle < atan2(y-ya,x-xa);
-}
-
 bool IA::isCollidingWithOpponent(const float strength, float angle){
 	Player* opponent = player->getOpponent();
 	Cannon* cannon = player->getCannon();
@@ -206,7 +199,7 @@ bool IA::isCollidingWithOpponent(const float strength, float angle){
 			-GRAVITY/(2*AMMO_WEIGHT),strength*sinus,oY+CANNON_LENGTH*sinus);
 
 	for(int t = 0;newY<terrain->getHeight(newX);t++){
-		if (opponent->intersect(Coordinates(x,y),Coordinates(newX,newY))) return true;
+		if (opponent->intersect(Segment(x,y,newX,newY))) return true;
 		x = newX;
 		y = newY;
 		newX = (*laserX)(t*LASER_STEP);

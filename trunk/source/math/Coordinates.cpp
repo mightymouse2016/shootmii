@@ -50,4 +50,15 @@ void Coordinates::growY(const float k){
 	y*=k;
 }
 
+Coordinates Coordinates::operator+(const Coordinates& coo) const{
+	return Coordinates(x+coo.x,y+coo.y);
+}
+
+
+Coordinates& Coordinates::operator+=(const Coordinates& coo){
+	x+=coo.getX();
+	y+=coo.getY();
+	return *this;
+}
+
 }
