@@ -1,6 +1,7 @@
 #include "../tools/Console.h"
 #include "../world/Terrain.h"
 #include "../tools/Colors.h"
+#include "../tools/Tools.h"
 #include "../world/Wind.h"
 #include "../math/PolyDeg2.h"
 #include "../math/Coordinates.h"
@@ -20,17 +21,31 @@ IA::IA(Player* const _player) :
 
 }
 
+void IA::getCloserToTheOpponent(){
+	if (player->getPlayerNumber() == 1) player->KeyRight(HELD);
+	else player->KeyLeft(HELD);
+}
+
 void IA::draw() const{
 	const float originY = player->getCannon()->getAbsoluteOriginY();
 	const Coordinates origin = player->getCannon()->getAbsoluteOrigin();
 	const float angle = player->getCannon()->getAbsoluteAngle();
 
+	Interval range = player->getAngularInterval();
+
 	// Force variable
 	if (isAStrengthSolution) drawTrajectory(computedStrength,origin,angle,RED);
 
 	// Angle variable
-	for(unsigned int i=0;i<computedAngles.size();i++)
-		drawTrajectory(100,origin,computedAngles[i],GREEN);
+	if (!computedAngles.isEmpty()){
+		drawTrajectory(100,origin,computedAngles.getMin()+PI/2,GREEN);
+		drawTrajectory(100,origin,computedAngles.getMax()+PI/2,GREEN);
+		drawTrajectory(100,origin,(computedAngles.getMin()+computedAngles.getMax())/2+PI/2,WHITE);
+	}
+
+	// Min/Max
+	drawTrajectory(100,origin,range.getMin()+PI/2,BLUE);
+	drawTrajectory(100,origin,range.getMax()+PI/2,BLUE);
 
 	//Origine variable
 	//for(unsigned int i=0;i<computedOriginX.size();i++)
@@ -66,35 +81,28 @@ void IA::drawTrajectory(const float strength, const Coordinates& origin, const f
 }
 
 void IA::compute(){
+	const float angle = fixAngle(player->getCannon()->getAbsoluteAngle());
+	Interval interval = player->getAngularInterval();
 	player->beginLaserMode();
 	calculateAngle(100);
 	calculatePosition(100);
 	calculateStrength();
 
-	//for (unsigned int i=0;i<solutions.size();i++) isCollidingWithOpponent(player,100,solutions[i]);
+	// Si on est à une distance permettant d'atteindre l'adversaire
 
-/*
-	App::console->addDebug("Angle cannon = %f, Angle calcule = %f",player->getCannon()->getAbsolutePolygonAngle(), angle);
-	if (player->getCannon()->getAbsolutePolygonAngle() > angle) player->KeyUp(HELD);
-	else player->KeyDown(HELD);
-*/
-	/*
-	const float strength = calculateStrength(player);
+	if (computedAngles.isEmpty()) getCloserToTheOpponent();
+	else {
+		const float idealAngle = (computedAngles.getMin()+computedAngles.getMax())/2;
+		//App::console->addDebug("angle1 = %f, angle2 = %f, ideal = %f", computedAngles[0], computedAngles[1], idealAngle);
 
-	// Innateignable
-	if (strength == -1){
-		// Si l'angle est trop faible, on relève le canon
-		if (isTargetTooHigh(player)) player->KeyUp(HELD);
-		else player->KeyDown(HELD);
+		// On se dirige vers l'angle optimal
+		if (angle < idealAngle) player->getCannon()->rotateRight();
+		else player->getCannon()->rotateLeft();
+
+		// Si dans la position ou l'on est, on ne peuxatteindre l'enemi, on se rapproche de lui
+		if (!interval.intersect(computedAngles)) getCloserToTheOpponent();
 	}
 
-	if (strength > 100) return;
-
-	if (player->getCannon()->getStrength() < strength) {
-		if (player->getCannon()->isLoaded()) player->KeyA(HELD);
-	}
-	else player->KeyA(UP);
-	*/
 }
 
 void IA::calculateStrength(){
@@ -141,8 +149,7 @@ void IA::calculateAngle(const float s){
 	const float gamma1 = (s*s+2*(a1*dx+a2*dy)-sqrt_delta)/(2*(a1*a1+a2*a2));
 	const float gamma2 = (s*s+2*(a1*dx+a2*dy)+sqrt_delta)/(2*(a1*a1+a2*a2));
 
-	computedAngles.push_back(atan2(a2*gamma1-dy,a1*gamma1-dx)+PI);
-	computedAngles.push_back(atan2(a2*gamma2-dy,a1*gamma2-dx)+PI);
+	computedAngles.set(fixAngle(atan2(a2*gamma1-dy,a1*gamma1-dx)-PI),fixAngle(atan2(a2*gamma2-dy,a1*gamma2-dx)-PI));
 }
 
 void IA::calculatePosition(const float strength){

@@ -113,6 +113,7 @@ public:
 	float getSpeed(const int cellYype, const Direction dir) const;
 	Bonus* getBonus();
 	Bonus** getPBonus();
+	Interval getAngularInterval() const;
 	bool isInFuryMode() const;
 	bool isInIAMode() const;
 	bool isInLaserMode() const;
