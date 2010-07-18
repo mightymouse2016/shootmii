@@ -1,4 +1,3 @@
-#include "../tools/Colors.h"
 #include "../gui/Text.h"
 #include "Selector.h"
 #include "SelectorOption.h"
@@ -16,7 +15,7 @@ SelectorOption::SelectorOption(
 				0,
 				0,
 				_text,
-				WHITE,
+				Color::WHITE,
 				FONT_SIZE_10,
 				FTGX_ALIGN_MIDDLE | FTGX_JUSTIFY_LEFT),
 		index(_index),
@@ -53,10 +52,10 @@ void SelectorOption::draw(){
 	int y1 = oy + vertices[1].getY();
 	int y2 = oy + vertices[2].getY();
 	for (int i=-HIGHLIGHT_FRAME_MARGIN-HIGHLIGHT_FRAME_BORDER;i<-HIGHLIGHT_FRAME_MARGIN;i++) {
-		GRRLIB_Line(x1+i,y1+i,x2-i,y1+i, GREEN);
-		GRRLIB_Line(x1+i,y2-i,x2-i,y2-i, GREEN);
-		GRRLIB_Line(x1+i,y1+i,x1+i,y2-i, GREEN);
-		GRRLIB_Line(x2-i,y1+i,x2-i,y2-i, GREEN);
+		GRRLIB_Line(x1+i,y1+i,x2-i,y1+i, Color::GREEN);
+		GRRLIB_Line(x1+i,y2-i,x2-i,y2-i, Color::GREEN);
+		GRRLIB_Line(x1+i,y1+i,x1+i,y2-i, Color::GREEN);
+		GRRLIB_Line(x2-i,y1+i,x2-i,y2-i, Color::GREEN);
 	}
 }
 

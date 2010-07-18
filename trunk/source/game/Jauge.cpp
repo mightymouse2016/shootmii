@@ -1,6 +1,5 @@
 #include "Jauge.h"
-#include "../tools/Colors.h"
-#include "../tools/Tools.h"
+//#include "../tools/Tools.h"
 
 namespace shootmii {
 
@@ -42,7 +41,7 @@ void Jauge::compute(){
 		}
 	}
 
-	if (flickering) setColorFilter(*flickering ? colorFadeOut(RED & TRANSPARENT, RED, flickeringState) : TRANSPARENT);
+	if (flickering) setColorFilter(*flickering ? Color(Color::RED & Color::TRANSPARENT, Color::RED, flickeringState) : Color::TRANSPARENT);
 
 	int width = getWidth();
 	int limit = static_cast<int>(width*(*percentage)/100);

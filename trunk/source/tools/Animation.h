@@ -3,7 +3,7 @@
 
 #include "../math/Rectangle.h"
 #include "../math/Timer.h"
-#include "../tools/Colors.h"
+#include "Color.h"
 
 namespace shootmii{
 
@@ -16,8 +16,8 @@ protected:
 	bool fadeOut;
 	Function* calcX;
 	Function* calcY;
-	u32	fadeOutStartColor;
-	u32 fadeOutEndColor;
+	Color fadeOutStartColor;
+	Color fadeOutEndColor;
 public:
 	Animation(
 		const LayerPriority layer,
@@ -37,8 +37,8 @@ public:
 		Function* calcY = NULL,
 		const float step = DEFAULT_TIME_STEP,
 		const bool fadeOut = false,
-		const u32 fadeOutStartColor = WHITE,
-		const u32 fadeOutEndColor = TRANSPARENT);
+		const Color fadeOutStartColor = Color::WHITE,
+		const Color fadeOutEndColor = Color::TRANSPARENT);
 	~Animation();
 	float getProgress() const;
 	virtual void compute();

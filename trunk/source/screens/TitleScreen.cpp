@@ -1,5 +1,4 @@
 #include "../tools/ImageBank.h"
-#include "../tools/Colors.h"
 #include "../tools/Tools.h"
 #include "../gfx/font_military.h"
 #include "../gui/Selector.h"
@@ -20,7 +19,7 @@ TitleScreen::TitleScreen(
 {
 	addButton(exitButton);
 	addButton(newGameButton);
-	addText(new Text("ShootMii",ARMY_FONT,FONT_SIZE_15,WHITE,SCREEN_WIDTH/2,SCREEN_HEIGHT*2/5));
+	addText(new Text("ShootMii",ARMY_FONT,FONT_SIZE_15,Color::WHITE,SCREEN_WIDTH/2,SCREEN_HEIGHT*2/5));
 }
 
 void TitleScreen::compute(){

@@ -3,6 +3,7 @@
 
 #include "GRRLIB.h"
 #include "Screen.h"
+#include "../tools/Color.h"
 #include "../FreeTypeGX/FreeTypeGX.h"
 
 namespace shootmii {

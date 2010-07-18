@@ -225,9 +225,9 @@ void ScoreManager::draw(){
 
 void ScoreManager::drawScore() const {
     // Player 1
-    GRRLIB_Printf(SCREEN_WIDTH/2 - 56, SCREEN_HEIGHT - 42, tex_font, WHITE, 1, "%d", manager->getPlayer1()->getScore());
+    GRRLIB_Printf(SCREEN_WIDTH/2 - 56, SCREEN_HEIGHT - 42, tex_font, Color::WHITE, 1, "%d", manager->getPlayer1()->getScore());
     // Player 2
-    GRRLIB_Printf(SCREEN_WIDTH/2 + 24, SCREEN_HEIGHT - 42, tex_font, WHITE, 1, "%d", manager->getPlayer2()->getScore());
+    GRRLIB_Printf(SCREEN_WIDTH/2 + 24, SCREEN_HEIGHT - 42, tex_font, Color::WHITE, 1, "%d", manager->getPlayer2()->getScore());
 }
 
 }

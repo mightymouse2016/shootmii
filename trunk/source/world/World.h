@@ -5,6 +5,7 @@
 #include "GRRLIB.h"
 #include "../math/Polygon.h"
 #include "../tools/Tools.h"
+#include "../tools/Color.h"
 
 namespace shootmii {
 

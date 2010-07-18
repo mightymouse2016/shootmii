@@ -3,6 +3,7 @@
 
 #include <wiiuse/wpad.h>
 #include "GRRLIB.h"
+#include "../tools/Color.h"
 #include "Screen.h"
 
 namespace shootmii {

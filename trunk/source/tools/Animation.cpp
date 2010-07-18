@@ -22,8 +22,8 @@ Animation::Animation(
 		Function* _calcY,
 		const float _step,
 		const bool _fadeOut,
-		const u32 _fadeOutStartColor,
-		const u32 _fadeOutEndColor) :
+		const Color _fadeOutStartColor,
+		const Color _fadeOutEndColor) :
 	Rectangle(_layer, _width,_height,_originX,_originY, _radial, _angle, _rectangleAngle, true, true, _tiles, _father, 0, _width, _height),
 	Timer(_spriteSlow,_step),
 	loops(_loops),
@@ -59,7 +59,7 @@ void Animation::compute(){
 	if (calcY) originY = (*calcY)(getT());
 
 	if (fadeOut){
-		colorFilter = colorFadeOut(fadeOutStartColor,fadeOutEndColor,1-getProgress());
+		colorFilter = Color(fadeOutStartColor,fadeOutEndColor,1-getProgress());
 	}
 }
 

@@ -8,19 +8,19 @@ Text::Text(
 		std::string _text,
 		fontName _name,
 		fontSize _size,
-		u32 _color,
+		const Color& _color,
 		const float _originX,
 		const float _originY,
 		const u16 _flags) :
 	Rectangle(TEXT_LAYER,0,0,_originX,_originY),
 	name(_name),
 	size(_size),
+	color(_color),
 	gxFont(new FreeTypeGX),
 	flags(_flags)
 {
 	initFont();
 	setText(_text);
-	setColor(_color);
 	update();
 }
 
@@ -101,12 +101,8 @@ void Text::update(){
 	vertices[3] = Coordinates(x1,y2);
 }
 
-void Text::setColor(u32 _color){
-	u8 r = (_color >> 24) & 0x000000FF;
-	u8 g = (_color >> 16) & 0x000000FF;
-	u8 b = (_color >> 8 ) & 0x000000FF;
-	u8 a =  _color & 0x000000FF;
-	color = (GXColor) {r,g,b,a};
+void Text::setColor(const Color& _color){
+	color = _color;
 }
 
 void Text::draw(){

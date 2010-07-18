@@ -4,6 +4,7 @@
 #include <string>
 #include "../FreeTypeGX/FreeTypeGX.h"
 #include "../math/Rectangle.h"
+#include "../tools/Color.h"
 
 namespace shootmii{
 
@@ -37,7 +38,6 @@ enum fontSize{
  * initFont
  * setText
  * update
- * setColor
  */
 
 class Text : public Rectangle{
@@ -45,7 +45,7 @@ private:
 	wchar_t* text;
 	fontName name;
 	fontSize size;
-	GXColor color;
+	Color color;
 	FreeTypeGX* gxFont;
 	/*
 	 * FTGX_JUSTIFY_LEFT
@@ -62,7 +62,7 @@ public:
 	Text(std::string text,
 			fontName name,
 			fontSize size,
-			u32 color,
+			const Color& color,
 			const float originX = 0,
 			const float originY = 0,
 			const u16 flags = FTGX_ALIGN_MIDDLE | FTGX_JUSTIFY_CENTER);
@@ -71,7 +71,7 @@ public:
 	void setText(std::string text);
 	void setFontName(fontName name);
 	void setFontSize(fontSize size);
-	void setColor(u32 _color);
+	void setColor(const Color& _color);
 	void setUnderline(const bool underline);
 	void update();
 	void draw();

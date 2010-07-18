@@ -1,6 +1,5 @@
 #include "../tools/Console.h"
 #include "../world/Terrain.h"
-#include "../tools/Colors.h"
 #include "../tools/Tools.h"
 #include "../world/Wind.h"
 #include "../math/PolyDeg2.h"
@@ -39,25 +38,25 @@ void IA::draw() const{
 	Interval range = player->getAngularInterval();
 
 	// Force variable
-	if (isAStrengthSolution) drawTrajectory(computedStrength,origin,angle,RED);
+	if (isAStrengthSolution) drawTrajectory(computedStrength,origin,angle,Color::RED);
 
 	// Angle variable
 	if (computedAngles){
-		drawTrajectory(100,origin,computedAngles->getMin()+PI/2,GREEN);
-		drawTrajectory(100,origin,computedAngles->getMax()+PI/2,GREEN);
-		drawTrajectory(100,origin,(computedAngles->getMin()+computedAngles->getMax())/2+PI/2,WHITE);
+		drawTrajectory(100,origin,computedAngles->getMin()+PI/2,Color::GREEN);
+		drawTrajectory(100,origin,computedAngles->getMax()+PI/2,Color::GREEN);
+		drawTrajectory(100,origin,(computedAngles->getMin()+computedAngles->getMax())/2+PI/2,Color::WHITE);
 	}
 
 	// Min/Max
-	drawTrajectory(100,origin,range.getMin()+PI/2,BLUE);
-	drawTrajectory(100,origin,range.getMax()+PI/2,BLUE);
+	drawTrajectory(100,origin,range.getMin()+PI/2,Color::BLUE);
+	drawTrajectory(100,origin,range.getMax()+PI/2,Color::BLUE);
 
 	//Origine variable
 	//for(unsigned int i=0;i<computedOriginX.size();i++)
 		//drawTrajectory(100,Coordinates(computedOriginX[i],originY),angle,WHITE);
 }
 
-void IA::drawTrajectory(const float strength, const Coordinates& origin, const float angle, const u32 color) const{
+void IA::drawTrajectory(const float strength, const Coordinates& origin, const float angle, const Color color) const{
 	Cannon* cannon = player->getCannon();
 	Terrain* terrain = cannon->getOwner()->getTerrain();
 

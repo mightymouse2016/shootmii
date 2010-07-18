@@ -1,5 +1,4 @@
 #include "../game/DrawManager.h"
-#include "../tools/Colors.h"
 #include "../tools/Tools.h"
 #include "../App.h"
 #include "Segment.h"
@@ -44,7 +43,7 @@ Polygon::Polygon(
 		hidden(_hidden),
 		debugHidden(_debugHidden),
 		recursive(true),
-		colorFilter(WHITE)
+		colorFilter(Color::WHITE)
 {
 	numberOfPolygonsInstances++;
 	if (image){
@@ -105,9 +104,10 @@ std::vector<Segment> Polygon::getRotatedEdges() const{
 
 std::vector<Segment> Polygon::getRotatedAbsoluteEdges() const{
 	std::vector<Segment> rotatedEdges = getRotatedEdges();
+	Coordinates coo = getAbsoluteCoordinates();
 	for (unsigned int i=0;i<rotatedEdges.size();i++) {
-		rotatedEdges[i].getA() += getAbsoluteCoordinates();
-		rotatedEdges[i].getB() += getAbsoluteCoordinates();
+		rotatedEdges[i].getA() += coo;
+		rotatedEdges[i].getB() += coo;
 	}
 	return rotatedEdges;
 }
@@ -187,7 +187,7 @@ Polygon* Polygon::getFather() const{
 	return father;
 }
 
-u32 Polygon::getColorFilter() const{
+const Color& Polygon::getColorFilter() const{
 	return colorFilter;
 }
 
@@ -247,7 +247,7 @@ void Polygon::setImage(GRRLIB_texImg* _image){
 	}
 }
 
-void Polygon::setColorFilter(const u32 _colorFilter){
+void Polygon::setColorFilter(const Color& _colorFilter){
 	colorFilter = _colorFilter;
 }
 
@@ -334,19 +334,19 @@ void Polygon::drawDebug() const{
 	for(int i=0, j, size=rV.size();i<size;i++){
 		j = i+1;
 		if (j == size) j = 0;
-		GRRLIB_Line(rV[i].getX()*scale+x,rV[i].getY()*scale+y,rV[j].getX()*scale+x,rV[j].getY()*scale+y,RED);
+		GRRLIB_Line(rV[i].getX()*scale+x,rV[i].getY()*scale+y,rV[j].getX()*scale+x,rV[j].getY()*scale+y,Color::RED);
 	}
 
 	// Le rayon
-	GRRLIB_Line(oX,oY,x,y,RED);
+	GRRLIB_Line(oX,oY,x,y,Color::RED);
 
 	// L'origine
-	GRRLIB_Line(oX-w,oY-h,oX+w,oY+h,WHITE);
-	GRRLIB_Line(oX+w,oY-h,oX-w,oY+h,WHITE);
+	GRRLIB_Line(oX-w,oY-h,oX+w,oY+h,Color::WHITE);
+	GRRLIB_Line(oX+w,oY-h,oX-w,oY+h,Color::WHITE);
 
 	// La nouvelle origine
-	GRRLIB_Line(x-w,y-h,x+w,y+h,WHITE);
-	GRRLIB_Line(x+w,y-h,x-w,y+h,WHITE);
+	GRRLIB_Line(x-w,y-h,x+w,y+h,Color::WHITE);
+	GRRLIB_Line(x+w,y-h,x-w,y+h,Color::WHITE);
 }
 
 void Polygon::hide(){
@@ -357,13 +357,13 @@ void Polygon::show(){
 	hidden = false;
 }
 
-bool Polygon::intersect(Polygon* polygon) const{
+bool Polygon::intersect(const Polygon* const polygon) const{
 	std::vector<Segment> v = polygon->getRotatedAbsoluteEdges();
 	for (unsigned int i=0;i<v.size();i++) if (intersect(v[i])) return true;
 	return false;
 }
 
-bool Polygon::intersect(Segment s) const{
+bool Polygon::intersect(const Segment& s) const{
 	std::vector<Segment> v = getRotatedAbsoluteEdges();
 	for (unsigned int i=0;i<v.size();i++) if (v[i].intersect(s)) return true;
 	return false;

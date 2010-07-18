@@ -8,7 +8,6 @@
 #include "../world/Wind.h"
 #include "../tools/Animation.h"
 #include "../tools/Tools.h"
-#include "../tools/Colors.h"
 #include "../game/Manager.h"
 #include "../game/Bonus.h"
 #include "Ammo.h"
@@ -138,7 +137,7 @@ void Ammo::computeGhost(){
 	ghostAmmo->setPolygonAngle(angle-ghostBubble->getAbsolutePolygonAngle());
 
 	/* Calcul de la transparence de la bulle */
-	u32 filter = colorFadeOut(WHITE, TRANSPARENT, ratio1 > ratio2 ? ratio1 : ratio2);
+	Color filter(Color::WHITE, Color::TRANSPARENT, ratio1 > ratio2 ? ratio1 : ratio2);
 	ghostAmmo->setColorFilter(filter);
 	ghostBubble->setColorFilter(filter);
 }

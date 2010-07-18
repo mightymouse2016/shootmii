@@ -4,6 +4,7 @@
 #include "GRRLIB.h"
 #include <list>
 #include <vector>
+#include "../tools/Color.h"
 #include "../math/Polygon.h"
 #include "../math/Timer.h"
 
