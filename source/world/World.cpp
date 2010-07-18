@@ -1,5 +1,4 @@
 #include "../tools/ImageBank.h"
-#include "../tools/Colors.h"
 #include "../App.h"
 #include "Sun.h"
 #include "Wind.h"
@@ -85,8 +84,8 @@ void World::addToDrawManager(){
 void World::draw(){
 	// Ciel
 	float ratio = (1-SUN_LIGHT_INFLUENCE) - sin(sun->getAbsoluteAngle())*SUN_LIGHT_INFLUENCE;
-	u32 colorSky1 = colorFadeOut(BLUE_SKY_1, BLUE_SKY_1 & TRANSPARENT, ratio);
-	u32 colorSky2 = colorFadeOut(BLUE_SKY_2, BLUE_SKY_2 & TRANSPARENT,ratio);
+	Color colorSky1 = Color(Color::BLUE_SKY_1, Color::BLUE_SKY_1 & Color::TRANSPARENT, ratio);
+	Color colorSky2 = Color(Color::BLUE_SKY_2, Color::BLUE_SKY_2 & Color::TRANSPARENT, ratio);
 	u32 colors[] = {colorSky1, colorSky1, colorSky2, colorSky2};
 	drawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, colors);
 	Polygon::draw();

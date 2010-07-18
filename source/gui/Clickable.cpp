@@ -8,7 +8,7 @@ Clickable::Clickable(
 		const int _width,
 		const int _height,
 		const std::string _text,
-		const u32 _textColor,
+		const Color& _textColor,
 		const fontSize _textSize,
 		const u16 _textFlags,
 		GRRLIB_texImg* _image) :

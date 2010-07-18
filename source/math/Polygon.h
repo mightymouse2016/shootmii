@@ -5,6 +5,7 @@
 #include "GRRLIB.h"
 #include "Segment.h"
 #include "Coordinates.h"
+#include "../tools/Color.h"
 
 namespace shootmii {
 
@@ -78,7 +79,7 @@ protected:
 	bool hidden;
 	bool debugHidden;
 	bool recursive;
-	u32 colorFilter;
+	Color colorFilter;
 public:
 	Polygon(
 		const LayerPriority layer,
@@ -118,7 +119,7 @@ public:
 	float getAbsoluteAngle() const;
 	float getAbsolutePolygonAngle() const;
 	Polygon* getFather() const;
-	u32 getColorFilter() const;
+	const Color& getColorFilter() const;
 	std::vector<Polygon*>& getChildren();
 	const std::vector<Polygon*>& getChildren() const;
 
@@ -132,7 +133,7 @@ public:
 	void setScale(const float scale);
 	void setFather(Polygon* father);
 	void setImage(GRRLIB_texImg* image);
-	void setColorFilter(const u32 colorFilter);
+	void setColorFilter(const Color& colorFilter);
 	void setSprite(const int spriteIndex);
 
 	void addChild(Polygon * child);
@@ -150,8 +151,8 @@ public:
 	void hide();
 	void show();
 
-	bool intersect(Polygon* polygon) const;
-	bool intersect(Segment s) const;
+	bool intersect(const Polygon* const polygon) const;
+	bool intersect(const Segment& s) const;
 };
 
 }

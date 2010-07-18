@@ -1,5 +1,4 @@
 #include "../tools/ImageBank.h"
-#include "../tools/Colors.h"
 #include "../tools/Tools.h"
 #include "../game/Manager.h"
 #include "../game/Player.h"
@@ -24,7 +23,7 @@ OptionScreen::OptionScreen(
 	player1Selector(new Selector(this,"Player 1 ",SCREEN_WIDTH/4,SCREEN_HEIGHT*5/12)),
 	player2Selector(new Selector(this,"Player 2 ",SCREEN_WIDTH/4,SCREEN_HEIGHT*7/12))
 {
-	addText(new Text("Options",ARMY_FONT,FONT_SIZE_14,WHITE,SCREEN_WIDTH/2,SCREEN_HEIGHT/12));
+	addText(new Text("Options",ARMY_FONT,FONT_SIZE_14,Color::WHITE,SCREEN_WIDTH/2,SCREEN_HEIGHT/12));
 
 	roundSelector->addOption(" 1 ");
 	roundSelector->addOption(" 2 ");

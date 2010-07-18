@@ -2,7 +2,7 @@
 #define CLICKABLE_H_
 
 #include "../math/Rectangle.h"
-#include "../tools/Colors.h"
+#include "../tools/Color.h"
 #include "Text.h"
 
 namespace shootmii{
@@ -25,7 +25,7 @@ public:
 		const int width,
 		const int height,
 		const std::string text = "",
-		const u32 textColor = BLACK,
+		const Color& textColor = Color::BLACK,
 		const fontSize textSize = FONT_SIZE_6,
 		const u16 textFlags = FTGX_JUSTIFY_CENTER | FTGX_ALIGN_MIDDLE,
 		GRRLIB_texImg* image = NULL

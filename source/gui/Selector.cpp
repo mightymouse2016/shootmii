@@ -11,7 +11,7 @@ Selector::Selector(
 		const float _originY) :
 	Rectangle(TEXT_LAYER,0,0,_originX,_originY),
 	screen(_screen),
-	title(new Text(_title,GUI_FONT,FONT_SIZE_10,WHITE,0,0)),
+	title(new Text(_title,GUI_FONT,FONT_SIZE_10,Color::WHITE,0,0)),
 	selectedIndex(-1),
 	startX(title->getWidth()/2 + SPACE_BETWEEN_OPTIONS)
 {
@@ -37,7 +37,7 @@ unsigned int Selector::getSelectedIndex() const{
 void Selector::setSelectedIndex(const unsigned int _index){
 	selectedIndex = _index;
 	for (unsigned int i=0;i<options.size();i++){
-		options[i]->getText()->setColor(i == _index ? RED : WHITE);
+		options[i]->getText()->setColor(i == _index ? Color::RED : Color::WHITE);
 	}
 	click();
 }

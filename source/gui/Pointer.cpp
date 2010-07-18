@@ -1,5 +1,4 @@
 #include "../tools/ImageBank.h"
-#include "../tools/Colors.h"
 #include "../tools/Tools.h"
 #include "../math/Rectangle.h"
 #include "../App.h"
@@ -51,8 +50,8 @@ void Pointer::drawDebug() const{
 	int y = getAbsoluteOriginY();
 	int w = 10;
 	int h = 10;
-	GRRLIB_Line(x-w,y-h,x+w,y+h,BLACK);
-	GRRLIB_Line(x-w,y+h,x+w,y-h,BLACK);
+	GRRLIB_Line(x-w,y-h,x+w,y+h,Color::BLACK);
+	GRRLIB_Line(x-w,y+h,x+w,y-h,Color::BLACK);
 }
 
 void Pointer::dealEvent(){

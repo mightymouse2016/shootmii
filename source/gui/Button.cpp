@@ -15,7 +15,7 @@ Button::Button(
 				_width,
 				_height,
 				_text,
-				BLACK,
+				Color::BLACK,
 				FONT_SIZE_6,
 				FTGX_ALIGN_MIDDLE | FTGX_JUSTIFY_CENTER,
 				_image)

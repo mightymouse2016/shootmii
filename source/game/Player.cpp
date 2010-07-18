@@ -2,7 +2,6 @@
 #include "../world/Wind.h"
 #include "../tools/ImageBank.h"
 #include "../tools/Console.h"
-#include "../tools/Colors.h"
 #include "../tools/Tools.h"
 #include "../math/PolyDeg2.h"
 #include "../math/Pulse.h"
@@ -406,8 +405,8 @@ void Player::computeDegradation(){
 					new PolyDeg2(-(GRAVITY* SMOKE_WEIGHT*SMOKE_AIR_RESISTANCE/2-ARCHIMEDE)/GRAVITY,-DAMAGE_SMOKLET_INITIAL_SPEED*sin(projectionAngle),originY+getWidth()*sin(getAbsoluteAngle())/2),
 					DEFAULT_TIME_STEP,
 					true,
-					colorFadeOut(TRANSPARENT, 0xffffff77, life/100),
-					BLACK & TRANSPARENT));
+					Color(Color::TRANSPARENT, Color(0xffffff77), life/100),
+					Color::BLACK & Color::TRANSPARENT));
 	}
 
 	damagePulseTimer->compute();
@@ -448,13 +447,13 @@ void Player::compute(){
 void Player::draw(){
 	if (isInIAMode()) ia->draw();
 	setSprite(0);
-	setColorFilter(WHITE);
+	setColorFilter(Color::WHITE);
 	Rectangle::draw();
 	setSprite(1);
-	setColorFilter(colorFadeOut(WHITE,TRANSPARENT,(100-getLife())/100));
+	setColorFilter(Color(Color::WHITE, Color::TRANSPARENT,(100-getLife())/100));
 	Rectangle::draw();
 	setSprite(2);
-	setColorFilter(colorFadeOut(RED & TRANSPARENT, RED, 1-(*damagePulse)(damagePulseTimer->getT())));
+	setColorFilter(Color(Color::RED & Color::TRANSPARENT, Color::RED, 1-(*damagePulse)(damagePulseTimer->getT())));
 	Rectangle::draw();
 }
 

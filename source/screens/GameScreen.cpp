@@ -1,6 +1,5 @@
 #include "../tools/ImageBank.h"
 #include "../tools/Tools.h"
-#include "../tools/Colors.h"
 #include "../game/Manager.h"
 #include "../game/ScoreManager.h"
 #include "../gui/Selector.h"
@@ -27,7 +26,7 @@ GameScreen::GameScreen(
 
 	// Top dock
 	Dock* dock = new Dock(true);
-	Text * pause_text = new Text("Pause",GUI_FONT,FONT_SIZE_14,WHITE,0,0);
+	Text * pause_text = new Text("Pause",GUI_FONT,FONT_SIZE_14,Color::WHITE,0,0);
 	addText(pause_text);
 	dock->addText(pause_text); // "Accroche" le texte au dock
 	addDock(dock);

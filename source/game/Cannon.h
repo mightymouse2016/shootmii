@@ -3,6 +3,7 @@
 
 #include "GRRLIB.h"
 #include "../math/Rectangle.h"
+#include "../tools/Color.h"
 
 namespace shootmii {
 

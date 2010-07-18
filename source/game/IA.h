@@ -2,6 +2,7 @@
 #define IA_H_
 
 #include <vector>
+#include "../tools/Color.h"
 
 namespace shootmii {
 
@@ -26,7 +27,7 @@ protected:
 			const float strength,
 			const Coordinates& origin,
 			const float angle,
-			const u32 color) const;
+			const Color color) const;
 	void calculateStrength();
 	void calculateAngle(const float strength);
 	void calculatePosition(const float strength);
