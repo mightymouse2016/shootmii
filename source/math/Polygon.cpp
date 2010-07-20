@@ -294,29 +294,33 @@ void Polygon::addToDrawManager(){
 	}
 }
 
-void Polygon::draw(){
+void Polygon::draw() const{
+	draw(colorFilter, spriteIndex);
+}
+
+void Polygon::draw(const Color& colorFilter, const int spriteIndex) const {
 	if (hidden || spriteIndex < 0 || !image) return;
-	if (spriteWidth && spriteHeight) { // Si c'est un sprite et non une image
-		GRRLIB_DrawTile(
-			getAbsoluteX()+getDrawOrigin().getX(),
-			getAbsoluteY()+getDrawOrigin().getY(),
-			image,
-			getAbsolutePolygonAngle()*180/PI,
-			scale,
-			scale,
-			colorFilter,
-			spriteIndex);
-	}
-	else {
-		GRRLIB_DrawImg(
-			getAbsoluteX()+getDrawOrigin().getX(),
-			getAbsoluteY()+getDrawOrigin().getY(),
-			image,
-			getAbsolutePolygonAngle()*180/PI,
-			scale,
-			scale,
-			colorFilter);
-	}
+		if (spriteWidth && spriteHeight) { // Si c'est un sprite et non une image
+			GRRLIB_DrawTile(
+				getAbsoluteX()+getDrawOrigin().getX(),
+				getAbsoluteY()+getDrawOrigin().getY(),
+				image,
+				getAbsolutePolygonAngle()*180/PI,
+				scale,
+				scale,
+				colorFilter,
+				spriteIndex);
+		}
+		else {
+			GRRLIB_DrawImg(
+				getAbsoluteX()+getDrawOrigin().getX(),
+				getAbsoluteY()+getDrawOrigin().getY(),
+				image,
+				getAbsolutePolygonAngle()*180/PI,
+				scale,
+				scale,
+				colorFilter);
+		}
 }
 
 void Polygon::drawDebug() const{

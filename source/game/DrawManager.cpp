@@ -42,7 +42,13 @@ void DrawManager::addToDraw(std::list<Animation*>* animationsList){
 		(*i)->addToDrawManager();
 }
 
-void DrawManager::draw(){
+void DrawManager::compute(){
+	// On vide la liste pour la prochaine frame
+	delete polygonsToDraw;
+	polygonsToDraw = new std::multiset<Polygon*, ComparePolygons>;
+}
+
+void DrawManager::draw() const{
 	// On affiche tout
 	for (std::multiset<Polygon*>::iterator i=polygonsToDraw->begin();i!=polygonsToDraw->end();i++){
 		(*i)->draw();
@@ -53,9 +59,6 @@ void DrawManager::draw(){
 			(*i)->drawDebug();
 		}
 	}
-	// On vide la liste pour la prochaine frame
-	delete polygonsToDraw;
-	polygonsToDraw = new std::multiset<Polygon*, ComparePolygons>;
 }
 
 }

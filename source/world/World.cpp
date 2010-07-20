@@ -81,7 +81,7 @@ void World::addToDrawManager(){
 	for (std::list<Cloud*>::iterator i=clouds->begin();i!=clouds->end();i++) (*i)->addToDrawManager();
 }
 
-void World::draw(){
+void World::draw() const{
 	// Ciel
 	float ratio = (1-SUN_LIGHT_INFLUENCE) - sin(sun->getAbsoluteAngle())*SUN_LIGHT_INFLUENCE;
 	Color colorSky1 = Color(Color::BLUE_SKY_1, Color::BLUE_SKY_1 & Color::TRANSPARENT, ratio);

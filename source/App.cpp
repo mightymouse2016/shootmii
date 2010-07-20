@@ -97,6 +97,7 @@ void App::dealEvent() {
 }
 
 void App::compute(){
+	drawManager->compute();
 	currentScreen->compute();
 	computeFrameRate();
 }
@@ -112,7 +113,7 @@ void App::computeFrameRate() {
 	}
 }
 
-void App::draw(){
+void App::draw() const{
 	currentScreen->addToDrawManager();
 	drawManager->draw();
 	console->draw();

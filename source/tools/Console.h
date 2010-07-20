@@ -26,12 +26,12 @@ private:
 	bool debug;
 	GRRLIB_texImg* console_font;
 	std::vector<std::string> history;
-	void drawFPS();
-	void drawTime();
-	void drawPolygonsInstances();
+	void drawFPS() const;
+	void drawTime() const;
+	void drawPolygonsInstances() const;
 public:
 	Console();
-	void draw();
+	void draw() const;
 	void addDebug(const char* txt, ...);
 	bool isDebug() const;
 	void toggleDebug();

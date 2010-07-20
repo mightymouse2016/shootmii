@@ -115,8 +115,6 @@ public:
 	Player* getOwner() const;
 	void setAmmo(Ammo* ammo);
 	void up();
-	void decHeat();
-	void draw(const int screenX, const int screenY);
 	void rotateLeft();
 	void rotateRight();
 	void incStrength();
@@ -124,6 +122,7 @@ public:
 	void incHeat();
 	void compute();
 	void computeHeat();
+	bool isOverHeated() const;
 	void computeStrengthJauge();
 	void computeLaserMode();
 	void shoot();
@@ -133,7 +132,7 @@ public:
 	void loadGuided();
 	bool isLoaded() const;
 	bool isGuidingMissile() const;
-	void draw();
+	void draw() const;
 };
 
 }

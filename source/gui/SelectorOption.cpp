@@ -42,7 +42,7 @@ void SelectorOption::shrink(){
 	getText()->setUnderline(false);
 }
 
-void SelectorOption::draw(){
+void SelectorOption::draw() const{
 	Clickable::draw();
 	if (!highLighted) return;
 	int ox = getAbsoluteOriginX();

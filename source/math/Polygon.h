@@ -146,7 +146,8 @@ public:
 	void grow(const float k);
 
 	virtual void addToDrawManager();
-	virtual void draw();// utiliser addToDrawManager() qui prendras en compte le layer et appelera draw() au bon moment
+	virtual void draw() const;
+	virtual void draw(const Color& colorFilter, const int spriteIndex) const;
 	virtual void drawDebug() const;
 	void hide();
 	void show();

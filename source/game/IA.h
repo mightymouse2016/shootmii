@@ -13,14 +13,14 @@ class IA{
 protected:
 	Player* const player;
 	Interval* computedAngles;
-	bool isAStrengthSolution;
-	float computedStrength;
-	std::vector<float> computedOriginX;
+	float* computedStrength;
+	bool firing;
 public:
 	IA(Player* const player);
 	~IA();
 	void compute();
-	void draw() const;
+	void drawDebug() const;
+	void init();
 protected:
 	void getCloserToTheOpponent();
 	void drawTrajectory(
@@ -28,9 +28,8 @@ protected:
 			const Coordinates& origin,
 			const float angle,
 			const Color color) const;
-	void calculateStrength();
-	void calculateAngle(const float strength);
-	void calculatePosition(const float strength);
+	float* calculateStrength() const;
+	Interval* calculateAngle(const float strength) const;
 	bool isCollidingWithOpponent(const float strength, float angle);
 };
 
