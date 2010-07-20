@@ -36,7 +36,7 @@ void Console::toggleDebug() {
   }
 }
 
-void Console::draw() {
+void Console::draw() const{
 	if (debug) {
 		drawFPS();
 		drawTime();
@@ -49,14 +49,14 @@ void Console::draw() {
 	}
 }
 
-void Console::drawFPS() {
+void Console::drawFPS() const{
 	// Affichage du BACKGROUND
 	GRRLIB_Rectangle(CONSOLE_X_OFFSET, CONSOLE_X_OFFSET, CONSOLE_FPS_BG_WIDTH,25, Color::CONSOLE_COLOR, true);
 	// Affichage des FPS
 	GRRLIB_Printf(CONSOLE_X_OFFSET + 10, CONSOLE_X_OFFSET + 10, console_font, Color::WHITE, 1, "FPS: %d", fps);
 }
 
-void Console::drawPolygonsInstances(){
+void Console::drawPolygonsInstances() const{
 	// Affichage du BACKGROUND
 	GRRLIB_Rectangle(CONSOLE_X_OFFSET + 140, CONSOLE_X_OFFSET, 150 ,25, Color::CONSOLE_COLOR, true);
 	// Affichage des FPS
@@ -67,7 +67,7 @@ void Console::setFPS(u8 fps) {
   this->fps = fps;
 }
 
-void Console::drawTime() {
+void Console::drawTime() const{
 	u8 seconds = ticks_to_secs(gettime());
 	u8 minutes = seconds / 60;
 	u8 hours = minutes / 60;

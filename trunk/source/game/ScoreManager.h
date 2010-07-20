@@ -39,7 +39,7 @@ private:
 public:
 	ScoreManager(App*, Manager*);
 	void compute();
-	void draw();
+	void draw() const;
 	void drawScore() const;
 };
 

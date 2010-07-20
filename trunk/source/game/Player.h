@@ -158,7 +158,8 @@ public:
 	void computeIA();
 	void compute();
 
-	void draw();
+	void draw() const;
+	void drawDebug() const;
 
 	// Binds
 	void dealEvent(const u32* playerEvents);

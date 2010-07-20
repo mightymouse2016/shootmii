@@ -105,7 +105,7 @@ void Text::setColor(const Color& _color){
 	color = _color;
 }
 
-void Text::draw(){
+void Text::draw() const{
 	Polygon::draw();
 	gxFont->drawText(getAbsoluteOriginX(), getAbsoluteOriginY(), text,color, flags);
 }

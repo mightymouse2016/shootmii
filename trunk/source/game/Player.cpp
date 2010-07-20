@@ -286,7 +286,7 @@ void Player::initGame() {
 	fury = 0;
 	laserRemainingTime = 0;
 	shieldRemainingTime = 0;
-	if (bonus) delete bonus;
+	delete bonus;
 	bonus = NULL;
 	initRound();
 }
@@ -304,6 +304,7 @@ void Player::initRound() {
 	damageSmokletTimer->init();
 	damagePulseTimer->init();
 	getCannon()->init();
+	ia->init();
 }
 
 void Player::initPosition(float _originX){
@@ -444,17 +445,14 @@ void Player::compute(){
 	computeIA();
 }
 
-void Player::draw(){
-	if (isInIAMode()) ia->draw();
-	setSprite(0);
-	setColorFilter(Color::WHITE);
-	Rectangle::draw();
-	setSprite(1);
-	setColorFilter(Color(Color::WHITE, Color::TRANSPARENT,(100-getLife())/100));
-	Rectangle::draw();
-	setSprite(2);
-	setColorFilter(Color(Color::RED & Color::TRANSPARENT, Color::RED, 1-(*damagePulse)(damagePulseTimer->getT())));
-	Rectangle::draw();
+void Player::draw() const{
+	Rectangle::draw(Color::WHITE,0);
+	Rectangle::draw(Color(Color::WHITE, Color::TRANSPARENT,(100-getLife())/100),1);
+	Rectangle::draw(Color(Color::RED & Color::TRANSPARENT, Color::RED, 1-(*damagePulse)(damagePulseTimer->getT())),2);
+}
+
+void Player::drawDebug() const{
+	if (isInIAMode()) ia->drawDebug();
 }
 
 void Player::dealEvent(const u32* playerEvents){
@@ -462,6 +460,7 @@ void Player::dealEvent(const u32* playerEvents){
 	const u32 padDown = playerEvents[DOWN];
 	const u32 padUp = playerEvents[UP];
 
+	// TODO réactiver cela une fois l'IA achevée
 	//if (isInIAMode()) return;
 
 	if (padHeld & WPAD_BUTTON_UP) 		KeyUp(HELD);
@@ -526,6 +525,7 @@ void Player::KeyA(EventType type){
 		break;
 	case DOWN:
 		if (getCannon()->isGuidingMissile()) getCannon()->destroyGuidedMissile();
+		// TODO gérer les vibrations
 		//WPAD_Rumble(WPAD_CHAN_0, 1);
 		break;
 	case UP:
@@ -565,6 +565,5 @@ void Player::KeyPlus(EventType type){
 	case UP:break;
 	}
 }
-
 
 }

@@ -38,7 +38,7 @@ public:
 	void compute();
 	void computeClouds();
 	void addToDrawManager();
-	void draw();
+	void draw() const;
 };
 
 }

@@ -15,14 +15,24 @@ namespace shootmii{
 IA::IA(Player* const _player) :
 	player(_player),
 	computedAngles(NULL),
-	isAStrengthSolution(false),
-	computedStrength(0)
+	computedStrength(NULL),
+	firing(false)
 {
 
 }
 
 IA::~IA(){
 	delete computedAngles;
+	delete computedStrength;
+}
+
+void IA::init(){
+	delete computedAngles;
+	computedAngles = NULL;
+	delete computedStrength;
+	computedStrength = NULL;
+	firing = false;
+	player->KeyA(UP);
 }
 
 void IA::getCloserToTheOpponent(){
@@ -30,15 +40,13 @@ void IA::getCloserToTheOpponent(){
 	else player->KeyLeft(HELD);
 }
 
-void IA::draw() const{
-	//const float originY = player->getCannon()->getAbsoluteOriginY();
+void IA::drawDebug() const{
 	const Coordinates origin = player->getCannon()->getAbsoluteOrigin();
 	const float angle = player->getCannon()->getAbsoluteAngle();
-
 	Interval range = player->getAngularInterval();
 
 	// Force variable
-	if (isAStrengthSolution) drawTrajectory(computedStrength,origin,angle,Color::RED);
+	if (computedStrength) drawTrajectory(*computedStrength,origin,angle,Color::RED);
 
 	// Angle variable
 	if (computedAngles){
@@ -50,10 +58,6 @@ void IA::draw() const{
 	// Min/Max
 	drawTrajectory(100,origin,range.getMin()+PI/2,Color::BLUE);
 	drawTrajectory(100,origin,range.getMax()+PI/2,Color::BLUE);
-
-	//Origine variable
-	//for(unsigned int i=0;i<computedOriginX.size();i++)
-		//drawTrajectory(100,Coordinates(computedOriginX[i],originY),angle,WHITE);
 }
 
 void IA::drawTrajectory(const float strength, const Coordinates& origin, const float angle, const Color color) const{
@@ -87,10 +91,16 @@ void IA::drawTrajectory(const float strength, const Coordinates& origin, const f
 void IA::compute(){
 	const float angle = fixAngle(player->getCannon()->getAbsoluteAngle());
 	Interval interval = player->getAngularInterval();
-	player->beginLaserMode();
-	calculateAngle(100);
-	calculatePosition(100);
-	calculateStrength();
+
+	delete computedAngles;
+	computedAngles = calculateAngle(100);
+
+	delete computedStrength;
+	computedStrength = calculateStrength();
+
+	/*********************************************************************************/
+	/*                    Asservissement angulaire et positionnel                    */
+	/*********************************************************************************/
 
 	// Si on n'est pas à une distance permettant d'atteindre l'adversaire
 	if (!computedAngles) getCloserToTheOpponent();
@@ -103,11 +113,38 @@ void IA::compute(){
 		if (!interval.intersect(*computedAngles)) getCloserToTheOpponent();
 	}
 
+	/*********************************************************************************/
+	/*                        Contrôle de la puissance de feu                        */
+	/*********************************************************************************/
+
+	if (player->getCannon()->isOverHeated()) return;
+
+	// Si l'adversaire est ateignable
+	if(computedStrength){
+		// Si on est en train de tirer
+		if (firing){
+			// Si la puissance est insuffisante, on l'augmente
+			if (player->getCannon()->getStrength() < *computedStrength) player->KeyA(HELD);
+			// Sinon on tire
+			else {
+				firing = false;
+				player->KeyA(UP);
+			}
+		}
+		// Sinon on tire
+		else{
+			firing = true;
+		}
+	}
+	// Sinon
+	else{
+		// Si on est en train de tirer, on continue pour éloigner l'explosion de soi ...
+		if (firing) player->KeyA(HELD);
+	}
+
 }
 
-void IA::calculateStrength(){
-	isAStrengthSolution = false;
-
+float* IA::calculateStrength() const{
 	const Coordinates originA = player->getCannon()->getAbsoluteOrigin();
 	const Coordinates originB = player->getOpponent()->getCannon()->getAbsoluteOrigin();
 
@@ -123,17 +160,13 @@ void IA::calculateStrength(){
 
 	const float s_square_bottom = (dy*cosinus-dx*sinus)*(a2*cosinus-a1*sinus);
 
-	if (s_square_bottom <= 0) return;
+	if (s_square_bottom <= 0) return NULL;
 
-	isAStrengthSolution = true;
-	computedStrength = fabs(a1*dy-a2*dx)/sqrt(s_square_bottom);
+	return new float(fabs(a1*dy-a2*dx)/sqrt(s_square_bottom));
 }
 
-void IA::calculateAngle(const float s){
-	delete computedAngles;
-	computedAngles = NULL;
-
-	if (s == 0) return;
+Interval* IA::calculateAngle(const float s) const{
+	if (s == 0) return NULL;
 
 	float dx = player->getOpponent()->getCannon()->getAbsoluteOriginX() - player->getCannon()->getAbsoluteOriginX();
 	float dy = player->getOpponent()->getCannon()->getAbsoluteOriginY() - player->getCannon()->getAbsoluteOriginY();
@@ -143,43 +176,14 @@ void IA::calculateAngle(const float s){
 
 	const float delta = s*s*s*s+4*((a1*dx+a2*dy)*s*s-pow(a1*dy-a2*dx,2));
 
-	if (delta < 0) return; // Aucune solution
+	if (delta < 0) return NULL; // Aucune solution
 
 	const float sqrt_delta = sqrt(delta);
 
 	const float gamma1 = (s*s+2*(a1*dx+a2*dy)-sqrt_delta)/(2*(a1*a1+a2*a2));
 	const float gamma2 = (s*s+2*(a1*dx+a2*dy)+sqrt_delta)/(2*(a1*a1+a2*a2));
 
-	computedAngles = new Interval(fixAngle(atan2(a2*gamma1-dy,a1*gamma1-dx)-PI),fixAngle(atan2(a2*gamma2-dy,a1*gamma2-dx)-PI));
-}
-
-void IA::calculatePosition(const float strength){
-	computedOriginX.clear();
-
-	const float angle = player->getCannon()->getAbsolutePolygonAngle();
-	const float cosinus = cos(angle);
-	const float sinus = sin(angle);
-
-	const float a1 = player->getCannon()->getWind()->getWindSpeed()*WIND_INFLUENCE_ON_AMMO/(2*100*AMMO_WEIGHT);
-	const float b1 = strength*cosinus;
-	const float xb = player->getOpponent()->getCannon()->getAbsoluteOriginX();
-
-	const float a2 = -GRAVITY/(2*AMMO_WEIGHT);
-	const float b2 = sinus;
-	const float dy = player->getOpponent()->getCannon()->getAbsoluteOriginY()-player->getAbsoluteOriginY() + CANNON_LENGTH * sinus;
-
-	const float a = a2*a2;
-	const float b = b2*(b1*a2-b2*a1)-2*a1*a2*dy;
-	const float c = a1*a1*dy*dy-b1*dy*(b1*a2-b2*a1);
-
-	const float delta = b*b-4*a*c;
-
-	if (delta < 0) return;
-
-	const float sqrt_delta = sqrt(delta);
-
-	computedOriginX.push_back(xb + (b + sqrt_delta)/(2*a));
-	computedOriginX.push_back(xb + (b - sqrt_delta)/(2*a));
+	return new Interval(fixAngle(atan2(a2*gamma1-dy,a1*gamma1-dx)-PI),fixAngle(atan2(a2*gamma2-dy,a1*gamma2-dx)-PI));
 }
 
 bool IA::isCollidingWithOpponent(const float strength, float angle){

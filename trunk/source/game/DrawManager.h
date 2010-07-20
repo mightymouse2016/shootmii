@@ -26,7 +26,8 @@ public:
 	void addToDraw(std::list<Ammo*>* ammosList);
 	void addToDraw(std::list<Bonus*>* bonusesList);
 	void addToDraw(std::list<Animation*>* animationsList);
-	void draw();
+	void compute();
+	void draw() const;
 };
 
 }

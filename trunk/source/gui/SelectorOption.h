@@ -25,7 +25,7 @@ public:
 	void click();
 	void grow();
 	void shrink();
-	void draw();
+	void draw() const;
 	void highLight();
 	void unHighLight();
 };

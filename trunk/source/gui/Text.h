@@ -74,7 +74,7 @@ public:
 	void setColor(const Color& _color);
 	void setUnderline(const bool underline);
 	void update();
-	void draw();
+	void draw() const;
 };
 
 }

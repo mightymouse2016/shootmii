@@ -153,6 +153,10 @@ void Cannon::computeHeat() {
 		heat = 0;
 }
 
+bool Cannon::isOverHeated() const{
+	return heat + HEAT_INC_STEP >= 100;
+}
+
 void Cannon::up() {
 	stillHeld = false;
 }
@@ -367,7 +371,7 @@ bool Cannon::isGuidingMissile() const {
 	return (guidedMissile != NULL);
 }
 
-void Cannon::draw() {
+void Cannon::draw() const{
 	float x, y, newX, newY;
 	Terrain* terrain = getOwner()->getTerrain();
 
@@ -398,12 +402,8 @@ void Cannon::draw() {
 		}
 	}
 
-	setSprite(0);
-	setColorFilter(Color::WHITE);
-	Rectangle::draw();
-	setSprite(1);
-	setColorFilter(Color(Color::WHITE, Color::TRANSPARENT, (100-getOwner()->getLife())/100));
-	Rectangle::draw();
+	Rectangle::draw(Color::WHITE,0);
+	Rectangle::draw(Color(Color::WHITE, Color::TRANSPARENT, (100-getOwner()->getLife())/100),1);
 }
 
 }
